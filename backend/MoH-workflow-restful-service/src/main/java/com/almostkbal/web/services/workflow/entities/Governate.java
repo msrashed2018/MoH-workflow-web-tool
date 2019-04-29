@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="governate")
 public class Governate {
@@ -24,7 +26,7 @@ public class Governate {
 	@Column(name = "governate_name")
 	private String name;
 	
-	@OneToMany(mappedBy = "governate")
+	@OneToMany(mappedBy = "governate",fetch=FetchType.EAGER)
 	private List<City> cities;
 	
 	public Governate() {
