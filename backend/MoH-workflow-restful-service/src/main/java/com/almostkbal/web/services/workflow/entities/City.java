@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 @Entity
 @Table(name="city")
-
 public class City {
 
 	@Id
@@ -26,7 +25,6 @@ public class City {
 	
 	@ManyToOne
 	@JoinColumn(name = "governate_id")
-
 	private Governate governate;
 	
 	public City() {

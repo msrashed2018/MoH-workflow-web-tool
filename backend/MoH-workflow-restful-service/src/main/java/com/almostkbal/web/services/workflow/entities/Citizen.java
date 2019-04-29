@@ -2,7 +2,6 @@ package com.almostkbal.web.services.workflow.entities;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name="citizen")
@@ -31,27 +31,22 @@ public class Citizen {
 	private String name;
 	
 	@Column(name = "birth_date")
-//	@Temporal(TemporalType.DATE)
 	private Date birthDate;
 	
 	@Column(name = "address")
 	private String address;
 	
-	@OneToOne ()
-	@JoinColumn(name = "gender_id")
-	private Gender gender;
+	@Column(name = "gender")
+	private String gender;
 	
-	@OneToOne 
-	@JoinColumn(name = "city_id")
-	private City city;
+	@Column(name = "city")
+	private String city;
 
-	@OneToOne
-	@JoinColumn(name = "governate_id")
-	private Governate governate;
+	@Column(name = "governate")
+	private String governate;
 	
-	@OneToOne
-	@JoinColumn(name = "occupation_id")
-	private Occupation occupation;
+	@Column(name = "occupation")
+	private String occupation;
 	
 	@Column(name = "mobile_no")
 	private String mobileNumber;
@@ -60,15 +55,15 @@ public class Citizen {
 	private String createdBy;
 	
 	@Column(name = "created_date")
-	@Temporal(TemporalType.DATE)
-//	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+//	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date createdDate;
 	
 	@Column(name = "modified_by")
 	private String modifiedBy;
 	
 	@Column(name = "modified_date")
-	@Temporal(TemporalType.TIMESTAMP)
+//	@Temporal(TemporalType.TIMESTAMP)
 //	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date modifiedDate;
 	
@@ -128,35 +123,35 @@ public class Citizen {
 		this.address = address;
 	}
 
-	public Gender getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(Gender gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
-	public City getCity() {
+	public String getCity() {
 		return city;
 	}
 
-	public void setCity(City city) {
+	public void setCity(String city) {
 		this.city = city;
 	}
 
-	public Governate getGovernate() {
+	public String getGovernate() {
 		return governate;
 	}
 
-	public void setGovernate(Governate governate) {
+	public void setGovernate(String governate) {
 		this.governate = governate;
 	}
 
-	public Occupation getOccupation() {
+	public String getOccupation() {
 		return occupation;
 	}
 
-	public void setOccupation(Occupation occupation) {
+	public void setOccupation(String occupation) {
 		this.occupation = occupation;
 	}
 
@@ -199,5 +194,6 @@ public class Citizen {
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
+	
 	
 }

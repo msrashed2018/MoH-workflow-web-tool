@@ -17,7 +17,7 @@ public class HelloWorldController {
 	@Autowired
 	private UserRepository userRepository;
 	@GetMapping(path = "/test")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+//	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public AuthenticationBean helloWorld(Authentication authentication) {
 		return new AuthenticationBean("You are authenticated");
 //		User user = userRepository.findByUsername(authentication.getName());

@@ -5,8 +5,10 @@ import javax.persistence.metamodel.Type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
+import org.springframework.http.MediaType;
 
 @Configuration
 public class RepositoryRestDataConfiguration implements RepositoryRestConfigurer{
@@ -19,5 +21,7 @@ public class RepositoryRestDataConfiguration implements RepositoryRestConfigurer
                 entityManager.getMetamodel().getEntities().stream()
                 .map(Type::getJavaType)
                 .toArray(Class[]::new));
+		config.setDefaultPageSize(1000);
+//		config.setDefaultMediaType(MediaType.APPLICATION_JSON);
     }
 }
