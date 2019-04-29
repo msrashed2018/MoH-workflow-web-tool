@@ -11,36 +11,25 @@ import com.almostkbal.web.services.workflow.auth.service.AuthenticationBean;
 import com.almostkbal.web.services.workflow.repositories.UserRepository;
 
 //Controller
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="*")
 @RestController
 public class HelloWorldController {
 	@Autowired
 	private UserRepository userRepository;
+
 	@GetMapping(path = "/test")
 //	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public AuthenticationBean helloWorld(Authentication authentication) {
+		System.out.println("\n \n authentication\n\n");
 		return new AuthenticationBean("You are authenticated");
-//		User user = userRepository.findByUsername(authentication.getName());
-//		System.out.println("\n username  :"+authentication.getName() );
-//        for (Role role : user.getRoles()){
-//        	System.out.println("\n role  "+role.getRoleName());
-//        }
-//
-//		
-//		List<GrantedAuthority> grantedAuthorities = (List<GrantedAuthority>) authentication.getAuthorities();
-//		
-//		String authorities = "  ";
-//		for(GrantedAuthority authority : grantedAuthorities) {
-//			authorities = authorities + "  " +authority.getAuthority();
-//		}
-//		return "Hello World --  authentication = " + authentication.getName() + "  \n authorities : "+authorities;
 	}
 
-@GetMapping(path = "/hello-world-bean")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
-public HelloWorldBean helloWorldBean() {
-	//throw new RuntimeException("Some Error has Happened! Contact Support at ***-***");
-	return new HelloWorldBean("Hello World - Changed");
-}
+	@GetMapping(path = "/hello-world-bean")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public HelloWorldBean helloWorldBean() {
+		// throw new RuntimeException("Some Error has Happened! Contact Support at
+		// ***-***");
+		return new HelloWorldBean("Hello World - Changed");
+	}
 
 }
