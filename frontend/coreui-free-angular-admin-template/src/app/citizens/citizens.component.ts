@@ -1,6 +1,8 @@
+import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert';
 import { Citizen } from './citizen.model';
 import { Component, OnInit, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
+import { CitizenService } from './../sevices/citizenService/citizenService';
 
 @Component({
   selector: 'app-citizens',
@@ -8,64 +10,74 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./citizens.component.scss']
 })
 
-// @NgModule({
-//   imports:[CommonModule],
-// })
-
 export class CitizensComponent implements OnInit {
   searchByID: string = '';
 
-  constructor() { }
+  constructor(private citizenService: CitizenService, private datepipe: DatePipe) { }
 
   private citizens: Citizen[];
-
+  private noDataFound: boolean = false;
+  private errorMessage: boolean = false;
 
   ngOnInit() {
     this.citizens = [];
-     /*  this.citizens = [{"nationalId": "12345678912345",
-      "name": "salah Abdel Hai",
-      "birthDate": "10/10/1992",
-      "address": "60 st. medan Gohyna, october",
-      "mobileNumber": "201092335926",
-      "createdBy": "Ahmed Ali",
-      "createdDate": "19/07/2019",
-      "modifiedBy": "Mohamed Alaa",
-      "modifiedDate": "20/07/2019"},
-
-      {"nationalId": "12345678912345",
-      "name": "salah Abdel Hai",
-      "birthDate": "10/10/1992",
-      "address": "60 st. medan Gohyna, october",
-      "mobileNumber": "201092335926",
-      "createdBy": "Ahmed Ali",
-      "createdDate": "19/07/2019",
-      "modifiedBy": "Mohamed Alaa",
-      "modifiedDate": "20/07/2019"},
-      
-      {"nationalId": "12345678912345",
-      "name": "salah Abdel Hai",
-      "birthDate": "10/10/1992",
-      "address": "60 st. medan Gohyna, october",
-      "mobileNumber": "201092335926",
-      "createdBy": "Ahmed Ali",
-      "createdDate": "19/07/2019",
-      "modifiedBy": "Mohamed Alaa",
-      "modifiedDate": "20/07/2019"}]; */
+    this.retriveAllCitizens();
   }
 
 
-  searchchanged(event : Event) {
-    console.log('search by : ' + event);
-  
-  //  this.citizens = [{"nationalId": "12345678912345",
-  //  "name": "salah Abdel Hai",
-  //  "birthDate": "10/10/1992",
-  //  "address": "60 st. medan Gohyna, october",
-  //  "mobileNumber": "201092335926",
-  //  "createdBy": "Ahmed Ali",
-  //  "createdDate": "19/07/2019",
-  //  "modifiedBy": "Mohamed Alaa",
-  //  "modifiedDate": "20/07/2019"},
-  //  ]
-}
+
+  searchchanged(event: Event) {
+    this.citizens = [];
+    console.log('search by : ' + this.searchByID);
+    this.errorMessage = false;
+    this.noDataFound = false;
+
+    this.citizenService.findCitizen(this.searchByID)
+      .subscribe(
+        result => {
+          console.log(" find by id");
+          if (typeof result !== 'undefined' && result !== null) {
+            this.noDataFound = false;
+            this.citizens = result;
+          }else{
+            this.noDataFound = true;
+          }
+          console.log("returned citizen : " + this.citizens)
+        },
+        error => {
+          console.log('oops', error);
+          this.errorMessage = true;
+
+        }
+      );
+
+  }
+
+  retriveAllCitizens(){
+    this.citizens = [];
+    console.log('retrive all');
+    this.errorMessage = false;
+    this.noDataFound = false;
+    let date=new Date();
+    let latest_date =this.datepipe.transform(date, 'yyyy-MM-dd');
+    console.log("today:" + latest_date)
+    this.citizenService.retriveAll(latest_date)
+      .subscribe(
+        result => {
+          console.log(" retrive all");
+          if (typeof result !== 'undefined' && result !== null) {
+            this.noDataFound = false;
+            this.citizens= result;
+          }else{
+            this.noDataFound = true;
+          }
+          console.log("returned citizen : " + this.citizens)
+        },
+        error => {
+          console.log('oops: ', error);
+          this.errorMessage = true;
+
+        }
+      );
+  }
 }

@@ -18,8 +18,8 @@ export class HttpIntercepterBasicAuthService implements HttpInterceptor{
     if(basicAuthHeaderString && username) { 
       request = request.clone({
         setHeaders : {
-            Authorization : basicAuthHeaderString
-            // "Access-Control-Allow-Origin": "*",
+            Authorization : basicAuthHeaderString,
+            "Access-Control-Allow-Origin": "192.168.0.101",
           }
         }) 
     }

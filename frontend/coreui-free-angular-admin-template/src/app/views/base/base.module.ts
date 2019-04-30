@@ -46,7 +46,7 @@ import { TooltipsComponent } from './tooltips.component';
 
 // Components Routing
 import { BaseRoutingModule } from './base-routing.module';
-import { BrowserModule } from '@angular/platform-browser';
+
 @NgModule({
   imports: [
     CommonModule,

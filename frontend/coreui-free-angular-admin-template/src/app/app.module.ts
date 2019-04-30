@@ -5,7 +5,7 @@ import { RouteGuardService } from './sevices/authinticationService/route-guard.s
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy, CommonModule } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, CommonModule, DatePipe } from '@angular/common';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -47,12 +47,12 @@ import { AppRoutingModule } from './app.routing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { CitizensComponent } from './citizens/citizens.component';
 // import { CitizensComponent } from './citizens/citizens.component';
 
 @NgModule({
   imports: [
     BrowserModule,
-    AlertModule,
     // CommonModule,
     AppRoutingModule,
     AppAsideModule,
@@ -66,7 +66,9 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     ChartsModule,
     HttpModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,    
+    AlertModule.forRoot(),  
+
   ],
   declarations: [
     AppComponent,
@@ -74,6 +76,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     P404Component,
     P500Component,
     LoginComponent,
+    // CitizensComponent,
     RegisterComponent,
     // CitizensComponent
 
@@ -84,8 +87,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     
   },
   RouteGuardService,
-  {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterBasicAuthService, multi: true }
-  ],
+  {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterBasicAuthService, multi: true },
+  DatePipe],
     bootstrap: [ AppComponent ],
     // exports: [CitizensComponent]
 })

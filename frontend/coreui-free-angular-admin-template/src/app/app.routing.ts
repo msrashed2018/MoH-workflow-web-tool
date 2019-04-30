@@ -56,36 +56,50 @@ export const routes: Routes = [
       {
         path: 'base',
         loadChildren: './views/base/base.module#BaseModule',
-        // canActivate: [RouteGuardService],
+        canActivate: [RouteGuardService],
 
       },
       {
         path: 'buttons',
-        loadChildren: './views/buttons/buttons.module#ButtonsModule'
+        loadChildren: './views/buttons/buttons.module#ButtonsModule',
+        canActivate: [RouteGuardService],
+
       },
       {
         path: 'charts',
-        loadChildren: './views/chartjs/chartjs.module#ChartJSModule'
+        loadChildren: './views/chartjs/chartjs.module#ChartJSModule',
+        canActivate: [RouteGuardService],
+
       },
       {
         path: 'dashboard',
-        loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+        loadChildren: './views/dashboard/dashboard.module#DashboardModule',
+        canActivate: [RouteGuardService],
+
       },
       {
         path: 'icons',
-        loadChildren: './views/icons/icons.module#IconsModule'
+        loadChildren: './views/icons/icons.module#IconsModule',
+        canActivate: [RouteGuardService],
+
       },
       {
         path: 'notifications',
-        loadChildren: './views/notifications/notifications.module#NotificationsModule'
+        loadChildren: './views/notifications/notifications.module#NotificationsModule',
+        canActivate: [RouteGuardService],
+
       },
       {
         path: 'theme',
-        loadChildren: './views/theme/theme.module#ThemeModule'
+        loadChildren: './views/theme/theme.module#ThemeModule',
+        canActivate: [RouteGuardService],
+
       },
       {
         path: 'widgets',
-        loadChildren: './views/widgets/widgets.module#WidgetsModule'
+        loadChildren: './views/widgets/widgets.module#WidgetsModule',
+        canActivate: [RouteGuardService],
+
       }
     ]
   },

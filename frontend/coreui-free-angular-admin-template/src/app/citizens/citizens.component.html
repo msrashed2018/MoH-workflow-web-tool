@@ -1,8 +1,22 @@
 
+<div *ngIf="noDataFound">
+  <br>
+  <alert type="info">
+    <strong>لا توجد بيانات مطابقه للمدخلات. </strong>
+  </alert>
+</div> 
+
+<div *ngIf="errorMessage">
+  <br>
+  <alert type="danger">
+    <strong>عفوا، حدث خطا، حاول مره أخرى. </strong>
+  </alert>
+</div> 
+
 
 <output class="searchHint" > من فضلك ادخل الرقم القومي :</output>
 <input type="text" 
-placeholder="الرقم القومي" [ngModel]="searchByID" />
+placeholder="الرقم القومي" [(ngModel)]="searchByID" />
  &nbsp; &nbsp;
 <button type="button" class="btn btn-pill btn-primary" style="width: 80px;
 font-size: 14px; color:black !important;"  (click)="searchchanged($event)">بحث</button>
@@ -66,6 +80,7 @@ font-size: 14px; color:black !important;"  (click)="searchchanged($event)">بح�
         </div>
       </td>
     </tr>
+    
     <!-- <tr>
         <td class="text-center">
           <div class="avatar">

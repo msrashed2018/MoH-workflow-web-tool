@@ -21,7 +21,7 @@ export class BasicAuthenticationService {
       })
 
     return this.http.get<AuthenticationBean>(
-      'http://192.168.0.101:8080/ministry-of-health/test',
+      'http://localhost:8080/ministry-of-health/test',
       {headers}).pipe(
         map(
           data => {
@@ -37,7 +37,7 @@ export class BasicAuthenticationService {
 
   findByID(){
     return this.http.get<Citizen []>
-      ('http://192.168.0.101:8080/ministry-of-health/api/citizens').pipe( map(
+      ('http://localhost:8080/ministry-of-health/api/citizens/search/findAllByDate?date=2018-07-19').pipe( map(
         data => {console.log(data) 
         return data;
       }));
@@ -60,6 +60,7 @@ export class BasicAuthenticationService {
   logout(){
     sessionStorage.removeItem(TOKEN)
     sessionStorage.removeItem(AUTHENTICATED_USER)
+    console.log("user is logged out;");
   }
 
 }
