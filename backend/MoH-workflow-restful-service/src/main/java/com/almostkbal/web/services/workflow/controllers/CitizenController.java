@@ -39,7 +39,7 @@ public class CitizenController {
 	}
 	
 	@GetMapping("/api/citizens/search/findByNationalId")
-	public Citizen findByNationalId(@RequestParam long id){
+	public List<Citizen> findByNationalId(@RequestParam long id){
 		return citizenRepository.findByNationalId(id);
 	}
 	

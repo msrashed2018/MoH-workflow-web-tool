@@ -18,7 +18,7 @@ import com.almostkbal.web.services.workflow.entities.Citizen;
 public interface CitizenRepository extends JpaRepository<Citizen, Long> {
 	
 //	@RestResource(path = "nationalId/${id}", rel="nationalId/${id}")
-	Citizen findByNationalId(@Param("id") long id);
+	List<Citizen> findByNationalId(@Param("id") long id);
 	
 	List<Citizen> findByName(String name);
 	
