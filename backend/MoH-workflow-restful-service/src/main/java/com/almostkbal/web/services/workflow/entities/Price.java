@@ -17,7 +17,7 @@ public class Price {
 	private int id;
 	
 	@Column(name = "price_value")
-	private int priceValue;
+	private int value;
 	
 	@Column(name = "price_description")
 	private String priceDescription;
@@ -28,16 +28,16 @@ public class Price {
 
 	public Price(int priceValue, String priceDescription) {
 		super();
-		this.priceValue = priceValue;
+		this.value = priceValue;
 		this.priceDescription = priceDescription;
 	}
 
 	public int getPriceValue() {
-		return priceValue;
+		return value;
 	}
 
 	public void setPriceValue(int priceValue) {
-		this.priceValue = priceValue;
+		this.value = priceValue;
 	}
 
 	public String getPriceDescription() {

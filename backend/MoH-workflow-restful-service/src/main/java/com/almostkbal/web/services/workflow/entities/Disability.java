@@ -7,8 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="disability")
+@Entity
+@Table(name="disability")
 public class Disability {
 
 	@Id
@@ -17,19 +17,19 @@ public class Disability {
 	private int id;
 	
 	@Column(name = "disability_name")
-	private String disabilityName;
+	private String name;
 	
 	@Column(name = "disability_description")
-	private String disabilityDescription;
+	private String description;
 	
 	public Disability() {
 		
 	}
 
-	public Disability(String disabilityName, String disabilityDescription) {
+	public Disability(String name, String description) {
 		super();
-		this.disabilityName = disabilityName;
-		this.disabilityDescription = disabilityDescription;
+		this.name = name;
+		this.description = description;
 	}
 
 	public int getId() {
@@ -40,20 +40,20 @@ public class Disability {
 		this.id = id;
 	}
 
-	public String getDisabilityName() {
-		return disabilityName;
+	public String getName() {
+		return name;
 	}
 
-	public void setDisabilityName(String disabilityName) {
-		this.disabilityName = disabilityName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getDisabilityDescription() {
-		return disabilityDescription;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDisabilityDescription(String disabilityDescription) {
-		this.disabilityDescription = disabilityDescription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }
