@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Citizen;
+import com.almostkbal.web.services.workflow.entities.User;
 import com.almostkbal.web.services.workflow.exceptions.CitizenNotFoundException;
+import com.almostkbal.web.services.workflow.exceptions.EquipmentNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 
 
@@ -54,6 +57,7 @@ public class CitizenController {
 	}
 	@GetMapping("/api/citizens/search/findAllByDate")
 	public List<Citizen> findAllByDate(@RequestParam String date){
+		
 		return citizenRepository.findAllByDate(date);
 	}
 	
@@ -68,7 +72,11 @@ public class CitizenController {
 
 	@DeleteMapping("/api/citizens/{id}")
 	public void deleteCitizen(@PathVariable long id) {
-		citizenRepository.deleteById(id);
+		try {
+			citizenRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new CitizenNotFoundException("id-"+ id);
+	    }
 	}
 
 	@PostMapping("/api/citizens")
@@ -84,11 +92,11 @@ public class CitizenController {
 	@PutMapping("/api/citizens/{id}")
 	public ResponseEntity<Citizen> updateCitizen(
 			@PathVariable long id, @RequestBody Citizen citizen){
-		Citizen existingCitizen = citizenRepository.getOne(id);
-		
-		if(existingCitizen == null)
+		Optional<Citizen> existingCitizen = citizenRepository.findById(id);
+
+		if(!existingCitizen.isPresent())
 			throw new CitizenNotFoundException("id-"+ id);
-		citizenRepository.deleteById(id);
+//		citizenRepository.deleteById(id);
 		
 		Citizen updatedCitzen = citizenRepository.save(citizen);
 		

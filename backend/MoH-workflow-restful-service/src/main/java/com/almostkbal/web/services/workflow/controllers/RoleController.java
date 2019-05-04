@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,11 @@ public class RoleController {
 
 	@DeleteMapping("/api/roles/{id}")
 	public void deleteRole(@PathVariable long id) {
-		roleRepository.deleteById(id);
+		try {
+			roleRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new RoleNotFoundException("id-"+ id);
+	    }
 	}
 
 	@PostMapping("/api/roles")
@@ -64,11 +69,11 @@ public class RoleController {
 	@PutMapping("/api/roles/{id}")
 	public ResponseEntity<Role> updateRole(
 			@PathVariable long id, @RequestBody Role role){
-		Role existingRole = roleRepository.getOne(id);
-		
-		if(existingRole == null)
+		Optional<Role> existingRole = roleRepository.findById(id);
+
+		if(!existingRole.isPresent())
 			throw new RoleNotFoundException("id-"+ id);
-		roleRepository.deleteById(id);
+//		roleRepository.deleteById(id);
 		Role updatedCitzen = roleRepository.save(role);
 		return new ResponseEntity<Role>(updatedCitzen, HttpStatus.OK);
 	}

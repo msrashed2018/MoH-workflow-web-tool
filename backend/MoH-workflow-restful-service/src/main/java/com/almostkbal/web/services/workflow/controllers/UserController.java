@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.almostkbal.web.services.workflow.entities.City;
+import com.almostkbal.web.services.workflow.entities.Governate;
+import com.almostkbal.web.services.workflow.entities.Role;
 import com.almostkbal.web.services.workflow.entities.User;
+import com.almostkbal.web.services.workflow.exceptions.GovernateNotFoundException;
 import com.almostkbal.web.services.workflow.exceptions.UserNotFoundException;
+import com.almostkbal.web.services.workflow.repositories.RoleRepository;
 import com.almostkbal.web.services.workflow.repositories.UserRepository;
 
 
@@ -31,6 +37,9 @@ import com.almostkbal.web.services.workflow.repositories.UserRepository;
 public class UserController {
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@GetMapping("/api/users")
 	public List<User> retrieveAllUsers(){
@@ -48,7 +57,11 @@ public class UserController {
 
 	@DeleteMapping("/api/users/{id}")
 	public void deleteUser(@PathVariable long id) {
-		userRepository.deleteById(id);
+		try {
+			userRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new UserNotFoundException("id-"+ id);
+	    }
 	}
 
 	@PostMapping("/api/users")
@@ -64,12 +77,45 @@ public class UserController {
 	@PutMapping("/api/users/{id}")
 	public ResponseEntity<User> updateUser(
 			@PathVariable long id, @RequestBody User user){
-		User existingUser = userRepository.getOne(id);
-		
-		if(existingUser == null)
+		Optional<User> existingUser = userRepository.findById(id);
+
+		if(!existingUser.isPresent())
 			throw new UserNotFoundException("id-"+ id);
-		userRepository.deleteById(id);
+//		userRepository.deleteById(id);
 		User updatedCitzen = userRepository.save(user);
 		return new ResponseEntity<User>(updatedCitzen, HttpStatus.OK);
+	}
+	
+	@PostMapping("/api/users/{id}/roles")
+	public ResponseEntity<Object> addRole(@PathVariable long id, @RequestBody Role role) {
+
+		Optional<User> userOptional = userRepository.findById(id);
+
+		if (!userOptional.isPresent()) {
+			throw new UserNotFoundException("id-" + id);
+		}
+
+		User user = userOptional.get();
+		user.addRole(role);
+		
+		userRepository.save(user);
+
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(role.getId())
+				.toUri();
+
+		return ResponseEntity.created(location).build();
+
+	}
+	
+	
+	@GetMapping("/api/users/{id}/roles")
+	public List<Role> retrieveUserRoles(@PathVariable long id) {
+		Optional<User> userOptional = userRepository.findById(id);
+		if (!userOptional.isPresent()) {
+			throw new GovernateNotFoundException("id-" + id);
+		}
+		User user = userOptional.get();
+
+		return user.getRoles();
 	}
 }

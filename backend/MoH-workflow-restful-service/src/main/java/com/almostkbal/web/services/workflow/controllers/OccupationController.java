@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.almostkbal.web.services.workflow.entities.Citizen;
 import com.almostkbal.web.services.workflow.entities.Occupation;
+import com.almostkbal.web.services.workflow.exceptions.GovernateNotFoundException;
 import com.almostkbal.web.services.workflow.exceptions.OccupationNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.OccupationRepository;
 
@@ -48,7 +51,11 @@ public class OccupationController {
 
 	@DeleteMapping("/api/occupations/{id}")
 	public void deleteOccupation(@PathVariable int id) {
-		occupationRepository.deleteById(id);
+		try {
+			occupationRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new OccupationNotFoundException("id-"+ id);
+	    }
 	}
 
 	@PostMapping("/api/occupations")
@@ -64,11 +71,11 @@ public class OccupationController {
 	@PutMapping("/api/occupations/{id}")
 	public ResponseEntity<Occupation> updateOccupation(
 			@PathVariable int id, @RequestBody Occupation occupation){
-		Occupation existingOccupation = occupationRepository.getOne(id);
-		
-		if(existingOccupation == null)
+		Optional<Occupation> existingOccupation = occupationRepository.findById(id);
+
+		if(!existingOccupation.isPresent())
 			throw new OccupationNotFoundException("id-"+ id);
-		occupationRepository.deleteById(id);
+//		occupationRepository.deleteById(id);
 		Occupation updatedCitzen = occupationRepository.save(occupation);
 		return new ResponseEntity<Occupation>(updatedCitzen, HttpStatus.OK);
 	}

@@ -27,7 +27,7 @@ public class City {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "governate_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Governate governate;
 	
 	public City() {

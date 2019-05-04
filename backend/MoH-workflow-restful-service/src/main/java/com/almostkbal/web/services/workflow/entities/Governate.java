@@ -2,7 +2,6 @@ package com.almostkbal.web.services.workflow.entities;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,7 +36,7 @@ public class Governate {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "zone_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Zone zone;
 	
 	public Governate() {

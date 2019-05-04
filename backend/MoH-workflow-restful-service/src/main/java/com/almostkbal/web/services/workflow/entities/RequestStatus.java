@@ -14,7 +14,7 @@ public class RequestStatus {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_REQUEST_STATUS")
 	@Column(name = "REQUEST_STATUS_ID")
-	private long id;
+	private int id;
 	
 	@Column(name = "REQUEST_STATUS_NAME")
 	private String name;
@@ -26,11 +26,11 @@ public class RequestStatus {
 		
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
