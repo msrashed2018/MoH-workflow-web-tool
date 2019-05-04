@@ -8,3 +8,4 @@ export class Governate {
     public cities: City[];
     public zone: Zone;
 }
+
