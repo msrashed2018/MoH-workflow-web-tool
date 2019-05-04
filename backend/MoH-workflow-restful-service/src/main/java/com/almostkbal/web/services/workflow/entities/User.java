@@ -13,31 +13,32 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name="system_user")
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_USER")
 	@Column(name = "user_id")
 	private long id;
 	
 	@Column(name = "username")
 	private String username;
 	
-	@Column(name = "user_password")
+	@Column(name = "password")
 	private String password;
 	
-	@Transient
-    private String passwordConfirm;
+	@OneToOne
+	@JoinColumn(name = "zone_id")
+	private Zone zone;
 	
 	@Column(name = "created_date")
 	private Date createdDate;
 	
-	@ManyToMany(fetch=FetchType.LAZY,
+	@ManyToMany(fetch=FetchType.EAGER,
 			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
 					 CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinTable(
@@ -80,13 +81,6 @@ public class User {
 		this.password = password;
 	}
 
-	public String getPasswordConfirm() {
-		return passwordConfirm;
-	}
-
-	public void setPasswordConfirm(String passwordConfirm) {
-		this.passwordConfirm = passwordConfirm;
-	}
 
 	public Date getCreatedDate() {
 		return createdDate;

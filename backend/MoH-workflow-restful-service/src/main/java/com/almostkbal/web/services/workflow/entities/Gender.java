@@ -16,7 +16,7 @@ public class Gender {
 	@Column(name = "gender_id")
 	private int id;
 	
-	@Column(name = "gender_name")
+	@Column(name = "gender_name",nullable=false)
 	private String name;
 	
 	public Gender() {

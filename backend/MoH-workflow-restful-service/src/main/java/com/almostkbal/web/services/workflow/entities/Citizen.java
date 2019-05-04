@@ -1,19 +1,21 @@
 package com.almostkbal.web.services.workflow.entities;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="citizen")
@@ -24,10 +26,10 @@ public class Citizen {
 	@Column(name = "citizen_id")
 	private long id;
 	
-	@Column(name = "national_id")
+	@Column(name = "national_id",unique=true,nullable=false)
 	private long nationalId;
 	
-	@Column(name = "citizen_name")
+	@Column(name = "citizen_name",nullable=false)
 	private String name;
 	
 	@Column(name = "birth_date")
@@ -36,17 +38,26 @@ public class Citizen {
 	@Column(name = "address")
 	private String address;
 	
-	@Column(name = "gender")
-	private String gender;
+	@OneToMany(mappedBy = "citizen",fetch=FetchType.LAZY)
+	@JsonIgnore
+	private List<Request> requests;
 	
-	@Column(name = "city")
-	private String city;
 
-	@Column(name = "governate")
-	private String governate;
+	@OneToOne
+	@JoinColumn(name = "gender_id")
+	private Gender gender;
 	
-	@Column(name = "occupation")
-	private String occupation;
+	@OneToOne
+	@JoinColumn(name = "city_id")
+	private City city;
+
+	@OneToOne
+	@JoinColumn(name = "governate_id")
+	private Governate governate;
+	
+	@OneToOne
+	@JoinColumn(name = "occupation_id")
+	private Occupation occupation;
 	
 	@Column(name = "mobile_no")
 	private String mobileNumber;
@@ -71,16 +82,10 @@ public class Citizen {
 		
 	}
 
-	public Citizen(long nationalId, String name, Date birthDate, String address, String mobileNumber, String createdBy,
-			Date createdDate) {
+	public Citizen(long nationalId, String name) {
 		super();
 		this.nationalId = nationalId;
 		this.name = name;
-		this.birthDate = birthDate;
-		this.address = address;
-		this.mobileNumber = mobileNumber;
-		this.createdBy = createdBy;
-		this.createdDate = createdDate;
 	}
 
 	public long getId() {
@@ -123,35 +128,37 @@ public class Citizen {
 		this.address = address;
 	}
 
-	public String getGender() {
+	
+
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 
-	public String getCity() {
+	public City getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(City city) {
 		this.city = city;
 	}
 
-	public String getGovernate() {
+	public Governate getGovernate() {
 		return governate;
 	}
 
-	public void setGovernate(String governate) {
+	public void setGovernate(Governate governate) {
 		this.governate = governate;
 	}
 
-	public String getOccupation() {
+	public Occupation getOccupation() {
 		return occupation;
 	}
 
-	public void setOccupation(String occupation) {
+	public void setOccupation(Occupation occupation) {
 		this.occupation = occupation;
 	}
 
@@ -194,6 +201,13 @@ public class Citizen {
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
-	
+
+	public List<Request> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(List<Request> requests) {
+		this.requests = requests;
+	}
 	
 }

@@ -2,45 +2,47 @@ package com.almostkbal.web.services.workflow.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name = "request_document")
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@Table(name = "request_document")
 public class RequestDocument {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_REQUEST_DOCUMENT")
 	@Column(name = "REQUEST_DOCUMENT_ID")
-	private int id;
+	private long id;
 
-	@Column(name = "REQUEST_ID")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "request_id")
+	@JsonIgnore
 	private Request request;
 
-	@Column(name = "DCOUMENT_TYPE_ID")
-	private DocumentType documentType;
+	@OneToOne
+	@JoinColumn(name = "DCOUMENT_TYPE_ID")
+	private DocumentType type;
 
 	@Column(name = "DOCUMENT_PATH")
-	private String documentPath;
+	private String path;
 
 	public RequestDocument() {
 
 	}
 
-	public RequestDocument(Request request, DocumentType documentType, String documentPath) {
-		super();
-		this.request = request;
-		this.documentType = documentType;
-		this.documentPath = documentPath;
-	}
-
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -52,20 +54,20 @@ public class RequestDocument {
 		this.request = request;
 	}
 
-	public DocumentType getDocumentType() {
-		return documentType;
+	public DocumentType getType() {
+		return type;
 	}
 
-	public void setDocumentType(DocumentType documentType) {
-		this.documentType = documentType;
+	public void setType(DocumentType type) {
+		this.type = type;
 	}
 
-	public String getDocumentPath() {
-		return documentPath;
+	public String getPath() {
+		return path;
 	}
 
-	public void setDocumentPath(String documentPath) {
-		this.documentPath = documentPath;
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

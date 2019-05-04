@@ -1,29 +1,43 @@
 package com.almostkbal.web.services.workflow.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name="request_status")
-public class RequestStatus {
+@Table(name="zone")
+public class Zone {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_REQUEST_STATUS")
-	@Column(name = "REQUEST_STATUS_ID")
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_ZONE")
+	@Column(name = "zone_id")
 	private long id;
 	
-	@Column(name = "REQUEST_STATUS_NAME")
+	@Column(name = "zone_name", nullable=false)
 	private String name;
 	
-	@Column(name = "REQUEST_STATUS_DESCRIPTION")
+	@Column(name = "zone_description")
 	private String description;
 	
-	public RequestStatus() {
+	@OneToMany(mappedBy = "zone",fetch=FetchType.LAZY)
+	@JsonIgnore
+	private List<Governate> governates;
+	
+	public Zone() {
 		
+	}
+
+	public Zone(String name) {
+		this.name = name;
 	}
 
 	public long getId() {
@@ -48,6 +62,14 @@ public class RequestStatus {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<Governate> getGovernates() {
+		return governates;
+	}
+
+	public void setGovernates(List<Governate> governates) {
+		this.governates = governates;
 	}
 
 }

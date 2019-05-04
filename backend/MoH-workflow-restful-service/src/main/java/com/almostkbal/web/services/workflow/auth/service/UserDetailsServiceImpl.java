@@ -3,6 +3,8 @@ package com.almostkbal.web.services.workflow.auth.service;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,21 +19,31 @@ import com.almostkbal.web.services.workflow.entities.User;
 import com.almostkbal.web.services.workflow.repositories.UserRepository;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService{
-	 @Autowired
-	 private UserRepository userRepository;
+public class UserDetailsServiceImpl implements UserDetailsService {
+	@Autowired
+	private UserRepository userRepository;
+	private static final Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
 
-	    @Override
-	    @Transactional(readOnly = true)
-	    public UserDetails loadUserByUsername(String username) {
-	        User user = userRepository.findByUsername(username);
-	        if (user == null) throw new UsernameNotFoundException(username);
-	        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-	        System.out.println("username : "+username + "roles : ");
-	        for (Role role : user.getRoles()){
-	        	System.out.print(role+ ", ");
-	            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-	        }
-	        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
-	    }
+	@Override
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String username) {
+		logger.info("Authenticating User");
+		logger.info("check username : "+username);
+		User user = userRepository.findByUsername(username);
+		if (user == null) {
+			logger.info("username "+username+" not exists");
+			throw new UsernameNotFoundException(username);
+		}
+		logger.info("username "+username+" exists");
+		logger.info("Getting "+username+" Roles ");
+		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+		int i = 1;
+		for (Role role : user.getRoles()) {
+			logger.info("Role "+i+" : "+role.getName());
+			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+			i++;
+		}
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+				grantedAuthorities);
+	}
 }

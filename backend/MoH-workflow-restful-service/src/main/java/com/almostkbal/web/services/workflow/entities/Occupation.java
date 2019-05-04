@@ -16,7 +16,7 @@ public class Occupation {
 	@Column(name = "occupation_id")
 	private int id;
 	
-	@Column(name = "occupation_name")
+	@Column(name = "occupation_name",nullable=false)
 	private String name;
 	
 	public Occupation() {

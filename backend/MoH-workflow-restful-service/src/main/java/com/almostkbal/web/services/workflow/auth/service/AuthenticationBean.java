@@ -1,11 +1,14 @@
 package com.almostkbal.web.services.workflow.auth.service;
 
-public class AuthenticationBean {
+import java.util.List;
 
+public class AuthenticationBean {
+	private List<String> authorities;
 	private String message;
 
-	public AuthenticationBean(String message) {
+	public AuthenticationBean(String message,List<String> authorities) {
 		this.message = message;
+		this.authorities = authorities;
 	}
 
 	public String getMessage() {
@@ -16,9 +19,17 @@ public class AuthenticationBean {
 		this.message = message;
 	}
 
+	public List<String> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(List<String> authorities) {
+		this.authorities = authorities;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("HelloWorldBean [message=%s]", message);
+		return String.format("AuthenticationBean [message=%s]", message);
 	}
 
 }

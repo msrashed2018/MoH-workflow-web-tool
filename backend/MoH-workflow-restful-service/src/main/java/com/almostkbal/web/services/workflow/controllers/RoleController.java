@@ -1,0 +1,75 @@
+package com.almostkbal.web.services.workflow.controllers;
+
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.almostkbal.web.services.workflow.entities.Role;
+import com.almostkbal.web.services.workflow.exceptions.RoleNotFoundException;
+import com.almostkbal.web.services.workflow.repositories.RoleRepository;
+
+
+//@CrossOrigin(origins="http://192.168.0.100:4200")
+@CrossOrigin(origins="*")
+@RestController
+public class RoleController {
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@GetMapping("/api/roles")
+	public List<Role> retrieveAllRoles(){
+		return roleRepository.findAll();
+	}
+	
+	@GetMapping("/api/roles/{id}")
+	public Resource<Role> retrieveRoleById(@PathVariable long id) {
+		Optional<Role> role = roleRepository.findById(id);
+		if(!role.isPresent())
+			throw new RoleNotFoundException("id-"+ id);
+		Resource<Role> resource = new Resource<Role>(role.get());
+		return resource;
+	}
+
+	@DeleteMapping("/api/roles/{id}")
+	public void deleteRole(@PathVariable long id) {
+		roleRepository.deleteById(id);
+	}
+
+	@PostMapping("/api/roles")
+	public ResponseEntity<Object> createRole(@Valid @RequestBody Role role) {
+		Role savedRole = roleRepository.save(role);
+		URI location = ServletUriComponentsBuilder
+			.fromCurrentRequest()
+			.path("/{id}")
+			.buildAndExpand(savedRole.getId()).toUri();
+		return ResponseEntity.created(location).build();
+		
+	}
+	@PutMapping("/api/roles/{id}")
+	public ResponseEntity<Role> updateRole(
+			@PathVariable long id, @RequestBody Role role){
+		Role existingRole = roleRepository.getOne(id);
+		
+		if(existingRole == null)
+			throw new RoleNotFoundException("id-"+ id);
+		roleRepository.deleteById(id);
+		Role updatedCitzen = roleRepository.save(role);
+		return new ResponseEntity<Role>(updatedCitzen, HttpStatus.OK);
+	}
+}

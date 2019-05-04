@@ -7,129 +7,173 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="committee")
+@Entity
+@Table(name="committee")
 public class Committee {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_COMMITTEE")
 	@Column(name = "committee_id")
 	private long id;
 	
-	@Column(name = "committee_name")
-	private String committeeName;
+	@Column(name = "committee_name",nullable=false)
+	private String name;
+	
+	@Column(name = "committee_description")
+	private String description;
 	
 	@Column(name = "committee_date")
-	private Date committeeDate;
+	private Date date;
 	
-	@Column(name = "member_one_id")
-	private int memberOneId;
+	@Column(name = "committee_type")
+	private String type;
 	
-	@Column(name = "member_two_id")
-	private int memberTwoId;
+	@Column(name = "committee_function")
+	private String function;
 	
-	@Column(name = "member_three_id")
-	private int memberThreeId;
+	@OneToOne
+	@JoinColumn(name = "zone_id")
+	private Zone zone;
 	
-	@Column(name = "member_four_id")
-	private int memberFourId;
+	@OneToOne
+	@JoinColumn(name="member_one_id")
+	private CommitteeMember memberOne;
+
+	@OneToOne
+	@JoinColumn(name="member_two_id")
+	private CommitteeMember memberTwo;
 	
-	@Column(name = "member_five_id")
-	private int memberFiveId;
+	@OneToOne
+	@JoinColumn(name="member_three_id")
+	private CommitteeMember memberThree;
 	
+	
+	@OneToOne
+	@JoinColumn(name="member_four_id")
+	private CommitteeMember memberFour;
+	
+	@OneToOne
+	@JoinColumn(name="member_five_id")
+	private CommitteeMember memberFive;
+	
+	@OneToOne
+	@JoinColumn(name="member_six_id")
+	private CommitteeMember memberSix;
 	
 	public Committee() {
 		
 	}
 
-
-	public Committee(String committeeName, Date committeeDate) {
+	public Committee(String name) {
 		super();
-		this.committeeName = committeeName;
-		this.committeeDate = committeeDate;
+		this.name = name;
 	}
-
 
 	public long getId() {
 		return id;
 	}
 
-
 	public void setId(long id) {
 		this.id = id;
 	}
 
-
-	public String getCommitteeName() {
-		return committeeName;
+	public String getName() {
+		return name;
 	}
 
-
-	public void setCommitteeName(String committeeName) {
-		this.committeeName = committeeName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-
-	public Date getCommitteeDate() {
-		return committeeDate;
+	public String getDescription() {
+		return description;
 	}
 
-
-	public void setCommitteeDate(Date committeeDate) {
-		this.committeeDate = committeeDate;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-
-	public int getMemberOneId() {
-		return memberOneId;
+	public Date getDate() {
+		return date;
 	}
 
-
-	public void setMemberOneId(int memberOneId) {
-		this.memberOneId = memberOneId;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
-
-	public int getMemberTwoId() {
-		return memberTwoId;
+	public String getType() {
+		return type;
 	}
 
-
-	public void setMemberTwoId(int memberTwoId) {
-		this.memberTwoId = memberTwoId;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-
-	public int getMemberThreeId() {
-		return memberThreeId;
+	public String getFunction() {
+		return function;
 	}
 
-
-	public void setMemberThreeId(int memberThreeId) {
-		this.memberThreeId = memberThreeId;
+	public void setFunction(String function) {
+		this.function = function;
 	}
 
-
-	public int getMemberFourId() {
-		return memberFourId;
+	public Zone getZone() {
+		return zone;
 	}
 
-
-	public void setMemberFourId(int memberFourId) {
-		this.memberFourId = memberFourId;
+	public void setZone(Zone zone) {
+		this.zone = zone;
 	}
 
-
-	public int getMemberFiveId() {
-		return memberFiveId;
+	public CommitteeMember getMemberOne() {
+		return memberOne;
 	}
 
-
-	public void setMemberFiveId(int memberFiveId) {
-		this.memberFiveId = memberFiveId;
+	public void setMemberOne(CommitteeMember memberOne) {
+		this.memberOne = memberOne;
 	}
-	
-	
+
+	public CommitteeMember getMemberTwo() {
+		return memberTwo;
+	}
+
+	public void setMemberTwo(CommitteeMember memberTwo) {
+		this.memberTwo = memberTwo;
+	}
+
+	public CommitteeMember getMemberThree() {
+		return memberThree;
+	}
+
+	public void setMemberThree(CommitteeMember memberThree) {
+		this.memberThree = memberThree;
+	}
+
+	public CommitteeMember getMemberFour() {
+		return memberFour;
+	}
+
+	public void setMemberFour(CommitteeMember memberFour) {
+		this.memberFour = memberFour;
+	}
+
+	public CommitteeMember getMemberFive() {
+		return memberFive;
+	}
+
+	public void setMemberFive(CommitteeMember memberFive) {
+		this.memberFive = memberFive;
+	}
+
+	public CommitteeMember getMemberSix() {
+		return memberSix;
+	}
+
+	public void setMemberSix(CommitteeMember memberSix) {
+		this.memberSix = memberSix;
+	}
 }

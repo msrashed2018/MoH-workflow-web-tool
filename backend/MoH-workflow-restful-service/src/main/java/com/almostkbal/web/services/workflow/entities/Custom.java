@@ -7,28 +7,28 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="custom")
+@Entity
+@Table(name="custom")
 public class Custom {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_CUSTOM")
 	@Column(name = "custom_id")
 	private int id;
 	
-	@Column(name = "custom_name")
-	private String customName;
+	@Column(name = "custom_name",nullable=false)
+	private String name;
 	
 	@Column(name = "custom_description")
-	private String customDescription;
+	private String description;
 	
 	public Custom() {
 		
 	}
 
 	public Custom(String customName, String customDescription) {
-		this.customName = customName;
-		this.customDescription = customDescription;
+		this.name = customName;
+		this.description = customDescription;
 	}
 
 	public int getId() {
@@ -39,19 +39,21 @@ public class Custom {
 		this.id = id;
 	}
 
-	public String getCustomName() {
-		return customName;
+	public String getName() {
+		return name;
 	}
 
-	public void setCustomName(String customName) {
-		this.customName = customName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getCustomDescription() {
-		return customDescription;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setCustomDescription(String customDescription) {
-		this.customDescription = customDescription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
+
+	
 }

@@ -7,28 +7,28 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="traffic_management")
+@Entity
+@Table(name="traffic_management")
 public class TrafficManagement {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "TRAFFIC_ID")
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_TRAFFIC_MANGEMENT")
+	@Column(name = "traffic_id")
 	private int id;
 	
-	@Column(name = "TRAFFIC_NAME")
-	private String trafficName;
+	@Column(name = "traffic_name",nullable=false)
+	private String name;
 	
-	@Column(name = "GOVERNATE_ID")
-	private Governate governate;
+	@Column(name = "traffic_description")
+	private String description;
 	
 	public TrafficManagement() {
 		
 	}
 
-	public TrafficManagement(String trafficName) {
+	public TrafficManagement(String name) {
 		super();
-		this.trafficName = trafficName;
+		this.name = name;
 	}
 
 	public int getId() {
@@ -39,20 +39,20 @@ public class TrafficManagement {
 		this.id = id;
 	}
 
-	public String getTrafficName() {
-		return trafficName;
+	
+	public String getName() {
+		return name;
 	}
 
-	public void setTrafficName(String trafficName) {
-		this.trafficName = trafficName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Governate getGovernate() {
-		return governate;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setGovernate(Governate governate) {
-		this.governate = governate;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
-

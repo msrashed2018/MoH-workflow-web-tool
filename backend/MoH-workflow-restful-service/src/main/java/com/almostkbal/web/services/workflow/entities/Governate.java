@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,11 +25,20 @@ public class Governate {
 	@Column(name = "governate_id")
 	private int id;
 	
-	@Column(name = "governate_name")
+	@Column(name = "governate_name",nullable=false)
 	private String name;
 	
-	@OneToMany(mappedBy = "governate",fetch=FetchType.EAGER)
+	@Column(name = "governate_code",nullable=false,unique = true)
+	private int code;
+	
+	@OneToMany(mappedBy = "governate",fetch=FetchType.LAZY)
+	@JsonIgnore
 	private List<City> cities;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "zone_id")
+	@JsonIgnore
+	private Zone zone;
 	
 	public Governate() {
 		
@@ -60,5 +71,22 @@ public class Governate {
 	public void setCities(List<City> cities) {
 		this.cities = cities;
 	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	public Zone getZone() {
+		return zone;
+	}
+
+	public void setZone(Zone zone) {
+		this.zone = zone;
+	}
+	
 
 }

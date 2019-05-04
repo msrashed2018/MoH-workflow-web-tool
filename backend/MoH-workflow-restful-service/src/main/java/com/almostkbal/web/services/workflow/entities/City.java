@@ -2,6 +2,7 @@ package com.almostkbal.web.services.workflow.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="city")
@@ -20,11 +22,12 @@ public class City {
 	@Column(name = "city_id")
 	private int id;
 	
-	@Column(name = "city_name")
+	@Column(name = "city_name",nullable=false)
 	private String name;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "governate_id")
+	@JsonIgnore
 	private Governate governate;
 	
 	public City() {

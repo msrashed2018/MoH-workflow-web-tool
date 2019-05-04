@@ -7,29 +7,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="request_type")
+@Entity
+@Table(name="request_type")
 public class RequestType {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_REQUEST_TYPE")
 	@Column(name = "REQUEST_TYPE_ID")
 	private int id;
 	
-	@Column(name = "REQUEST_TYPE_NAME")
-	private String requestTypeName;
+	@Column(name = "REQUEST_TYPE_NAME",nullable=false)
+	private String name;
 	
-	@Column(name = "REQUEST_PRICE")
-	private int requestPrice;
+	@Column(name = "REQUEST_TYPE_DESCRIPTION")
+	private String description;
+	
+	@Column(name = "REQUEST_TYPE_PRICE")
+	private int price;
 	
 	public RequestType() {
 		
-	}
-
-	public RequestType(String requestTypeName, int requestPrice) {
-		super();
-		this.requestTypeName = requestTypeName;
-		this.requestPrice = requestPrice;
 	}
 
 	public int getId() {
@@ -40,19 +37,27 @@ public class RequestType {
 		this.id = id;
 	}
 
-	public String getRequestTypeName() {
-		return requestTypeName;
+	public String getName() {
+		return name;
 	}
 
-	public void setRequestTypeName(String requestTypeName) {
-		this.requestTypeName = requestTypeName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public int getRequestPrice() {
-		return requestPrice;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setRequestPrice(int requestPrice) {
-		this.requestPrice = requestPrice;
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 }

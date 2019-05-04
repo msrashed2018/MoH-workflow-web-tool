@@ -26,11 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http
-		.csrf().disable()	
+    	http.cors().and().csrf().disable()	
 		.authorizeRequests()
-		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-				.anyRequest().authenticated()
+		.anyRequest().authenticated()
 				.and().httpBasic();
     	//TODO this line is add to allow connection for h2-console management UI
     	http.headers().frameOptions().sameOrigin();
@@ -46,4 +44,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
+
 }

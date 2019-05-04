@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,15 +14,22 @@ import javax.persistence.Table;
 public class Disability {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_DISABILITY")
 	@Column(name = "disability_id")
 	private int id;
 	
-	@Column(name = "disability_name")
+	@Column(name = "disability_name",nullable=false)
 	private String name;
 	
 	@Column(name = "disability_description")
 	private String description;
+	
+	@OneToOne
+	@JoinColumn(name = "equipment_id")
+	private Equipment equipment;
+	
+	@Column(name = "accepted")
+	private byte accepted;
 	
 	public Disability() {
 		
@@ -55,5 +64,21 @@ public class Disability {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	public Equipment getEquipment() {
+		return equipment;
+	}
+
+	public void setEquipment(Equipment equipment) {
+		this.equipment = equipment;
+	}
+
+	public byte getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(byte accepted) {
+		this.accepted = accepted;
+	}
+
 }

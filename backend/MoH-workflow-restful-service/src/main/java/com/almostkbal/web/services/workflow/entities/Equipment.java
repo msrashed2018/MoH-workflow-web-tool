@@ -7,32 +7,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="course")
+@Entity
+@Table(name="course")
 public class Equipment {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_EQUIPMENT")
 	@Column(name = "EQUIPMENT_ID")
 	private int id;
 	
-	@Column(name = "EQUIPMENT_NAME")
-	private String equipmentName;
-	
-	@Column(name = "DISABILITY_ID")
-	private Disability disability;
+	@Column(name = "EQUIPMENT_NAME",nullable=false)
+	private String name;
 	
 	@Column(name = "EQUIPMENT_DESCRIPTION")
-	private String equipmentDescription;
+	private String description;
+	
+//	@Column(name = "DISABILITY_ID")
+//	private Disability disability;
 	
 	public Equipment() {
 		
 	}
 
-	public Equipment(String equipmentName, String equipmentDescription) {
-		super();
-		this.equipmentName = equipmentName;
-		this.equipmentDescription = equipmentDescription;
+	public Equipment(String name) {
+		this.name = name;
 	}
 
 	public int getId() {
@@ -43,28 +41,28 @@ public class Equipment {
 		this.id = id;
 	}
 
-	public String getEquipmentName() {
-		return equipmentName;
+	public String getName() {
+		return name;
 	}
 
-	public void setEquipmentName(String equipmentName) {
-		this.equipmentName = equipmentName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Disability getDisability() {
-		return disability;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDisability(Disability disability) {
-		this.disability = disability;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getEquipmentDescription() {
-		return equipmentDescription;
-	}
+//	public Disability getDisability() {
+//		return disability;
+//	}
+//
+//	public void setDisability(Disability disability) {
+//		this.disability = disability;
+//	}
 
-	public void setEquipmentDescription(String equipmentDescription) {
-		this.equipmentDescription = equipmentDescription;
-	}
-	
 }

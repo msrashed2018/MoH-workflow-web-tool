@@ -5,18 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="request_detail")
+@Entity
+@Table(name="request_detail")
 public class RequestDetail {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_REQUEST_DETAIL")
 	@Column(name = "request_detail_id")
 	private long id;
 	
-	@Column(name = "request_id")
+	@OneToOne(mappedBy = "requestDetail")
 	private Request request;
 	
 	@Column(name = "right_eye")
@@ -37,12 +39,9 @@ public class RequestDetail {
 	@Column(name = "SQUINT")
 	private String squint;
 	
-	@Column(name = "disability_id")
+	@OneToOne
+	@JoinColumn(name = "disability_id")
 	private Disability disability;
-	
-	@Column(name = "equipment_id")
-	private Equipment equipment;
-	
 	
 	@Column(name = "REJECTION_REASON")
 	private String rejectionReason;
@@ -52,13 +51,6 @@ public class RequestDetail {
 	
 	public RequestDetail() {
 		
-	}
-
-	public RequestDetail(Request request, Disability disability, Equipment equipment) {
-		super();
-		this.request = request;
-		this.disability = disability;
-		this.equipment = equipment;
 	}
 
 	public long getId() {
@@ -133,14 +125,6 @@ public class RequestDetail {
 		this.disability = disability;
 	}
 
-	public Equipment getEquipment() {
-		return equipment;
-	}
-
-	public void setEquipment(Equipment equipment) {
-		this.equipment = equipment;
-	}
-
 	public String getRejectionReason() {
 		return rejectionReason;
 	}
@@ -156,5 +140,6 @@ public class RequestDetail {
 	public void setAcceptanceReason(String acceptanceReason) {
 		this.acceptanceReason = acceptanceReason;
 	}
+
 	
 }

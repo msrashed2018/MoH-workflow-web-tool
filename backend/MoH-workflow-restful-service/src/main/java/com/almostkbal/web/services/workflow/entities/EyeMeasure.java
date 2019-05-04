@@ -8,23 +8,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="eye_measures")
-public class EyeMeasures {
+@Table(name="eye_measure")
+public class EyeMeasure {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_EYE_MEASURE")
 	@Column(name = "MEASURE_ID")
 	private int id;
 	
-	@Column(name = "MEASURE_TITLE")
+	@Column(name = "MEASURE_TITLE",nullable=false)
 	private String title;
 	
 	@Column(name = "MEASURE_DESCRIPTION")
 	private String description;
-	public EyeMeasures() {
+	public EyeMeasure() {
 		
 	}
-	public EyeMeasures(String measureTitle, String measureDescription) {
+	public EyeMeasure(String measureTitle, String measureDescription) {
 		this.title = measureTitle;
 		this.description = measureDescription;
 	}

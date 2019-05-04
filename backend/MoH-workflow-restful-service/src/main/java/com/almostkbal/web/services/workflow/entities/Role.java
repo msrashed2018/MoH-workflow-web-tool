@@ -14,20 +14,22 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="system_role")
 public class Role {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_ROLE")
 	@Column(name = "role_id")
 	private long id;
 	
 	@Column(name = "role_name")
-	private String roleName;
+	private String name;
 	
 	@Column(name = "role_description")
-	private String roleDescription;
+	private String description;
 	
     @ManyToMany(fetch=FetchType.LAZY,
 			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
@@ -37,13 +39,14 @@ public class Role {
 			joinColumns=@JoinColumn(name="roles_role_id "),
 			inverseJoinColumns=@JoinColumn(name="users_user_id")
 			)
+    @JsonIgnore
     private List<User> users;
     
 	public Role() {
 		
 	}
 	public Role(String roleName) {
-		this.roleName = roleName;
+		this.name = roleName;
 	}
 	public long getId() {
 		return id;
@@ -51,17 +54,18 @@ public class Role {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getRoleName() {
-		return roleName;
+	
+	public String getName() {
+		return name;
 	}
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getRoleDescription() {
-		return roleDescription;
+	public String getDescription() {
+		return description;
 	}
-	public void setRoleDescription(String roleDescription) {
-		this.roleDescription = roleDescription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public List<User> getUsers() {
 		return users;

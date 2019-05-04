@@ -1,43 +1,53 @@
 package com.almostkbal.web.services.workflow.entities;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name="request")
-public class Request {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@Table(name="request")
+public class  Request{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_REQUEST")
 	@Column(name = "request_id")
 	private long id;
 	
-	@Column(name = "citizen_id")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "citizen_id")
+	@JsonIgnore
 	private Citizen citizen;
 	
 	@Column(name = "request_date")
 	private Date requestDate;
 	
-	@Column(name = "request_type_id")
+	@OneToOne
+	@JoinColumn(name = "request_type_id")
 	private RequestType requestType;
-	
-	@Column(name = "request_price")
-	private Price price;
 	
 	@Column(name = "receipt_serial_no")
 	private String receiptSerialNumber;
 	
-	@Column(name = "custom_id")
+	@OneToOne
+	@JoinColumn(name = "custom_id")
 	private Custom custom;
 	
 	@Column(name = "old_request_id")
-	private long old_request_id;
+	private long oldRequestId;
 	
 	@Column(name = "payment_done")
 	private byte paymentDone;
@@ -45,14 +55,12 @@ public class Request {
 	@Column(name = "payment_date")
 	private Date paymentDate;
 	
-	@Column(name = "committee_id")
+	@OneToOne
+	@JoinColumn(name = "committee_id")
 	private Committee committee;
 	
 	@Column(name = "created_by")
 	private String createdBy;
-	
-	@Column(name = "created_date")
-	private Date createdDate;
 	
 	@Column(name = "modified_by")
 	private String modifiedBy;
@@ -60,20 +68,25 @@ public class Request {
 	@Column(name = "modified_date")
 	private Date modifiedDate;
 	
-	@Column(name = "request_status_id")
+	@OneToOne
+	@JoinColumn(name = "request_status_id")
 	private RequestStatus requestStatus;
+	
+	@OneToOne(cascade= CascadeType.ALL)
+	@JoinColumn(name = "request_detail_id")
+	private RequestDetail requestDetail;
+	
+	@OneToOne
+	@JoinColumn(name = "traffic_management_id")
+	private TrafficManagement trafficManagement;
+	
+	@OneToMany(mappedBy = "request",fetch=FetchType.LAZY)
+	@JsonIgnore
+	private List<RequestDocument> documents;
 	
 	
 	public Request() {
 		
-	}
-
-
-	public Request(Citizen citizen, Date requestDate, Custom custom, Date createdDate) {
-		this.citizen = citizen;
-		this.requestDate = requestDate;
-		this.custom = custom;
-		this.createdDate = createdDate;
 	}
 
 
@@ -117,16 +130,6 @@ public class Request {
 	}
 
 
-	public Price getPrice() {
-		return price;
-	}
-
-
-	public void setPrice(Price price) {
-		this.price = price;
-	}
-
-
 	public String getReceiptSerialNumber() {
 		return receiptSerialNumber;
 	}
@@ -147,13 +150,13 @@ public class Request {
 	}
 
 
-	public long getOld_request_id() {
-		return old_request_id;
+	public long getOldRequestId() {
+		return oldRequestId;
 	}
 
 
-	public void setOld_request_id(long old_request_id) {
-		this.old_request_id = old_request_id;
+	public void setOldRequestId(long oldRequestId) {
+		this.oldRequestId = oldRequestId;
 	}
 
 
@@ -197,16 +200,6 @@ public class Request {
 	}
 
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-
 	public String getModifiedBy() {
 		return modifiedBy;
 	}
@@ -235,5 +228,35 @@ public class Request {
 	public void setRequestStatus(RequestStatus requestStatus) {
 		this.requestStatus = requestStatus;
 	}
-	
+
+
+	public RequestDetail getRequestDetail() {
+		return requestDetail;
+	}
+
+
+	public void setRequestDetail(RequestDetail requestDetail) {
+		this.requestDetail = requestDetail;
+	}
+
+
+	public TrafficManagement getTrafficManagement() {
+		return trafficManagement;
+	}
+
+
+	public void setTrafficManagement(TrafficManagement trafficManagement) {
+		this.trafficManagement = trafficManagement;
+	}
+
+
+	public List<RequestDocument> getDocuments() {
+		return documents;
+	}
+
+
+	public void setDocuments(List<RequestDocument> documents) {
+		this.documents = documents;
+	}
+
 }
