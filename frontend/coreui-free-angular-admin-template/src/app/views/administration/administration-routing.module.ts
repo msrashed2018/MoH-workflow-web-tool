@@ -15,6 +15,9 @@ import { ListUsersComponent } from './list-users/list-users.component';
 import { ListRequiredDocumentsComponent } from './list-required-documents/list-required-documents.component';
 import { ListZonesComponent } from './list-zones/list-zones.component';
 import { GovernateComponent } from './list-governates/governate/governate.component';
+import { RequestTypesListComponent } from './request-types/request-types-list/request-types-list.component';
+import { RequestTypeDataComponent } from './request-types/request-type-data/request-type-data.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -28,9 +31,16 @@ const routes: Routes = [
       },
       {
         path: 'request-types',
-        component: ListRequestTypesComponent,
+        component: RequestTypesListComponent,
         data: {
           title: 'Request Types'
+        }
+      },
+      {
+        path: 'request-data',
+        component: RequestTypeDataComponent,
+        data: {
+          title: 'Request Data'
         }
       },
       {
