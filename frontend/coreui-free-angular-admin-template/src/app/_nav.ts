@@ -1,3 +1,5 @@
+import { REQUEST_TYPES, REQUEST_STATUS, REQUEST_PRICES, GOVERNATES, CITIES, OCCUPATION_TYPES, ZONES, CUSTOMS, DISABILITIES_TYPES, EQUIPMENTS_TYPES, USERS, COUNCILS, CITIZENS } from './app-words';
+
 interface NavAttributes {
   [propName: string]: any;
 }
@@ -32,22 +34,57 @@ export interface NavData {
 export const navItems: NavData[] = [
   {
     name:  'المواطنين',
-    url: '/dashboard',
+    url: '/citizen',
     icon: 'cui-people',
+    children: [
+      {
+        name: `بحث`,
+        url: '/citizen/search',
+        // icon: 'icon-star',
+        icon: 'icon-star',
+        // badge: {
+        //   variant: 'success',
+        //   text: 'NEW'
+        // }
+      },
+      {
+        name: `اضافة مواطن`,
+        url: '/citizen/add',
+        // icon: 'icon-star',
+        icon: 'icon-star',
+        // badge: {
+        //   variant: 'success',
+        //   text: 'NEW'
+        // }
+      }
+    ]
+    
     // badge: {
     //   variant: 'info',
     //   text: 'NEW'
     // }
+    // children: [
+    //     {
+    //       name: 'Cards',
+    //       url: '/base/cards',
+    //       icon: 'icon-puzzle'
+    //     },
+    //     {
+    //       name: 'Tooltips',
+    //       url: '/base/tooltips',
+    //       icon: 'icon-puzzle'
+    //     }
+    //   ]
   },
   // {
   //   title: true,
   //   name: 'Theme'
   // },
-  {
-    name: 'إضافه مواطن',
-    url: '/base/forms',
-    icon: 'cui-user-follow'
-  },
+  // {
+  //   name: 'إضافه مواطن',
+  //   url: '/base/forms',
+  //   icon: 'cui-user-follow'
+  // },
   {
     name: 'الطلبات',
     url: '/theme/typography',
@@ -148,34 +185,151 @@ export const navItems: NavData[] = [
   },
   {
     name: 'اﻹداره',
-    url: '/icons',
+    url: '/administration',
     icon: 'cui-briefcase',
+    children: [
+      {
+        name: `${REQUEST_TYPES}`,
+        url: '/administration/request-types',
+        // icon: 'icon-star',
+        icon: 'icon-star',
+        // badge: {
+        //   variant: 'success',
+        //   text: 'NEW'
+        // }
+      },
+      {
+        name: `${REQUEST_STATUS}`,
+        url: '/administration/request-status',
+        icon: 'icon-star'
+      },
+      {
+        name: `${REQUEST_PRICES}`,
+        url: '/administration/request-prices',
+        icon: 'icon-star',
+        // badge: {
+        //   variant: 'secondary',
+        //   text: '4.7'
+        // }
+      },
+      {
+        name: `${GOVERNATES}`,
+        url: '/administration/governates',
+        icon: 'icon-star'
+      },
+      {
+        name: `${CITIES}`,
+        url: '/administration/cities',
+        icon: 'icon-star'
+      },
+      {
+        name: `${OCCUPATION_TYPES}`,
+        url: '/administration/occupations',
+        icon: 'icon-star'
+      },
+      {
+        name: `${ZONES}`,
+        url: '/administration/zones',
+        icon: 'icon-star'
+      },
+      {
+        name: `${CUSTOMS}`,
+        url: '/administration/customs',
+        icon: 'icon-star'
+      },
+      {
+        name: `${DISABILITIES_TYPES}`,
+        url: '/administration/disability-types',
+        icon: 'icon-star'
+      },
+      {
+        name: `${EQUIPMENTS_TYPES}`,
+        url: '/administration/equipments',
+        icon: 'icon-star'
+      },
+      {
+        name: `${USERS}`,
+        url: '/administration/users',
+        icon: 'icon-star'
+      },
+      {
+        name: `${COUNCILS}`,
+        url: '/administration/councils',
+        icon: 'icon-star'
+      }
+    ]
+  },
+  // {
+  //   name: 'icons',
+  //   url: '/icons',
+  //   icon: 'cui-briefcase',
   //   children: [
   //     {
-  //       name: 'CoreUI Icons',
+  //       name: `${REQUEST_TYPES}`,
   //       url: '/icons/coreui-icons',
+  //       // icon: 'icon-star',
   //       icon: 'icon-star',
-  //       badge: {
-  //         variant: 'success',
-  //         text: 'NEW'
-  //       }
+  //       // badge: {
+  //       //   variant: 'success',
+  //       //   text: 'NEW'
+  //       // }
   //     },
   //     {
-  //       name: 'Flags',
+  //       name: `${REQUEST_STATUS}`,
   //       url: '/icons/flags',
   //       icon: 'icon-star'
   //     },
   //     {
-  //       name: 'Font Awesome',
+  //       name: `${REQUEST_PRICES}`,
   //       url: '/icons/font-awesome',
   //       icon: 'icon-star',
-  //       badge: {
-  //         variant: 'secondary',
-  //         text: '4.7'
-  //       }
+  //       // badge: {
+  //       //   variant: 'secondary',
+  //       //   text: '4.7'
+  //       // }
   //     },
   //     {
-  //       name: 'Simple Line Icons',
+  //       name: `${GOVERNATES}`,
+  //       url: '/icons/simple-line-icons',
+  //       icon: 'icon-star'
+  //     },
+  //     {
+  //       name: `${CITIES}`,
+  //       url: '/icons/simple-line-icons',
+  //       icon: 'icon-star'
+  //     },
+  //     {
+  //       name: `${OCCUPATION_TYPES}`,
+  //       url: '/icons/simple-line-icons',
+  //       icon: 'icon-star'
+  //     },
+  //     {
+  //       name: `${ZONES}`,
+  //       url: '/icons/simple-line-icons',
+  //       icon: 'icon-star'
+  //     },
+  //     {
+  //       name: `${CUSTOMS}`,
+  //       url: '/icons/simple-line-icons',
+  //       icon: 'icon-star'
+  //     },
+  //     {
+  //       name: `${DISABILITIES_TYPES}`,
+  //       url: '/icons/simple-line-icons',
+  //       icon: 'icon-star'
+  //     },
+  //     {
+  //       name: `${EQUIPMENTS_TYPES}`,
+  //       url: '/icons/simple-line-icons',
+  //       icon: 'icon-star'
+  //     },
+  //     {
+  //       name: `${USERS}`,
+  //       url: '/icons/simple-line-icons',
+  //       icon: 'icon-star'
+  //     },
+  //     {
+  //       name: `${COUNCILS}`,
   //       url: '/icons/simple-line-icons',
   //       icon: 'icon-star'
   //     }
@@ -202,7 +356,7 @@ export const navItems: NavData[] = [
   //       icon: 'icon-bell'
   //     }
   //   ]
-  },
+  // },
   {
     name: 'بحث',
     url: '/widgets',

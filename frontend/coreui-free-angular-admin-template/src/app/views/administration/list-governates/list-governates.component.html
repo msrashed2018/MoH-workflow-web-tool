@@ -1,0 +1,39 @@
+<br/><br/>
+
+<div class="alert alert-success" *ngIf='message'>{{message}}</div>
+
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>رقم</th>
+        <th>اسم المحافظة</th>
+        <!-- <th>Target Date</th> -->
+         <!-- <th>المدن</th>  -->
+        <th>تعديل</th>
+        <th>مسح</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!--   for (Todo todo: todos) {  -->
+              <tr *ngFor="let governate of governates; let i=index">
+                  <td><b>{{i+1}}</b></td>
+                <td ><a [routerLink]="['governate', governate.id]"><b>{{governate.name}}</b></a></td>
+
+                <!-- <td>{{todo.targetDate | date | uppercase}}</td> -->
+                <!-- <td>
+                      <i *ngFor="let city of governate.cities" >{{city.name}} | </i>
+                   </td>  -->
+                <td><button (click)="updateGovernate(governate.id)" class="btn btn-success">تعديل</button></td>
+                <td><button (click)="deleteGovernate(governate.id)" class="btn btn-warning">مسح</button></td>
+              </tr>
+      <!-- } -->
+    </tbody>
+
+  </table>
+
+  <div class="row">
+      <button (click)="addGovernate()" class="btn btn-success">Add</button>
+  </div>
+
+</div>

@@ -1,8 +1,13 @@
-import { Citizen } from './../../citizens/citizen.model';
-import { CitizenService } from './../../sevices/citizenService/citizenService';
+import { CitizenService } from '../../services/citizenService';
 import { BrowserModule } from '@angular/platform-browser';
 import { Component, NgModule, OnInit } from '@angular/core';
-import {FormsModule, FormControl} from '@angular/forms';
+import {FormsModule, FormControl, FormBuilder,  Validators} from '@angular/forms';
+import { Router } from '@angular/router';
+import { Citizen } from '../../model/citizen.model';
+import { Governate } from '../../model/governate.model';
+import { City } from '../../model/city.model';
+import { GovernateService } from '../../services/administration/governate.service';
+import { OccupationService } from '../../services/administration/occupation.service';
 
 
 @Component({
@@ -12,12 +17,12 @@ import {FormsModule, FormControl} from '@angular/forms';
 
 export class FormsComponent implements OnInit {
 
-  constructor(private citizenService: CitizenService ) { }
+  constructor(private formBuilder: FormBuilder, private governateService: GovernateService, private occupationService: OccupationService, private citizenService: CitizenService, private router: Router ) { }
 
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
-   name = new FormControl('');
+  name : FormControl;
    nationalId = new FormControl('');
   // public birthDate : string;
   // public createdDate: string;
@@ -34,12 +39,16 @@ export class FormsComponent implements OnInit {
   public occupations: any;
   public governates : any;
   public cities : any;
-
   ngOnInit() {
+   
+    this.name = new FormControl('', [
+      Validators.required,
+      Validators.minLength(16)
+    ]);
     this.occupations = [];
     this.cities = [];
     this.governates = [];
-    this.fillCities();
+    // this.fillCities();
     this.fillGovernates();
     this.fillOccupations();
   }
@@ -51,42 +60,49 @@ export class FormsComponent implements OnInit {
   expanded(event: any): void {
     // console.log(event);
   }
-
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
-
+  onGovernateChanged(value){
+    let id = this.governates.find(g => g.name === value).id;
+    this.fillCities(id);
+  }
+  onNationalIdChange(value){
+    console.log("National ID = "+value);
+    value
+  }
   addCitizen(){
   
     this.citizen.city = this.city.value;
-  this.citizen.address = this.address.value;
-  this.citizen.birthDate = "1991-06-20";
-  this.citizen.createdBy = "salah";
-  this.citizen.createdDate = "2019-04-30";
-  this.citizen.gender = this.gender.value;
-  this.citizen.governate = this.governate.value;
-  this.citizen.mobileNumber = "201092335926";
-  this.citizen.name = this.name.value;
-  this.citizen.nationalId = this.nationalId.value;
-  this.citizen.occupation = this.occupation.value;
+    this.citizen.address = this.address.value;
+    this.citizen.birthDate = "1991-06-20";
+    this.citizen.createdBy = "salah";
+    this.citizen.createdDate = "2019-04-30";
+    this.citizen.gender = this.gender.value;
+    this.citizen.governate = this.governate.value;
+    this.citizen.mobileNumber = "201092335926";
+    this.citizen.name = this.name.value;
+    this.citizen.nationalId = this.nationalId.value;
+    this.citizen.occupation = this.occupation.value;
 
     this.citizenService.createCitizen(this.citizen).subscribe(
       result => {
         console.log(" create ");
-        this.successMessage = true;
+        // this.successMessage = true;
+        this.router.navigateByUrl("");
+
 
       },
       error => {
         console.log('oops', error);
         this.successMessage = false;
-
       }
     );
   }
 
   fillOccupations(){
-    this.citizenService.retriveAllOccupations().subscribe(
+    this.occupationService.retrieveAllOccupations().subscribe(
       result => {
         console.log(" occupations list ");
         this.occupations = result;
@@ -96,8 +112,8 @@ export class FormsComponent implements OnInit {
       });
   }
 
-  fillCities(){
-    this.citizenService.retriveAllCities().subscribe(
+  fillCities(governateId){
+    this.governateService.retrieveGovernateCities(governateId).subscribe(
       result => {
         console.log(" cities list ");
         this.cities = result;
@@ -108,7 +124,7 @@ export class FormsComponent implements OnInit {
   }
 
   fillGovernates(){
-    this.citizenService.retriveAllGovernates().subscribe(
+    this.governateService.retrieveAllGovernates().subscribe(
       result => {
         console.log(" governates list ");
         this.governates = result;

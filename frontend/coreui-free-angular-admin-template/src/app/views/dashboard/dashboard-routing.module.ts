@@ -1,6 +1,5 @@
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { CommonModule } from '@angular/common';
-import { CitizensComponent } from './../../citizens/citizens.component';
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -8,6 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common'
+// import { CitizensComponent } from '../../views/citizens/citizens.component';
 const routes: Routes = [
   {
     path: '',
@@ -19,9 +19,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CitizensComponent],
-  imports: [RouterModule.forChild(routes), CommonModule ,FormsModule , AlertModule,],
-  exports: [RouterModule, CitizensComponent],
+  declarations: [],
+  imports: [RouterModule.forChild(routes), CommonModule ,FormsModule , AlertModule],
+  exports: [RouterModule],
   providers: [DatePipe]
 })
 export class DashboardRoutingModule {}

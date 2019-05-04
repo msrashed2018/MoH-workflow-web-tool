@@ -1,4 +1,3 @@
-import { RouteGuardService } from './sevices/authinticationService/route-guard.service';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -9,6 +8,7 @@ import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
+import { RouteGuardService } from './services/authentication/route-guard.service';
 
 export const routes: Routes = [
   {
@@ -74,6 +74,18 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: './views/dashboard/dashboard.module#DashboardModule',
+        canActivate: [RouteGuardService],
+
+      },
+      {
+        path: 'administration',
+        loadChildren: './views/administration/administration.module#AdministrationModule',
+        canActivate: [RouteGuardService],
+
+      },
+      {
+        path: 'citizen',
+        loadChildren: './views/citizen/citizen.module#CitizenModule',
         canActivate: [RouteGuardService],
 
       },

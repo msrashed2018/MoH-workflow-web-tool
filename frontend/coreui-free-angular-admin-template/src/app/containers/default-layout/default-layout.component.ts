@@ -1,8 +1,8 @@
 import { Component, OnDestroy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { navItems } from '../../_nav';
-import { BasicAuthenticationService } from '../../sevices/authinticationService/basic-authentication.service';
 import { Router } from '@angular/router';
+import { BasicAuthenticationService } from '../../services/authentication/basic-authentication.service';
 
 
 @Component({

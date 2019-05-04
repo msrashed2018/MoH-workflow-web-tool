@@ -1,7 +1,5 @@
-import { HttpIntercepterBasicAuthService } from './sevices/authinticationService/http/http-intercepter-basic-auth.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RouteGuardService } from './sevices/authinticationService/route-guard.service';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -43,12 +41,12 @@ import {
 // Import routing module
 import { AppRoutingModule } from './app.routing';
 
-// Import 3rd party components
+// Import 3rd party views
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
-import { CitizensComponent } from './citizens/citizens.component';
-// import { CitizensComponent } from './citizens/citizens.component';
+import { RouteGuardService } from './services/authentication/route-guard.service';
+import { HttpIntercepterBasicAuthService } from './services/authentication/http/http-intercepter-basic-auth.service';
 
 @NgModule({
   imports: [
@@ -76,10 +74,7 @@ import { CitizensComponent } from './citizens/citizens.component';
     P404Component,
     P500Component,
     LoginComponent,
-    // CitizensComponent,
-    RegisterComponent,
-    // CitizensComponent
-
+    RegisterComponent
   ],
   providers: [{
     provide: LocationStrategy,
