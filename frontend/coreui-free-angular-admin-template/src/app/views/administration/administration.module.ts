@@ -16,6 +16,8 @@ import { ListZonesComponent } from './list-zones/list-zones.component';
 import { AdministrationRoutingModule } from './administration-routing.module';
 import { CommonModule } from '@angular/common';
 import { GovernateComponent } from './list-governates/governate/governate.component';
+import { RequestTypesListComponent } from './request-types/request-types-list/request-types-list.component';
+import { RequestTypeDataComponent } from './request-types/request-type-data/request-type-data.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { GovernateComponent } from './list-governates/governate/governate.compon
     ListUsersComponent,
     ListRequiredDocumentsComponent,
     ListZonesComponent,
-    GovernateComponent
+    GovernateComponent,
+    RequestTypesListComponent,
+    RequestTypeDataComponent
   ],
   imports: [
     AdministrationRoutingModule, CommonModule
