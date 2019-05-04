@@ -41,12 +41,12 @@ public class OccupationController {
 	}
 	
 	@GetMapping("/api/occupations/{id}")
-	public Resource<Occupation> retrieveOccupationById(@PathVariable int id) {
+	public Occupation retrieveOccupationById(@PathVariable int id) {
 		Optional<Occupation> occupation = occupationRepository.findById(id);
 		if(!occupation.isPresent())
 			throw new OccupationNotFoundException("id-"+ id);
-		Resource<Occupation> resource = new Resource<Occupation>(occupation.get());
-		return resource;
+//		Resource<Occupation> resource = new Resource<Occupation>(occupation.get());
+		return occupation.get();
 	}
 
 	@DeleteMapping("/api/occupations/{id}")

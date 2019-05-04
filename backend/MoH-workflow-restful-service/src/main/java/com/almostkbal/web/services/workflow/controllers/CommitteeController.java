@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,12 +38,12 @@ public class CommitteeController {
 	}
 	
 	@GetMapping("/api/committees/{id}")
-	public Resource<Committee> retrieveCommitteeById(@PathVariable long id) {
+	public Committee retrieveCommitteeById(@PathVariable long id) {
 		Optional<Committee> committee = committeeRepository.findById(id);
 		if(!committee.isPresent())
 			throw new CommitteeNotFoundException("id-"+ id);
-		Resource<Committee> resource = new Resource<Committee>(committee.get());
-		return resource;
+//		Resource<Committee> resource = new Resource<Committee>(committee.get());
+		return committee.get();
 	}
 
 	@DeleteMapping("/api/committees/{id}")

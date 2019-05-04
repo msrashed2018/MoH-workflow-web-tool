@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,34 +30,34 @@ import com.almostkbal.web.services.workflow.repositories.TrafficManagementReposi
 @RestController
 public class TrafficManagementController {
 	@Autowired
-	private TrafficManagementRepository cityRepository;
+	private TrafficManagementRepository trafficManagementRepository;
 	
 	@GetMapping("/api/traffic-management")
 	public List<TrafficManagement> retrieveAllTrafficManagements(){
-		return cityRepository.findAll();
+		return trafficManagementRepository.findAll();
 	}
 	
 	@GetMapping("/api/traffic-management/{id}")
-	public Resource<TrafficManagement> retrieveTrafficManagementById(@PathVariable int id) {
-		Optional<TrafficManagement> city = cityRepository.findById(id);
-		if(!city.isPresent())
+	public TrafficManagement retrieveTrafficManagementById(@PathVariable int id) {
+		Optional<TrafficManagement> trafficManagement = trafficManagementRepository.findById(id);
+		if(!trafficManagement.isPresent())
 			throw new TrafficManagementNotFoundException("id-"+ id);
-		Resource<TrafficManagement> resource = new Resource<TrafficManagement>(city.get());
-		return resource;
+//		Resource<TrafficManagement> resource = new Resource<TrafficManagement>(trafficManagement.get());
+		return trafficManagement.get();
 	}
 
 	@DeleteMapping("/api/traffic-management/{id}")
 	public void deleteTrafficManagement(@PathVariable int id) {
 		try {
-			cityRepository.deleteById(id);
+			trafficManagementRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
 			throw new TrafficManagementNotFoundException("id-"+ id);
 	    }
 	}
 
 	@PostMapping("/api/traffic-management")
-	public ResponseEntity<Object> createTrafficManagement(@Valid @RequestBody TrafficManagement city) {
-		TrafficManagement savedTrafficManagement = cityRepository.save(city);
+	public ResponseEntity<Object> createTrafficManagement(@Valid @RequestBody TrafficManagement trafficManagement) {
+		TrafficManagement savedTrafficManagement = trafficManagementRepository.save(trafficManagement);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
 			.path("/{id}")
@@ -68,13 +67,13 @@ public class TrafficManagementController {
 	}
 	@PutMapping("/api/traffic-management/{id}")
 	public ResponseEntity<TrafficManagement> updateTrafficManagement(
-			@PathVariable int id, @RequestBody TrafficManagement city){
-		Optional<TrafficManagement> existingTrafficManagement = cityRepository.findById(id);
+			@PathVariable int id, @RequestBody TrafficManagement trafficManagement){
+		Optional<TrafficManagement> existingTrafficManagement = trafficManagementRepository.findById(id);
 
 		if(!existingTrafficManagement.isPresent())
 			throw new TrafficManagementNotFoundException("id-"+ id);
-//		cityRepository.deleteById(id);
-		TrafficManagement updatedCitzen = cityRepository.save(city);
+//		trafficManagementRepository.deleteById(id);
+		TrafficManagement updatedCitzen = trafficManagementRepository.save(trafficManagement);
 		return new ResponseEntity<TrafficManagement>(updatedCitzen, HttpStatus.OK);
 	}
 }

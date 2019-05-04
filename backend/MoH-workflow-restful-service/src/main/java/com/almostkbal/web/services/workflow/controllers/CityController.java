@@ -41,12 +41,12 @@ public class CityController {
 	}
 	
 	@GetMapping("/api/cities/{id}")
-	public Resource<City> retrieveCityById(@PathVariable int id) {
+	public City retrieveCityById(@PathVariable int id) {
 		Optional<City> city = cityRepository.findById(id);
 		if(!city.isPresent())
 			throw new CityNotFoundException("id-"+ id);
-		Resource<City> resource = new Resource<City>(city.get());
-		return resource;
+//		Resource<City> resource = new Resource<City>(city.get());
+		return city.get();
 	}
 
 	@DeleteMapping("/api/cities/{id}")

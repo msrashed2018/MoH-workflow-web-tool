@@ -25,7 +25,7 @@ public class City {
 	@Column(name = "city_name",nullable=false)
 	private String name;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "governate_id")
 //	@JsonIgnore
 	private Governate governate;

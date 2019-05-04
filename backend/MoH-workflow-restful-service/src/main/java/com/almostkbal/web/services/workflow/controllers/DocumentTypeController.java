@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,12 +38,12 @@ public class DocumentTypeController {
 	}
 	
 	@GetMapping("/api/document-type/{id}")
-	public Resource<DocumentType> retrieveDocumentTypeById(@PathVariable long id) {
+	public DocumentType retrieveDocumentTypeById(@PathVariable long id) {
 		Optional<DocumentType> documentType = documentTypeRepository.findById(id);
 		if(!documentType.isPresent())
 			throw new DocumentTypeNotFoundException("id-"+ id);
-		Resource<DocumentType> resource = new Resource<DocumentType>(documentType.get());
-		return resource;
+//		Resource<DocumentType> resource = new Resource<DocumentType>(documentType.get());
+		return documentType.get();
 	}
 
 	@DeleteMapping("/api/document-type/{id}")

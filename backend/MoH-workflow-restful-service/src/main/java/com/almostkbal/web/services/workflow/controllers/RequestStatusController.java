@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
-import com.almostkbal.web.services.workflow.exceptions.OccupationNotFoundException;
 import com.almostkbal.web.services.workflow.exceptions.RequestStatusNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.RequestStatusRepository;
 
@@ -41,12 +39,12 @@ public class RequestStatusController {
 
 	
 	@GetMapping("/api/request-status/{id}")
-	public Resource<RequestStatus> retrieveRequestStatusById(@PathVariable int id) {
+	public RequestStatus retrieveRequestStatusById(@PathVariable int id) {
 		Optional<RequestStatus> requestStatus = requestStatusRepository.findById(id);
 		if(!requestStatus.isPresent())
 			throw new RequestStatusNotFoundException("id-"+ id);
-		Resource<RequestStatus> resource = new Resource<RequestStatus>(requestStatus.get());
-		return resource;
+//		Resource<RequestStatus> resource = new Resource<RequestStatus>(requestStatus.get());
+		return requestStatus.get();
 	}
 
 	@DeleteMapping("/api/request-status/{id}")

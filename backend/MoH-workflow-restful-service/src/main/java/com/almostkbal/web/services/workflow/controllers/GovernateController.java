@@ -43,12 +43,12 @@ public class GovernateController {
 	}
 
 	@GetMapping("/api/governates/{id}")
-	public Resource<Governate> retrieveGovernateById(@PathVariable int id) {
+	public Governate retrieveGovernateById(@PathVariable int id) {
 		Optional<Governate> governate = governateRepository.findById(id);
 		if (!governate.isPresent())
 			throw new GovernateNotFoundException("id-" + id);
-		Resource<Governate> resource = new Resource<Governate>(governate.get());
-		return resource;
+//		Resource<Governate> resource = new Resource<Governate>(governate.get());
+		return governate.get();
 	}
 
 	@DeleteMapping("/api/governates/{id}")

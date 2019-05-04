@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Custom;
-import com.almostkbal.web.services.workflow.exceptions.CityNotFoundException;
 import com.almostkbal.web.services.workflow.exceptions.CustomNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.CustomRepository;
 
@@ -40,12 +38,12 @@ public class CustomController {
 	}
 	
 	@GetMapping("/api/customs/{id}")
-	public Resource<Custom> retrieveCustomById(@PathVariable int id) {
+	public Custom retrieveCustomById(@PathVariable int id) {
 		Optional<Custom> custom = customRepository.findById(id);
 		if(!custom.isPresent())
 			throw new CustomNotFoundException("id-"+ id);
-		Resource<Custom> resource = new Resource<Custom>(custom.get());
-		return resource;
+//		Resource<Custom> resource = new Resource<Custom>(custom.get());
+		return custom.get();
 	}
 
 	@DeleteMapping("/api/customs/{id}")

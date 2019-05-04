@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Disability;
-import com.almostkbal.web.services.workflow.exceptions.CustomNotFoundException;
 import com.almostkbal.web.services.workflow.exceptions.DisabilityNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.DisabilityRepository;
 
@@ -40,12 +38,12 @@ public class DisabilityController {
 	}
 	
 	@GetMapping("/api/disabilities/{id}")
-	public Resource<Disability> retrieveDisabilityById(@PathVariable int id) {
+	public Disability retrieveDisabilityById(@PathVariable int id) {
 		Optional<Disability> disability = disabilityRepository.findById(id);
 		if(!disability.isPresent())
 			throw new DisabilityNotFoundException("id-"+ id);
-		Resource<Disability> resource = new Resource<Disability>(disability.get());
-		return resource;
+//		Resource<Disability> resource = new Resource<Disability>(disability.get());
+		return disability.get();
 	}
 
 	@DeleteMapping("/api/disabilities/{id}")

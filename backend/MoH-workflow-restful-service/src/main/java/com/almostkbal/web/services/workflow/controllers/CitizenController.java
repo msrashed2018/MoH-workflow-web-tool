@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,9 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Citizen;
-import com.almostkbal.web.services.workflow.entities.User;
 import com.almostkbal.web.services.workflow.exceptions.CitizenNotFoundException;
-import com.almostkbal.web.services.workflow.exceptions.EquipmentNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 
 
@@ -62,12 +59,12 @@ public class CitizenController {
 	}
 	
 	@GetMapping("/api/citizens/{id}")
-	public Resource<Citizen> retrieveCitizenById(@PathVariable long id) {
+	public Citizen retrieveCitizenById(@PathVariable long id) {
 		Optional<Citizen> citizen = citizenRepository.findById(id);
 		if(!citizen.isPresent())
 			throw new CitizenNotFoundException("id-"+ id);
-		Resource<Citizen> resource = new Resource<Citizen>(citizen.get());
-		return resource;
+//		Resource<Citizen> resource = new Resource<Citizen>(citizen.get());
+		return citizen.get();
 	}
 
 	@DeleteMapping("/api/citizens/{id}")

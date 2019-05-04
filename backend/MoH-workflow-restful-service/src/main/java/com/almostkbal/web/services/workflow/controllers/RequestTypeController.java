@@ -40,12 +40,12 @@ public class RequestTypeController {
 
 	
 	@GetMapping("/api/request-type/{id}")
-	public Resource<RequestType> retrieveRequestTypeById(@PathVariable int id) {
+	public RequestType retrieveRequestTypeById(@PathVariable int id) {
 		Optional<RequestType> requestType = requestTypeRepository.findById(id);
 		if(!requestType.isPresent())
 			throw new RequestTypeNotFoundException("id-"+ id);
-		Resource<RequestType> resource = new Resource<RequestType>(requestType.get());
-		return resource;
+//		Resource<RequestType> resource = new Resource<RequestType>(requestType.get());
+		return requestType.get();
 	}
 
 	@DeleteMapping("/api/request-type/{id}")

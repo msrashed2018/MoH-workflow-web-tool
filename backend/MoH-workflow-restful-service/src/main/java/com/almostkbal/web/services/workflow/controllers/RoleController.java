@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,12 +38,12 @@ public class RoleController {
 	}
 	
 	@GetMapping("/api/roles/{id}")
-	public Resource<Role> retrieveRoleById(@PathVariable long id) {
+	public Role retrieveRoleById(@PathVariable long id) {
 		Optional<Role> role = roleRepository.findById(id);
 		if(!role.isPresent())
 			throw new RoleNotFoundException("id-"+ id);
-		Resource<Role> resource = new Resource<Role>(role.get());
-		return resource;
+//		Resource<Role> resource = new Resource<Role>(role.get());
+		return role.get();
 	}
 
 	@DeleteMapping("/api/roles/{id}")

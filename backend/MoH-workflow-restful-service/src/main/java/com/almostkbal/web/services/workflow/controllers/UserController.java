@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.almostkbal.web.services.workflow.entities.City;
-import com.almostkbal.web.services.workflow.entities.Governate;
 import com.almostkbal.web.services.workflow.entities.Role;
 import com.almostkbal.web.services.workflow.entities.User;
 import com.almostkbal.web.services.workflow.exceptions.GovernateNotFoundException;
@@ -47,12 +44,12 @@ public class UserController {
 	}
 	
 	@GetMapping("/api/users/{id}")
-	public Resource<User> retrieveUserById(@PathVariable long id) {
+	public User retrieveUserById(@PathVariable long id) {
 		Optional<User> user = userRepository.findById(id);
 		if(!user.isPresent())
 			throw new UserNotFoundException("id-"+ id);
-		Resource<User> resource = new Resource<User>(user.get());
-		return resource;
+//		Resource<User> resource = new Resource<User>(user.get());
+		return user.get();
 	}
 
 	@DeleteMapping("/api/users/{id}")

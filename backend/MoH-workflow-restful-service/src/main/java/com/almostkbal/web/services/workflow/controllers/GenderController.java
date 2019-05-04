@@ -41,12 +41,12 @@ public class GenderController {
 	}
 	
 	@GetMapping("/api/genders/{id}")
-	public Resource<Gender> retrieveGenderById(@PathVariable int id) {
+	public Gender retrieveGenderById(@PathVariable int id) {
 		Optional<Gender> gender = genderRepository.findById(id);
 		if(!gender.isPresent())
 			throw new GenderNotFoundException("id-"+ id);
 		Resource<Gender> resource = new Resource<Gender>(gender.get());
-		return resource;
+		return gender.get();
 	}
 
 	@DeleteMapping("/api/genders/{id}")

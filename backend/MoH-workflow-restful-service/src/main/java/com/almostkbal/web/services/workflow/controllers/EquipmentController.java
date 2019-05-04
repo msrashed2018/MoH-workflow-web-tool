@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,8 +24,6 @@ import com.almostkbal.web.services.workflow.entities.Equipment;
 import com.almostkbal.web.services.workflow.exceptions.EquipmentNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.EquipmentRepository;
 
-import javassist.NotFoundException;
-
 
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
@@ -41,12 +38,12 @@ public class EquipmentController {
 	}
 	
 	@GetMapping("/api/equipments/{id}")
-	public Resource<Equipment> retrieveEquipmentById(@PathVariable int id) {
+	public Equipment retrieveEquipmentById(@PathVariable int id) {
 		Optional<Equipment> equipment = equipmentRepository.findById(id);
 		if(!equipment.isPresent())
 			throw new EquipmentNotFoundException("id-"+ id);
-		Resource<Equipment> resource = new Resource<Equipment>(equipment.get());
-		return resource;
+//		Resource<Equipment> resource = new Resource<Equipment>(equipment.get());
+		return equipment.get();
 	}
 
 	@DeleteMapping("/api/equipments/{id}")
