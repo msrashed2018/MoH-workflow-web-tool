@@ -18,6 +18,9 @@ import { CommonModule } from '@angular/common';
 import { GovernateComponent } from './list-governates/governate/governate.component';
 import { RequestTypesListComponent } from './request-types/request-types-list/request-types-list.component';
 import { RequestTypeDataComponent } from './request-types/request-type-data/request-type-data.component';
+import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -40,7 +43,8 @@ import { RequestTypeDataComponent } from './request-types/request-type-data/requ
     RequestTypeDataComponent
   ],
   imports: [
-    AdministrationRoutingModule, CommonModule
-  ]
+    AdministrationRoutingModule, CommonModule,FormsModule
+  ],
+
 })
 export class AdministrationModule { }
