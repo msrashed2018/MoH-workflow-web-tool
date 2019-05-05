@@ -15,15 +15,15 @@
     <tbody>
       <tr *ngFor="let request of requestTypes; let i = index">
         <th scope="row">{{ i + 1 }}</th>
-        <td>{{ request.name }}</td>
+        <td (click)="viewTypeDetails(request.id)">{{ request.name }}</td>
         <td>{{ request.price }}</td>
         <td>{{ request.description}}</td>
     
         <td>
-        <button type="button" class="edit-btn btn btn-info" (click)="onEdit(i)">تعديل
+        <button type="button" class="edit-btn btn btn-info" (click)="onEdit(request.id)">تعديل
           <i class="fa fa-edit"></i>
         </button>
-        <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(i)">حذف
+        <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(request.id)">حذف
             <i class="fa fa-trash"></i>
 
         </button>

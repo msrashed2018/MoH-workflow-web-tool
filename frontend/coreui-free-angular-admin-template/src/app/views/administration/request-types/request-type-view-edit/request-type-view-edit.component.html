@@ -1,0 +1,38 @@
+<div class="lookup-form-container mt-3" >
+  <div class="title-continer my-4 text-center">
+    <h3 class="title py-3">اضافة طلب</h3>
+  </div>
+  <form name="form" #f="ngForm" class="w-75 m-auto" (ngSubmit)="f.form.valid && onSave()" novalidate>
+      <div class="form-group row">
+          <label for="type-input" class="col-2 col-form-label">نوع الطلب</label>
+          <div class="col-10">
+          <input [disabled]="componentMode=='viewMode'" maxlength="50" class="form-control" [(ngModel)]="requestModel.name"  #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required type="text"  name="type">
+          <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors.required"> هذا الحقل مطلوب</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+          <label for="price-input" class="col-2 col-form-label">السعر</label>
+          <div class="col-10">
+          <input [disabled]="componentMode=='viewMode'" class="form-control" type="number" [(ngModel)]="requestModel.price" #price="ngModel" [ngClass]="{ 'is-invalid': f.submitted && price.invalid }" required  name="price">
+          <div *ngIf="f.submitted && price.invalid" class="invalid-feedback">
+              <div *ngIf="price.errors.required"> هذا الحقل مطلوب</div>
+          </div>
+          </div>
+      </div>
+      <div class="form-group row">
+          <label for="desc-input" class="col-2 col-form-label">ملاحظات</label>
+          <div class="col-10">
+          <textarea [disabled]="componentMode=='viewMode'" maxlength="150" class="form-control" type="text" [(ngModel)]="requestModel.description"  name="description"></textarea>
+          </div>
+      </div>
+      <div *ngIf="componentMode=='editMode'" class="form-inputs mt-5 pull-left">
+          <button type="submit" class="btn btn-success">حفظ</button>
+          <button type="submit" class="btn btn-danger" (click)="onCancel()">رجوع</button>
+          
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button> -->
+
+      </div>
+  </form>
+</div>

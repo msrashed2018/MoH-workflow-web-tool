@@ -31,7 +31,12 @@ export class RequestTypesListComponent implements OnInit {
       }
     )
   }
-
+  viewTypeDetails(id){
+    this.router.navigate(['administration/request',id, { componentMode: "viewMode"}])
+  }
+  onEdit(id){
+    this.router.navigate(['administration/request', id ,{componentMode: "editMode"}])
+  }
   deleteRequestType(name,id) {
     // console.log(`delete requestType ${id}` )
     // this.requestTypeService.deleteRequestType(id).subscribe (

@@ -20,6 +20,7 @@ import { RequestTypesListComponent } from './request-types/request-types-list/re
 import { RequestTypeDataComponent } from './request-types/request-type-data/request-type-data.component';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RequestTypeViewEditComponent } from './request-types/request-type-view-edit/request-type-view-edit.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ListZonesComponent,
     GovernateComponent,
     RequestTypesListComponent,
-    RequestTypeDataComponent
+    RequestTypeDataComponent,
+    RequestTypeViewEditComponent
   ],
   imports: [
     AdministrationRoutingModule, CommonModule,FormsModule

@@ -17,6 +17,7 @@ import { ListZonesComponent } from './list-zones/list-zones.component';
 import { GovernateComponent } from './list-governates/governate/governate.component';
 import { RequestTypesListComponent } from './request-types/request-types-list/request-types-list.component';
 import { RequestTypeDataComponent } from './request-types/request-type-data/request-type-data.component';
+import { RequestTypeViewEditComponent } from './request-types/request-type-view-edit/request-type-view-edit.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,14 @@ const routes: Routes = [
           title: 'Request Data'
         }
       },
+      {
+        path: 'request/:id',
+        component: RequestTypeViewEditComponent,
+        data: {
+          title: 'Request Data'
+        }
+      },
+      
       {
         path: 'request-status',
         component: ListRequestStatusComponent,
