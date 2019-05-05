@@ -2,7 +2,6 @@ package com.almostkbal.web.services.workflow.entities;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,16 +27,16 @@ public class Governate {
 	@Column(name = "governate_name",nullable=false)
 	private String name;
 	
-	@Column(name = "governate_code",nullable=false,unique = true)
+	@Column(name = "governate_code",nullable=false)
 	private int code;
 	
 	@OneToMany(mappedBy = "governate",fetch=FetchType.LAZY)
 	@JsonIgnore
 	private List<City> cities;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "zone_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Zone zone;
 	
 	public Governate() {

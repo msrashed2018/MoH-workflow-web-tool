@@ -1,5 +1,6 @@
 package com.almostkbal.web.services.workflow.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -96,6 +97,15 @@ public class User {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	
+	public void addRole(Role role) {
+		if (roles == null || roles.isEmpty()) {
+			roles = new ArrayList<Role>();
+			roles.add(role);
+		}else {
+			roles.add(role);
+		}
 	}
 	
 }

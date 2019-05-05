@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.almostkbal.web.services.workflow.entities.Custom;
 import com.almostkbal.web.services.workflow.entities.Gender;
+import com.almostkbal.web.services.workflow.exceptions.DisabilityNotFoundException;
 import com.almostkbal.web.services.workflow.exceptions.GenderNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.GenderRepository;
 
@@ -38,17 +41,21 @@ public class GenderController {
 	}
 	
 	@GetMapping("/api/genders/{id}")
-	public Resource<Gender> retrieveGenderById(@PathVariable int id) {
+	public Gender retrieveGenderById(@PathVariable int id) {
 		Optional<Gender> gender = genderRepository.findById(id);
 		if(!gender.isPresent())
 			throw new GenderNotFoundException("id-"+ id);
 		Resource<Gender> resource = new Resource<Gender>(gender.get());
-		return resource;
+		return gender.get();
 	}
 
 	@DeleteMapping("/api/genders/{id}")
 	public void deleteGender(@PathVariable int id) {
-		genderRepository.deleteById(id);
+		try {
+			genderRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new GenderNotFoundException("id-"+ id);
+	    }
 	}
 
 	@PostMapping("/api/genders")
@@ -64,11 +71,11 @@ public class GenderController {
 	@PutMapping("/api/genders/{id}")
 	public ResponseEntity<Gender> updateGender(
 			@PathVariable int id, @RequestBody Gender gender){
-		Gender existingGender = genderRepository.getOne(id);
-		
-		if(existingGender == null)
+		Optional<Gender> existingGender = genderRepository.findById(id);
+
+		if(!existingGender.isPresent())
 			throw new GenderNotFoundException("id-"+ id);
-		genderRepository.deleteById(id);
+//		genderRepository.deleteById(id);
 		Gender updatedCitzen = genderRepository.save(gender);
 		return new ResponseEntity<Gender>(updatedCitzen, HttpStatus.OK);
 	}

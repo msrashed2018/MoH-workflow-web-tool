@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.City;
+import com.almostkbal.web.services.workflow.entities.Gender;
+import com.almostkbal.web.services.workflow.exceptions.CitizenNotFoundException;
 import com.almostkbal.web.services.workflow.exceptions.CityNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.CityRepository;
 
@@ -38,17 +41,21 @@ public class CityController {
 	}
 	
 	@GetMapping("/api/cities/{id}")
-	public Resource<City> retrieveCityById(@PathVariable int id) {
+	public City retrieveCityById(@PathVariable int id) {
 		Optional<City> city = cityRepository.findById(id);
 		if(!city.isPresent())
 			throw new CityNotFoundException("id-"+ id);
-		Resource<City> resource = new Resource<City>(city.get());
-		return resource;
+//		Resource<City> resource = new Resource<City>(city.get());
+		return city.get();
 	}
 
 	@DeleteMapping("/api/cities/{id}")
 	public void deleteCity(@PathVariable int id) {
-		cityRepository.deleteById(id);
+		try {
+			cityRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new CityNotFoundException("id-"+ id);
+	    }
 	}
 
 	@PostMapping("/api/cities")
@@ -64,11 +71,11 @@ public class CityController {
 	@PutMapping("/api/cities/{id}")
 	public ResponseEntity<City> updateCity(
 			@PathVariable int id, @RequestBody City city){
-		City existingCity = cityRepository.getOne(id);
-		
-		if(existingCity == null)
+		Optional<City> existingCity = cityRepository.findById(id);
+
+		if(!existingCity.isPresent())
 			throw new CityNotFoundException("id-"+ id);
-		cityRepository.deleteById(id);
+//		cityRepository.deleteById(id);
 		City updatedCitzen = cityRepository.save(city);
 		return new ResponseEntity<City>(updatedCitzen, HttpStatus.OK);
 	}

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../app.constants';
 import { Zone } from '../../model/zone.model';
+import { Governate } from '../../model/governate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,8 @@ export class ZoneService {
     return this.http.post(
               `${API_URL}/zones`
                 , zone);
+  }
+  retrieveZoneGovernates(zoneId) {
+    return this.http.get<Governate[]>(`${API_URL}/zones/${zoneId}/governates`);
   }
 }

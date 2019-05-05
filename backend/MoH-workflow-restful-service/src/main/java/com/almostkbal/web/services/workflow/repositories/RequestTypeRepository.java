@@ -6,6 +6,6 @@ import com.almostkbal.web.services.workflow.entities.Committee;
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
 import com.almostkbal.web.services.workflow.entities.RequestType;
 
-public interface RequestTypeRepository extends JpaRepository<RequestType, Long> {
+public interface RequestTypeRepository extends JpaRepository<RequestType, Integer> {
 
 }

@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,17 +43,21 @@ public class GovernateController {
 	}
 
 	@GetMapping("/api/governates/{id}")
-	public Resource<Governate> retrieveGovernateById(@PathVariable int id) {
+	public Governate retrieveGovernateById(@PathVariable int id) {
 		Optional<Governate> governate = governateRepository.findById(id);
 		if (!governate.isPresent())
 			throw new GovernateNotFoundException("id-" + id);
-		Resource<Governate> resource = new Resource<Governate>(governate.get());
-		return resource;
+//		Resource<Governate> resource = new Resource<Governate>(governate.get());
+		return governate.get();
 	}
 
 	@DeleteMapping("/api/governates/{id}")
 	public void deleteGovernate(@PathVariable int id) {
-		governateRepository.deleteById(id);
+		try {
+			governateRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new GovernateNotFoundException("id-"+ id);
+	    }
 	}
 
 	@PostMapping("/api/governates")
@@ -70,7 +75,7 @@ public class GovernateController {
 
 		if (existingGovernate == null)
 			throw new GovernateNotFoundException("id-" + id);
-		governateRepository.deleteById(id);
+//		governateRepository.deleteById(id);
 		Governate updatedCitzen = governateRepository.save(governate);
 		return new ResponseEntity<Governate>(updatedCitzen, HttpStatus.OK);
 	}
@@ -104,7 +109,6 @@ public class GovernateController {
 			throw new GovernateNotFoundException("id-" + id);
 		}
 		Governate governate = governateOptional.get();
-
 		return cityRepository.findByGovernate(governate);
 	}
 }

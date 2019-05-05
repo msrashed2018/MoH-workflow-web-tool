@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,17 +38,21 @@ public class RoleController {
 	}
 	
 	@GetMapping("/api/roles/{id}")
-	public Resource<Role> retrieveRoleById(@PathVariable long id) {
+	public Role retrieveRoleById(@PathVariable long id) {
 		Optional<Role> role = roleRepository.findById(id);
 		if(!role.isPresent())
 			throw new RoleNotFoundException("id-"+ id);
-		Resource<Role> resource = new Resource<Role>(role.get());
-		return resource;
+//		Resource<Role> resource = new Resource<Role>(role.get());
+		return role.get();
 	}
 
 	@DeleteMapping("/api/roles/{id}")
 	public void deleteRole(@PathVariable long id) {
-		roleRepository.deleteById(id);
+		try {
+			roleRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new RoleNotFoundException("id-"+ id);
+	    }
 	}
 
 	@PostMapping("/api/roles")
@@ -64,11 +68,11 @@ public class RoleController {
 	@PutMapping("/api/roles/{id}")
 	public ResponseEntity<Role> updateRole(
 			@PathVariable long id, @RequestBody Role role){
-		Role existingRole = roleRepository.getOne(id);
-		
-		if(existingRole == null)
+		Optional<Role> existingRole = roleRepository.findById(id);
+
+		if(!existingRole.isPresent())
 			throw new RoleNotFoundException("id-"+ id);
-		roleRepository.deleteById(id);
+//		roleRepository.deleteById(id);
 		Role updatedCitzen = roleRepository.save(role);
 		return new ResponseEntity<Role>(updatedCitzen, HttpStatus.OK);
 	}

@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -54,21 +54,26 @@ public class CitizenController {
 	}
 	@GetMapping("/api/citizens/search/findAllByDate")
 	public List<Citizen> findAllByDate(@RequestParam String date){
+		
 		return citizenRepository.findAllByDate(date);
 	}
 	
 	@GetMapping("/api/citizens/{id}")
-	public Resource<Citizen> retrieveCitizenById(@PathVariable long id) {
+	public Citizen retrieveCitizenById(@PathVariable long id) {
 		Optional<Citizen> citizen = citizenRepository.findById(id);
 		if(!citizen.isPresent())
 			throw new CitizenNotFoundException("id-"+ id);
-		Resource<Citizen> resource = new Resource<Citizen>(citizen.get());
-		return resource;
+//		Resource<Citizen> resource = new Resource<Citizen>(citizen.get());
+		return citizen.get();
 	}
 
 	@DeleteMapping("/api/citizens/{id}")
 	public void deleteCitizen(@PathVariable long id) {
-		citizenRepository.deleteById(id);
+		try {
+			citizenRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new CitizenNotFoundException("id-"+ id);
+	    }
 	}
 
 	@PostMapping("/api/citizens")
@@ -84,11 +89,11 @@ public class CitizenController {
 	@PutMapping("/api/citizens/{id}")
 	public ResponseEntity<Citizen> updateCitizen(
 			@PathVariable long id, @RequestBody Citizen citizen){
-		Citizen existingCitizen = citizenRepository.getOne(id);
-		
-		if(existingCitizen == null)
+		Optional<Citizen> existingCitizen = citizenRepository.findById(id);
+
+		if(!existingCitizen.isPresent())
 			throw new CitizenNotFoundException("id-"+ id);
-		citizenRepository.deleteById(id);
+//		citizenRepository.deleteById(id);
 		
 		Citizen updatedCitzen = citizenRepository.save(citizen);
 		
