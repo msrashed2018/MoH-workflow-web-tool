@@ -1,3 +1,39 @@
-<p>
-  list-occupations works!
-</p>
+<br/><div class="alert alert-success" *ngIf='message'>{{message}}</div>
+
+<!-- <div class="container"> -->
+    <button (click)="onAdd()" class="btn btn-success "><strong> اضافة</strong>  <i class="fa fa-plus-circle"></i></button>
+    <br/><br/>
+    <table class="table text-center">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">المهنة</th>
+        <th scope="col">ملاحظات</th>
+        <th scope="col">تعديل</th>
+        <th scope="col">حذف</th> 
+      </tr>
+    </thead>
+    <tbody>
+              <tr *ngFor="let occupation of occupations; let i=index">
+                  <td><b>{{i+1}}</b></td>
+                <td  ><a [routerLink]="['/administration/occupations', occupation.id,{componentMode: 'viewMode'}]"><b>{{occupation.name}}</b></a></td>
+                
+                <td  ><b>{{occupation.description}}</b></td>
+                <td >
+                  <button type="button" class="edit-btn btn btn-info" (click)="onEdit(occupation.id)">تعديل
+                      <i class="fa fa-edit"></i>
+                    </button>
+                </td >
+                <td >
+                    <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(occupation.id)">حذف
+                        <i class="fa fa-trash"></i>
+                      </button>
+                </td>
+              </tr>
+    </tbody>
+
+  </table>
+
+
+
+<!-- </div> -->

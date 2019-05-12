@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Custom } from '../../../model/custom.model';
 import { CustomService } from '../../../services/administration/custom.service';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 
 
@@ -15,41 +16,44 @@ export class ListCustomsComponent implements OnInit {
   message: string
 
   constructor(
-    private cityService:CustomService,
-    private router : Router
+    private customService:CustomService,
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshCustoms();
+    this.refreshData();
   }
-  refreshCustoms(){
-    this.cityService.retrieveAllCustoms().subscribe(
+  refreshData(){
+    this.customService.retrieveAllCustoms().subscribe(
       response => {
-        console.log(response);
         this.customs = response;
       }
     )
   }
 
-  deleteCustom(name,id) {
-    console.log(`delete city ${id}` )
-    this.cityService.deleteCustom(id).subscribe (
-      response => {
-        console.log(response);
-        // this.message =  `Delete of Custom ${name} Successful!`;
-        this.refreshCustoms();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف الجمرك؟ ')
+    .then((confirmed) => {
+      if(confirmed){
+        this.customService.deleteCustom(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
+    
+  
+    
   }
 
-  updateCustom(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['customs',id])
+  onEdit(id) {
+    this.router.navigate(['administration/customs',id,{componentMode: "editMode"}])
   }
 
-  addCustom() {
-    this.router.navigate(['customs',-1])
+  onAdd() {
+    this.router.navigate(['administration/custom-data'])
   }
 }

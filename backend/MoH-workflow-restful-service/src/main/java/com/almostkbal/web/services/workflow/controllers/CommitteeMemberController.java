@@ -57,6 +57,15 @@ public class CommitteeMemberController {
 
 	@PostMapping("/api/committee-members")
 	public ResponseEntity<Object> createCommitteeMember(@Valid @RequestBody CommitteeMember committeeMember) {
+		
+		System.out.println("\n\n Committte Member "+ committeeMember.getName());
+		System.out.println(committeeMember.getDescription());
+		System.out.println(committeeMember.getMobileNumber());
+		System.out.println(committeeMember.getName());
+		System.out.println(committeeMember.getTitle());
+		System.out.println(committeeMember.getZone().getId());
+		System.out.println(committeeMember.getZone().getName());
+		System.out.println(committeeMember.getZone().getDescription());
 		CommitteeMember savedCommitteeMember = committeeMemberRepository.save(committeeMember);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()

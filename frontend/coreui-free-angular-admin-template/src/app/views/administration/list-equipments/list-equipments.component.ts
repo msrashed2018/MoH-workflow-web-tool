@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EquipmentService } from '../../../services/administration/equipment.service';
 import { Equipment } from '../../../model/equipment.model';
-
-
-
+import { FormBuilder } from '@angular/forms';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 @Component({
   selector: 'app-list-equipments',
@@ -17,40 +16,44 @@ export class ListEquipmentsComponent implements OnInit {
 
   constructor(
     private equipmentService:EquipmentService,
-    private router : Router
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshEquipments();
+    this.refreshData();
   }
-  refreshEquipments(){
+  refreshData(){
     this.equipmentService.retrieveAllEquipments().subscribe(
       response => {
-        console.log(response);
         this.equipments = response;
       }
     )
   }
 
-  deleteEquipment(name,id) {
-    console.log(`delete equipment ${id}` )
-    this.equipmentService.deleteEquipment(id).subscribe (
-      response => {
-        console.log(response);
-        // this.message =  `Delete of Equipment ${name} Successful!`;
-        this.refreshEquipments();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف السيارة؟ ')
+    .then((confirmed) => {
+      console.log('User confirmed:', confirmed)
+      if(confirmed){
+        this.equipmentService.deleteEquipment(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
+    
+  
+    
   }
 
-  updateEquipment(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['equipments',id])
+  onEdit(id) {
+    this.router.navigate(['administration/equipments',id,{componentMode: "editMode"}])
   }
 
-  addEquipment() {
-    this.router.navigate(['equipments',-1])
+  onAdd() {
+    this.router.navigate(['administration/equipment-data'])
   }
 }

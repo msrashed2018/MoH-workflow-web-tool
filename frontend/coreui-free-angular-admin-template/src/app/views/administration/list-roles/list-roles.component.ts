@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { RoleService } from '../../../services/administration/role.service';
 import { Role } from '../../../model/role.model';
-
+import { FormBuilder } from '@angular/forms';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 @Component({
   selector: 'app-list-roles',
@@ -15,41 +16,45 @@ export class ListRolesComponent implements OnInit {
 
   constructor(
     private roleService:RoleService,
-    private router : Router
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshRoles();
+    this.refreshData();
   }
-  refreshRoles(){
+  refreshData(){
     this.roleService.retrieveAllRoles().subscribe(
       response => {
-        console.log(response);
         this.roles = response;
       }
     )
   }
 
-  deleteRole(name,id) {
-    console.log(`delete role ${id}` )
-    this.roleService.deleteRole(id).subscribe (
-      response => {
-        console.log(response);
-        this.message = ` تم حذف المحافظه بنجاح `
-        // this.message =  `Delete of Role ${name} Successful!`;
-        this.refreshRoles();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف السيارة؟ ')
+    .then((confirmed) => {
+      console.log('User confirmed:', confirmed)
+      if(confirmed){
+        this.roleService.deleteRole(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
+    
+  
+    
   }
 
-  updateRole(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['roles',id])
+  onEdit(id) {
+    this.router.navigate(['administration/roles',id,{componentMode: "editMode"}])
   }
 
-  addRole() {
-    this.router.navigate(['roles',-1])
+  onAdd() {
+    this.router.navigate(['administration/role-data'])
   }
 }
+

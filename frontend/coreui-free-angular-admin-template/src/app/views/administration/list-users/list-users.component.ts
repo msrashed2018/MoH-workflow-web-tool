@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../services/administration/user.service';
 import { User } from '../../../model/user.model';
+import { FormBuilder } from '@angular/forms';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+
 
 
 @Component({
@@ -15,41 +18,43 @@ export class ListUsersComponent implements OnInit {
 
   constructor(
     private userService:UserService,
-    private router : Router
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshUsers();
+    this.refreshData();
   }
-  refreshUsers(){
+  refreshData(){
     this.userService.retrieveAllUsers().subscribe(
       response => {
-        console.log(response);
         this.users = response;
       }
     )
   }
 
-  deleteUser(name,id) {
-    console.log(`delete user ${id}` )
-    this.userService.deleteUser(id).subscribe (
-      response => {
-        console.log(response);
-        this.message = ` تم حذف المحافظه بنجاح `
-        // this.message =  `Delete of User ${name} Successful!`;
-        this.refreshUsers();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المستخدم؟ ')
+    .then((confirmed) => {
+      if(confirmed){
+        this.userService.deleteUser(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
+    
+  
+    
   }
 
-  updateUser(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['users',id])
+  onEdit(id) {
+    this.router.navigate(['administration/users',id,{componentMode: "editMode"}])
   }
 
-  addUser() {
-    this.router.navigate(['users',-1])
+  onAdd() {
+    this.router.navigate(['administration/user-data'])
   }
 }

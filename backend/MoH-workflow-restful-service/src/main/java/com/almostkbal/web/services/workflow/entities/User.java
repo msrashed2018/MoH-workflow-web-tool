@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 @Entity
@@ -39,9 +40,8 @@ public class User {
 	@Column(name = "created_date")
 	private Date createdDate;
 	
-	@ManyToMany(fetch=FetchType.EAGER,
-			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-					 CascadeType.DETACH, CascadeType.REFRESH})
+	
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
 			name="system_user_roles",
 			joinColumns=@JoinColumn(name="users_user_id"),
@@ -105,6 +105,23 @@ public class User {
 			roles.add(role);
 		}else {
 			roles.add(role);
+		}
+	}
+	
+	public Zone getZone() {
+		System.out.println("\n\n Getting Zone\n\n");
+		return zone;
+	}
+
+	public void setZone(Zone zone) {
+		System.out.println("\n\n Setting Zone Zone\n\n");
+		this.zone = zone;
+	}
+
+	@PreRemove
+	public void preRemove() {
+		for (Role role : roles) {
+			role.setUsers(null);
 		}
 	}
 	

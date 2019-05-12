@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RequestStatus } from '../../../model/request-status.model';
 import { RequestStatusService } from '../../../services/administration/request-status.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 
 
@@ -16,40 +18,42 @@ export class ListRequestStatusComponent implements OnInit {
 
   constructor(
     private requestStatusService:RequestStatusService,
-    private router : Router
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshRequestStatus();
+    this.refreshData();
   }
-  refreshRequestStatus(){
+  refreshData(){
     this.requestStatusService.retrieveAllRequestStatus().subscribe(
       response => {
-        console.log(response);
         this.requestStatus = response;
       }
     )
   }
 
-  deleteRequestStatus(name,id) {
-    console.log(`delete requestStatus ${id}` )
-    this.requestStatusService.deleteRequestStatus(id).subscribe (
-      response => {
-        console.log(response);
-        // this.message =  `Delete of RequestStatus ${name} Successful!`;
-        this.refreshRequestStatus();
-      }
-    )
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف حالة الطلب؟ ')
+    .then((confirmed) => {
+      if(confirmed){
+      this.requestStatusService.deleteRequestStatus(id).subscribe (
+        response => {
+          this.refreshData();
+        }
+      )
+    }
+    })
+  }
+ 
+  public openConfirmationDialog() {
+    }
+  onEdit(id) {
+    this.router.navigate(['administration/request-status',id,{componentMode: "editMode"}])
   }
 
-  updateRequestStatus(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['request-status',id])
-  }
-
-  addRequestStatus() {
-    this.router.navigate(['request-status',-1])
+  onAdd() {
+    this.router.navigate(['administration/request-status-data'])
   }
 }

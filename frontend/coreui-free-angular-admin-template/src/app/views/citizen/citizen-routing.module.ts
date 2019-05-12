@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ListCitizensComponent } from './list-citizens/list-citizens.component';
 import { CitizenComponent } from './citizen/citizen.component';
+import { CitizenViewEditComponent } from './citizen-view-edit/citizen-view-edit.component';
 const routes: Routes = [
   {
 
@@ -12,31 +13,45 @@ const routes: Routes = [
     //   title: 'الصفحه الرئيسيه'
     // }
 
-    path: '',
+    path: 'search',
+    component: ListCitizensComponent,
     data: {
-      title: 'Citizen'
+      title: 'citizens'
+    }
     },
-    children: [
-      // {
-      //   path: '',
-      //   redirectTo: 'citizens'
-      // },
-      {
-        path: 'search',
-        component: ListCitizensComponent,
-        data: {
-          title: 'Search'
-        }
-      },
-      {
-        path: 'add',
-        component: CitizenComponent,
-        data: {
-          title: 'Add'
-        }
+    {
+      path: 'new-citizen',
+      component: CitizenComponent,
+      data: {
+        title: 'New Citizen'
       }
-    ]
-  }
+    },
+    {
+      path: 'view-edit/:id',
+      component: CitizenViewEditComponent,
+      data: {
+        title: 'Citizen'
+      }
+    }
+
+    // children: [
+    //   {
+    //     path: 'search',
+    //     component: ListCitizensComponent,
+    //     data: {
+    //       title: 'Search'
+    //     }
+    //   },
+    //   {
+    //       path: 'new-citizen',
+    //       component: CitizenComponent,
+    //       data: {
+    //         title: 'New Citizen'
+    //       }
+    //     },
+  
+    // ]
+  // }
 ];
 @NgModule({
   declarations: [],

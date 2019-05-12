@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CityService } from '../../../services/administration/city.service';
 import { City } from '../../../model/city.model';
-
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 
 @Component({
@@ -16,40 +16,42 @@ export class ListCitiesComponent implements OnInit {
 
   constructor(
     private cityService:CityService,
-    private router : Router
+    private router : Router, 
+    private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshCities();
+    this.refreshData();
   }
-  refreshCities(){
+  refreshData(){
     this.cityService.retrieveAllCities().subscribe(
       response => {
-        console.log(response);
         this.cities = response;
       }
     )
   }
 
-  deleteCity(name,id) {
-    console.log(`delete city ${id}` )
-    this.cityService.deleteCity(id).subscribe (
-      response => {
-        console.log(response);
-        // this.message =  `Delete of City ${name} Successful!`;
-        this.refreshCities();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المدينة ')
+    .then((confirmed) => {
+      console.log('User confirmed:', confirmed)
+      if(confirmed){
+        this.cityService.deleteCity(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
   }
 
-  updateCity(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['cities',id])
+  onEdit(id) {
+    this.router.navigate(['administration/cities',id,{componentMode: "editMode"}])
   }
 
-  addCity() {
-    this.router.navigate(['cities',-1])
+  onAdd() {
+    this.router.navigate(['administration/city-data'])
   }
 }

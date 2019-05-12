@@ -3,7 +3,9 @@ import { Citizen } from '../../../model/citizen.model';
 import { CitizenService } from '../../../services/citizenService';
 import { DatePipe, CommonModule } from '@angular/common';
 import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert';
-
+import * as moment from  'moment';
+import { Router } from '@angular/router';
+import { ConfirmationModalService } from '../../administration/confirmation-modal/confirmation-modal.service';
 
 
 @Component({
@@ -16,7 +18,7 @@ export class ListCitizensComponent implements OnInit {
   private citizens: Citizen[];
   private noDataFound: boolean = false;
   private errorMessage: boolean = false;
-  constructor(private citizenService: CitizenService, private datepipe: DatePipe) { }
+  constructor( private confirmationModalService: ConfirmationModalService, private citizenService: CitizenService, private router : Router, private datepipe: DatePipe) { }
 
   ngOnInit() {
     this.citizens = [];
@@ -24,21 +26,18 @@ export class ListCitizensComponent implements OnInit {
   }
   searchchanged(event: Event) {
     this.citizens = [];
-    console.log('search by : ' + this.searchByID);
     this.errorMessage = false;
     this.noDataFound = false;
 
     this.citizenService.findCitizen(this.searchByID)
       .subscribe(
         result => {
-          console.log(" find by id");
           if (typeof result !== 'undefined' && result !== null) {
             this.noDataFound = false;
             this.citizens = result;
           }else{
             this.noDataFound = true;
           }
-          console.log("returned citizen : " + this.citizens)
         },
         error => {
           console.log('oops', error);
@@ -48,26 +47,26 @@ export class ListCitizensComponent implements OnInit {
       );
 
   }
-
+  calculateAge(dateString)
+  {
+      let birthDate : Date = new Date(dateString);
+      return moment().diff(birthDate, 'years');
+  }
   retriveAllCitizens(){
     this.citizens = [];
-    console.log('retrive all');
     this.errorMessage = false;
     this.noDataFound = false;
     let date=new Date();
     let latest_date =this.datepipe.transform(date, 'yyyy-MM-dd');
-    console.log("today:" + latest_date)
     this.citizenService.retriveAll(latest_date)
       .subscribe(
         result => {
-          console.log(" retrive all");
           if (typeof result !== 'undefined' && result !== null) {
             this.noDataFound = false;
             this.citizens= result;
           }else{
             this.noDataFound = true;
           }
-          console.log("returned citizen : " + this.citizens)
         },
         error => {
           console.log('oops: ', error);
@@ -75,5 +74,25 @@ export class ListCitizensComponent implements OnInit {
 
         }
       );
+  }
+
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المواطن؟ ')
+    .then((confirmed) => {
+      if(confirmed){
+        this.citizenService.deleteCitizen(id).subscribe (
+          response => {
+            this.retriveAllCitizens();
+          }
+        )
+      }
+    })
+  }
+
+  onEdit(id) {
+    this.router.navigate(['citizen/view-edit',id,{componentMode: "editMode"}])
+  }
+  onAdd() {
+    this.router.navigate(['citizen/new-citizen'])
   }
 }

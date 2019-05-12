@@ -3,7 +3,7 @@ import { RequestTypeService } from '../../../../services/administration/request-
 import { NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../../confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-request-type-data',

@@ -9,7 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
+
+import org.apache.tomcat.jni.Poll;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,6 +36,10 @@ public class Zone {
 	@JsonIgnore
 	private List<Governate> governates;
 	
+	
+//	@OneToOne(mappedBy ="zone")
+//	@JsonIgnore
+//	private CommitteeMember member;
 	public Zone() {
 		
 	}
@@ -71,5 +79,9 @@ public class Zone {
 	public void setGovernates(List<Governate> governates) {
 		this.governates = governates;
 	}
-
+//	@PreRemove
+//    private void preRemove() {
+//        Zone zone = member.getZone();
+//        member.setZone(null);
+//    }
 }

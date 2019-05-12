@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {map} from 'rxjs/operators';
 import { Citizen } from '../../model/citizen.model';
 import { UserAuthorities } from '../../model/user-authorities.model';
+import { API_URL } from '../../app.constants';
 
 export const TOKEN = 'token'
 export const AUTHENTICATED_USER = 'authenticaterUser'
@@ -23,7 +24,7 @@ export class BasicAuthenticationService {
 
 
     return this.http.get<UserAuthorities>(
-      'http://localhost:8080/ministry-of-health/api/authenticate',
+      `${API_URL}`+'/authenticate',
       {headers}).pipe(
         map(
           data => {

@@ -16,7 +16,6 @@ export class RouteGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
     if (this.BasicAuthenticationService.isUserLoggedIn()) {
-      console.log(" user is loged");
       return true;
     } else {
       console.log(" user is not loged");

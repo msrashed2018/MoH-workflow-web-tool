@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {map} from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { Citizen } from '../model/citizen.model';
+import { API_URL } from '../app.constants';
 
 export const TOKEN = 'token'
 export const AUTHENTICATED_USER = 'authenticaterUser'
@@ -13,36 +14,37 @@ export const AUTHENTICATED_USER = 'authenticaterUser'
   export class CitizenService {
   
   constructor(private http: HttpClient, public datepipe: DatePipe) { }
-
+  deleteCitizen(id){
+    return this.http.delete(`${API_URL}/citizens/${id}`);
+  }
   findCitizen(nationalId : string) {
-    let url = 'http://localhost:8080/ministry-of-health/api/citizens';
+    let url = `${API_URL}`+'/citizens';
     if(nationalId && nationalId!==null && nationalId!="")
       url+= '/search/findByNationalId?id=';
     
     return this.http.get<Citizen[]>
       (url+nationalId).pipe( map(
         data => {
-            console.log("service return : "+data) 
         return data;
       }));
   }
 
-
+  retrieveCitizen(id){
+    return this.http.get<Citizen>(`${API_URL}/citizens/${id}`);
+  }
   retriveAll(latest_date :string) {
       
     return this.http.get<Citizen[]>
-      ('http://localhost:8080/ministry-of-health/api/citizens/search/findAllByDate?date='+latest_date).pipe( map(
+      (`${API_URL}`+'/citizens/search/findAllByDate?date='+latest_date).pipe( map(
         data => {
-            console.log("service return : "+data) 
         return data;
       }));
   }
 
   createCitizen(citizen : Citizen){
     return this.http.post<Citizen[]>
-    ('http://localhost:8080/ministry-of-health/api/citizens',citizen).pipe( map(
+    (`${API_URL}`+'/citizens',citizen).pipe( map(
       data => {
-          console.log("service return : "+data) 
       return data;
     }));
   }
@@ -50,9 +52,8 @@ export const AUTHENTICATED_USER = 'authenticaterUser'
   retriveAllOccupations() {
       
     return this.http.get<Object>
-      ('http://localhost:8080/ministry-of-health/api/occupations').pipe( map(
+      (`${API_URL}`+'/occupations').pipe( map(
         data => {
-            console.log("service return : "+data) 
         return data;
       }));
   }
@@ -60,18 +61,16 @@ export const AUTHENTICATED_USER = 'authenticaterUser'
   retriveAllCities() {
       
     return this.http.get<Object>
-      ('http://localhost:8080/ministry-of-health/api/cities').pipe( map(
+      (`${API_URL}`+'/cities').pipe( map(
         data => {
-            console.log("service return : "+data) 
         return data;
       }));
   }
   retriveAllGovernates() {
       
     return this.http.get<Object>
-      ('http://localhost:8080/ministry-of-health/api/governates').pipe( map(
+      (`${API_URL}`+'/governates').pipe( map(
         data => {
-            console.log("service return : "+data) 
         return data;
       }));
   }

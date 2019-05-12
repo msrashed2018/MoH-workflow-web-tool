@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.almostkbal.web.services.workflow.entities.Zone;
 
-public interface ZoneRepository extends JpaRepository<Zone, Integer> {
+public interface ZoneRepository extends JpaRepository<Zone, Long> {
 
 }

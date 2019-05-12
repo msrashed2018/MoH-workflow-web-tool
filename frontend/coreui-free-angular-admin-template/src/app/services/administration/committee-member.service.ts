@@ -13,27 +13,27 @@ export class CommitteeMemberService {
   ) { }
 
   retrieveAllCommitteeMembers() {
-    return this.http.get<CommitteeMember[]>(`${API_URL}/committe-members`);
+    return this.http.get<CommitteeMember[]>(`${API_URL}/committee-members`);
 
   }
 
   deleteCommitteeMember(id){
-    return this.http.delete(`${API_URL}/committe-members/${id}`);
+    return this.http.delete(`${API_URL}/committee-members/${id}`);
   }
 
   retrieveCommitteeMember(id){
-    return this.http.get<CommitteeMember>(`${API_URL}/committe-members/${id}`);
+    return this.http.get<CommitteeMember>(`${API_URL}/committee-members/${id}`);
   }
 
   updateCommitteeMember(id, committeMember){
     return this.http.put(
-          `${API_URL}/committe-members/${id}`
+          `${API_URL}/committee-members/${id}`
                 , committeMember);
   }
 
   createCommitteeMember(committeMember){
     return this.http.post(
-              `${API_URL}/committe-members`
+              `${API_URL}/committee-members`
                 , committeMember);
   }
 }

@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Committee } from '../../../model/committee.model';
 import { CommitteeService } from '../../../services/administration/committee.service';
-
-
-
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 @Component({
   selector: 'app-list-committees',
@@ -17,40 +15,40 @@ export class ListCommitteesComponent implements OnInit {
 
   constructor(
     private committeeService:CommitteeService,
-    private router : Router
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshCommittees();
+    this.refreshData();
   }
-  refreshCommittees(){
+  refreshData(){
     this.committeeService.retrieveAllCommittees().subscribe(
       response => {
-        console.log(response);
         this.committees = response;
       }
     )
   }
 
-  deleteCommittee(name,id) {
-    console.log(`delete committee ${id}` )
-    this.committeeService.deleteCommittee(id).subscribe (
-      response => {
-        console.log(response);
-        // this.message =  `Delete of Committee ${name} Successful!`;
-        this.refreshCommittees();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف اللجنة؟ ')
+    .then((confirmed) => {
+      if(confirmed){
+        this.committeeService.deleteCommittee(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
   }
 
-  updateCommittee(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['committees',id])
+  onEdit(id) {
+    this.router.navigate(['administration/committees',id,{componentMode: "editMode"}])
   }
 
-  addCommittee() {
-    this.router.navigate(['committees',-1])
+  onAdd() {
+    this.router.navigate(['administration/committee-data'])
   }
 }

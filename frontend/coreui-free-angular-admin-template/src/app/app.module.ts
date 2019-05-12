@@ -47,6 +47,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { RouteGuardService } from './services/authentication/route-guard.service';
 import { HttpIntercepterBasicAuthService } from './services/authentication/http/http-intercepter-basic-auth.service';
+import { UnderConstructionComponent } from './under-construction/under-construction.component';
 
 @NgModule({
   imports: [
@@ -75,17 +76,17 @@ import { HttpIntercepterBasicAuthService } from './services/authentication/http/
     P500Component,
     LoginComponent,
     RegisterComponent,
+    UnderConstructionComponent
     
   ],
+ 
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy,
-    
   },
   RouteGuardService,
   {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterBasicAuthService, multi: true },
   DatePipe],
     bootstrap: [ AppComponent ],
-    // exports: [CitizensComponent]
 })
 export class AppModule { }

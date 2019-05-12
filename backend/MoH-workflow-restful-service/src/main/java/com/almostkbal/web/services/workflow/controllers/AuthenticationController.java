@@ -24,7 +24,7 @@ import com.almostkbal.web.services.workflow.entities.User;
 import com.almostkbal.web.services.workflow.repositories.UserRepository;
 
 //Controller
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("*")
 @RestController
 public class AuthenticationController {
 	@Autowired

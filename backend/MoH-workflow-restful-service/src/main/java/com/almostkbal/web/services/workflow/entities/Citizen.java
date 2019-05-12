@@ -33,6 +33,7 @@ public class Citizen {
 	private String name;
 	
 	@Column(name = "birth_date")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date birthDate;
 	
 	@Column(name = "address")
@@ -75,7 +76,7 @@ public class Citizen {
 	
 	@Column(name = "modified_date")
 //	@Temporal(TemporalType.TIMESTAMP)
-//	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date modifiedDate;
 	
 	public Citizen() {

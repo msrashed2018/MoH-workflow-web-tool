@@ -27,7 +27,6 @@ export class DefaultLayoutComponent implements OnDestroy {
   }
 
   logout(){
-    console.log("log out")
     this.authService.logout();
     this.router.navigateByUrl("/login");
 
@@ -35,5 +34,9 @@ export class DefaultLayoutComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.changes.disconnect();
+  }
+
+  getUsername(){
+    return this.authService.getAuthenticatedUser();
   }
 }

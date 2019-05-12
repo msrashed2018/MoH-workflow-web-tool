@@ -27,19 +27,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) {
-		logger.info("Authenticating User");
-		logger.info("check username : "+username);
 		User user = userRepository.findByUsername(username);
 		if (user == null) {
-			logger.info("username "+username+" not exists");
 			throw new UsernameNotFoundException(username);
 		}
-		logger.info("username "+username+" exists");
-		logger.info("Getting "+username+" Roles ");
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		int i = 1;
 		for (Role role : user.getRoles()) {
-			logger.info("Role "+i+" : "+role.getName());
 			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 			i++;
 		}

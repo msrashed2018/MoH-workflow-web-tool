@@ -6,7 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import com.almostkbal.web.services.workflow.entities.Disability;
 import com.almostkbal.web.services.workflow.entities.EyeMeasure;
 
-@RepositoryRestResource(collectionResourceRel = "eye-measure", path = "eye-measure")
 public interface EyeMeasureRepository extends JpaRepository<EyeMeasure, Integer> {
 	
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovernateService } from '../../../services/administration/governate.service';
 import { Governate } from '../../../model/governate.model';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 // import { BrowserModule } from '@angular/platform-browser';
 
 
@@ -16,7 +17,8 @@ export class ListGovernatesComponent implements OnInit {
 
   constructor(
     private governateService:GovernateService,
-    private router : Router
+    private router : Router,
+    private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
@@ -24,36 +26,37 @@ export class ListGovernatesComponent implements OnInit {
   ngOnInit() {
     this.refreshGovernates();
   }
-  log(){
-    console.log("hereeeeeeeeeee");
-  }
+
   refreshGovernates(){
     this.governateService.retrieveAllGovernates().subscribe(
       response => {
-        console.log(response);
         this.governates = response;
       }
     )
   }
-
-  deleteGovernate(id) {
-    console.log(`delete governate ${id}` )
-    this.governateService.deleteGovernate(id).subscribe (
-      response => {
-        console.log(response);
-        this.message = ` تم حذف المحافظه بنجاح `
-        // this.message =  `Delete of Governate ${name} Successful!`;
-        this.refreshGovernates();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المدينة ')
+    .then((confirmed) => {
+      if(confirmed){
+        this.governateService.deleteGovernate(id).subscribe (
+          response => {
+            this.message = ` تم حذف المحافظه بنجاح `
+            this.refreshGovernates();
+          },
+          error => {
+            this.message = 'لا يمكن حذف المحافظة'
+          }
+        )
       }
-    )
+    })
   }
 
-  updateGovernate(id) {
-    console.log(`update ${id}`)
-    // this.router.navigate(['governates',id])
+
+  onEdit(id) {
+    this.router.navigate(['administration/governates',id,{componentMode: "editMode"}])
   }
 
-  addGovernate() {
-    // this.router.navigate(['governates',-1])
+  onAdd() {
+    this.router.navigate(['administration/governate-data'])
   }
 }

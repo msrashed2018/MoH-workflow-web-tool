@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,8 @@ import com.almostkbal.web.services.workflow.repositories.UserRepository;
 public class UserController {
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	private RoleRepository roleRepository;
 	
@@ -63,6 +65,7 @@ public class UserController {
 
 	@PostMapping("/api/users")
 	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		User savedUser = userRepository.save(user);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()

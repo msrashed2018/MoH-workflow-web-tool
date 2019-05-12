@@ -6,16 +6,19 @@ import { CitizenRoutingModule } from './citizen-routing.module';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { CitizenViewEditComponent } from './citizen-view-edit/citizen-view-edit.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
-  declarations: [ListCitizensComponent, CitizenComponent],
+  declarations: [ListCitizensComponent, CitizenComponent, CitizenViewEditComponent],
   imports: [
     CommonModule,
     AlertModule,
     CitizenRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModalModule,
     CollapseModule.forRoot()
   ]
 })

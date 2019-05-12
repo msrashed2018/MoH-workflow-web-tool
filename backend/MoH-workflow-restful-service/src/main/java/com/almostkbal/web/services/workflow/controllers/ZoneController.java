@@ -44,7 +44,7 @@ public class ZoneController {
 	}
 	
 	@GetMapping("/api/zones/{id}")
-	public Resource<Zone> retrieveZoneById(@PathVariable int id) {
+	public Resource<Zone> retrieveZoneById(@PathVariable long id) {
 		Optional<Zone> zone = zoneRepository.findById(id);
 		if(!zone.isPresent())
 			throw new ZoneNotFoundException("id-"+ id);
@@ -53,7 +53,7 @@ public class ZoneController {
 	}
 
 	@DeleteMapping("/api/zones/{id}")
-	public void deleteZone(@PathVariable int id) {
+	public void deleteZone(@PathVariable long id) {
 		try {
 			zoneRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
@@ -73,7 +73,7 @@ public class ZoneController {
 	}
 	@PutMapping("/api/zones/{id}")
 	public ResponseEntity<Zone> updateZone(
-			@PathVariable int id, @RequestBody Zone zone){
+			@PathVariable long id, @RequestBody Zone zone){
 		Optional<Zone> existingZone = zoneRepository.findById(id);
 
 		if(!existingZone.isPresent())
@@ -83,7 +83,7 @@ public class ZoneController {
 		return new ResponseEntity<Zone>(updatedCitzen, HttpStatus.OK);
 	}
 	@PostMapping("/api/zones/{id}/governates")
-	public ResponseEntity<Object> addCity(@PathVariable int id, @RequestBody Governate governate) {
+	public ResponseEntity<Object> addGovernate(@PathVariable long id, @RequestBody Governate governate) {
 
 		Optional<Zone> governateOptional = zoneRepository.findById(id);
 
@@ -105,7 +105,7 @@ public class ZoneController {
 	}
 
 	@GetMapping("/api/zones/{id}/governates")
-	public List<Governate> retrieveZoneGovernates(@PathVariable int id) {
+	public List<Governate> retrieveZoneGovernates(@PathVariable long id) {
 		Optional<Zone> zoneOptional = zoneRepository.findById(id);
 		if (!zoneOptional.isPresent()) {
 			throw new ZoneNotFoundException("id-" + id);

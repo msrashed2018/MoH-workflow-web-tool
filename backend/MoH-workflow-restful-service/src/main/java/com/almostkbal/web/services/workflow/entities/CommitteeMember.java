@@ -1,5 +1,6 @@
 package com.almostkbal.web.services.workflow.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,7 +35,7 @@ public class CommitteeMember {
 	@Column(name = "member_description")
 	private String description;
 	
-	@OneToOne
+	@OneToOne()
 	@JoinColumn(name = "zone_id")
 	private Zone zone;
 	

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,15 +32,17 @@ public class Role {
 	@Column(name = "role_description")
 	private String description;
 	
-    @ManyToMany(fetch=FetchType.LAZY,
-			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-					 CascadeType.DETACH, CascadeType.REFRESH})
-	@JoinTable(
-			name="system_user_roles",
-			joinColumns=@JoinColumn(name="roles_role_id "),
-			inverseJoinColumns=@JoinColumn(name="users_user_id")
-			)
-    @JsonIgnore
+//    @ManyToMany(fetch=FetchType.LAZY,
+//			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+//					 CascadeType.DETACH, CascadeType.REFRESH})
+//	@JoinTable(
+//			name="system_user_roles",
+//			joinColumns=@JoinColumn(name="roles_role_id "),
+//			inverseJoinColumns=@JoinColumn(name="users_user_id")
+//			)
+//    @JsonIgnore
+	@ManyToMany(/*fetch=FetchType.LAZY,*/mappedBy = "roles")
+	@JsonIgnore
     private List<User> users;
     
 	public Role() {
@@ -73,4 +76,10 @@ public class Role {
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
+//	@PreRemove
+//	public void preRemove() {
+//		for (User user : users) {
+//			user.setRoles(null);
+//		}
+//	}
 }

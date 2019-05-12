@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { OccupationService } from '../../../services/administration/occupation.service';
 import { Occupation } from '../../../model/occupation.model';
+import { FormBuilder } from '@angular/forms';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 
 @Component({
@@ -15,40 +17,43 @@ export class ListOccupationsComponent implements OnInit {
 
   constructor(
     private occupationService:OccupationService,
-    private router : Router
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshOccupations();
+    this.refreshData();
   }
-  refreshOccupations(){
+  refreshData(){
     this.occupationService.retrieveAllOccupations().subscribe(
       response => {
-        console.log(response);
         this.occupations = response;
       }
     )
   }
 
-  deleteOccupation(name,id) {
-    console.log(`delete occupation ${id}` )
-    this.occupationService.deleteOccupation(id).subscribe (
-      response => {
-        console.log(response);
-        // this.message =  `Delete of Occupation ${name} Successful!`;
-        this.refreshOccupations();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المقر ')
+    .then((confirmed) => {
+      if(confirmed){
+        this.occupationService.deleteOccupation(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
+    
+  
+    
   }
 
-  updateOccupation(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['occupations',id])
+  onEdit(id) {
+    this.router.navigate(['administration/occupations',id,{componentMode: "editMode"}])
   }
 
-  addOccupation() {
-    this.router.navigate(['occupations',-1])
+  onAdd() {
+    this.router.navigate(['administration/occupation-data'])
   }
 }

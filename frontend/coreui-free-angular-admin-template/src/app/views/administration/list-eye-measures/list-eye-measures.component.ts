@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EyeMeasureService } from '../../../services/administration/eye-measure.service';
 import { EyeMeasure } from '../../../model/eye-measure.model';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 
 @Component({
@@ -10,45 +11,46 @@ import { EyeMeasure } from '../../../model/eye-measure.model';
   styleUrls: ['./list-eye-measures.component.scss']
 })
 export class ListEyeMeasureComponent implements OnInit {
-  eyeMeasures: EyeMeasure[]
+  measures: EyeMeasure[]
   message: string
 
   constructor(
     private eyeMeasureService:EyeMeasureService,
-    private router : Router
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshEyeMeasure();
+    this.refreshData();
   }
-  refreshEyeMeasure(){
+  refreshData(){
     this.eyeMeasureService.retrieveAllEyeMeasure().subscribe(
       response => {
-        console.log(response);
-        this.eyeMeasures = response;
+        this.measures = response;
       }
     )
   }
 
-  deleteEyeMeasure(name,id) {
-    console.log(`delete eyeMeasure ${id}` )
-    this.eyeMeasureService.deleteEyeMeasure(id).subscribe (
-      response => {
-        console.log(response);
-        // this.message =  `Delete of EyeMeasure ${name} Successful!`;
-        this.refreshEyeMeasure();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف القياس ')
+    .then((confirmed) => {
+      console.log('User confirmed:', confirmed)
+      if(confirmed){
+        this.eyeMeasureService.deleteEyeMeasure(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
   }
 
-  updateEyeMeasure(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['eye-measures',id])
+  onEdit(id) {
+    this.router.navigate(['administration/eye-measures',id,{componentMode: "editMode"}])
   }
 
-  addEyeMeasure() {
-    this.router.navigate(['eye-measures',-1])
+  onAdd() {
+    this.router.navigate(['administration/eye-measure-data'])
   }
 }

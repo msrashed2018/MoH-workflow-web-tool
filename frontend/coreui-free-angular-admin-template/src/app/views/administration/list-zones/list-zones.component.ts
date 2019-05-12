@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ZoneService } from '../../../services/administration/zone.service';
 import { Zone } from '../../../model/zone.model';
+import { FormBuilder } from '@angular/forms';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 
 @Component({
@@ -15,41 +17,43 @@ export class ListZonesComponent implements OnInit {
 
   constructor(
     private zoneService:ZoneService,
-    private router : Router
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshZones();
+    this.refreshData();
   }
-  refreshZones(){
+  refreshData(){
     this.zoneService.retrieveAllZones().subscribe(
       response => {
-        console.log(response);
         this.zones = response;
       }
     )
   }
 
-  deleteZone(name,id) {
-    console.log(`delete zone ${id}` )
-    this.zoneService.deleteZone(id).subscribe (
-      response => {
-        console.log(response);
-        this.message = ` تم حذف المحافظه بنجاح `
-        // this.message =  `Delete of Zone ${name} Successful!`;
-        this.refreshZones();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المقر ')
+    .then((confirmed) => {
+      if(confirmed){
+        this.zoneService.deleteZone(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
+    
+  
+    
   }
 
-  updateZone(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['zones',id])
+  onEdit(id) {
+    this.router.navigate(['administration/zones',id,{componentMode: "editMode"}])
   }
 
-  addZone() {
-    this.router.navigate(['zones',-1])
+  onAdd() {
+    this.router.navigate(['administration/zone-data'])
   }
 }

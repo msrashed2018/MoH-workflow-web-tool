@@ -1,3 +1,39 @@
-<p>
-  list-committees works!
-</p>
+<br/><div class="alert alert-success" *ngIf='message'>{{message}}</div>
+
+<!-- <div class="container"> -->
+    <button (click)="onAdd()" class="btn btn-success "><strong> اضافة</strong>  <i class="fa fa-plus-circle"></i></button>
+    <br/><br/>
+    <table class="table text-center">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">اللجنة</th>
+        <th scope="col">تاريخ الانعقاد</th>
+        <th scope="col">الوظيفة</th>
+        <th scope="col">ملاحظات</th>
+        <th scope="col">تعديل</th>
+        <th scope="col">حذف</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let committee of committees; let i=index">
+          <td><b>{{i+1}}</b></td>
+          <td><a [routerLink]="['/administration/committees', committee.id,{componentMode: 'viewMode'}]"><b>{{committee.type}}</b></a></td>
+          <td><b>{{committee.date}}</b></td>
+          <td><b>{{committee.function}}</b></td>
+          <td><b>{{committee.description}}</b></td>
+          <td style="width: 10%">
+            <button type="button" class="edit-btn btn btn-info" (click)="onEdit(committee.id)">تعديل
+                <i class="fa fa-edit"></i>
+              </button>
+          </td>
+          <td style="width: 10%">
+              <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(committee.id)">حذف
+                  <i class="fa fa-trash"></i>
+              </button>
+          </td>
+        </tr>
+    </tbody>
+
+  </table>
+<!-- </div> -->

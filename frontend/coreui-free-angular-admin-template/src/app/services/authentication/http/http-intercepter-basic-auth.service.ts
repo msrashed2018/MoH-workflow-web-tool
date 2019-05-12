@@ -1,6 +1,7 @@
 import { BasicAuthenticationService } from './../basic-authentication.service';
 import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CORS } from '../../../app.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class HttpIntercepterBasicAuthService implements HttpInterceptor{
       request = request.clone({
         setHeaders : {
             Authorization : basicAuthHeaderString,
-            'Access-Control-Allow-Origin': 'http://localhost:4200'
+            'Access-Control-Allow-Origin': `${CORS}`
           }
         }) 
     }

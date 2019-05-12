@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DisabilityService } from '../../../services/administration/disability.service';
 import { Disability } from '../../../model/disability.model';
-
+import { FormBuilder } from '@angular/forms';
+import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
 
 @Component({
   selector: 'app-list-disabilities',
@@ -15,40 +16,41 @@ export class ListDisabilitiesComponent implements OnInit {
 
   constructor(
     private disabilityService:DisabilityService,
-    private router : Router
+    private router : Router, private confirmationModalService: ConfirmationModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.refreshDisabilities();
+    this.refreshData();
   }
-  refreshDisabilities(){
+  refreshData(){
     this.disabilityService.retrieveAllDisabilities().subscribe(
       response => {
-        console.log(response);
-        this.disabilities = response;
+        this.disabilities = response as Disability[];
       }
     )
   }
 
-  deleteDisability(name,id) {
-    console.log(`delete disability ${id}` )
-    this.disabilityService.deleteDisability(id).subscribe (
-      response => {
-        console.log(response);
-        // this.message =  `Delete of Disability ${name} Successful!`;
-        this.refreshDisabilities();
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف السيارة؟ ')
+    .then((confirmed) => {
+      console.log('User confirmed:', confirmed)
+      if(confirmed){
+        this.disabilityService.deleteDisability(id).subscribe (
+          response => {
+            this.refreshData();
+          }
+        )
       }
-    )
+    })
   }
 
-  updateDisability(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['disabilities',id])
+  onEdit(id) {
+    this.router.navigate(['administration/disabilities',id,{componentMode: "editMode"}])
   }
 
-  addDisability() {
-    this.router.navigate(['disabilities',-1])
+  onAdd() {
+    this.router.navigate(['administration/disability-data'])
   }
 }

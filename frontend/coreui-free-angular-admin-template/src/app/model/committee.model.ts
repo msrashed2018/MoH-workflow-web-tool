@@ -9,10 +9,10 @@ export class Committee {
     public type: string;
     public function: string;
     public zone: Zone;
-    public memberOneId : CommitteeMember;
-    public memberTwoIdid : CommitteeMember;
-    public memberThreeId : CommitteeMember;
-    public memberFourId : CommitteeMember;
-    public memberFiveId : CommitteeMember;
-    public memberSixId : CommitteeMember;
+    public memberOne : CommitteeMember;
+    public memberTwo : CommitteeMember;
+    public memberThree : CommitteeMember;
+    public memberFour : CommitteeMember;
+    public memberFive : CommitteeMember;
+    public memberSix : CommitteeMember;
 }
