@@ -9,7 +9,8 @@
         <th scope="col">رقم</th>
         <th scope="col">الجمرك</th>
         <th scope="col">ملاحظات</th>
-        <th scope="col"></th>
+        <th scope="col">تعديل</th>
+        <th scope="col">حذف</th> 
       </tr>
     </thead>
     <tbody>
@@ -17,16 +18,16 @@
                   <td><b>{{i+1}}</b></td>
                 <td  ><a [routerLink]="['/administration/customs', custom.id,{componentMode: 'viewMode'}]"><b>{{custom.name}}</b></a></td>
                 <td  ><b>{{custom.description}}</b></td>
-                <td style="width: 30%">
-                  
-                  <button type="button" class="edit-btn btn btn-info" (click)="onEdit(custom.id)">تعديل
-                      <i class="fa fa-edit"></i>
-                    </button>
-                
-                    <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(custom.id)">حذف
-                        <i class="fa fa-trash"></i>
+                <td >
+                    <button type="button" class="edit-btn btn btn-info" (click)="onEdit(custom.id)">تعديل
+                        <i class="fa fa-edit"></i>
                       </button>
-                </td>
+                  </td >
+                  <td >
+                      <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(custom.id)">حذف
+                          <i class="fa fa-trash"></i>
+                        </button>
+                  </td>
               </tr>
     </tbody>
 

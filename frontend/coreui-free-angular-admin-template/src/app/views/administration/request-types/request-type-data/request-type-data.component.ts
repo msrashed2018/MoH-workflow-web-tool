@@ -11,16 +11,23 @@ import { ConfirmationModalComponent } from '../../confirmation-modal/confirmatio
   styleUrls: ['./request-type-data.component.scss']
 })
 export class RequestTypeDataComponent implements OnInit {
-
+  successMessage: boolean = false;
+  isCollapsed: boolean = false;
+  iconCollapse: string = 'icon-arrow-up';
   constructor(private router:Router,  private modalService: NgbModal,  private requestTypeService:RequestTypeService,
   ) { }
   componentViewMode='addMode';
   requestModel={};
   ngOnInit() {
   }
-  open() {
-    const modalRef = this.modalService.open(ConfirmationModalComponent);
-    modalRef.componentInstance.name = 'World';
+  collapsed(event: any): void {
+  }
+
+  expanded(event: any): void {
+  }
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+    this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
   onSave(){
      if(this.componentViewMode=='addMode')
@@ -29,7 +36,7 @@ export class RequestTypeDataComponent implements OnInit {
      }
   }
 
-  onCancel(){
+  close(){
     this.router.navigate(["/administration/request-types"])
   }
 

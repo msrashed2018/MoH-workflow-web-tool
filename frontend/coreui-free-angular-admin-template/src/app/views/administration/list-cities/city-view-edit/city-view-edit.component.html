@@ -36,7 +36,7 @@
                         <label class="col-md-1 col-form-label font-weight-bold" for="governate">المحافظة</label>
                         <div class="col-md-6">
                                 <!-- <input name="governate"  class="form-control" type="text" list="governates-list" [(ngModel)]="selectedGovernateId" #governate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && governate.invalid }" (change)="onGovernateChanged(governate.value)" required/> -->
-                                <select [attr.disabled]="disabled ? '' : null" name="governate"  class="form-control" [(ngModel)]="selectedGovernateId" #governate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && governate.invalid }" (change)="onGovernateChanged(governate.value)" required >
+                                <select [attr.disabled]="disabled ? '' : null" name="governate"  class="form-control" [(ngModel)]="selectedGovernateId" #governate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && governate.invalid }" required >
                                   <option *ngFor="let governate of governates"  [value]="governate.id" >{{governate.name}}</option>
                                 </select>
                                 <div *ngIf="f.submitted && governate.invalid" class="invalid-feedback">

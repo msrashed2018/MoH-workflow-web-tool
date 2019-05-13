@@ -15,8 +15,8 @@ import { UserAuthorities } from '../../model/user-authorities.model';
 export class LoginComponent {
   constructor(private authService: BasicAuthenticationService,
     private router: Router, ) { }
-  username: string = 'salah';
-  password: string = '123456789';
+  username: string = '';
+  password: string = '';
   message: string = "";
   userAuthorities : UserAuthorities;
   citizen: Citizen[];
@@ -29,14 +29,7 @@ export class LoginComponent {
         console.log(this.userAuthorities.message)
         console.log(this.userAuthorities.authorities)
         this.router.navigateByUrl("");
-        // console.log(result.message)
-        // if (result.message === "You are authenticated") {
-        //   this.router.navigateByUrl("");
-        // }
-        // else
-        //   console.log("you are not authinticated");
-        // this.invalidAuthinticationMessage = true;
-
+        
       },
         error => {
           console.log('oops', error);

@@ -19,6 +19,9 @@ public class Occupation {
 	@Column(name = "occupation_name",nullable=false)
 	private String name;
 	
+	@Column(name = "occupation_description")
+	private String description;
+	
 	public Occupation() {
 		
 	}
@@ -43,5 +46,14 @@ public class Occupation {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 
 }

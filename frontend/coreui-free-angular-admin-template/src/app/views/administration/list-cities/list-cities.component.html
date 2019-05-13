@@ -29,16 +29,9 @@
   <tbody>
     <tr *ngFor="let city of cities ; let i=index">
       <td class="text-center"><b>{{i+1}}</b></td>
-      <td class="text-center">
-        <div><a [routerLink]="['/administration/cities', city.id,{componentMode: 'viewMode'}]"><strong>{{city.name}}</strong></a></div>
-      </td>
-      <td class="text-center">
-        <div ><strong>{{city.governate.name}}</strong></div>
-      </td>
-      <td class="text-center">
-        <div ><strong style="color: green" >{{city.governate.zone.name}}</strong></div>
-      </td>
-     
+      <td class="text-center"><a [routerLink]="['/administration/cities', city.id,{componentMode: 'viewMode'}]"><b>{{city.name}}</b></a></td>
+      <td class="text-center"> <b *ngIf="city.governate != null" >{{city.governate.name}}</b> </td>
+      <td class="text-center">  <b *ngIf="city.governate.zone != null">{{city.governate.zone.name}}</b> </td>
       <td class="text-center">
           <button type="button" class="edit-btn btn btn-info" (click)="onEdit(city.id)">تعديل
               <i class="fa fa-edit"></i>

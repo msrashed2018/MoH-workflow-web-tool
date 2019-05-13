@@ -28,6 +28,7 @@ export class ListCitiesComponent implements OnInit {
   refreshData(){
     this.cityService.retrieveAllCities().subscribe(
       response => {
+        console.log(response)
         this.cities = response;
       }
     )
@@ -36,7 +37,6 @@ export class ListCitiesComponent implements OnInit {
   onDelete(id) {
     this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المدينة ')
     .then((confirmed) => {
-      console.log('User confirmed:', confirmed)
       if(confirmed){
         this.cityService.deleteCity(id).subscribe (
           response => {

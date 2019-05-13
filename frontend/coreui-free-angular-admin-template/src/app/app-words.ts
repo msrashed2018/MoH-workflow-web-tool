@@ -1,7 +1,7 @@
 export const REQUEST_TYPES = "انواع الطلب"
 export const REQUEST_STATUS = "حالات الطلب"
 export const REQUEST_PRICES = "اسعار الطلب"
-export const OCCUPATION_TYPES = "انواع المهن"
+export const OCCUPATION_TYPES = "الوظائف"
 export const GOVERNATES = "المحافظات"
 export const ZONES = "المقرات"
 export const CITIES = "المدن"
