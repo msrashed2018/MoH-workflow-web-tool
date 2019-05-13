@@ -6,7 +6,9 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.h2.jdbc.JdbcSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,46 +25,47 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Citizen;
 import com.almostkbal.web.services.workflow.exceptions.CitizenNotFoundException;
+import com.almostkbal.web.services.workflow.exceptions.CitizenValidationException;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 
-
 //@CrossOrigin(origins="http://192.168.0.100:4200")
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RestController
 public class CitizenController {
 	@Autowired
 	private CitizenRepository citizenRepository;
-	
+
 	@GetMapping("/api/citizens")
-	public List<Citizen> retrieveAllCitizens(){
+	public List<Citizen> retrieveAllCitizens() {
 		return citizenRepository.findAll();
 	}
-	
+
 	@GetMapping("/api/citizens/search/findByNationalId")
-	public List<Citizen> findByNationalId(@RequestParam long id){
+	public List<Citizen> findByNationalId(@RequestParam long id) {
 		return citizenRepository.findByNationalId(id);
 	}
-	
+
 	@GetMapping("/api/citizens/search/findAllByName")
-	public List<Citizen> findAllByName(@RequestParam String name){
+	public List<Citizen> findAllByName(@RequestParam String name) {
 		return citizenRepository.findByName(name);
 	}
-	
+
 	@GetMapping("/api/citizens/search/findAllByNameContaining")
-	public List<Citizen> findAllByNameContaining(@RequestParam String name){
+	public List<Citizen> findAllByNameContaining(@RequestParam String name) {
 		return citizenRepository.findByNameContaining(name);
 	}
+
 	@GetMapping("/api/citizens/search/findAllByDate")
-	public List<Citizen> findAllByDate(@RequestParam String date){
-		
+	public List<Citizen> findAllByDate(@RequestParam String date) {
+
 		return citizenRepository.findAllByDate(date);
 	}
-	
+
 	@GetMapping("/api/citizens/{id}")
 	public Citizen retrieveCitizenById(@PathVariable long id) {
 		Optional<Citizen> citizen = citizenRepository.findById(id);
-		if(!citizen.isPresent())
-			throw new CitizenNotFoundException("id-"+ id);
+		if (!citizen.isPresent())
+			throw new CitizenNotFoundException("id-" + id);
 //		Resource<Citizen> resource = new Resource<Citizen>(citizen.get());
 		return citizen.get();
 	}
@@ -72,31 +75,32 @@ public class CitizenController {
 		try {
 			citizenRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new CitizenNotFoundException("id-"+ id);
-	    }
+			throw new CitizenNotFoundException("id-" + id);
+		}
 	}
 
 	@PostMapping("/api/citizens")
-	public ResponseEntity<Object> createCitizen(@Valid @RequestBody Citizen citizen) {
-		Citizen savedCitizen = citizenRepository.save(citizen);
-		URI location = ServletUriComponentsBuilder
-			.fromCurrentRequest()
-			.path("/{id}")
-			.buildAndExpand(savedCitizen.getId()).toUri();
-		
-		return ResponseEntity.created(location).build();
+	public Object createCitizen(@Valid @RequestBody Citizen citizen) {
+		Citizen savedCitizen = null;
+		try {
+			savedCitizen = citizenRepository.save(citizen);
+			return savedCitizen;
+		} catch (DataIntegrityViolationException ex) {
+			throw new CitizenValidationException("هذا الرقم القومي يوجد بالفعل");
+			
+		}
 	}
+
 	@PutMapping("/api/citizens/{id}")
-	public ResponseEntity<Citizen> updateCitizen(
-			@PathVariable long id, @RequestBody Citizen citizen){
+	public ResponseEntity<Citizen> updateCitizen(@PathVariable long id, @RequestBody Citizen citizen) {
 		Optional<Citizen> existingCitizen = citizenRepository.findById(id);
 
-		if(!existingCitizen.isPresent())
-			throw new CitizenNotFoundException("id-"+ id);
+		if (!existingCitizen.isPresent())
+			throw new CitizenNotFoundException("id-" + id);
 //		citizenRepository.deleteById(id);
-		
+
 		Citizen updatedCitzen = citizenRepository.save(citizen);
-		
+
 		return new ResponseEntity<Citizen>(updatedCitzen, HttpStatus.OK);
 	}
 }
