@@ -9,7 +9,6 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { RouteGuardService } from './services/authentication/route-guard.service';
-import { UnderConstructionComponent } from './under-construction/under-construction.component';
 
 export const routes: Routes = [
   {
@@ -32,13 +31,6 @@ export const routes: Routes = [
     data: {
       title: 'Page 500'
     }
-  },
-  {
-    path: 'under-construction',
-    component: UnderConstructionComponent,
-    data: {
-      title: 'Login Page'
-    },
   },
   {
     path: 'login',

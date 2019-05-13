@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EyeRevealSettingService } from '../../../services/administration/eye-reveal-setting.service';
 import { EyeRevealSetting } from '../../../model/eye-reveal-setting.model';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class ListEyeRevealSettingComponent implements OnInit {
 
   constructor(
     private eyeRevealSettingService:EyeRevealSettingService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }

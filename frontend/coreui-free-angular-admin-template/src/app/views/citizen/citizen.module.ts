@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { CitizenViewEditComponent } from './citizen-view-edit/citizen-view-edit.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     NgbModalModule,
     CollapseModule.forRoot()
-  ]
+  ],
+  providers :[ ConfirmModalService ]
 })
 export class CitizenModule { }

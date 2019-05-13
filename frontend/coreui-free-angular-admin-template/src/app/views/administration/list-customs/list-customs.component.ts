@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Custom } from '../../../model/custom.model';
 import { CustomService } from '../../../services/administration/custom.service';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
 
@@ -17,7 +17,7 @@ export class ListCustomsComponent implements OnInit {
 
   constructor(
     private customService:CustomService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }

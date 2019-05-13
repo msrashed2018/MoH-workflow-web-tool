@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EquipmentService } from '../../../services/administration/equipment.service';
 import { Equipment } from '../../../model/equipment.model';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 @Component({
   selector: 'app-list-equipments',
@@ -16,7 +16,7 @@ export class ListEquipmentsComponent implements OnInit {
 
   constructor(
     private equipmentService:EquipmentService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }

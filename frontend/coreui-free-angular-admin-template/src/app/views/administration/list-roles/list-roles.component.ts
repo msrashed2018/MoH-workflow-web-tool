@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { RoleService } from '../../../services/administration/role.service';
 import { Role } from '../../../model/role.model';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 @Component({
   selector: 'app-list-roles',
@@ -16,7 +16,7 @@ export class ListRolesComponent implements OnInit {
 
   constructor(
     private roleService:RoleService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }

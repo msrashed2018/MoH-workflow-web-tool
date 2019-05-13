@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ZoneService } from '../../../services/administration/zone.service';
 import { Zone } from '../../../model/zone.model';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class ListZonesComponent implements OnInit {
 
   constructor(
     private zoneService:ZoneService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }

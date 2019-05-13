@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../services/administration/user.service';
 import { User } from '../../../model/user.model';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
 
@@ -18,7 +18,7 @@ export class ListUsersComponent implements OnInit {
 
   constructor(
     private userService:UserService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }

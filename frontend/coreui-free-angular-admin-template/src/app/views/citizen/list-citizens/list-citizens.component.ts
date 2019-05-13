@@ -5,7 +5,7 @@ import { DatePipe, CommonModule } from '@angular/common';
 import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert';
 import * as moment from  'moment';
 import { Router } from '@angular/router';
-import { ConfirmationModalService } from '../../administration/confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class ListCitizensComponent implements OnInit {
   private citizens: Citizen[];
   private noDataFound: boolean = false;
   private errorMessage: boolean = false;
-  constructor( private confirmationModalService: ConfirmationModalService, private citizenService: CitizenService, private router : Router, private datepipe: DatePipe) { }
+  constructor( private confirmationModalService: ConfirmModalService, private citizenService: CitizenService, private router : Router, private datepipe: DatePipe) { }
 
   ngOnInit() {
     this.citizens = [];

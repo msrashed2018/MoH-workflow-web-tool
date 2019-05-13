@@ -2,7 +2,7 @@
 <!-- <div class="list-container"> -->
   
   <br/><br/>
-  <button type="button" class="pull-right mb-4 edit-btn btn btn-success" [routerLink]="['/administration/request-data']">اضافة</button>
+  <button type="button" class="pull-right mb-4 edit-btn btn btn-success" [routerLink]="['/administration/type-data']">اضافة</button>
   <table class="table table-striped text-center">
     <thead>
       <tr>
@@ -10,24 +10,25 @@
         <th scope="col">نوع الطلب</th>
         <th scope="col">السعر</th>
         <th scope="col">ملاحظات</th>
-        <th></th>
+        <th scope="col">تعديل</th>
+        <th scope="col">حذف</th> 
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let request of requestTypes; let i = index">
         <td scope="row">{{ i + 1 }}</td>
-        <td (click)="viewTypeDetails(request.id)">{{ request.name }}</td>
+        <td><b><a [routerLink]="['/administration/types', request.id,{componentMode: 'viewMode'}]">{{ request.name }}</a></b></td>
         <td>{{ request.price }}</td>
         <td>{{ request.description}}</td>
-    
-        <td>
-            <button type="button" class="edit-btn btn btn-info" (click)="onEdit(request.id)">تعديل
+        <td >
+          <button type="button" class="edit-btn btn btn-info" (click)="onEdit(request.id)">تعديل
               <i class="fa fa-edit"></i>
             </button>
+        </td >
+        <td >
             <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(request.id)">حذف
                 <i class="fa fa-trash"></i>
-
-            </button>
+              </button>
         </td>
       </tr>
         

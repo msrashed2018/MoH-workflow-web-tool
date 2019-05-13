@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RequestTypeService } from '../../../../services/administration/request-type.service';
+import { ConfirmModalService } from '../../../confirm-modal/confirm-modal.service';
 
 @Component({
   selector: 'app-request-types-list',
@@ -14,48 +15,38 @@ export class RequestTypesListComponent implements OnInit {
 
   constructor(
     private requestTypeService:RequestTypeService,
-    private router : Router
+    private router : Router,
+    private confirmationModalService: ConfirmModalService
   ) { 
 
   }
 
   ngOnInit() {
-    this.getAllRequests();
+    this.refreshData();
   }
 
-  getAllRequests(){
+  refreshData(){
     this.requestTypeService.retrieveAllRequestTypes().subscribe(
       response => {
-        console.log(response);
         this.requestTypes = response as any;
       }
     )
   }
-  viewTypeDetails(id){
-    this.router.navigate(['administration/request',id, { componentMode: "viewMode"}])
-  }
+
   onEdit(id){
-    this.router.navigate(['administration/request', id ,{componentMode: "editMode"}])
+    this.router.navigate(['administration/types', id ,{componentMode: "editMode"}])
   }
-  deleteRequestType(name,id) {
-    // console.log(`delete requestType ${id}` )
-    // this.requestTypeService.deleteRequestType(id).subscribe (
-    //   response => {
-    //     console.log(response);
-    //     this.message = ` تم حذف المحافظه بنجاح `
-    //     // this.message =  `Delete of RequestType ${name} Successful!`;
-    //     this.refreshRequestTypes();
-    //   }
-    // )
-  }
-
-  updateRequestType(id) {
-    console.log(`update ${id}`)
-    this.router.navigate(['request-types',id])
-  }
-
-  addRequestType() {
-    this.router.navigate(['request-types',-1])
+  onDelete(id) {
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف حالة النوع ')
+    .then((confirmed) => {
+      if(confirmed){
+      this.requestTypeService.deleteRequestType(id).subscribe (
+        response => {
+          this.refreshData();
+        }
+      )
+    }
+    })
   }
 
 }

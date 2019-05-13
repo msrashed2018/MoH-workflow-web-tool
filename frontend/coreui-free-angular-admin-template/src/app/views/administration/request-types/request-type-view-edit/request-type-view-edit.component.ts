@@ -12,26 +12,54 @@ export class RequestTypeViewEditComponent implements OnInit {
   constructor(      private requestTypeService:RequestTypeService,
     private router : Router,private route:ActivatedRoute
   ) { }
-  requestId;
+  requestTypeId;
   componentMode;
   requestModel={};
+  disabled : boolean = false;
+  successMessage: boolean = false;
+  isCollapsed: boolean = false;
+  iconCollapse: string = 'icon-arrow-up';
   ngOnInit() {
     this.route.params.forEach((urlParams) => {
-      this.requestId= urlParams['id'];
+      this.requestTypeId= urlParams['id'];
       this.componentMode=urlParams['componentMode'];
       this.displayTypeDetails();
-      console.log(this.requestId,this.componentMode)
     });
+    if(this.componentMode == "editMode"){
+      this.disabled = false;
+    }else{
+    this.disabled = true;
+    }
   }
   displayTypeDetails(){
-    this.requestTypeService.retrieveRequestType(this.requestId).subscribe(
+    this.requestTypeService.retrieveRequestType(this.requestTypeId).subscribe(
       response => {
-        console.log(response);
         this.requestModel = response as any;
       }
     )
   }
+  collapsed(event: any): void {
+  }
 
-
+  expanded(event: any): void {
+  }
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+    this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
+  }
+  onSave(){
+    this.requestTypeService.createRequestType(this.requestModel).subscribe(
+      result => {
+        this.router.navigateByUrl("/administration/types");
+      },
+      error => {
+        console.log('oops', error);
+        this.successMessage = false;
+      }
+    );
+  }
+  close(){
+    this.router.navigateByUrl("/administration/types");
+  }
 
 }

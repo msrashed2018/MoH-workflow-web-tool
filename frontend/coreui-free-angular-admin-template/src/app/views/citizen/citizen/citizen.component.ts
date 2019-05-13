@@ -22,8 +22,10 @@ import { BasicAuthenticationService } from '../../../services/authentication/bas
 export class CitizenComponent implements OnInit {
   citizen : Citizen= new Citizen;
   successMessage: boolean = false;
+  errorMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
+  message: string = "";
 
   
   
@@ -115,14 +117,16 @@ export class CitizenComponent implements OnInit {
       result => {
         console.log(" creating new Citizen ");
         // this.successMessage = true;
+        this.errorMessage = false;
         this.router.navigateByUrl("/citizen/search");
 
 
       },
       error => {
         console.log('oops', error);
-        this.successMessage = false;
-      }
+        this.errorMessage = true;
+        this.message = error.error.message;
+       }
     );
   }
 

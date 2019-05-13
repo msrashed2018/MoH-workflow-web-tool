@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Committee } from '../../../model/committee.model';
 import { CommitteeService } from '../../../services/administration/committee.service';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 @Component({
   selector: 'app-list-committees',
@@ -15,7 +15,7 @@ export class ListCommitteesComponent implements OnInit {
 
   constructor(
     private committeeService:CommitteeService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }

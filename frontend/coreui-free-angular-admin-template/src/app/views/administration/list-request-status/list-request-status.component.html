@@ -9,7 +9,8 @@
         <th scope="col">رقم</th>
         <th scope="col">حالة الطلب</th>
         <th scope="col">ملاحظات</th>
-        <th scope="col"></th>
+        <th scope="col">تعديل</th>
+        <th scope="col">حذف</th> 
       </tr>
     </thead>
     <tbody>
@@ -17,12 +18,12 @@
                   <td><b>{{i+1}}</b></td>
                 <td  ><a [routerLink]="['/administration/request-status', status.id,{componentMode: 'viewMode'}]"><b>{{status.name}}</b></a></td>
                 <td  ><b>{{status.description}}</b></td>
-                <td style="width: 30%">
-                  
+                <td >
                   <button type="button" class="edit-btn btn btn-info" (click)="onEdit(status.id)">تعديل
                       <i class="fa fa-edit"></i>
                     </button>
-                
+                </td >
+                <td >
                     <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(status.id)">حذف
                         <i class="fa fa-trash"></i>
                       </button>

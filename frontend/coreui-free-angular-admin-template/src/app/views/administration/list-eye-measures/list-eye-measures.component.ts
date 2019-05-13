@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EyeMeasureService } from '../../../services/administration/eye-measure.service';
 import { EyeMeasure } from '../../../model/eye-measure.model';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class ListEyeMeasureComponent implements OnInit {
 
   constructor(
     private eyeMeasureService:EyeMeasureService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }

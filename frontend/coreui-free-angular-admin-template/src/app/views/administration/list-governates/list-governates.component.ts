@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovernateService } from '../../../services/administration/governate.service';
 import { Governate } from '../../../model/governate.model';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 // import { BrowserModule } from '@angular/platform-browser';
 
 
@@ -18,7 +18,7 @@ export class ListGovernatesComponent implements OnInit {
   constructor(
     private governateService:GovernateService,
     private router : Router,
-    private confirmationModalService: ConfirmationModalService
+    private confirmationModalService: ConfirmModalService
   ) { 
 
   }
@@ -35,7 +35,7 @@ export class ListGovernatesComponent implements OnInit {
     )
   }
   onDelete(id) {
-    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المدينة ')
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المحافظة ')
     .then((confirmed) => {
       if(confirmed){
         this.governateService.deleteGovernate(id).subscribe (

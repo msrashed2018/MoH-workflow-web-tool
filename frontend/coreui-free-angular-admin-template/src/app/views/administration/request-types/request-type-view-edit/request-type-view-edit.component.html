@@ -1,38 +1,70 @@
-<div class="lookup-form-container mt-3" >
-  <div class="title-continer my-4 text-center">
-    <h3 class="title py-3">اضافة طلب</h3>
-  </div>
-  <form name="form" #f="ngForm" class="w-75 m-auto" (ngSubmit)="f.form.valid && onSave()" novalidate>
-      <div class="form-group row">
-          <label for="type-input" class="col-2 col-form-label">نوع الطلب</label>
-          <div class="col-10">
-          <input [disabled]="componentMode=='viewMode'" maxlength="50" class="form-control" [(ngModel)]="requestModel.name"  #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required type="text"  name="type">
-          <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
-              <div *ngIf="name.errors.required"> هذا الحقل مطلوب</div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-          <label for="price-input" class="col-2 col-form-label">السعر</label>
-          <div class="col-10">
-          <input [disabled]="componentMode=='viewMode'" class="form-control" type="number" [(ngModel)]="requestModel.price" #price="ngModel" [ngClass]="{ 'is-invalid': f.submitted && price.invalid }" required  name="price">
-          <div *ngIf="f.submitted && price.invalid" class="invalid-feedback">
-              <div *ngIf="price.errors.required"> هذا الحقل مطلوب</div>
-          </div>
-          </div>
-      </div>
-      <div class="form-group row">
-          <label for="desc-input" class="col-2 col-form-label">ملاحظات</label>
-          <div class="col-10">
-          <textarea [disabled]="componentMode=='viewMode'" maxlength="150" class="form-control" type="text" [(ngModel)]="requestModel.description"  name="description"></textarea>
-          </div>
-      </div>
-      <div *ngIf="componentMode=='editMode'" class="form-inputs mt-5 pull-left">
-          <button type="submit" class="btn btn-success">حفظ</button>
-          <button type="submit" class="btn btn-danger" (click)="onCancel()">رجوع</button>
-          
-<!-- <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button> -->
+<div class="animated fadeIn ">
 
+    <div *ngIf="successMessage">
+      <br>
+      <alert type="success">
+        <strong>تم إضافه حالة الطلب بنجاح! </strong>
+      </alert>
+    </div>
+    <div *ngIf="! successMessage">
+      <br>
+    </div>
+    <div class="row ">
+      <div style="width:100% !important;">
+        <div class="card">
+          <div class="card-header">
+            <strong>بيانات نوع الطلب</strong>
+            <div class="card-header-actions">
+              <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i
+                  class={{iconCollapse}}></i></button>
+            </div>
+          </div>
+  
+          <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body ">
+            <form   class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()" >
+  
+              <div class="form-group row">
+                <label class="col-md-1 col-form-label font-weight-bold" for="text-input">النوع</label>
+                <div class="col-md-6">
+                  <input [attr.disabled]="disabled ? '' : null" maxlength="50" [(ngModel)]="requestModel.name"  #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required type="text"  name="text-input" class="form-control" >
+                  <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+                    <div *ngIf="name.errors.required"> هذا الحقل مطلوب</div>
+                  </div>
+                </div>
+              </div>
+
+                <div class="form-group row">
+                    <label for="price" class="col-md-1 col-form-label font-weight-bold">السعر</label>
+                    <div class="col-md-6">
+                        <input [attr.disabled]="disabled ? '' : null" class="form-control" type="number" [(ngModel)]="requestModel.price" #price="ngModel" [ngClass]="{ 'is-invalid': f.submitted && price.invalid }" required  name="price">
+                    <div *ngIf="f.submitted && price.invalid" class="invalid-feedback">
+                        <div *ngIf="price.errors.required"> هذا الحقل مطلوب</div>
+                    </div>
+                    </div>
+                </div>
+
+
+              <div class="form-group row">
+                <label class="col-md-1 col-form-label font-weight-bold" for="description">ملاحظات</label>
+                <div class="col-md-6">
+                  <input [attr.disabled]="disabled ? '' : null" [(ngModel)]="requestModel.description" #price="ngModel" type="text"  name="description" class="form-control" placeholder="">
+                </div>
+              </div>
+              <div *ngIf="componentMode=='editMode'" class="card-footer">
+                <button type="submit" class="btn btn-sm btn-success" ><i class="fa fa-dot-circle-o"></i>حفظ</button>
+                <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i class="fa fa-ban"></i> رجوع</button>
+              </div>
+              <div *ngIf="componentMode=='viewMode'" class="card-footer">
+                  <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i class="fa fa-ban"></i> رجوع</button>
+              </div>
+    
+            </form>
+          </div>
+          
+        </div>
+  
       </div>
-  </form>
-</div>
+  
+    </div>
+    <!--/.row-->
+  </div>

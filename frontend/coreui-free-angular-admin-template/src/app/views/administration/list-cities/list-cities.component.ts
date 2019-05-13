@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CityService } from '../../../services/administration/city.service';
 import { City } from '../../../model/city.model';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class ListCitiesComponent implements OnInit {
   constructor(
     private cityService:CityService,
     private router : Router, 
-    private confirmationModalService: ConfirmationModalService
+    private confirmationModalService: ConfirmModalService
   ) { 
 
   }
@@ -28,7 +28,6 @@ export class ListCitiesComponent implements OnInit {
   refreshData(){
     this.cityService.retrieveAllCities().subscribe(
       response => {
-        console.log(response)
         this.cities = response;
       }
     )

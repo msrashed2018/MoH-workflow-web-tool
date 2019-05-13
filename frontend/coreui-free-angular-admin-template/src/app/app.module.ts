@@ -47,7 +47,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { RouteGuardService } from './services/authentication/route-guard.service';
 import { HttpIntercepterBasicAuthService } from './services/authentication/http/http-intercepter-basic-auth.service';
-import { UnderConstructionComponent } from './under-construction/under-construction.component';
+import { ConfirmModalComponent } from './views/confirm-modal/confirm-modal.component';
 
 @NgModule({
   imports: [
@@ -76,7 +76,7 @@ import { UnderConstructionComponent } from './under-construction/under-construct
     P500Component,
     LoginComponent,
     RegisterComponent,
-    UnderConstructionComponent
+    ConfirmModalComponent
     
   ],
  
@@ -87,6 +87,8 @@ import { UnderConstructionComponent } from './under-construction/under-construct
   RouteGuardService,
   {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterBasicAuthService, multi: true },
   DatePipe],
-    bootstrap: [ AppComponent ],
+  bootstrap: [ AppComponent ],
+  entryComponents : [ ConfirmModalComponent],
+  exports : [ ConfirmModalComponent]
 })
 export class AppModule { }

@@ -1,14 +1,17 @@
 <div class="animated fadeIn ">
 
-    <div *ngIf="successMessage">
+    <!-- <div *ngIf="successMessage">
         <br>
         <alert type="success">
             <strong>تم إضافه بيانات المواطن بنجاح! </strong>
         </alert>
-    </div>
-    <div *ngIf="! successMessage">
+    </div> -->
+    <div *ngIf="errorMessage">
         <br>
-    </div>
+        <alert type="danger">
+          <strong>{{message}}</strong>
+        </alert>
+      </div> 
     <div class="row ">
         <div style="width:100% !important;">
             <div class="card">

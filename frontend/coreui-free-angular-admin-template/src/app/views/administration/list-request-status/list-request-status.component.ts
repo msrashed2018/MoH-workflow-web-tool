@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RequestStatus } from '../../../model/request-status.model';
 import { RequestStatusService } from '../../../services/administration/request-status.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
 
@@ -18,7 +18,7 @@ export class ListRequestStatusComponent implements OnInit {
 
   constructor(
     private requestStatusService:RequestStatusService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }

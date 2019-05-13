@@ -3,7 +3,6 @@ import { RequestTypeService } from '../../../../services/administration/request-
 import { NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-request-type-data',
@@ -30,27 +29,15 @@ export class RequestTypeDataComponent implements OnInit {
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
   onSave(){
-     if(this.componentViewMode=='addMode')
-     {
-          this.createRequestType();
-     }
-  }
-
-  close(){
-    this.router.navigate(["/administration/request-types"])
-  }
-
-  createRequestType(){
     this.requestTypeService.createRequestType(this.requestModel).subscribe(
       response => {
-        console.log(response);
-        this.router.navigate(["/administration/request-types"])
+        this.router.navigate(["/administration/types"])
       }
     )
   }
-  
 
-
-
+  close(){
+    this.router.navigate(["/administration/types"])
+  }
 
 }

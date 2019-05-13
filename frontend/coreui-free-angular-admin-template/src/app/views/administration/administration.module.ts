@@ -8,7 +8,6 @@ import { ListEyeMeasureComponent } from './list-eye-measures/list-eye-measures.c
 import { ListGendersComponent } from './list-genders/list-genders.component';
 import { ListOccupationsComponent } from './list-occupations/list-occupations.component';
 import { ListRequestStatusComponent } from './list-request-status/list-request-status.component';
-import { ListRequestTypesComponent } from './list-request-types/list-request-types.component';
 import { ListGovernatesComponent } from './list-governates/list-governates.component';
 import { ListUsersComponent } from './list-users/list-users.component';
 import { ListRequiredDocumentsComponent } from './list-required-documents/list-required-documents.component';
@@ -24,8 +23,6 @@ import { RequestStatusDataComponent } from './list-request-status/request-status
 import { RequestStatusViewEditComponent } from './list-request-status/request-status-view-edit/request-status-view-edit.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
-import { ConfirmationModalService } from './confirmation-modal/confirmation-modal.service';
 import { CustomDataComponent } from './list-customs/custom-data/custom-data.component';
 import { CustomViewEditComponent } from './list-customs/custom-view-edit/custom-view-edit.component';
 import { CommitteeDataComponent } from './list-committees/committee-data/committee-data.component';
@@ -54,6 +51,7 @@ import { EyeMeasureViewEditComponent } from './list-eye-measures/eye-measure-vie
 import { EyeRevealSettingViewEditComponent } from './list-eye-reveal-setting/eye-reveal-setting-view-edit/eye-reveal-setting-view-edit.component';
 import { EyeRevealSettingDataComponent } from './list-eye-reveal-setting/eye-reveal-setting-data/eye-reveal-setting-data.component';
 import { ListEyeRevealSettingComponent } from './list-eye-reveal-setting/list-eye-reveal-setting.component';
+import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 
 @NgModule({
   declarations: [
@@ -66,7 +64,6 @@ import { ListEyeRevealSettingComponent } from './list-eye-reveal-setting/list-ey
     ListGendersComponent,
     ListOccupationsComponent,
     ListRequestStatusComponent,
-    ListRequestTypesComponent,
     ListGovernatesComponent,
     ListUsersComponent,
     ListRequiredDocumentsComponent,
@@ -76,7 +73,6 @@ import { ListEyeRevealSettingComponent } from './list-eye-reveal-setting/list-ey
     RequestTypeViewEditComponent,
     RequestStatusDataComponent,
     RequestStatusViewEditComponent,
-    ConfirmationModalComponent,
     CustomDataComponent,
     CustomViewEditComponent,
     CommitteeDataComponent,
@@ -106,7 +102,7 @@ import { ListEyeRevealSettingComponent } from './list-eye-reveal-setting/list-ey
     EyeRevealSettingDataComponent,
     ListEyeRevealSettingComponent
   ],
-  providers :[ ConfirmationModalService ],
+  providers :[ConfirmModalService ],
   imports: [
     AdministrationRoutingModule, CommonModule,FormsModule,
     AlertModule,
@@ -115,8 +111,5 @@ import { ListEyeRevealSettingComponent } from './list-eye-reveal-setting/list-ey
     CollapseModule.forRoot(),
     NgbModalModule
   ], 
-  entryComponents : [ ConfirmationModalComponent],
-  exports : [ ConfirmationModalComponent]
-
 })
 export class AdministrationModule { }

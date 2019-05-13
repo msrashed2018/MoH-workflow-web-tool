@@ -24,30 +24,32 @@
                 <form   class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()" >
       
                   <div class="form-group row">
-                    <label class="col-md-1 col-form-label font-weight-bold" for="text-input">النوع</label>
+                    <label class="col-md-1 col-form-label font-weight-bold" for="name">النوع</label>
                     <div class="col-md-6">
-                      <input maxlength="50" [(ngModel)]="requestModel.name"  #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required type="text"  name="text-input" class="form-control" >
+                      <input maxlength="50" [(ngModel)]="requestModel.name"  #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required type="text"  name="name" class="form-control" >
                       <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
                         <div *ngIf="name.errors.required"> هذا الحقل مطلوب</div>
                       </div>
                     </div>
                   </div>
 
-                    <div class="form-group row">
-                        <label for="price" class="col-md-1 col-form-label font-weight-bold">السعر</label>
-                        <div class="col-md-6">
-                            <input class="form-control" type="number" [(ngModel)]="requestModel.price" #price="ngModel" [ngClass]="{ 'is-invalid': f.submitted && price.invalid }" required  name="price">
-                        <div *ngIf="f.submitted && price.invalid" class="invalid-feedback">
-                            <div *ngIf="price.errors.required"> هذا الحقل مطلوب</div>
-                        </div>
-                        </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-1 col-form-label font-weight-bold" for="price">السعر</label>
+                    <div class="col-md-6">
+                      <input [(ngModel)]="requestModel.price"  #price="ngModel" [ngClass]="{ 'is-invalid': f.submitted && price.invalid }" required type="number"  name="price" class="form-control" >
+                      <div *ngIf="f.submitted && price.invalid" class="invalid-feedback">
+                        <div *ngIf="price.errors.required"> هذا الحقل مطلوب</div>
+                      </div>
                     </div>
+                  </div>
+
 
 
                   <div class="form-group row">
                     <label class="col-md-1 col-form-label font-weight-bold" for="description">ملاحظات</label>
                     <div class="col-md-6">
-                      <input [(ngModel)]="requestModel.description" #price="ngModel" type="text"  name="description" class="form-control" placeholder="">
+                      <input [(ngModel)]="requestModel.description" #description="ngModel" type="text"  name="description" class="form-control" placeholder="">
                     </div>
                   </div>
                   <div class="card-footer">

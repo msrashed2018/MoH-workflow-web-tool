@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DisabilityService } from '../../../services/administration/disability.service';
 import { Disability } from '../../../model/disability.model';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 @Component({
   selector: 'app-list-disabilities',
@@ -16,7 +16,7 @@ export class ListDisabilitiesComponent implements OnInit {
 
   constructor(
     private disabilityService:DisabilityService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }
@@ -33,7 +33,7 @@ export class ListDisabilitiesComponent implements OnInit {
   }
 
   onDelete(id) {
-    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف السيارة؟ ')
+    this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف الاعاقة ')
     .then((confirmed) => {
       console.log('User confirmed:', confirmed)
       if(confirmed){

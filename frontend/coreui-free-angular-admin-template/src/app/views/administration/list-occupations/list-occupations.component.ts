@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { OccupationService } from '../../../services/administration/occupation.service';
 import { Occupation } from '../../../model/occupation.model';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationModalService } from '../confirmation-modal/confirmation-modal.service';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class ListOccupationsComponent implements OnInit {
 
   constructor(
     private occupationService:OccupationService,
-    private router : Router, private confirmationModalService: ConfirmationModalService
+    private router : Router, private confirmationModalService: ConfirmModalService
   ) { 
 
   }
