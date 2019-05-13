@@ -77,8 +77,8 @@ export const navItems: NavData[] = [
       },
       {
         name: `${REQUEST_TYPES}`,
-        url: '/administration/request-types',
-        icon: 'icon-star',
+        url: '/administration/types',
+        icon: 'icon-star'
       },
       {
         name: `${REQUEST_STATUS}`,

@@ -9,7 +9,6 @@ import { ListEyeMeasureComponent } from './list-eye-measures/list-eye-measures.c
 import { ListGendersComponent } from './list-genders/list-genders.component';
 import { ListOccupationsComponent } from './list-occupations/list-occupations.component';
 import { ListRequestStatusComponent } from './list-request-status/list-request-status.component';
-import { ListRequestTypesComponent } from './list-request-types/list-request-types.component';
 import { ListGovernatesComponent } from './list-governates/list-governates.component';
 import { ListUsersComponent } from './list-users/list-users.component';
 import { ListRequiredDocumentsComponent } from './list-required-documents/list-required-documents.component';
@@ -53,26 +52,23 @@ const routes: Routes = [
       title: 'Administration'
     },
     children: [
+      
       {
-        path: '',
-        redirectTo: 'request-types'
-      },
-      {
-        path: 'request-types',
+        path: 'types',
         component: RequestTypesListComponent,
         data: {
           title: 'Request Types'
         }
       },
       {
-        path: 'request-data',
+        path: 'type-data',
         component: RequestTypeDataComponent,
         data: {
           title: 'Request Data'
         }
       },
       {
-        path: 'request/:id',
+        path: 'types/:id',
         component: RequestTypeViewEditComponent,
         data: {
           title: 'Request Data'
