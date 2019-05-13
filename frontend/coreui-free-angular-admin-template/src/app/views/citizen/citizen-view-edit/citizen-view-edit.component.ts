@@ -21,9 +21,10 @@ import { BasicAuthenticationService } from '../../../services/authentication/bas
 })
 export class CitizenViewEditComponent implements OnInit {
   citizen : Citizen= new Citizen;
-  successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
+  errorMessage: boolean = false;
+  message: string = "";
   disabled : boolean = false;
   citizenId : number;
   componentMode;
@@ -123,8 +124,8 @@ export class CitizenViewEditComponent implements OnInit {
   }
   onSave(){
   
-    this.citizen.createdBy = this.authenticationService.getAuthenticatedUser();
-    this.citizen.createdDate =this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+    this.citizen.modifiedBy = this.authenticationService.getAuthenticatedUser();
+    this.citizen.modifiedDate =this.datepipe.transform(new Date(), 'yyyy-MM-dd');
 
     let governate = new Governate
     governate.id = this.selectedGovernateId;
@@ -147,12 +148,12 @@ export class CitizenViewEditComponent implements OnInit {
     this.citizenService.createCitizen(this.citizen).subscribe(
       result => {
         this.router.navigateByUrl("/citizen/search");
-
+        this.errorMessage = false;
 
       },
       error => {
-        console.log('oops', error);
-        this.successMessage = false;
+        this.errorMessage = true;
+        this.message = error.error.message
       }
     );
   }
