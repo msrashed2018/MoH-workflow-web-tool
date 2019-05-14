@@ -99,8 +99,16 @@ public class CitizenController {
 			throw new CitizenNotFoundException("id-" + id);
 //		citizenRepository.deleteById(id);
 
-		Citizen updatedCitzen = citizenRepository.save(citizen);
+		Citizen updatedCitzen = null;
 
-		return new ResponseEntity<Citizen>(updatedCitzen, HttpStatus.OK);
+		try {
+			updatedCitzen = citizenRepository.save(citizen);
+			return new ResponseEntity<Citizen>(updatedCitzen, HttpStatus.OK);
+		} catch (DataIntegrityViolationException ex) {
+			throw new CitizenValidationException("هذا الرقم القومي يوجد بالفعل");
+			
+		}
+		
+		
 	}
 }
