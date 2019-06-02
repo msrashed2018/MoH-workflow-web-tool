@@ -33,6 +33,7 @@ export interface NavData {
 
 export const navItems: NavData[] = [
   {
+
     name:  'المواطنين',
     url: '/citizen/search',
     icon: 'cui-people',
@@ -41,7 +42,7 @@ export const navItems: NavData[] = [
   
   {
     name: 'الطلبات',
-    url: '/theme/typography',
+    url: '/request/search',
     icon: 'cui-envelope-letter'
   },
   
@@ -61,7 +62,7 @@ export const navItems: NavData[] = [
     icon: 'icon-pie-chart'
   },
   {
-    name: 'اﻹداره',
+    name: 'ادارة النظام',
     url: '/administration',
     icon: 'cui-briefcase',
     children: [

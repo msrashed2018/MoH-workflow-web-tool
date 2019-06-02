@@ -26,6 +26,18 @@ export class HttpIntercepterBasicAuthService implements HttpInterceptor{
     }
     return next.handle(request);
   }
-
-
 }
+
+
+// @Injectable()
+// export class SpringbootInterceptor implements HttpInterceptor {
+//   constructor(public auth: AuthService) {}
+//   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+//     // Clone the request to add the new header
+//     const clonedRequest = req.clone({ headers: req.headers.set('Set-Cookie', 'jsessionid=' + this.auth.getJSessionId()) });
+
+//     // Pass control to the next request
+//     return next.handle(clonedRequest);
+//   }
+// }

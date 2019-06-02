@@ -13,6 +13,10 @@ import { Gender } from '../../../model/gender.model';
 import { GenderService } from '../../../services/administration/gender.service';
 import { DatePipe } from '@angular/common';
 import { BasicAuthenticationService } from '../../../services/authentication/basic-authentication.service';
+import { RequestService } from '../../../services/request.service';
+import { Request } from '../../../model/request.model';
+import { RequestType } from '../../../model/request-type.model';
+import { RequestTypeService } from '../../../services/administration/request-type.service';
 
 @Component({
   selector: 'app-citizen-view-edit',
@@ -21,29 +25,35 @@ import { BasicAuthenticationService } from '../../../services/authentication/bas
 })
 export class CitizenViewEditComponent implements OnInit {
   citizen : Citizen= new Citizen;
+  
   isCollapsed: boolean = false;
+  isCitizenRequestsCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
+  iconCitizenRequestsCollapse: string = 'icon-arrow-up';
   errorMessage: boolean = false;
   message: string = "";
   disabled : boolean = false;
   citizenId : number;
   componentMode;
   public occupations: Occupation[] = [];
+  public requests: Request[] = [];
+  public requestTypes: RequestType[] = [];
   public governates : Governate[] = [];
   public cities : City[] = [];
   public genders : Gender[] = [];
   public selectedOccupationId : number
+  selectedRequestTypeId : number = 0;
   public selectedGovernateId : number
   public selectedCityId : number
   public selectedGenderId : number
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private authenticationService: BasicAuthenticationService, private datepipe: DatePipe, private genderService: GenderService, private governateService: GovernateService, private occupationService: OccupationService, private citizenService: CitizenService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder,  private requestTypeService: RequestTypeService, private requestService: RequestService, private authenticationService: BasicAuthenticationService, private datepipe: DatePipe, private genderService: GenderService, private governateService: GovernateService, private occupationService: OccupationService, private citizenService: CitizenService, private router: Router) { }
 
   ngOnInit() {
     // this.fillCities();
     this.fillGovernates();
     this.fillGenders();
     this.fillOccupations();
-
+    this.fillRequestTypes();
     this.route.params.forEach((urlParams) => {
       this.citizenId= urlParams['id'];
       this.componentMode=urlParams['componentMode'];
@@ -54,6 +64,7 @@ export class CitizenViewEditComponent implements OnInit {
         this.disabled = true;
       }
     });
+    this.fillCitizenRequests();
   }
 
   displayCitizenDetails(){
@@ -88,6 +99,18 @@ export class CitizenViewEditComponent implements OnInit {
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
+  }
+
+  citizenRequestsCollapsed(event: any): void {
+    // console.log(event);
+  }
+
+  citizenRequestsExpanded(event: any): void {
+    // console.log(event);
+  }
+  toggleCitizenRequestsCollapse(): void {
+    this.isCitizenRequestsCollapsed = !this.isCitizenRequestsCollapsed;
+    this.iconCitizenRequestsCollapse = this.isCitizenRequestsCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
   onGovernateChanged(value){
     console.log("value = "+ value)
@@ -193,10 +216,70 @@ export class CitizenViewEditComponent implements OnInit {
   fillGovernates(){
     this.governateService.retrieveAllGovernates().subscribe(
       result => {
-        this.governates = result;
+        this.governates = result['content'];
       },
       error => {
         console.log('oops', error);
       });
+  }
+
+  fillCitizenRequests(){
+    this.requestService.retrieveCitizenRequests(this.citizenId).subscribe(
+      result=>{
+         this.requests = result;
+      },
+      error=>{
+        console.log('oops', error);
+        this.errorMessage = true;
+        this.message = error.error.message;
+      }
+    )
+  }
+  fillRequestTypes(){
+    this.requestTypeService.retrieveAllRequestTypes().subscribe(
+      result => {
+        this.requestTypes = result;
+      },
+      error => {
+        console.log('oops', error);
+      });
+  }
+
+  createNewRequest(){
+    let request = new Request();
+    request.requestDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+    request.createdBy = this.authenticationService.getAuthenticatedUser();
+
+    let requestType = new RequestType;
+    requestType.id = this.selectedRequestTypeId;
+    request.requestType = requestType;
+
+    this.requestService.createRequest(this.citizenId,request).subscribe(
+      result=>{
+        this.fillCitizenRequests();
+      },
+      error=>{
+        console.log('oops', error);
+        this.errorMessage = true;
+        this.message = error.error.message;
+      }
+    )
+  }
+
+  onDeleteRequest(requestId){
+    this.requestService.deleteRequest(this.citizenId,requestId).subscribe(
+      result=>{
+        this.fillCitizenRequests();
+      },
+      error=>{
+        console.log('oops', error);
+        this.errorMessage = true;
+        this.message = error.error.message;
+      }
+    )
+  }
+
+  onEditRequest(requestId){
+    this.router.navigate(["/request/",requestId,{componentMode: "editMode", citizenId:this.citizenId}]);
   }
 }

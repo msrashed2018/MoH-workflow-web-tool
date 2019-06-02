@@ -25,6 +25,8 @@ export class LoginComponent {
     console.log("calling auth service with : " + this.username + ", and password: " + this.password);
     this.authService.executeAuthenticationService(this.username, this.password)
       .subscribe(result => {
+
+
         this.userAuthorities= result;
         console.log(this.userAuthorities.message)
         console.log(this.userAuthorities.authorities)

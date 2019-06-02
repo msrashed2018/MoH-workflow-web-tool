@@ -12,8 +12,10 @@ import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
   styleUrls: ['./list-governates.component.scss']
 })
 export class ListGovernatesComponent implements OnInit {
-  governates: Governate[]
+  governates:  Governate[]
+  pages: number = 5;
   message: string
+  currentPage: number = 5;
 
   constructor(
     private governateService:GovernateService,
@@ -24,15 +26,22 @@ export class ListGovernatesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.pages=5;
     this.refreshGovernates();
   }
 
   refreshGovernates(){
     this.governateService.retrieveAllGovernates().subscribe(
       response => {
-        this.governates = response;
+        this.governates = response['content'];
+        // this.pages = response['totalPages'];
       }
     )
+  }
+  pageChanged(event: any): void {
+    this.currentPage = event.page;
+    console.log('Page changed to: ' + event.page);
+    console.log('Number items per page: ' + event.itemsPerPage);
   }
   onDelete(id) {
     this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المحافظة ')

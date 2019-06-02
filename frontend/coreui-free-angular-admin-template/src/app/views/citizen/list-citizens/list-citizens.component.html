@@ -13,14 +13,12 @@
     <strong>عفوا، حدث خطا، حاول مره أخرى. </strong>
   </alert>
 </div> 
-<button  (click)="onAdd()" class="btn btn-success "><strong> مواطن جديد</strong>  <i class="fa fa-plus-circle"></i></button>
+<div>
+  <button  (click)="onAdd()" class="btn btn-success "><strong> مواطن جديد</strong>  <i class="fa fa-plus-circle"></i></button>
+</div><br/>
 <button type="button" class="btn btn-pill btn-primary" style="width: 100px;  color:white !important;"  (click)="searchchanged($event)">بحث  <i class="fa fa-search"></i></button>
-<!-- <output class="searchHint" > من فضلك ادخل الرقم القومي :</output> -->
-<input style=" width: 200px; border: 2px solid grey; border-radius: 4px;" type="text"  placeholder="   ادخل الرقم القومي " [(ngModel)]="searchByID" />
-
-
-<br>
-<br>
+<input style=" width: 200px; border: 2px solid grey; border-radius: 4px;" type="number"  placeholder="   ادخل الرقم القومي " [(ngModel)]="searchByID" />
+<br/>
 <table class="table table-responsive-sm table-hover table-outline mb-0">
   <thead class="thead-light">
     <tr>

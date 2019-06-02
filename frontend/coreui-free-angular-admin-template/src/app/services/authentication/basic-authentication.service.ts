@@ -17,7 +17,7 @@ export class BasicAuthenticationService {
 
   executeAuthenticationService(username, password) {
     let basicAuthHeaderString = 'Basic ' + window.btoa(username + ':' + password);
-
+    
     let headers = new HttpHeaders({
         Authorization: basicAuthHeaderString
       })
@@ -28,6 +28,8 @@ export class BasicAuthenticationService {
       {headers}).pipe(
         map(
           data => {
+            
+
             sessionStorage.setItem(AUTHENTICATED_USER, username);
             sessionStorage.setItem(TOKEN, basicAuthHeaderString);
             return data;

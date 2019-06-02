@@ -6,26 +6,19 @@ import { CitizenComponent } from './citizen/citizen.component';
 import { CitizenViewEditComponent } from './citizen-view-edit/citizen-view-edit.component';
 const routes: Routes = [
   {
-
-    // path: 'citizens',
-    // component: ListCitizensComponent,
-    // data: {
-    //   title: 'الصفحه الرئيسيه'
-    // }
-
     path: 'search',
     component: ListCitizensComponent,
     data: {
       title: 'citizens'
     }
-    },
-    {
+  },
+  {
       path: 'new-citizen',
       component: CitizenComponent,
       data: {
         title: 'New Citizen'
       }
-    },
+  },
     {
       path: 'view-edit/:id',
       component: CitizenViewEditComponent,

@@ -8,7 +8,7 @@ import { LocationStrategy, HashLocationStrategy, CommonModule, DatePipe } from '
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -48,6 +48,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { RouteGuardService } from './services/authentication/route-guard.service';
 import { HttpIntercepterBasicAuthService } from './services/authentication/http/http-intercepter-basic-auth.service';
 import { ConfirmModalComponent } from './views/confirm-modal/confirm-modal.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -66,7 +67,9 @@ import { ConfirmModalComponent } from './views/confirm-modal/confirm-modal.compo
     HttpModule,
     HttpClientModule,
     FormsModule,    
-    AlertModule.forRoot(),  
+    AlertModule.forRoot(), 
+    CollapseModule.forRoot() ,
+    NgbModalModule
 
   ],
   declarations: [

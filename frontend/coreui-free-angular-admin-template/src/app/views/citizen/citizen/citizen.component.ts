@@ -13,6 +13,10 @@ import { Gender } from '../../../model/gender.model';
 import { GenderService } from '../../../services/administration/gender.service';
 import { DatePipe } from '@angular/common';
 import { BasicAuthenticationService } from '../../../services/authentication/basic-authentication.service';
+import { RequestService } from '../../../services/request.service';
+import { Request } from '../../../model/request.model';
+import { RequestTypeService } from '../../../services/administration/request-type.service';
+import { RequestType } from '../../../model/request-type.model';
 
 @Component({
   selector: 'app-citizen',
@@ -30,20 +34,23 @@ export class CitizenComponent implements OnInit {
   
   
   public occupations: Occupation[] = [];
+  public requestTypes: RequestType[] = [];
   public governates : Governate[] = [];
   public cities : City[] = [];
   public genders : Gender[] = [];
   public selectedOccupationId : number
+  public selectedRequestTypeId : number
   public selectedGovernateId : number
   public selectedCityId : number
   public selectedGenderId : number
-  constructor(private formBuilder: FormBuilder, private authenticationService: BasicAuthenticationService, private datepipe: DatePipe, private genderService: GenderService, private governateService: GovernateService, private occupationService: OccupationService, private citizenService: CitizenService, private router: Router ) { }
+  constructor(private requestTypeService: RequestTypeService, private requestService: RequestService, private formBuilder: FormBuilder, private authenticationService: BasicAuthenticationService, private datepipe: DatePipe, private genderService: GenderService, private governateService: GovernateService, private occupationService: OccupationService, private citizenService: CitizenService, private router: Router ) { }
 
   ngOnInit() {
     // this.fillCities();
     this.fillGovernates();
     this.fillGenders();
     this.fillOccupations();
+    this.fillRequestTypes();
     
   }
   collapsed(event: any): void {
@@ -58,7 +65,6 @@ export class CitizenComponent implements OnInit {
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
   onGovernateChanged(value){
-    console.log("value = "+ value)
     // let id = this.governates.find(g => g.name === value).id;
     this.fillCities(value);
   }
@@ -115,12 +121,11 @@ export class CitizenComponent implements OnInit {
 
     this.citizenService.createCitizen(this.citizen).subscribe(
       result => {
-        console.log(" creating new Citizen ");
-        // this.successMessage = true;
         this.errorMessage = false;
-        this.router.navigateByUrl("/citizen/search");
-
-
+        
+        this.citizen = result;
+        this.createRequest();
+        // this.router.navigateByUrl("/citizen/search");
       },
       error => {
         console.log('oops', error);
@@ -128,6 +133,27 @@ export class CitizenComponent implements OnInit {
         this.message = error.error.message;
        }
     );
+  }
+  createRequest(){
+    let request = new Request();
+    request.requestDate = this.citizen.createdDate;
+    request.createdBy = this.citizen.createdBy;
+
+    let rquestType = new RequestType;
+    rquestType.id = this.selectedRequestTypeId;
+    request.requestType = rquestType;
+
+    this.requestService.createRequest(this.citizen.id,request).subscribe(
+
+      result=>{
+         this.router.navigateByUrl("/citizen/search");
+      },
+      error=>{
+        console.log('oops', error);
+        this.errorMessage = true;
+        this.message = error.error.message;
+      }
+    )
   }
 
   fillOccupations(){
@@ -165,7 +191,16 @@ export class CitizenComponent implements OnInit {
   fillGovernates(){
     this.governateService.retrieveAllGovernates().subscribe(
       result => {
-        this.governates = result;
+        this.governates = result['content'];
+      },
+      error => {
+        console.log('oops', error);
+      });
+  }
+  fillRequestTypes(){
+    this.requestTypeService.retrieveAllRequestTypes().subscribe(
+      result => {
+        this.requestTypes = result;
       },
       error => {
         console.log('oops', error);

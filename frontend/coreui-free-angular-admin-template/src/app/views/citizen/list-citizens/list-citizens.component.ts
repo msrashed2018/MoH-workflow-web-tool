@@ -45,7 +45,6 @@ export class ListCitizensComponent implements OnInit {
 
         }
       );
-
   }
   calculateAge(dateString)
   {

@@ -14,7 +14,7 @@ export class GovernateService {
   ) { }
 
   retrieveAllGovernates() {
-    return this.http.get<Governate[]>(`${API_URL}/governates`);
+    return this.http.get<Governate[]>(`${API_URL}/governates?page=0&size=30`);
   }
   retrieveGovernateCities(governateId) {
     return this.http.get<City[]>(`${API_URL}/governates/${governateId}/cities`);

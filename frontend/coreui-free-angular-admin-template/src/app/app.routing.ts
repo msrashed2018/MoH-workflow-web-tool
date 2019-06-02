@@ -90,6 +90,12 @@ export const routes: Routes = [
 
       },
       {
+        path: 'request',
+        loadChildren: './views/request/request.module#RequestModule',
+        canActivate: [RouteGuardService],
+
+      },
+      {
         path: 'icons',
         loadChildren: './views/icons/icons.module#IconsModule',
         canActivate: [RouteGuardService],

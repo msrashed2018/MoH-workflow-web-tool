@@ -5,25 +5,24 @@ import { RequestStatus } from './request-status.model';
 import { Custom } from './custom.model';
 import { RequestDocument } from './request-document.model';
 import { TrafficManagement } from './traffic-management.model';
-import { RequestDetail } from './request-detail.model';
+import { EyeReveal } from './eye-reveal.model';
+import { BonesReveal } from './bones-reveal.model';
+import { RequestPayment } from './request-payment.model';
 
 export class Request {
     public id : number;
-    public name: string;
     public citizen: Citizen;
     public requestDate: String;
     public requestType: RequestType;
-    public receiptSerialNumber: string;
+    public payment: RequestPayment
+    public eyeReveal: EyeReveal;
+    public bonesReveal: BonesReveal;
     public custom: Custom;
-    public oldRequestId: number;
-    public paymentDone: string;
-    public paymentDate: string;
-    public committee: Committee;
     public createdBy: string;
     public modifiedBy: string;
     public modifiedDate: string;
     public requestStatus: RequestStatus;
-    public requestDetail: RequestDetail;
     public trafficManagement: TrafficManagement;
     public documents: RequestDocument[];
+    public description: string;
 }

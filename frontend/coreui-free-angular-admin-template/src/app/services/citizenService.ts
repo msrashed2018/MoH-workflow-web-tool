@@ -42,7 +42,7 @@ export const AUTHENTICATED_USER = 'authenticaterUser'
   }
 
   createCitizen(citizen : Citizen){
-    return this.http.post<Citizen[]>
+    return this.http.post<Citizen>
     (`${API_URL}`+'/citizens',citizen).pipe( map(
       data => {
       return data;

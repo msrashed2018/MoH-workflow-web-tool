@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { CommitteeService } from '../../../../services/administration/committee.service';
 import { Router } from '@angular/router';
 import { Zone } from '../../../../model/zone.model';
@@ -21,12 +21,12 @@ export class CommitteeDataComponent implements OnInit {
   public zones : Zone[];
   public members : CommitteeMember[]
   public selectedZoneId : number
-  public selectedMember1Id : number
-  public selectedMember2Id : number
-  public selectedMember3Id : number
-  public selectedMember4Id : number
-  public selectedMember5Id : number
-  public selectedMember6Id : number
+  public selectedMember1Id : number 
+  public selectedMember2Id : number 
+  public selectedMember3Id : number = 0;
+  public selectedMember4Id : number = 0;
+  public selectedMember5Id : number = 0;
+  public selectedMember6Id : number = 0;
   
   constructor(private formBuilder: FormBuilder,private committeeMemberService: CommitteeMemberService ,private zoneService: ZoneService, private committeeService: CommitteeService, private router: Router ) { }
 
@@ -50,7 +50,7 @@ export class CommitteeDataComponent implements OnInit {
     let zone = new Zone;
     zone.id = this.selectedZoneId;
     this.requestModel.zone = zone;
-
+   
     let committeeMember = new CommitteeMember;
     committeeMember.id = this.selectedMember1Id;
     this.requestModel.memberOne = committeeMember;
@@ -58,24 +58,25 @@ export class CommitteeDataComponent implements OnInit {
     committeeMember.id = this.selectedMember2Id;
     this.requestModel.memberTwo = committeeMember;
 
-
-    committeeMember.id = this.selectedMember3Id;
-    this.requestModel.memberThree = committeeMember;
-
-
-    committeeMember.id = this.selectedMember4Id;
-    this.requestModel.memberFour = committeeMember;
-
-
-    committeeMember.id = this.selectedMember5Id;
-    this.requestModel.memberFive = committeeMember;
-
+    if(this.selectedMember3Id != 0){
+      committeeMember.id = this.selectedMember3Id;
+      this.requestModel.memberThree = committeeMember;
+    }
+    if(this.selectedMember4Id != 0){
+      committeeMember.id = this.selectedMember4Id;
+      this.requestModel.memberFour = committeeMember;
+    }
+    if(this.selectedMember5Id != 0){
+      committeeMember.id = this.selectedMember5Id;
+      this.requestModel.memberFive = committeeMember;
+    }
 
     if(this.selectedMember6Id != 0){
       committeeMember.id = this.selectedMember6Id;
       this.requestModel.memberSix = committeeMember;
     }
 
+    
     this.committeeService.createCommittee(this.requestModel).subscribe(
       result => {
         this.router.navigateByUrl("/administration/committees");

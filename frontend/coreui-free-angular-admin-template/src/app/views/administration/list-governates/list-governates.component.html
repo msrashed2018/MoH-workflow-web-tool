@@ -26,7 +26,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let city of cities ; let i=index">
+
         <tr *ngFor="let governate of governates; let i=index">
             <td class="text-center"><b>{{i+1}}</b></td>
             <td class="text-center"><a [routerLink]="['/administration/governates', governate.id,{componentMode: 'viewMode'}]"><b>{{governate.name}}</b></a></td>
@@ -45,5 +45,15 @@
     </tr>
   </tbody>
 </table>
+
+<!-- <div class="col-xs-12 col-12">
+    <pagination [boundaryLinks]="true" [totalItems]="15" [(ngModel)]="currentPage" class="pagination-sm" [maxSize]="6"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+  </div> -->
+<div class="row">
+    <div >
+      <pagination [totalItems]="pages" [(ngModel)]="currentPage"  (pageChanged)="pageChanged($event)" ></pagination>
+    </div>
+  </div>
 
 
