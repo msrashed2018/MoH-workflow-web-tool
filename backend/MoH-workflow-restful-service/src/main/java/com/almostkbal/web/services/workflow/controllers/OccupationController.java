@@ -8,7 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.almostkbal.web.services.workflow.entities.Citizen;
 import com.almostkbal.web.services.workflow.entities.Occupation;
-import com.almostkbal.web.services.workflow.exceptions.GovernateNotFoundException;
-import com.almostkbal.web.services.workflow.exceptions.OccupationNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.OccupationRepository;
 
 
@@ -44,7 +41,7 @@ public class OccupationController {
 	public Occupation retrieveOccupationById(@PathVariable int id) {
 		Optional<Occupation> occupation = occupationRepository.findById(id);
 		if(!occupation.isPresent())
-			throw new OccupationNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<Occupation> resource = new Resource<Occupation>(occupation.get());
 		return occupation.get();
 	}
@@ -54,7 +51,7 @@ public class OccupationController {
 		try {
 			occupationRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new OccupationNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -74,7 +71,7 @@ public class OccupationController {
 		Optional<Occupation> existingOccupation = occupationRepository.findById(id);
 
 		if(!existingOccupation.isPresent())
-			throw new OccupationNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		occupationRepository.deleteById(id);
 		Occupation updatedCitzen = occupationRepository.save(occupation);
 		return new ResponseEntity<Occupation>(updatedCitzen, HttpStatus.OK);

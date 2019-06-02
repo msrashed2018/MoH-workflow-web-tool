@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
-import com.almostkbal.web.services.workflow.exceptions.RequestStatusNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.RequestStatusRepository;
 
 
@@ -42,7 +42,7 @@ public class RequestStatusController {
 	public RequestStatus retrieveRequestStatusById(@PathVariable int id) {
 		Optional<RequestStatus> requestStatus = requestStatusRepository.findById(id);
 		if(!requestStatus.isPresent())
-			throw new RequestStatusNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<RequestStatus> resource = new Resource<RequestStatus>(requestStatus.get());
 		return requestStatus.get();
 	}
@@ -52,7 +52,7 @@ public class RequestStatusController {
 		try {
 			requestStatusRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new RequestStatusNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -72,7 +72,7 @@ public class RequestStatusController {
 		Optional<RequestStatus> existingRequestStatusOptional = requestStatusRepository.findById(id);
 		
 		if(!existingRequestStatusOptional.isPresent())
-			throw new RequestStatusNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		requestStatusRepository.deleteById(id);
 		RequestStatus updatedCitzen = requestStatusRepository.save(requestStatus);
 		return new ResponseEntity<RequestStatus>(updatedCitzen, HttpStatus.OK);

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.almostkbal.web.services.workflow.entities.Custom;
 import com.almostkbal.web.services.workflow.entities.Gender;
-import com.almostkbal.web.services.workflow.exceptions.DisabilityNotFoundException;
-import com.almostkbal.web.services.workflow.exceptions.GenderNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.GenderRepository;
 
 
@@ -44,7 +42,7 @@ public class GenderController {
 	public Gender retrieveGenderById(@PathVariable int id) {
 		Optional<Gender> gender = genderRepository.findById(id);
 		if(!gender.isPresent())
-			throw new GenderNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 		Resource<Gender> resource = new Resource<Gender>(gender.get());
 		return gender.get();
 	}
@@ -54,7 +52,7 @@ public class GenderController {
 		try {
 			genderRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new GenderNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -74,7 +72,7 @@ public class GenderController {
 		Optional<Gender> existingGender = genderRepository.findById(id);
 
 		if(!existingGender.isPresent())
-			throw new GenderNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		genderRepository.deleteById(id);
 		Gender updatedCitzen = genderRepository.save(gender);
 		return new ResponseEntity<Gender>(updatedCitzen, HttpStatus.OK);

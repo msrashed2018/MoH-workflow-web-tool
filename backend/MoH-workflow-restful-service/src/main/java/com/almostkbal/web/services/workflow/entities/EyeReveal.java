@@ -10,18 +10,21 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="eye_reveal_setting")
-public class EyeRevealSetting {
+@Table(name="eye_reveal")
+public class EyeReveal {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_OCCUPATION")
-	@Column(name = "setting_id")
-	private int id;
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_EYE_REVEAL")
+	@Column(name = "eye_reveal_id")
+	private long id;
+	
+	@OneToOne
+	@JoinColumn(name = "eye_committee_id")
+	private Committee committee;
 	
 	@OneToOne
 	@JoinColumn(name = "right_measure_id")
 	private EyeMeasure rightMeasure;
-	
 	
 	@OneToOne
 	@JoinColumn(name = "left_measure_id")
@@ -33,21 +36,27 @@ public class EyeRevealSetting {
 	@Column(name = "DISTINGUISH_COLOR")
 	private byte distinguishColor;
 	
-	@Column(name = "setting_result")
+	@Column(name = "squint")
+	private String squint;
+
+	@Column(name = "fieldOfSight")
+	private String fieldOfSight;
+	
+	@Column(name = "result")
 	private String result;
 	
-	@Column(name = "setting_description")
+	@Column(name = "description")
 	private String description;
 	
-	public EyeRevealSetting() {
+	public EyeReveal() {
 		
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -81,6 +90,22 @@ public class EyeRevealSetting {
 
 	public void setDistinguishColor(byte distinguishColor) {
 		this.distinguishColor = distinguishColor;
+	}
+
+	public String getSquint() {
+		return squint;
+	}
+
+	public void setSquint(String squint) {
+		this.squint = squint;
+	}
+
+	public String getFieldOfSight() {
+		return fieldOfSight;
+	}
+
+	public void setFieldOfSight(String fieldOfSight) {
+		this.fieldOfSight = fieldOfSight;
 	}
 
 	public String getResult() {

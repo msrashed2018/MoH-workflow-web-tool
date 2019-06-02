@@ -29,7 +29,6 @@ public class  Request{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "citizen_id")
-	@JsonIgnore
 	private Citizen citizen;
 	
 	@Column(name = "request_date")
@@ -39,25 +38,21 @@ public class  Request{
 	@JoinColumn(name = "request_type_id")
 	private RequestType requestType;
 	
-	@Column(name = "receipt_serial_no")
-	private String receiptSerialNumber;
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "request_payment_id")
+	private RequestPayment payment;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "eye_reveal_id")
+	private EyeReveal eyeReveal;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "bones_reveal_id")
+	private BonesReveal bonesReveal;
 	
 	@OneToOne
 	@JoinColumn(name = "custom_id")
 	private Custom custom;
-	
-	@Column(name = "old_request_id")
-	private long oldRequestId;
-	
-	@Column(name = "payment_done")
-	private byte paymentDone;
-	
-	@Column(name = "payment_date")
-	private Date paymentDate;
-	
-	@OneToOne
-	@JoinColumn(name = "committee_id")
-	private Committee committee;
 	
 	@Column(name = "created_by")
 	private String createdBy;
@@ -72,10 +67,6 @@ public class  Request{
 	@JoinColumn(name = "request_status_id")
 	private RequestStatus requestStatus;
 	
-	@OneToOne(cascade= CascadeType.ALL)
-	@JoinColumn(name = "request_detail_id")
-	private RequestDetail requestDetail;
-	
 	@OneToOne
 	@JoinColumn(name = "traffic_management_id")
 	private TrafficManagement trafficManagement;
@@ -84,11 +75,13 @@ public class  Request{
 	@JsonIgnore
 	private List<RequestDocument> documents;
 	
+	@Column(name = "description")
+	private String description;
+	
 	
 	public Request() {
 		
 	}
-
 
 	public long getId() {
 		return id;
@@ -130,13 +123,23 @@ public class  Request{
 	}
 
 
-	public String getReceiptSerialNumber() {
-		return receiptSerialNumber;
+	public EyeReveal getEyeReveal() {
+		return eyeReveal;
 	}
 
 
-	public void setReceiptSerialNumber(String receiptSerialNumber) {
-		this.receiptSerialNumber = receiptSerialNumber;
+	public void setEyeReveal(EyeReveal eyeReveal) {
+		this.eyeReveal = eyeReveal;
+	}
+
+
+	public BonesReveal getBonesReveal() {
+		return bonesReveal;
+	}
+
+
+	public void setBonesReveal(BonesReveal bonesReveal) {
+		this.bonesReveal = bonesReveal;
 	}
 
 
@@ -150,43 +153,13 @@ public class  Request{
 	}
 
 
-	public long getOldRequestId() {
-		return oldRequestId;
+	public RequestPayment getPayment() {
+		return payment;
 	}
 
 
-	public void setOldRequestId(long oldRequestId) {
-		this.oldRequestId = oldRequestId;
-	}
-
-
-	public byte getPaymentDone() {
-		return paymentDone;
-	}
-
-
-	public void setPaymentDone(byte paymentDone) {
-		this.paymentDone = paymentDone;
-	}
-
-
-	public Date getPaymentDate() {
-		return paymentDate;
-	}
-
-
-	public void setPaymentDate(Date paymentDate) {
-		this.paymentDate = paymentDate;
-	}
-
-
-	public Committee getCommittee() {
-		return committee;
-	}
-
-
-	public void setCommittee(Committee committee) {
-		this.committee = committee;
+	public void setPayment(RequestPayment payment) {
+		this.payment = payment;
 	}
 
 
@@ -230,16 +203,6 @@ public class  Request{
 	}
 
 
-	public RequestDetail getRequestDetail() {
-		return requestDetail;
-	}
-
-
-	public void setRequestDetail(RequestDetail requestDetail) {
-		this.requestDetail = requestDetail;
-	}
-
-
 	public TrafficManagement getTrafficManagement() {
 		return trafficManagement;
 	}
@@ -258,5 +221,15 @@ public class  Request{
 	public void setDocuments(List<RequestDocument> documents) {
 		this.documents = documents;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
 
 }

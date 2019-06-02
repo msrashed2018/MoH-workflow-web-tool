@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,8 +24,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Role;
 import com.almostkbal.web.services.workflow.entities.User;
-import com.almostkbal.web.services.workflow.exceptions.GovernateNotFoundException;
-import com.almostkbal.web.services.workflow.exceptions.UserNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.RoleRepository;
 import com.almostkbal.web.services.workflow.repositories.UserRepository;
 
@@ -49,7 +48,7 @@ public class UserController {
 	public User retrieveUserById(@PathVariable long id) {
 		Optional<User> user = userRepository.findById(id);
 		if(!user.isPresent())
-			throw new UserNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<User> resource = new Resource<User>(user.get());
 		return user.get();
 	}
@@ -59,7 +58,7 @@ public class UserController {
 		try {
 			userRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new UserNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -80,7 +79,7 @@ public class UserController {
 		Optional<User> existingUser = userRepository.findById(id);
 
 		if(!existingUser.isPresent())
-			throw new UserNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		userRepository.deleteById(id);
 		User updatedCitzen = userRepository.save(user);
 		return new ResponseEntity<User>(updatedCitzen, HttpStatus.OK);
@@ -92,7 +91,7 @@ public class UserController {
 		Optional<User> userOptional = userRepository.findById(id);
 
 		if (!userOptional.isPresent()) {
-			throw new UserNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 		}
 
 		User user = userOptional.get();
@@ -112,7 +111,7 @@ public class UserController {
 	public List<Role> retrieveUserRoles(@PathVariable long id) {
 		Optional<User> userOptional = userRepository.findById(id);
 		if (!userOptional.isPresent()) {
-			throw new GovernateNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 		}
 		User user = userOptional.get();
 

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Role;
-import com.almostkbal.web.services.workflow.exceptions.RoleNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.RoleRepository;
 
 
@@ -41,7 +41,7 @@ public class RoleController {
 	public Role retrieveRoleById(@PathVariable long id) {
 		Optional<Role> role = roleRepository.findById(id);
 		if(!role.isPresent())
-			throw new RoleNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<Role> resource = new Resource<Role>(role.get());
 		return role.get();
 	}
@@ -51,7 +51,7 @@ public class RoleController {
 		try {
 			roleRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new RoleNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -71,7 +71,7 @@ public class RoleController {
 		Optional<Role> existingRole = roleRepository.findById(id);
 
 		if(!existingRole.isPresent())
-			throw new RoleNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		roleRepository.deleteById(id);
 		Role updatedCitzen = roleRepository.save(role);
 		return new ResponseEntity<Role>(updatedCitzen, HttpStatus.OK);

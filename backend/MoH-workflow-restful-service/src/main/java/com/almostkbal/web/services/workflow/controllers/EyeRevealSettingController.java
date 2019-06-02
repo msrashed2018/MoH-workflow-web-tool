@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.EyeRevealSetting;
-import com.almostkbal.web.services.workflow.exceptions.EyeRevealSettingNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.EyeRevealSettingRepository;
 
 
@@ -41,7 +41,7 @@ public class EyeRevealSettingController {
 	public EyeRevealSetting retrieveEyeRevealSettingById(@PathVariable int id) {
 		Optional<EyeRevealSetting> EyeRevealSetting = EyeRevealSettingRepository.findById(id);
 		if(!EyeRevealSetting.isPresent())
-			throw new EyeRevealSettingNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<EyeRevealSetting> resource = new Resource<EyeRevealSetting>(EyeRevealSetting.get());
 		return EyeRevealSetting.get();
 	}
@@ -51,7 +51,7 @@ public class EyeRevealSettingController {
 		try {
 			EyeRevealSettingRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new EyeRevealSettingNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 		
 	}
@@ -72,7 +72,7 @@ public class EyeRevealSettingController {
 		Optional<EyeRevealSetting> existingEyeRevealSetting = EyeRevealSettingRepository.findById(id);
 
 		if(!existingEyeRevealSetting.isPresent())
-			throw new EyeRevealSettingNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		EyeRevealSettingRepository.deleteById(id);
 		EyeRevealSetting updatedCitzen = EyeRevealSettingRepository.save(EyeRevealSetting);
 		return new ResponseEntity<EyeRevealSetting>(updatedCitzen, HttpStatus.OK);

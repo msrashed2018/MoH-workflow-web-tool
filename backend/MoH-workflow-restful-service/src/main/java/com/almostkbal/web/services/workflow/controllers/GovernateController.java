@@ -8,7 +8,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,12 +20,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.City;
 import com.almostkbal.web.services.workflow.entities.Governate;
-import com.almostkbal.web.services.workflow.exceptions.GovernateNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.CityRepository;
 import com.almostkbal.web.services.workflow.repositories.GovernateRepository;
 
@@ -37,16 +39,16 @@ public class GovernateController {
 	@Autowired
 	private CityRepository cityRepository;
 
-	@GetMapping("/api/governates")
-	public List<Governate> retrieveAllGovernates() {
-		return governateRepository.findAll();
+	@GetMapping(value="/api/governates", params= {"page","size"})
+	public Page<Governate> retrieveAllGovernates( @RequestParam("page") int page, @RequestParam("size") int size) {
+		return governateRepository.findAll(PageRequest.of(page, size));
 	}
 
 	@GetMapping("/api/governates/{id}")
 	public Governate retrieveGovernateById(@PathVariable int id) {
 		Optional<Governate> governate = governateRepository.findById(id);
 		if (!governate.isPresent())
-			throw new GovernateNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 //		Resource<Governate> resource = new Resource<Governate>(governate.get());
 		return governate.get();
 	}
@@ -56,7 +58,7 @@ public class GovernateController {
 		try {
 			governateRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new GovernateNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -71,10 +73,10 @@ public class GovernateController {
 
 	@PutMapping("/api/governates/{id}")
 	public ResponseEntity<Governate> updateGovernate(@PathVariable int id, @RequestBody Governate governate) {
-		Governate existingGovernate = governateRepository.getOne(id);
+		Optional<Governate> existingGovernate = governateRepository.findById(id);
 
-		if (existingGovernate == null)
-			throw new GovernateNotFoundException("id-" + id);
+		if (!existingGovernate.isPresent())
+			throw new ResourceNotFoundException("id-" + id);
 //		governateRepository.deleteById(id);
 		Governate updatedCitzen = governateRepository.save(governate);
 		return new ResponseEntity<Governate>(updatedCitzen, HttpStatus.OK);
@@ -86,7 +88,7 @@ public class GovernateController {
 		Optional<Governate> governateOptional = governateRepository.findById(id);
 
 		if (!governateOptional.isPresent()) {
-			throw new GovernateNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 		}
 
 		Governate governate = governateOptional.get();
@@ -106,7 +108,7 @@ public class GovernateController {
 	public List<City> retrieveGovernateCities(@PathVariable int id) {
 		Optional<Governate> governateOptional = governateRepository.findById(id);
 		if (!governateOptional.isPresent()) {
-			throw new GovernateNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 		}
 		Governate governate = governateOptional.get();
 		return cityRepository.findByGovernate(governate);

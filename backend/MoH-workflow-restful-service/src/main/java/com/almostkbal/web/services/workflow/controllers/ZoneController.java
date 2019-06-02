@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Governate;
 import com.almostkbal.web.services.workflow.entities.Zone;
-import com.almostkbal.web.services.workflow.exceptions.ZoneNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.GovernateRepository;
 import com.almostkbal.web.services.workflow.repositories.ZoneRepository;
 
@@ -47,7 +47,7 @@ public class ZoneController {
 	public Resource<Zone> retrieveZoneById(@PathVariable long id) {
 		Optional<Zone> zone = zoneRepository.findById(id);
 		if(!zone.isPresent())
-			throw new ZoneNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 		Resource<Zone> resource = new Resource<Zone>(zone.get());
 		return resource;
 	}
@@ -57,7 +57,7 @@ public class ZoneController {
 		try {
 			zoneRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new ZoneNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -77,7 +77,7 @@ public class ZoneController {
 		Optional<Zone> existingZone = zoneRepository.findById(id);
 
 		if(!existingZone.isPresent())
-			throw new ZoneNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 		zoneRepository.deleteById(id);
 		Zone updatedCitzen = zoneRepository.save(zone);
 		return new ResponseEntity<Zone>(updatedCitzen, HttpStatus.OK);
@@ -88,7 +88,7 @@ public class ZoneController {
 		Optional<Zone> governateOptional = zoneRepository.findById(id);
 
 		if (!governateOptional.isPresent()) {
-			throw new ZoneNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 		}
 
 		Zone zone = governateOptional.get();
@@ -108,7 +108,7 @@ public class ZoneController {
 	public List<Governate> retrieveZoneGovernates(@PathVariable long id) {
 		Optional<Zone> zoneOptional = zoneRepository.findById(id);
 		if (!zoneOptional.isPresent()) {
-			throw new ZoneNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 		}
 		Zone zone = zoneOptional.get();
 

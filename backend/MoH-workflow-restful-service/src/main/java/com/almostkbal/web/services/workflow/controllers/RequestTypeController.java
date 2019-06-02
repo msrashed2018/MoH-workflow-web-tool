@@ -8,7 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.RequestType;
-import com.almostkbal.web.services.workflow.exceptions.RequestTypeNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.RequestTypeRepository;
 
 
@@ -43,7 +42,7 @@ public class RequestTypeController {
 	public RequestType retrieveRequestTypeById(@PathVariable int id) {
 		Optional<RequestType> requestType = requestTypeRepository.findById(id);
 		if(!requestType.isPresent())
-			throw new RequestTypeNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<RequestType> resource = new Resource<RequestType>(requestType.get());
 		return requestType.get();
 	}
@@ -53,7 +52,7 @@ public class RequestTypeController {
 		try {
 			requestTypeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new RequestTypeNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -73,7 +72,7 @@ public class RequestTypeController {
 		Optional<RequestType> existingRequestType = requestTypeRepository.findById(id);
 
 		if(!existingRequestType.isPresent())
-			throw new RequestTypeNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		requestTypeRepository.deleteById(id);
 		RequestType updatedCitzen = requestTypeRepository.save(requestType);
 		return new ResponseEntity<RequestType>(updatedCitzen, HttpStatus.OK);

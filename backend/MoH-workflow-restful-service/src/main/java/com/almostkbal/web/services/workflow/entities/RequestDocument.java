@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,19 +20,18 @@ public class RequestDocument {
 	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_REQUEST_DOCUMENT")
 	@Column(name = "REQUEST_DOCUMENT_ID")
 	private long id;
+	
+	@Column(name = "name",nullable=false)
+	private String name;
+
+	@Column(name = "path")
+	private String path;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "request_id")
 	@JsonIgnore
 	private Request request;
-
-	@OneToOne
-	@JoinColumn(name = "DCOUMENT_TYPE_ID")
-	private DocumentType type;
-
-	@Column(name = "DOCUMENT_PATH")
-	private String path;
-
+	
 	public RequestDocument() {
 
 	}
@@ -46,20 +44,12 @@ public class RequestDocument {
 		this.id = id;
 	}
 
-	public Request getRequest() {
-		return request;
+	public String getName() {
+		return name;
 	}
 
-	public void setRequest(Request request) {
-		this.request = request;
-	}
-
-	public DocumentType getType() {
-		return type;
-	}
-
-	public void setType(DocumentType type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPath() {
@@ -70,4 +60,13 @@ public class RequestDocument {
 		this.path = path;
 	}
 
+	public Request getRequest() {
+		return request;
+	}
+
+	public void setRequest(Request request) {
+		this.request = request;
+	}
+
+	
 }

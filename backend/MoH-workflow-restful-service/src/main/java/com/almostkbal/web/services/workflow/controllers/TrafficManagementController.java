@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.TrafficManagement;
-import com.almostkbal.web.services.workflow.exceptions.TrafficManagementNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.TrafficManagementRepository;
 
 
@@ -41,7 +41,7 @@ public class TrafficManagementController {
 	public TrafficManagement retrieveTrafficManagementById(@PathVariable int id) {
 		Optional<TrafficManagement> trafficManagement = trafficManagementRepository.findById(id);
 		if(!trafficManagement.isPresent())
-			throw new TrafficManagementNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<TrafficManagement> resource = new Resource<TrafficManagement>(trafficManagement.get());
 		return trafficManagement.get();
 	}
@@ -51,7 +51,7 @@ public class TrafficManagementController {
 		try {
 			trafficManagementRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new TrafficManagementNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -71,7 +71,7 @@ public class TrafficManagementController {
 		Optional<TrafficManagement> existingTrafficManagement = trafficManagementRepository.findById(id);
 
 		if(!existingTrafficManagement.isPresent())
-			throw new TrafficManagementNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		trafficManagementRepository.deleteById(id);
 		TrafficManagement updatedCitzen = trafficManagementRepository.save(trafficManagement);
 		return new ResponseEntity<TrafficManagement>(updatedCitzen, HttpStatus.OK);
