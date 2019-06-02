@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.DocumentType;
-import com.almostkbal.web.services.workflow.exceptions.DocumentTypeNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.DocumentTypeRepository;
 
 
@@ -41,7 +41,7 @@ public class DocumentTypeController {
 	public DocumentType retrieveDocumentTypeById(@PathVariable long id) {
 		Optional<DocumentType> documentType = documentTypeRepository.findById(id);
 		if(!documentType.isPresent())
-			throw new DocumentTypeNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<DocumentType> resource = new Resource<DocumentType>(documentType.get());
 		return documentType.get();
 	}
@@ -51,7 +51,7 @@ public class DocumentTypeController {
 		try {
 			documentTypeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new DocumentTypeNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -71,7 +71,7 @@ public class DocumentTypeController {
 		Optional<DocumentType> existingDocumentType = documentTypeRepository.findById(id);
 
 		if(!existingDocumentType.isPresent())
-			throw new DocumentTypeNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		documentTypeRepository.deleteById(id);
 		DocumentType updatedCitzen = documentTypeRepository.save(documentType);
 		return new ResponseEntity<DocumentType>(updatedCitzen, HttpStatus.OK);

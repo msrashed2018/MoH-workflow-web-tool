@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Equipment;
-import com.almostkbal.web.services.workflow.exceptions.EquipmentNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.EquipmentRepository;
 
 
@@ -41,7 +41,7 @@ public class EquipmentController {
 	public Equipment retrieveEquipmentById(@PathVariable int id) {
 		Optional<Equipment> equipment = equipmentRepository.findById(id);
 		if(!equipment.isPresent())
-			throw new EquipmentNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<Equipment> resource = new Resource<Equipment>(equipment.get());
 		return equipment.get();
 	}
@@ -51,7 +51,7 @@ public class EquipmentController {
 		try {
 			equipmentRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new EquipmentNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 		
 	}
@@ -72,7 +72,7 @@ public class EquipmentController {
 		Optional<Equipment> existingEquipment = equipmentRepository.findById(id);
 
 		if(!existingEquipment.isPresent())
-			throw new EquipmentNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		equipmentRepository.deleteById(id);
 		Equipment updatedCitzen = equipmentRepository.save(equipment);
 		return new ResponseEntity<Equipment>(updatedCitzen, HttpStatus.OK);

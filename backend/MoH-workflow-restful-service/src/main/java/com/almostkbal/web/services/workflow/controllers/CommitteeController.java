@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Committee;
-import com.almostkbal.web.services.workflow.exceptions.CommitteeNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.CommitteeRepository;
 
 
@@ -41,7 +41,7 @@ public class CommitteeController {
 	public Committee retrieveCommitteeById(@PathVariable long id) {
 		Optional<Committee> committee = committeeRepository.findById(id);
 		if(!committee.isPresent())
-			throw new CommitteeNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<Committee> resource = new Resource<Committee>(committee.get());
 		return committee.get();
 	}
@@ -51,7 +51,7 @@ public class CommitteeController {
 		try {
 			committeeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new CommitteeNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -71,7 +71,7 @@ public class CommitteeController {
 		Optional<Committee> existingCommittee = committeeRepository.findById(id);
 		
 		if(!existingCommittee.isPresent())
-			throw new CommitteeNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		committeeRepository.deleteById(id);
 		Committee updatedCitzen = committeeRepository.save(committee);
 		return new ResponseEntity<Committee>(updatedCitzen, HttpStatus.OK);

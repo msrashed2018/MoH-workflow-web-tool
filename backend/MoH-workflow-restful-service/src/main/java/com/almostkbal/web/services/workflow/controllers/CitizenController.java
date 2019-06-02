@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.almostkbal.web.services.workflow.entities.Citizen;
-import com.almostkbal.web.services.workflow.exceptions.CitizenNotFoundException;
 import com.almostkbal.web.services.workflow.exceptions.CitizenValidationException;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 
@@ -62,7 +62,7 @@ public class CitizenController {
 	public Citizen retrieveCitizenById(@PathVariable long id) {
 		Optional<Citizen> citizen = citizenRepository.findById(id);
 		if (!citizen.isPresent())
-			throw new CitizenNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 //		Resource<Citizen> resource = new Resource<Citizen>(citizen.get());
 		return citizen.get();
 	}
@@ -72,7 +72,7 @@ public class CitizenController {
 		try {
 			citizenRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new CitizenNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class CitizenController {
 		Optional<Citizen> existingCitizen = citizenRepository.findById(id);
 
 		if (!existingCitizen.isPresent())
-			throw new CitizenNotFoundException("id-" + id);
+			throw new ResourceNotFoundException("id-" + id);
 //		citizenRepository.deleteById(id);
 
 		Citizen updatedCitzen = null;

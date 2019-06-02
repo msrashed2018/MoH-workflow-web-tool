@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Custom;
-import com.almostkbal.web.services.workflow.exceptions.CustomNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.CustomRepository;
 
 
@@ -41,7 +41,7 @@ public class CustomController {
 	public Custom retrieveCustomById(@PathVariable int id) {
 		Optional<Custom> custom = customRepository.findById(id);
 		if(!custom.isPresent())
-			throw new CustomNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<Custom> resource = new Resource<Custom>(custom.get());
 		return custom.get();
 	}
@@ -51,7 +51,7 @@ public class CustomController {
 		try {
 			customRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new CustomNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -71,7 +71,7 @@ public class CustomController {
 		Optional<Custom> existingCustom = customRepository.findById(id);
 		
 		if(!existingCustom.isPresent())
-			throw new CustomNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		customRepository.deleteById(id);
 		Custom updatedCitzen = customRepository.save(custom);
 		return new ResponseEntity<Custom>(updatedCitzen, HttpStatus.OK);

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.CommitteeMember;
-import com.almostkbal.web.services.workflow.exceptions.CommitteeMemberNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.CommitteeMemberRepository;
 
 
@@ -41,7 +41,7 @@ public class CommitteeMemberController {
 	public CommitteeMember retrieveCommitteeMemberById(@PathVariable long id) {
 		Optional<CommitteeMember> committeeMember = committeeMemberRepository.findById(id);
 		if(!committeeMember.isPresent())
-			throw new CommitteeMemberNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<CommitteeMember> resource = new Resource<CommitteeMember>(committeeMember.get());
 		return committeeMember.get();
 	}
@@ -51,7 +51,7 @@ public class CommitteeMemberController {
 		try {
 			committeeMemberRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new CommitteeMemberNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -80,7 +80,7 @@ public class CommitteeMemberController {
 		Optional<CommitteeMember> existingCommitteeMember = committeeMemberRepository.findById(id);
 		
 		if(!existingCommitteeMember.isPresent())
-			throw new CommitteeMemberNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		committeeMemberRepository.deleteById(id);
 		CommitteeMember updatedCitzen = committeeMemberRepository.save(committeeMember);
 		return new ResponseEntity<CommitteeMember>(updatedCitzen, HttpStatus.OK);

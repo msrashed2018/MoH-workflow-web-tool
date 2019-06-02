@@ -8,7 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.hateoas.Resource;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.City;
-import com.almostkbal.web.services.workflow.entities.Gender;
-import com.almostkbal.web.services.workflow.exceptions.CitizenNotFoundException;
-import com.almostkbal.web.services.workflow.exceptions.CityNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.CityRepository;
 
 
@@ -44,7 +41,7 @@ public class CityController {
 	public City retrieveCityById(@PathVariable int id) {
 		Optional<City> city = cityRepository.findById(id);
 		if(!city.isPresent())
-			throw new CityNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<City> resource = new Resource<City>(city.get());
 		return city.get();
 	}
@@ -54,7 +51,7 @@ public class CityController {
 		try {
 			cityRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new CityNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -74,7 +71,7 @@ public class CityController {
 		Optional<City> existingCity = cityRepository.findById(id);
 
 		if(!existingCity.isPresent())
-			throw new CityNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		cityRepository.deleteById(id);
 		City updatedCitzen = cityRepository.save(city);
 		return new ResponseEntity<City>(updatedCitzen, HttpStatus.OK);

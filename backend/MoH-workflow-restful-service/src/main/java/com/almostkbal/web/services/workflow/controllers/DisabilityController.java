@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.entities.Disability;
-import com.almostkbal.web.services.workflow.exceptions.DisabilityNotFoundException;
 import com.almostkbal.web.services.workflow.repositories.DisabilityRepository;
 
 
@@ -41,7 +41,7 @@ public class DisabilityController {
 	public Disability retrieveDisabilityById(@PathVariable int id) {
 		Optional<Disability> disability = disabilityRepository.findById(id);
 		if(!disability.isPresent())
-			throw new DisabilityNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<Disability> resource = new Resource<Disability>(disability.get());
 		return disability.get();
 	}
@@ -51,7 +51,7 @@ public class DisabilityController {
 		try {
 			disabilityRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new DisabilityNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 	    }
 	}
 
@@ -71,7 +71,7 @@ public class DisabilityController {
 		Optional<Disability> existingDisability = disabilityRepository.findById(id);
 
 		if(!existingDisability.isPresent())
-			throw new DisabilityNotFoundException("id-"+ id);
+			throw new ResourceNotFoundException("id-"+ id);
 //		disabilityRepository.deleteById(id);
 		Disability updatedCitzen = disabilityRepository.save(disability);
 		return new ResponseEntity<Disability>(updatedCitzen, HttpStatus.OK);
