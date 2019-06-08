@@ -2,12 +2,19 @@ package com.almostkbal.web.services.workflow.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="eye_reveal")
@@ -24,11 +31,11 @@ public class EyeReveal {
 	
 	@OneToOne
 	@JoinColumn(name = "right_measure_id")
-	private EyeMeasure rightMeasure;
+	private EyeMeasure rightEye;
 	
 	@OneToOne
 	@JoinColumn(name = "left_measure_id")
-	private EyeMeasure leftMeasure;
+	private EyeMeasure leftEye;
 	
 	@Column(name = "use_glasses")
 	private byte useGlasses;
@@ -48,6 +55,15 @@ public class EyeReveal {
 	@Column(name = "description")
 	private String description;
 	
+	
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "request_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+	private Request request;
+	
+	
+
 	public EyeReveal() {
 		
 	}
@@ -60,20 +76,22 @@ public class EyeReveal {
 		this.id = id;
 	}
 
-	public EyeMeasure getRightMeasure() {
-		return rightMeasure;
+	
+
+	public EyeMeasure getRightEye() {
+		return rightEye;
 	}
 
-	public void setRightMeasure(EyeMeasure rightMeasure) {
-		this.rightMeasure = rightMeasure;
+	public void setRightEye(EyeMeasure rightEye) {
+		this.rightEye = rightEye;
 	}
 
-	public EyeMeasure getLeftMeasure() {
-		return leftMeasure;
+	public EyeMeasure getLeftEye() {
+		return leftEye;
 	}
 
-	public void setLeftMeasure(EyeMeasure leftMeasure) {
-		this.leftMeasure = leftMeasure;
+	public void setLeftEye(EyeMeasure leftEye) {
+		this.leftEye = leftEye;
 	}
 
 	public byte getUseGlasses() {
@@ -123,5 +141,19 @@ public class EyeReveal {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public Committee getCommittee() {
+		return committee;
+	}
 
+	public void setCommittee(Committee committee) {
+		this.committee = committee;
+	}
+
+	public Request getRequest() {
+		return request;
+	}
+
+	public void setRequest(Request request) {
+		this.request = request;
+	}
 }

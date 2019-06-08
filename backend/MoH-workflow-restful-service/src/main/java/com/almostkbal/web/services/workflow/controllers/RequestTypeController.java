@@ -34,7 +34,11 @@ public class RequestTypeController {
 	
 	@GetMapping("/api/request-type")
 	public List<RequestType> retrieveAllRequestTypes(){
-		return requestTypeRepository.findAll();
+		List<RequestType> requestTypes = requestTypeRepository.findAll();
+		for(RequestType type : requestTypes) {
+			System.out.println("type-name "+ type.getName());
+		}
+		return requestTypes;
 	}
 
 	

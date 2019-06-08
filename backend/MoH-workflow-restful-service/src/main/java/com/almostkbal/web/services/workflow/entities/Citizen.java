@@ -1,21 +1,17 @@
 package com.almostkbal.web.services.workflow.entities;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="citizen")
@@ -39,9 +35,9 @@ public class Citizen {
 	@Column(name = "address")
 	private String address;
 	
-	@OneToMany(mappedBy = "citizen",fetch=FetchType.LAZY)
-	@JsonIgnore
-	private List<Request> requests;
+//	@OneToMany(mappedBy = "citizen",fetch=FetchType.LAZY)
+//	@JsonIgnore
+//	private List<Request> requests;
 	
 
 	@OneToOne
@@ -203,12 +199,12 @@ public class Citizen {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public List<Request> getRequests() {
-		return requests;
-	}
-
-	public void setRequests(List<Request> requests) {
-		this.requests = requests;
-	}
+//	public List<Request> getRequests() {
+//		return requests;
+//	}
+//
+//	public void setRequests(List<Request> requests) {
+//		this.requests = requests;
+//	}
 	
 }

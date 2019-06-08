@@ -11,4 +11,8 @@ import com.almostkbal.web.services.workflow.entities.Request;
 public interface RequestRepository extends JpaRepository<Request, Long> {
 	@Query(value = "SELECT r FROM Request r WHERE TRUNC(r.requestDate) = TO_DATE(:date, 'yyyy-MM-dd')")
 	List<Request> findAllByDate(@Param("date") String date);
+	
+	List<Request> findByCitizenNationalId(Long nationalId);
+	
+	List<Request> findByCitizenId(Long nationalId);
 }
