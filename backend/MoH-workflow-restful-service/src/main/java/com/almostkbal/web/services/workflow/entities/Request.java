@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -38,10 +39,12 @@ public class Request {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date requestDate;
 
-	@OneToOne
-	@JoinColumn(name = "request_type_id")
+	@OneToOne(optional = false)
+	@JoinColumn(name = "request_type_id", nullable = false)
+	@NotNull
 	private RequestType requestType;
-
+	
+	
 	@OneToOne
 	@JoinColumn(name = "custom_id")
 	private Custom custom;
@@ -164,6 +167,14 @@ public class Request {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public RequestState getState() {
+		return state;
+	}
+
+	public void setState(RequestState state) {
+		this.state = state;
 	}
 
 }

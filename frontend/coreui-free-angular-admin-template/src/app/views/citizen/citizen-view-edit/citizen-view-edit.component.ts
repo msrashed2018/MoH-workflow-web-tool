@@ -254,6 +254,12 @@ export class CitizenViewEditComponent implements OnInit {
     requestType.id = this.selectedRequestTypeId;
     request.requestType = requestType;
 
+    if(requestType.name == 'كشف عادي' || requestType.name == 'كشف مستعجل'){
+      request.state = 'NEW';
+    }else{
+      request.state = 'OLD';
+    }
+    
     this.requestService.createRequest(this.citizenId,request).subscribe(
       result=>{
         this.fillCitizenRequests();

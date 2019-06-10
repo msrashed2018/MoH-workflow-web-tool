@@ -65,7 +65,6 @@ export class BasicAuthenticationService {
   logout(){
     sessionStorage.removeItem(TOKEN)
     sessionStorage.removeItem(AUTHENTICATED_USER)
-    console.log("user is logged out;");
   }
 
 }

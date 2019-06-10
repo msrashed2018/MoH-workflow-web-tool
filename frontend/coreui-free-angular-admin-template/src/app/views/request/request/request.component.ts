@@ -564,7 +564,7 @@ export class RequestComponent implements OnInit {
     this.uploading = true;
     this.requestService.pushFileToStorage(this.requestId,this.selectedFiles).subscribe(
       result => {
-        console.log(result);
+        // console.log(result);
         if (result.type === HttpEventType.UploadProgress) {
           this.progress.percentage = Math.round(100 * result.loaded / result.total);
           

@@ -50,7 +50,7 @@ public class EyeRevealController {
 	}
 
 	@PostMapping("/api/requests/{id}/eye-reveal")
-	public ResponseEntity<EyeReveal> createGender(@PathVariable long id, @RequestBody EyeReveal eyeReveal) {
+	public ResponseEntity<EyeReveal> addRequestEyeReveal(@PathVariable long id, @RequestBody EyeReveal eyeReveal) {
 		
 		Optional<Request> existingRequest = requestRepository.findById(id);
 

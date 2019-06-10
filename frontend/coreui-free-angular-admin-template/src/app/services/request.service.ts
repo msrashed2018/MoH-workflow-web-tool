@@ -38,6 +38,13 @@ export class RequestService {
         return data;
       }));
   }
+  retrieveByRequestState(state) {
+    return this.http.get<Request[]>
+      (`${API_URL}`+'/requests/retreiveByRequestState?state='+state).pipe( map(
+        data => {
+        return data;
+      }));
+  }
   deleteRequest(citizenId, requestId){
     return this.http.delete(`${API_URL}/citizens/${citizenId}/requests/${requestId}`);
   }

@@ -36,7 +36,7 @@ Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('البنز
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل تدار باليد وفاصل الحركة يدار باليد أو اوتوماتيك','');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة تدار باليد أو اوتوماتيك','');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة تدار باليد أو اوتوماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلي عجلة قياده مائيه مزوده ببكره ومنيم بالكف الصناعي+دواسة البنزين والفرامل تدار باليد وفاصل حركه هيدروماتيك	','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلي عجلة قياده مائيه مزوده ببكره ومنيم بالكف الصناعي+دواسة البنزين والفرامل تدار باليد وفاصل حركه هيدروماتيك, ','');
 
 --
 ---- GENDER Data
@@ -119,6 +119,7 @@ Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 37,'اخرى');
 
 ---- City DATA
 Insert into CITY (GOVERNATE_ID,CITY_NAME) values(6,'الشيخ زايد');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(1,'المعادي');
 
 
 ---- EYE MEASURE DATE
@@ -137,5 +138,92 @@ insert into EYE_MEASURE (MEASURE_TITLE) values ('عد أصابع');
 insert into EYE_MEASURE (MEASURE_TITLE) values ('خيال');
 insert into EYE_MEASURE (MEASURE_TITLE) values ('عين زجاجيه');
 insert into EYE_MEASURE (MEASURE_TITLE) values ('عدسات لاصقه');
+
+
+-- REQUEST_TYPE DATA
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'تظلم عيون');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'تظلم عظام وعيون');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'مد صلاحيه');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(200, 'كشف عادي');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'إعادة مناظرة تظلم عظام');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(400, 'كشف مستعجل');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'إعادة مناظره عظام');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'تجديد نتيجة كشف طبي');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'تصويب تجهيزه');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'صحة تشخيص');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'صحة تشخيص وتجهيزه');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'إعادة مناظرة عيون');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'إعادة مناظرة  تظلم عيون');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'تظلم استثنائي عظام');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'تظلم استثنائي عيون');
+insert into REQUEST_TYPE (REQUEST_TYPE_PRICE, REQUEST_TYPE_NAME) values(0, 'إعادة مناظرة تجديد');
+
+
+-- REQUEST_STATUS DATA
+
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('قرار ملغي');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('قرار ملغي للتعديل');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('خطاب اداري-مراجعه');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('يعاد مناظرته-مراجعه');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('تم التسجيل');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('توصيه نهائيه');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('قرار نهائي');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('خطاب اداري');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('يعاد مناظرته');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('رفض');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('مد صلاحيه');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('خطاب اداري- تعديل');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('يعاد مناظرته-تعديل');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('توصيه مبدئيه');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('تعديل توصيه');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('قرار ملغي لانتهاء المده');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('لم يحضر');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('حفظ القرار لانتهاء المده');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('إعادة مناظرة تجديد - مراجعه');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('إعادة مناظرة تجديد');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('قبول التجديد - مراجعه');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('قبول التجديد');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('رفض التجديد - مراجعه');
+insert into REQUEST_STATUS (REQUEST_STATUS_NAME) values('رفض التجديد');
+
+
+-- DISABILITY DATA
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('1', 1,'بتر بالطرفين السفليين');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('1', 2,'تيبس كامل بمفصل الركبة اليمني يبعد الطرفين السفليين عن الدوسات');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('1', 3,'تيبس كامل بمفصل الركبة اليسري يبعد الطرفين السفليين عن الدوسات');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('1', 4,'شلل بالطرف السفلي الأيمن مؤثر علي القوة العضلية وحركة المفاصل ');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('1', 5,'شلل بالطرف السفلي الأيسر مؤثر علي القوة العضلية وحركة المفاصل');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('1', 6,'بتر بالطرف السفلي الأيمن مؤثر');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('1', 7,'بتر بالطرف السفلي الأيسر مؤثر');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('1', 8,'ضعف بعضلات الطرف السفلي الأيمن مؤثر علي القوة العضلية وحركة المفاصل');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('0', 9,'ضعف بعضلات الطرف السفلي الأيسر مؤثر علي القوة العضلية وحركة المفاصل');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('0', 10,'تيبس بالكاحل الأيمن مؤثر');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('0', 11,'تيبس بالكاحل الأيسر مؤثر');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('0', 12,'سقوط بالقدم اليمني مؤثر');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('0', 13,'سقوط بالقدم اليسري مؤثر');
+insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('0', 14,'بتر بالطرف العلوي الأيمن ويرتدي طرف صناعي وظيفي يعمل');
+
+
+
+
+
+
+insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER_ID, GOVERNATE_ID, OCCUPATION_ID)
+values('october', '1989-06-20 03:00:00', 'admin', now(), '01015090111', null, null,  'محمد صلاح راشد', '29106202101140', 2, 1, 1, 3 );
+
+insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER_ID, GOVERNATE_ID, OCCUPATION_ID)
+values('october', '1989-06-20 03:00:00', 'admin', now(), '01015090111', null, null,  'احمد صلاح راشد', '29106202101141', 2, 1, 1, 3 );
+
+
+
+--insert into request ( CREATED_BY  , DESCRIPTION  , MODIFIED_BY  , MODIFIED_DATE  , REQUEST_DATE  , STATE  , CITIZEN_ID  , CUSTOM_ID  , REQUEST_STATUS_ID  , REQUEST_TYPE_ID  , TRAFFIC_MANAGEMENT_ID )
+--values ('admin', null, null, null, now(), 'NEW', 1, null, null, 4, null);
+
+
+
+
+
+
+
 
 

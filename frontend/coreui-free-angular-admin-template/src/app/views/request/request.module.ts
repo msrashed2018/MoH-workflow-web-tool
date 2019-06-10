@@ -9,10 +9,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { PaymentComponent } from './request/payment/payment.component';
+import { EyeRevealComponent } from './eye-reveal/eye-reveal.component';
+import { BonesRevealComponent } from './bones-reveal/bones-reveal.component';
+import { PaymentListComponent } from './payment/payment-list/payment-list.component';
+import { PaymentDataComponent } from './payment/payment-data/payment-data.component';
 
 @NgModule({
-  declarations: [ListRequestsComponent, RequestComponent, RequestViewEditComponent, PaymentComponent],
+  declarations: [ListRequestsComponent, RequestComponent, RequestViewEditComponent, EyeRevealComponent, BonesRevealComponent, PaymentListComponent, PaymentDataComponent],
   imports: [
     CommonModule,
     AlertModule,

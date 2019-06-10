@@ -3,6 +3,8 @@ package com.almostkbal.web.services.workflow.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -23,17 +25,22 @@ import com.almostkbal.web.services.workflow.entities.Citizen;
 import com.almostkbal.web.services.workflow.entities.EyeReveal;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
+import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.repositories.BonesRevealRepository;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 import com.almostkbal.web.services.workflow.repositories.EyeRevealRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestPaymentRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
+import com.almostkbal.web.services.workflow.repositories.RequestTypeRepository;
 
 @CrossOrigin(origins = "*")
 @RestController
 public class RequestController {
 	@Autowired
 	private RequestRepository requestRepository;
+	
+	@Autowired
+	private RequestTypeRepository requestTypeRepository ;
 	
 	@Autowired
 	private CitizenRepository citizenRepository;
@@ -55,7 +62,10 @@ public class RequestController {
 	public List<Request> retrieveAllRequests() {
 		return requestRepository.findAll();
 	}
-
+	@GetMapping("/api/requests/retreiveByRequestState")
+	public List<Request> retrieveAllRequestsByState(@RequestParam RequestState state) {
+		return requestRepository.findByState(state);
+	}
 	@GetMapping("/api/requests/search/findAllByDate")
 	public List<Request> findAllByDate(@RequestParam String date) {
 
@@ -104,7 +114,7 @@ public class RequestController {
 
 
 	@PostMapping("/api/citizens/{citizenId}/requests")
-	public Object createRequest(@PathVariable long citizenId, @RequestBody Request request) {
+	public Object createRequest(@PathVariable long citizenId,@Valid @RequestBody Request request) {
 		Optional<Citizen> citizenOptional = citizenRepository.findById(citizenId);
 
 		if (!citizenOptional.isPresent())
@@ -112,7 +122,11 @@ public class RequestController {
 		
 		Request savedRequest = null;
 		request.setCitizen(citizenOptional.get());
+		
+		
+//		request.setState(RequestState.NEW);
 		savedRequest = requestRepository.save(request);
+		
 		
 		EyeReveal eyeReveal = new EyeReveal();
 		eyeReveal.setRequest(savedRequest);
@@ -124,7 +138,11 @@ public class RequestController {
 		bonesRevealRepository.save(bonesReveal);
 		
 		RequestPayment requestPayment = new RequestPayment();
+		
+		requestPayment.setPrice(requestTypeRepository.findById(request.getRequestType().getId()).get().getPrice());
 		requestPayment.setRequest(savedRequest);
+		
+		
 		paymentRepository.save(requestPayment);
 		return savedRequest;
 	}

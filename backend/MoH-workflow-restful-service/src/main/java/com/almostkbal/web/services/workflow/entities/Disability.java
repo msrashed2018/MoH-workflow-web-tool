@@ -2,10 +2,15 @@ package com.almostkbal.web.services.workflow.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="disability")
@@ -22,9 +27,9 @@ public class Disability {
 	@Column(name = "disability_description")
 	private String description;
 	
-//	@OneToOne
-//	@JoinColumn(name = "equipment_id")
-//	private Equipment equipment;
+	@OneToOne
+	@JoinColumn(name = "equipment_id")
+	private Equipment equipment;
 	
 	@Column(name = "accepted")
 	private byte accepted;
@@ -63,13 +68,13 @@ public class Disability {
 		this.description = description;
 	}
 
-//	public Equipment getEquipment() {
-//		return equipment;
-//	}
-//
-//	public void setEquipment(Equipment equipment) {
-//		this.equipment = equipment;
-//	}
+	public Equipment getEquipment() {
+		return equipment;
+	}
+
+	public void setEquipment(Equipment equipment) {
+		this.equipment = equipment;
+	}
 
 	public byte getAccepted() {
 		return accepted;

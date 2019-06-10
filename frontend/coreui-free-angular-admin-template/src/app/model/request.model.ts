@@ -24,5 +24,6 @@ export class Request {
     public requestStatus: RequestStatus;
     public trafficManagement: TrafficManagement;
     public documents: RequestDocument[];
+    public state: string;
     public description: string;
 }

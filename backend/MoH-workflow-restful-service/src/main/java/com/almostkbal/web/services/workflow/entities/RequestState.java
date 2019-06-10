@@ -1,9 +1,10 @@
 package com.almostkbal.web.services.workflow.entities;
 
 public enum RequestState {
-	RECEPTIONIST("receptionist"),
-	CASHIER("cashier"),
-	CONTINUE_REGISTERING("continue-registering"),
+	OLD("old"),
+	NEW("new"),
+	PAYMENT("payment"),
+	DOCUMENTS_SCANNING("document-scanning"),
 	EYE_REVEAL("eye-reveal"),
 	BONES_REVEAL("bones-reveal"),
 	REVEAL_REGISTERING("reveal-registering"),
@@ -11,7 +12,6 @@ public enum RequestState {
     
     RequestState(final String name) {
         this.name = name;
-
 	}
     private final String name;
 

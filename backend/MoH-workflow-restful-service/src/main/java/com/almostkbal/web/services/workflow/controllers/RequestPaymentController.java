@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
+import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.repositories.RequestPaymentRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
@@ -39,12 +40,17 @@ public class RequestPaymentController {
 	}
 
 	@PostMapping("/api/requests/{id}/payment")
-	public ResponseEntity<RequestPayment> createGender(@PathVariable long id, @RequestBody RequestPayment requestPayment) {
+	public ResponseEntity<RequestPayment> addRequestPayment(@PathVariable long id, @RequestBody RequestPayment requestPayment) {
 		
 		Optional<Request> existingRequest = requestRepository.findById(id);
 
 		if (!existingRequest.isPresent())
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+		
+		if(requestPayment.getPaymentDone() == 1) {
+			existingRequest.get().setState(RequestState.PAYMENT);
+		}
+		
 		requestPayment.setRequest(existingRequest.get());
 		RequestPayment savedRequestPayment = requestPaymentRepository.save(requestPayment);
 		

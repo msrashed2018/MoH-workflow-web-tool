@@ -20,7 +20,7 @@
                         <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate>
     
                             <div class="form-group row">
-                                <label class="col-md-1 col-form-label font-weight-bold" for="name">الاسم </label>
+                                <label class="col-md-2 col-form-label font-weight-bold" for="name">الاسم <b style="color: red">*</b></label>
                                 <div class="col-md-6">
                                     <input [attr.disabled]="disabled ? '' : null" maxlength="100" [(ngModel)]="citizen.name" #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required type="text" name="name" class="form-control" placeholder="الاسم بالكامل">
                                     <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
@@ -31,7 +31,7 @@
                             </div>
     
                             <div class="form-group row">
-                                <label class="col-md-1 col-form-label font-weight-bold" for="nationalId">الرقم القومي</label>
+                                <label class="col-md-2 col-form-label font-weight-bold" for="nationalId">الرقم القومي <b style="color: red">*</b></label>
                                 <div class="col-md-6">
                                     <input [attr.disabled]="disabled ? '' : null" minlength="14" maxlength="14" (input)="onNationalIdChange($event.target.value)" [(ngModel)]="citizen.nationalId" #nationalId="ngModel" [ngClass]="{ 'is-invalid': f.submitted && nationalId.invalid }" required type="text" name="nationalId" class="form-control" placeholder="الرقم القومي">
                                     <div *ngIf="f.submitted && nationalId.invalid" class="invalid-feedback">
@@ -43,7 +43,7 @@
                             </div>
     
                             <div class="form-group row">
-                                <label class="col-md-1 col-form-label font-weight-bold" for="birthDate">تاريخ الميلاد</label>
+                                <label class="col-md-2 col-form-label font-weight-bold" for="birthDate">تاريخ الميلاد <b style="color: red">*</b></label>
                                 <div class="col-md-6">
                                     <!-- <input class="form-control"  type="text" [(ngModel)]="citizen.birthDate" #birthDate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && birthDate.invalid }" name="birthDate" placeholder="YYYY-MM-DD" required /> -->
     
@@ -56,7 +56,7 @@
                             </div>
     
                             <div class="form-group row">
-                                <label class="col-md-1 col-form-label font-weight-bold" for="address">العنوان</label>
+                                <label class="col-md-2 col-form-label font-weight-bold" for="address">العنوان</label>
                                 <div class="col-md-6">
                                     <input [attr.disabled]="disabled ? '' : null" maxlength="150" [(ngModel)]="citizen.address" #address="ngModel" [ngClass]="{ 'is-invalid': f.submitted && address.invalid }" type="text" name="address" class="form-control" placeholder="العنوان بالتفصيل">
                                     <div *ngIf="f.submitted && address.invalid" class="invalid-feedback">
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-1 col-form-label font-weight-bold" for="mobileNumber">رقم الموبيل</label>
+                                <label class="col-md-2 col-form-label font-weight-bold" for="mobileNumber">رقم الموبيل</label>
                                 <div class="col-md-6">
                                     <input [attr.disabled]="disabled ? '' : null" maxlength="13" [(ngModel)]="citizen.mobileNumber" #mobileNumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobileNumber.invalid }" type="text" name="mobileNumber" class="form-control" placeholder="01xxxxxxxxx">
                                     <div *ngIf="f.submitted && mobileNumber.invalid" class="invalid-feedback">
@@ -75,7 +75,7 @@
                             </div>
     
                             <div class="form-group row">
-                                <label class="col-md-1 col-form-label font-weight-bold" for="governate">المحافظة</label>
+                                <label class="col-md-2 col-form-label font-weight-bold" for="governate">المحافظة <b style="color: red">*</b></label>
                                 <div class="col-md-6">
                                     <!-- <input name="governate"  class="form-control" type="text" list="governates-list" [(ngModel)]="selectedGovernateId" #governate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && governate.invalid }" (change)="onGovernateChanged(governate.value)" required/> -->
                                     <select [attr.disabled]="disabled ? '' : null" name="governate" class="form-control" [(ngModel)]="selectedGovernateId" #governate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && governate.invalid }" (change)="onGovernateChanged(governate.value)" required>
@@ -87,7 +87,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-1 col-form-label font-weight-bold" for="city">المدينة</label>
+                                <label class="col-md-2 col-form-label font-weight-bold" for="city">المدينة <b style="color: red">*</b></label>
                                 <div class="col-md-6">
                                     <select [attr.disabled]="disabled ? '' : null" [(ngModel)]="selectedCityId" #city="ngModel" [ngClass]="{ 'is-invalid': f.submitted && city.invalid }" name="city" class="form-control" required>
                                         <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
@@ -99,7 +99,7 @@
                             </div>
     
                             <div class="form-group row">
-                                <label class="col-md-1 col-form-label font-weight-bold" for="occupation">المهنه</label>
+                                <label class="col-md-2 col-form-label font-weight-bold" for="occupation">المهنه <b style="color: red">*</b></label>
                                 <div class="col-md-6">
                                     <select [attr.disabled]="disabled ? '' : null" [(ngModel)]="selectedOccupationId" #occupation="ngModel" [ngClass]="{ 'is-invalid': f.submitted && occupation.invalid }" name="occupation" class="form-control" required>
                                         <option *ngFor="let occupation of occupations" [value]="occupation.id">{{occupation.name}}</option>
@@ -111,7 +111,7 @@
                             </div>
     
                             <div class="form-group row">
-                                <label class="col-md-1 col-form-label font-weight-bold" for="gender">النوع</label>
+                                <label class="col-md-2 col-form-label font-weight-bold" for="gender">النوع <b style="color: red">*</b></label>
                                 <div class="col-md-6">
                                     <select [attr.disabled]="disabled ? '' : null" [(ngModel)]="selectedGenderId" #gender="ngModel" [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }" name="gender" class="form-control" required>
                                         <option *ngFor="let gender of genders" [value]="gender.id">{{gender.name}}</option>
@@ -182,12 +182,12 @@
                                         <b>{{request.requestDate}}</b>
                                     </td>
                                     <td class="text-center">
-                                        <button type="button" class="edit-btn btn btn-info" (click)="onEditRequest(request.id)">تعديل
+                                        <button [attr.disabled]="disabled ? '' : null" type="button" class="edit-btn btn btn-info" (click)="onEditRequest(request.id)">تعديل
                                             <i class="fa fa-edit"></i>
                                         </button>
                                     </td>
                                     <td class="text-center">
-                                        <button type="button" class="delete-btn btn btn-danger" (click)="onDeleteRequest(request.id)">حذف
+                                        <button [attr.disabled]="disabled ? '' : null" type="button" class="delete-btn btn btn-danger" (click)="onDeleteRequest(request.id)">حذف
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
@@ -196,7 +196,7 @@
                             </tbody>
                         </table>
                         <br/><br/><br/>
-                        <!-- <div class="card-footer"> -->
+                        <div *ngIf="componentMode=='editMode'"> 
                             <form class="form-horizontal" #x="ngForm" (ngSubmit)="x.form.valid && createNewRequest()" novalidate>
                                 <div class="form-group row">
                                         <label class="col-md-2 col-form-label font-weight-bold" for="requestType">نوع الطلب</label>
@@ -211,7 +211,7 @@
                                 </div>
                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>طلب جديد</button>
                             </form>
-                            <!-- </div> -->
+                        </div> 
                     </div>
                 </div>
             </div>

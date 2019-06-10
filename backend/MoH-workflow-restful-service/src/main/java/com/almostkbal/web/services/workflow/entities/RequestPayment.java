@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,6 +36,7 @@ public class RequestPayment {
 	private byte paymentDone;
 	
 	@Column(name = "payment_date")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date paymentDate;
 	
 	@Column(name = "price")
