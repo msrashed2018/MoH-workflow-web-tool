@@ -27,7 +27,7 @@
       <th class="text-center">اسم المواطن</th>
       <th class="text-center">نوع الطلب</th>
       
-      <th class="text-center">تسجيل الحضور</th>
+      <th class="text-center">استكمال</th>
     </tr>
   </thead>
   <tbody>
@@ -52,7 +52,7 @@
         <b *ngIf="request.requestType != null" >{{request.requestType.name}}</b>
       </td>
       <td class="text-center">
-          <button type="button" class="edit-btn btn btn-info" (click)="onAttend(request.id)">حضر
+          <button type="button" class="edit-btn btn btn-info" (click)="onContinue(request.id)">استكمال
               <i class="fa fa-edit"></i>
           </button>
       </td >

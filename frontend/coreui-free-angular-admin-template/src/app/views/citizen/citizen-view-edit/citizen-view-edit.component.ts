@@ -82,9 +82,9 @@ export class CitizenViewEditComponent implements OnInit {
         if(this.citizen.occupation != null){
           this.selectedOccupationId = this.citizen.occupation.id;
         }
-        if(this.citizen.gender != null){
-          this.selectedGenderId = this.citizen.gender.id;
-        }
+        // if(this.citizen.gender != null){
+        //   this.selectedGenderId = this.citizen.gender.id;
+        // }
         
       }
     )
@@ -138,10 +138,12 @@ export class CitizenViewEditComponent implements OnInit {
       this.citizen.birthDate = this.datepipe.transform(new Date(date), 'yyyy-MM-dd');
     
       //getting gender from national id
-      if ( value[12] % 2 == 0) {
-        this.selectedGenderId = 2;
+      if ( value[12] % 2 != 0) {
+        this.citizen.gender = 'ذكر'
+        // this.selectedGenderId = 2;
       }else{
-        this.selectedGenderId = 1;
+        this.citizen.gender = 'أنثي'
+        // this.selectedGenderId = 1;
       } 
     }
   }
@@ -163,12 +165,11 @@ export class CitizenViewEditComponent implements OnInit {
     this.citizen.occupation = occupation;
 
 
-    let gender = new Gender;
-    gender.id = this.selectedGenderId;
-    this.citizen.gender = gender;
+    // let gender = new Gender;
+    // gender.id = this.selectedGenderId;
+    // this.citizen.gender = gender;
 
-
-    this.citizenService.createCitizen(this.citizen).subscribe(
+    this.citizenService.updateCitizen(this.citizen.id,this.citizen).subscribe(
       result => {
         this.router.navigateByUrl("/citizen/search");
         this.errorMessage = false;
@@ -254,11 +255,23 @@ export class CitizenViewEditComponent implements OnInit {
     requestType.id = this.selectedRequestTypeId;
     request.requestType = requestType;
 
-    if(requestType.name == 'كشف عادي' || requestType.name == 'كشف مستعجل'){
-      request.state = 'NEW';
-    }else{
-      request.state = 'OLD';
+    for(var x =0 ; x< this.requestTypes.length ; x++){
+      if(this.selectedRequestTypeId == this.requestTypes[x].id){
+        if(this.requestTypes[x].name == 'كشف عادي' || this.requestTypes[x].name == 'كشف مستعجل'){
+          request.state = 'NEW';
+        }else{
+          request.state = 'PAYMENT_DONE';
+        }
+      }
     }
+
+
+    console.log("request.statee = "+request.state)
+    // if(requestType.name == 'كشف عادي' || requestType.name == 'كشف مستعجل'){
+    //   request.state = 'NEW';
+    // }else{
+    //   request.state = 'PAYMENT_DONE';
+    // }
     
     this.requestService.createRequest(this.citizenId,request).subscribe(
       result=>{

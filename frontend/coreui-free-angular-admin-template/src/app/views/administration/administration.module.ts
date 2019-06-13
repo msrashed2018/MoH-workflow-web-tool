@@ -53,6 +53,7 @@ import { EyeRevealSettingDataComponent } from './list-eye-reveal-setting/eye-rev
 import { ListEyeRevealSettingComponent } from './list-eye-reveal-setting/list-eye-reveal-setting.component';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { AuditComponent } from './audit/audit.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     EyeMeasureViewEditComponent,
     EyeRevealSettingViewEditComponent,
     EyeRevealSettingDataComponent,
-    ListEyeRevealSettingComponent
+    ListEyeRevealSettingComponent,
+    AuditComponent
   ],
   providers :[ConfirmModalService ],
   imports: [

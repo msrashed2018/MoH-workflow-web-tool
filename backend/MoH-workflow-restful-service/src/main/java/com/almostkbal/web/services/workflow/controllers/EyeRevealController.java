@@ -25,6 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.almostkbal.web.services.workflow.entities.EyeReveal;
 import com.almostkbal.web.services.workflow.entities.Gender;
 import com.almostkbal.web.services.workflow.entities.Request;
+import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.repositories.EyeRevealRepository;
 import com.almostkbal.web.services.workflow.repositories.GenderRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
@@ -58,6 +59,12 @@ public class EyeRevealController {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		eyeReveal.setRequest(existingRequest.get());
 		EyeReveal savedEyeReveal = eyeRevealRepository.save(eyeReveal);
+
+		if(eyeReveal.getRevealDone() == 1) {
+			existingRequest.get().setState(RequestState.EYE_REVEAL);
+			requestRepository.save(existingRequest.get());
+		}
+		
 		
 		return new ResponseEntity<EyeReveal>(savedEyeReveal, HttpStatus.OK);
 		

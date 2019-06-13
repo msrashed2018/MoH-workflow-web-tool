@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RequestPayment } from '../../../../model/request-payment.model';
 import { RequestService } from '../../../../services/request.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-payment-data',
@@ -21,7 +22,7 @@ export class PaymentDataComponent implements OnInit {
 
   paymentErrorMessage : string = '';
   paymentSuccessMessage : string = '';
-  constructor( private route:ActivatedRoute, private requestService: RequestService, private router: Router) { }
+  constructor( private route:ActivatedRoute, private datepipe: DatePipe, private requestService: RequestService, private router: Router) { }
 
   ngOnInit() {
     this.route.params.forEach((urlParams) => {
@@ -69,6 +70,10 @@ export class PaymentDataComponent implements OnInit {
           this.paymentDoneCheck = true;
         }else{
           this.paymentDoneCheck = false;
+        }
+
+        if(this.payment.paymentDate == null){
+          this.payment.paymentDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
         }
       },
       error=>{

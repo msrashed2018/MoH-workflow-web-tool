@@ -16,6 +16,10 @@ export class CommitteeService {
     return this.http.get<Committee[]>(`${API_URL}/committees`);
 
   }
+  retrieveCommitteesByType(type : string) {
+    return this.http.get<Committee[]>(`${API_URL}/committees/findByType?type=`+type);
+
+  }
 
   deleteCommittee(id){
     return this.http.delete(`${API_URL}/committees/${id}`);

@@ -14,9 +14,13 @@ export class Request {
     public citizen: Citizen;
     public requestDate: String;
     public requestType: RequestType;
-    public payment: RequestPayment
-    public eyeReveal: EyeReveal;
-    public bonesReveal: BonesReveal;
+   
+    // public payment: RequestPayment;
+    // public eyeReveal: EyeReveal;
+    // public bonesReveal: BonesReveal;
+   
+    public eyeCommittee: Committee;
+    public bonesCommittee: Committee;
     public custom: Custom;
     public createdBy: string;
     public modifiedBy: string;

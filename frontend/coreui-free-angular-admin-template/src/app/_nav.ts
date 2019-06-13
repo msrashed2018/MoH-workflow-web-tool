@@ -1,4 +1,4 @@
-import { REQUEST_TYPES, REQUEST_STATUS, REQUEST_PRICES, GOVERNATES, CITIES, OCCUPATION_TYPES, ZONES, CUSTOMS, DISABILITIES_TYPES, EQUIPMENTS_TYPES, USERS, COUNCILS, CITIZENS, COMMITTEE_MEMBERS, COMMITTEES, EYE_MEASURES, EYE_REVEAL_SETTINGS, REQUESTS, PAYMENTS, REQUESTS_REVIEWER, SYSTEM_ADMINISTRATION } from './app-words';
+import { REQUEST_TYPES, REQUEST_STATUS, REQUEST_PRICES, GOVERNATES, CITIES, OCCUPATION_TYPES, ZONES, CUSTOMS, DISABILITIES_TYPES, EQUIPMENTS_TYPES, USERS, COUNCILS, CITIZENS, COMMITTEE_MEMBERS, COMMITTEES, EYE_MEASURES, EYE_REVEAL_SETTINGS, REQUESTS, PAYMENTS, REQUESTS_REVIEWER, SYSTEM_ADMINISTRATION, CONTINUE_REGISTERING, BONES_REVEAL, EYE_REVEAL } from './app-words';
 
 interface NavAttributes {
   [propName: string]: any;
@@ -110,6 +110,9 @@ export const adminNavItems: NavData[] = [
     ]
   }
 ]
+
+
+
 export const navItems: NavData[] = [
   {
     name:  `${CITIZENS}`,
@@ -122,12 +125,27 @@ export const navItems: NavData[] = [
     url: '/request/search',
     icon: 'cui-envelope-letter'
   },
-  
   {
     name: `${PAYMENTS}`,
     url: '/request/payments',
     icon: 'cui-dollar',
   },
+  {
+    name: `${CONTINUE_REGISTERING}`,
+    url: '/request/continue-registering',
+    icon: 'cui-dollar',
+  },
+  {
+    name: `${BONES_REVEAL}`,
+    url: '/request/bones-reveal',
+    icon: 'cui-dollar',
+  },
+  {
+    name: `${EYE_REVEAL}`,
+    url: '/request/eye-reveal',
+    icon: 'cui-dollar',
+  },
+  
   {
     name: `${REQUESTS_REVIEWER}`,
     url: '/theme/typography',

@@ -198,7 +198,7 @@ export class RequestComponent implements OnInit {
     if(this.selectedEyeCommitteeId !=0){
       let committee: Committee = new Committee;
       committee.id= this.selectedEyeCommitteeId;
-      this.eyeReveal.committee = committee;
+      // this.eyeReveal.committee = committee;
     }
     if(this.selectedLeftEyeMeasureId != 0){
       let eyeMeasure: EyeMeasure = new EyeMeasure;
@@ -229,7 +229,7 @@ export class RequestComponent implements OnInit {
     if(this.selectedBonesCommitteeId !=0){
       let committee: Committee = new Committee;
       committee.id= this.selectedBonesCommitteeId;
-      this.bonesReveal.committee = committee;
+      // this.bonesReveal.committee = committee;
     }
 
     if(this.selectedDisabilityTypeId != 0){
@@ -371,9 +371,9 @@ export class RequestComponent implements OnInit {
           this.squintCheck = false;
         }
     
-        if(this.eyeReveal.committee != null){
-          this.selectedEyeCommitteeId = this.eyeReveal.committee.id
-        }
+        // if(this.eyeReveal.committee != null){
+        //   this.selectedEyeCommitteeId = this.eyeReveal.committee.id
+        // }
     
         if(this.eyeReveal.leftEye != null){
           this.selectedLeftEyeMeasureId = this.eyeReveal.leftEye.id
@@ -409,9 +409,9 @@ export class RequestComponent implements OnInit {
         this.bonesReveal = result as BonesReveal;
         console.log(JSON.stringify(this.bonesReveal))
         
-        if(this.bonesReveal.committee != null){
-          this.selectedBonesCommitteeId = this.bonesReveal.committee.id
-        }
+        // if(this.bonesReveal.committee != null){
+        //   this.selectedBonesCommitteeId = this.bonesReveal.committee.id
+        // }
 
         if(this.bonesReveal.disability != null){
           this.selectedDisabilityTypeId = this.bonesReveal.disability.id

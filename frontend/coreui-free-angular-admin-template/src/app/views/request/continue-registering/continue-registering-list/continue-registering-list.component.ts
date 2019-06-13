@@ -1,19 +1,18 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import { Request } from '../../../model/request.model';
+import { Request } from '../../../../model/request.model';
 import { DatePipe, CommonModule } from '@angular/common';
 import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert';
 import * as moment from  'moment';
 import { Router } from '@angular/router';
-import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { RequestService } from '../../../services/request.service';
-import { EyeReveal } from '../../../model/eye-reveal.model';
+import { ConfirmModalService } from '../../../confirm-modal/confirm-modal.service';
+import { RequestService } from '../../../../services/request.service';
 
 @Component({
-  selector: 'app-eye-reveal',
-  templateUrl: './eye-reveal.component.html',
-  styleUrls: ['./eye-reveal.component.scss']
+  selector: 'app-continue-registering-list',
+  templateUrl: './continue-registering-list.component.html',
+  styleUrls: ['./continue-registering-list.component.scss']
 })
-export class EyeRevealComponent implements OnInit {
+export class ContinueRegisteringListComponent implements OnInit {
   private requests: Request[];
   private noDataFound: boolean = false;
   private errorMessage: boolean = false;
@@ -55,7 +54,6 @@ export class EyeRevealComponent implements OnInit {
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {
-            console.log(result);
             this.noDataFound = false;
             this.requests= result;
           }else{
@@ -71,25 +69,8 @@ export class EyeRevealComponent implements OnInit {
       );
   }
 
-  onAttend(id) {
-    this.confirmationModalService.confirm('من فضلك أدخل بصمة المواطن او اضغط علي ok', 'هل انت متاكد من  تسجيل حضور المواطن ')
-    .then((confirmed) => {
-      if(confirmed){
-        let eyeReveal = new EyeReveal();
-        eyeReveal.revealDone = '1';
-        this.requestService.saveRequestEyeReveal(id, eyeReveal).subscribe(
-          result => {
-            this.retriveAllRequests();
-            this.errorMessage = false;
-          },
-          error => {
-            console.log('oops', error);
-            this.errorMessage = true;
-          }
-        )
-      }
-    })
-
+  onContinue(id) {
+    this.router.navigate(['request/continue-registering-data',{requestId:id}])
   }
- 
+
 }

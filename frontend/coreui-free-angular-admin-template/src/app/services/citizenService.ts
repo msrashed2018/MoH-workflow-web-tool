@@ -48,7 +48,11 @@ export const AUTHENTICATED_USER = 'authenticaterUser'
       return data;
     }));
   }
-
+  updateCitizen(citizenId, citizen : Citizen){
+    return this.http.put(
+          `${API_URL}/citizens/${citizenId}`
+                , citizen);
+  }
   retriveAllOccupations() {
       
     return this.http.get<Object>

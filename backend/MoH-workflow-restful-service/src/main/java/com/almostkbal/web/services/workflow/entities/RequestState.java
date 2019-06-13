@@ -3,7 +3,7 @@ package com.almostkbal.web.services.workflow.entities;
 public enum RequestState {
 	OLD("old"),
 	NEW("new"),
-	PAYMENT("payment"),
+	PAYMENT_DONE("payment-done"),
 	DOCUMENTS_SCANNING("document-scanning"),
 	EYE_REVEAL("eye-reveal"),
 	BONES_REVEAL("bones-reveal"),

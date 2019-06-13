@@ -3,7 +3,7 @@ import { Committee } from './committee.model';
 
 export class EyeReveal {
     public id: number;
-    public committee: Committee;
+    // public committee: Committee;
     public rightEye: EyeMeasure;
     public leftEye: EyeMeasure;
     public useGlasses: string;
@@ -12,4 +12,5 @@ export class EyeReveal {
     public squint: string;
     public result: string;
     public description: string;
+    public revealDone: string;
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.almostkbal.web.services.workflow.entities.BonesReveal;
 import com.almostkbal.web.services.workflow.entities.Request;
+import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.repositories.BonesRevealRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
 
@@ -47,6 +48,12 @@ public class BonesRevealController {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		bonesReveal.setRequest(existingRequest.get());
 		BonesReveal savedBonesReveal = bonesRevealRepository.save(bonesReveal);
+		
+		
+		if(bonesReveal.getRevealDone() == 1) {
+			existingRequest.get().setState(RequestState.BONES_REVEAL);
+			requestRepository.save(existingRequest.get());
+		}
 		
 		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
 		

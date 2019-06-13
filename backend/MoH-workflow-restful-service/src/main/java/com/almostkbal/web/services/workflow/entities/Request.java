@@ -20,6 +20,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "request")
@@ -44,6 +45,16 @@ public class Request {
 	@NotNull
 	private RequestType requestType;
 	
+	
+	@OneToOne
+	@JoinColumn(name = "eye_committee_id")
+//	@JsonIgnore
+	private Committee eyeCommittee;
+
+	@OneToOne
+	@JoinColumn(name = "bones_committee_id")
+//	@JsonIgnore
+	private Committee bonesCommittee;
 	
 	@OneToOne
 	@JoinColumn(name = "custom_id")
@@ -175,6 +186,22 @@ public class Request {
 
 	public void setState(RequestState state) {
 		this.state = state;
+	}
+
+	public Committee getEyeCommittee() {
+		return eyeCommittee;
+	}
+
+	public void setEyeCommittee(Committee eyeCommittee) {
+		this.eyeCommittee = eyeCommittee;
+	}
+
+	public Committee getBonesCommittee() {
+		return bonesCommittee;
+	}
+
+	public void setBonesCommittee(Committee bonesCommittee) {
+		this.bonesCommittee = bonesCommittee;
 	}
 
 }

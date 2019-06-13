@@ -10,7 +10,7 @@ export class Citizen {
     public birthDate : string;
     public address : string;
     public mobileNumber: string;
-    public gender: Gender;
+    public gender: string;
     public city: City;
     public governate: Governate;
     public occupation: Occupation;

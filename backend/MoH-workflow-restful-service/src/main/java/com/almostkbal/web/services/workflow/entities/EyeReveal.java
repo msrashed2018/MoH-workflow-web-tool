@@ -25,9 +25,9 @@ public class EyeReveal {
 	@Column(name = "eye_reveal_id")
 	private long id;
 	
-	@OneToOne
-	@JoinColumn(name = "eye_committee_id")
-	private Committee committee;
+//	@OneToOne
+//	@JoinColumn(name = "eye_committee_id")
+//	private Committee committee;
 	
 	@OneToOne
 	@JoinColumn(name = "right_measure_id")
@@ -51,6 +51,9 @@ public class EyeReveal {
 	
 	@Column(name = "result")
 	private String result;
+	
+	@Column(name = "reveal_done")
+	private byte revealDone;
 	
 	@Column(name = "description")
 	private String description;
@@ -141,13 +144,13 @@ public class EyeReveal {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Committee getCommittee() {
-		return committee;
-	}
-
-	public void setCommittee(Committee committee) {
-		this.committee = committee;
-	}
+//	public Committee getCommittee() {
+//		return committee;
+//	}
+//
+//	public void setCommittee(Committee committee) {
+//		this.committee = committee;
+//	}
 
 	public Request getRequest() {
 		return request;
@@ -156,4 +159,13 @@ public class EyeReveal {
 	public void setRequest(Request request) {
 		this.request = request;
 	}
+
+	public byte getRevealDone() {
+		return revealDone;
+	}
+
+	public void setRevealDone(byte revealDone) {
+		this.revealDone = revealDone;
+	}
+	
 }

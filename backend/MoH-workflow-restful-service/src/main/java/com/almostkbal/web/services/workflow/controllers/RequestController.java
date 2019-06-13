@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.almostkbal.web.services.workflow.entities.BonesReveal;
 import com.almostkbal.web.services.workflow.entities.Citizen;
+import com.almostkbal.web.services.workflow.entities.Committee;
 import com.almostkbal.web.services.workflow.entities.EyeReveal;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
@@ -110,9 +111,51 @@ public class RequestController {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		return request.get();
 	}
-
-
-
+	
+	
+//	@GetMapping("/api/requests/{id}/eye-committee")
+//	public Committee retrieveRequestEyeCommittee(@PathVariable long id) {
+//		System.out.println("\n\n Optional<Request> request = requestRepository.findById(id) \n\n");
+//		Optional<Request> request = requestRepository.findById(id);
+//		if (!request.isPresent())
+//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+//		
+//		System.out.println("\n\n Committee eyeCommitttee = request.get().getEyeCommittee(); \n\n");
+//		Committee eyeCommitttee = request.get().getEyeCommittee();
+//		return eyeCommitttee;
+//	}
+//
+//	@PostMapping("/api/requests/{id}/eye-committee")
+//	public void  addRequestEyeCommittee(@PathVariable long id, @RequestBody Committee eyeCommittee) {
+//		
+//		Optional<Request> existingRequest = requestRepository.findById(id);
+//
+//		if (!existingRequest.isPresent())
+//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+//		
+//		existingRequest.get().setEyeCommittee(eyeCommittee);
+//		
+//		requestRepository.save(existingRequest.get());
+////		return new ResponseEntity<Committee>(savedEyeReveal, HttpStatus.OK);
+//		
+//	}
+//	
+//	@PostMapping("/api/requests/{id}/bones-committee")
+//	public void  addRequestBonesCommittee(@PathVariable long id, @RequestBody Committee bonesCommittee) {
+//		
+//		Optional<Request> existingRequest = requestRepository.findById(id);
+//
+//		if (!existingRequest.isPresent())
+//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+//		
+//		existingRequest.get().setBonesCommittee(bonesCommittee);
+//		
+//		requestRepository.save(existingRequest.get());
+////		return new ResponseEntity<Committee>(savedEyeReveal, HttpStatus.OK);
+//		
+//	}
+	
+	
 	@PostMapping("/api/citizens/{citizenId}/requests")
 	public Object createRequest(@PathVariable long citizenId,@Valid @RequestBody Request request) {
 		Optional<Citizen> citizenOptional = citizenRepository.findById(citizenId);
@@ -128,14 +171,14 @@ public class RequestController {
 		savedRequest = requestRepository.save(request);
 		
 		
-		EyeReveal eyeReveal = new EyeReveal();
-		eyeReveal.setRequest(savedRequest);
-		eyeRevealRepository.save(eyeReveal);
-		
-		
-		BonesReveal bonesReveal = new BonesReveal();
-		bonesReveal.setRequest(savedRequest);
-		bonesRevealRepository.save(bonesReveal);
+//		EyeReveal eyeReveal = new EyeReveal();
+//		eyeReveal.setRequest(savedRequest);
+//		eyeRevealRepository.save(eyeReveal);
+//		
+//		
+//		BonesReveal bonesReveal = new BonesReveal();
+//		bonesReveal.setRequest(savedRequest);
+//		bonesRevealRepository.save(bonesReveal);
 		
 		RequestPayment requestPayment = new RequestPayment();
 		

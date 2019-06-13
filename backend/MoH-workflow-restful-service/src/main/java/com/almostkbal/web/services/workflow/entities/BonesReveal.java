@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,9 +24,9 @@ public class BonesReveal {
 	@Column(name = "bones_reveal_id")
 	private long id;	
 	
-	@OneToOne
-	@JoinColumn(name = "bones_committee_id")
-	private Committee committee;
+//	@OneToOne
+//	@JoinColumn(name = "bones_committee_id")
+//	private Committee committee;
 	
 	@OneToOne
 	@JoinColumn(name = "disability_id")
@@ -42,6 +41,9 @@ public class BonesReveal {
 	
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "reveal_done")
+	private byte revealDone;
 	
 	
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
@@ -94,13 +96,13 @@ public class BonesReveal {
 		this.description = description;
 	}
 
-	public Committee getCommittee() {
-		return committee;
-	}
-
-	public void setCommittee(Committee committee) {
-		this.committee = committee;
-	}
+//	public Committee getCommittee() {
+//		return committee;
+//	}
+//
+//	public void setCommittee(Committee committee) {
+//		this.committee = committee;
+//	}
 
 	public Request getRequest() {
 		return request;
@@ -109,5 +111,14 @@ public class BonesReveal {
 	public void setRequest(Request request) {
 		this.request = request;
 	}
+
+	public byte getRevealDone() {
+		return revealDone;
+	}
+
+	public void setRevealDone(byte revealDone) {
+		this.revealDone = revealDone;
+	}
+	
 
 }

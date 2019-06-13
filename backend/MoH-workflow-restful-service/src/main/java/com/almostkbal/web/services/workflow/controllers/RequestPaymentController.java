@@ -46,9 +46,9 @@ public class RequestPaymentController {
 
 		if (!existingRequest.isPresent())
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-		
 		if(requestPayment.getPaymentDone() == 1) {
-			existingRequest.get().setState(RequestState.PAYMENT);
+			existingRequest.get().setState(RequestState.PAYMENT_DONE);
+			requestRepository.save(existingRequest.get());
 		}
 		
 		requestPayment.setRequest(existingRequest.get());

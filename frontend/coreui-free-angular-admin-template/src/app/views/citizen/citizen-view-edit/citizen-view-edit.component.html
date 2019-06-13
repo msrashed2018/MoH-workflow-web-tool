@@ -113,8 +113,10 @@
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label font-weight-bold" for="gender">النوع <b style="color: red">*</b></label>
                                 <div class="col-md-6">
-                                    <select [attr.disabled]="disabled ? '' : null" [(ngModel)]="selectedGenderId" #gender="ngModel" [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }" name="gender" class="form-control" required>
-                                        <option *ngFor="let gender of genders" [value]="gender.id">{{gender.name}}</option>
+                                    <select [attr.disabled]="disabled ? '' : null" [(ngModel)]="citizen.gender" #gender="ngModel" [ngClass]="{ 'is-invalid': f.submitted && gender.invalid }" name="gender" class="form-control" required>
+                                        <!-- <option *ngFor="let gender of genders" [value]="gender.id">{{gender.name}}</option> -->
+                                        <option  value="ذكر">ذكر</option>
+                                        <option  value="أنثي">أنثي</option>
                                     </select>
                                     <div *ngIf="f.submitted && gender.invalid" class="invalid-feedback">
                                         <div *ngIf="gender.errors.required"> برجاء اختيار النوع</div>

@@ -108,10 +108,12 @@ export class CitizenComponent implements OnInit {
       this.citizen.birthDate = this.datepipe.transform(new Date(date), 'yyyy-MM-dd');
     
       //getting gender from national id
-      if ( value[12] % 2 == 0) {
-        this.selectedGenderId = 2;
+      if ( value[12] % 2 != 0) {
+        this.citizen.gender = 'ذكر'
+        // this.selectedGenderId = 2;
       }else{
-        this.selectedGenderId = 1;
+        this.citizen.gender = 'أنثي'
+        // this.selectedGenderId = 1;
       } 
     }
   }
@@ -133,9 +135,9 @@ export class CitizenComponent implements OnInit {
     this.citizen.occupation = occupation;
 
 
-    let gender = new Gender;
-    gender.id = this.selectedGenderId;
-    this.citizen.gender = gender;
+    // let gender = new Gender;
+    // gender.id = this.selectedGenderId;
+    // this.citizen.gender = gender;
 
 
     this.citizenService.createCitizen(this.citizen).subscribe(
@@ -163,12 +165,11 @@ export class CitizenComponent implements OnInit {
     request.requestType = requestType;
 
     for(var x =0 ; x< this.requestTypes.length ; x++){
-
       if(this.selectedRequestTypeId == this.requestTypes[x].id){
         if(this.requestTypes[x].name == 'كشف عادي' || this.requestTypes[x].name == 'كشف مستعجل'){
           request.state = 'NEW';
         }else{
-          request.state = 'OLD';
+          request.state = 'PAYMENT_DONE';
         }
       }
     }

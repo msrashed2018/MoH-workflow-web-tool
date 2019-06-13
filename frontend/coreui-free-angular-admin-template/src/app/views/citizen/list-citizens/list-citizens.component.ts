@@ -61,6 +61,7 @@ export class ListCitizensComponent implements OnInit {
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null) {
+            console.log(result)
             this.noDataFound = false;
             this.citizens= result;
           }else{

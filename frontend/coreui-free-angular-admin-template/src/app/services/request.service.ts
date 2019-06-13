@@ -65,7 +65,11 @@ export class RequestService {
                 , request);
   }
 
-
+  // saveRequestEyeCommitte(id,eyeReveal){
+  //   return this.http.post(
+  //             `${API_URL}/requests/${id}/eye-reveal`
+  //               , eyeReveal);
+  // }
   saveRequestPayment(id,payment){
     return this.http.post(
               `${API_URL}/requests/${id}/payment`

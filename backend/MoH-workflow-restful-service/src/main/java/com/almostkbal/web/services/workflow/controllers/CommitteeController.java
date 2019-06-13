@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -36,6 +37,27 @@ public class CommitteeController {
 	public List<Committee> retrieveAllCommittees(){
 		return committeeRepository.findAll();
 	}
+	@GetMapping("/api/committees/findByType")
+	public List<Committee> retrieveCommitteesByType(@RequestParam String type){
+//		List<Committee> eyeCommittees = committeeRepository.findAll();
+//		for(Committee committee : eyeCommittees ) {
+//			if(committee.getType().equals("عظام") ){
+//				eyeCommittees.remove(committee);
+//			}
+//		}
+		return committeeRepository.findByType(type);
+	}
+	
+//	@GetMapping("/api/bones-committees")
+//	public List<Committee> retrieveBonesCommittees(){
+////		List<Committee> eyeCommittees = committeeRepository.findAll();
+////		for(Committee committee : eyeCommittees ) {
+////			if(committee.getType().equals("رمد") ){
+////				eyeCommittees.remove(committee);
+////			}
+////		}
+//		return committeeRepository.findByType("عظام");
+//	}
 	
 	@GetMapping("/api/committees/{id}")
 	public Committee retrieveCommitteeById(@PathVariable long id) {

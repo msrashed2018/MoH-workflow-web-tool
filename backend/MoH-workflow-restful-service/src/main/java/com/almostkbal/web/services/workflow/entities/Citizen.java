@@ -40,9 +40,12 @@ public class Citizen {
 //	private List<Request> requests;
 	
 
-	@OneToOne
-	@JoinColumn(name = "gender_id")
-	private Gender gender;
+//	@OneToOne
+//	@JoinColumn(name = "gender_id")
+//	private Gender gender;
+	
+	@Column(name = "gender")
+	private String gender;
 	
 	@OneToOne
 	@JoinColumn(name = "city_id")
@@ -127,11 +130,11 @@ public class Citizen {
 
 	
 
-	public Gender getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(Gender gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
