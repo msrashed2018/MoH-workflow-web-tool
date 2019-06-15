@@ -49,7 +49,7 @@ export class PaymentListComponent implements OnInit {
     this.noDataFound = false;
     let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retrieveByRequestState('NEW')
+    this.requestService.retrieveByRequestState('PENDING_PAYMENT')
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {

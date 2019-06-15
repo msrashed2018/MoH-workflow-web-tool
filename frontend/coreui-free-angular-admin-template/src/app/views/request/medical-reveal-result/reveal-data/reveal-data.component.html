@@ -16,7 +16,7 @@
 
     <div class="row ">
 
-        <div style="width:100% !important;">
+        <div  style="width:100% !important;">
             <div class="card">
                 <div class="card-header">
                     <strong style="color: rgba(27, 17, 168, 0.582);">البيانات الاساسية للطلب</strong>
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <div style="width:100% !important;">
+        <div *ngIf="eyeCommittee != null " style="width:100% !important;">
             <div class="card">
                 <div class="card-header">
                     <strong style="color: rgba(27, 17, 168, 0.582)">كشف الرمد</strong>
@@ -79,9 +79,9 @@
                 <div (collapsed)="eyeRevealDataCollapsed($event)" (expanded)="eyeRevealDataExpanded($event)" [collapse]="isEyeRevealDataCollapsed" class="card-body ">
                     <!-- <form class="form-horizontal" #eyeForm="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate> -->
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label font-weight-bold" for="eyeCommittee">تاريخ اللجنة</label>
+                        <label class="col-md-2 col-form-label font-weight-bold" for="eyeCommitteeDate">تاريخ اللجنة</label>
                         <div class="col-md-5">
-                            <input [attr.disabled]="true" [(ngModel)]="eyeCommittee.date" #eyeCommittee="ngModel" type="text" name="eyeCommittee" class="form-control">
+                            <input [attr.disabled]="true" [(ngModel)]="eyeCommittee.date"  type="text" name="eyeCommitteeDate" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -121,7 +121,7 @@
                             <input type="checkbox" name="glasses" [checked]="glassesCheck" (change)="onGlassesChecked($event)" />
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div *ngIf="eyeReveal.result != null" class="form-group row">
                         <label class="col-md-2 col-form-label font-weight-bold" for="eyeRevealResult">النتيجة</label>
                         <div class="col-md-5">
                             <input [attr.disabled]="true" [(ngModel)]="eyeReveal.result" #eyeRevealResult="ngModel" type="text" name="eyeCommittee" class="form-control">
@@ -152,7 +152,7 @@
             </div>
         </div>
 
-        <div style="width:100% !important;">
+        <div *ngIf="bonesCommittee != null " style="width:100% !important;">
             <div class="card">
                 <div class="card-header">
                     <strong style="color: rgba(27, 17, 168, 0.582)">كشف العظام</strong>
@@ -163,9 +163,9 @@
                 <div (collapsed)="bonesRevealDataCollapsed($event)" (expanded)="bonesRevealDataExpanded($event)" [collapse]="isBonesRevealDataCollapsed" class="card-body ">
                     <!-- <form class="form-horizontal" #bonesForm="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate> -->
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label font-weight-bold" for="bonesCommittee">تاريخ اللجنة</label>
+                        <label class="col-md-2 col-form-label font-weight-bold" for="bonesCommitteeDate">تاريخ اللجنة</label>
                             <div class="col-md-6">
-                                <input [attr.disabled]="true" [(ngModel)]="bonesCommittee.date" #bonesCommittee="ngModel" type="text" name="bonesCommittee" class="form-control">
+                                <input [attr.disabled]="true" [(ngModel)]="bonesCommittee.date"  type="text" name="bonesCommitteeDate" class="form-control">
                             </div>
                     </div>
                     <div class="form-group row">
@@ -186,7 +186,7 @@
                             </select> -->
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div *ngIf="bonesReveal.result != null" class="form-group row">
                         <label class="col-md-2 col-form-label font-weight-bold" for="bonesRevealResult">النتيجة</label>
                         <div class="col-md-6">
                             <select [attr.disabled]="true" [(ngModel)]="bonesReveal.result" name="bonesRevealResult" class="form-control">

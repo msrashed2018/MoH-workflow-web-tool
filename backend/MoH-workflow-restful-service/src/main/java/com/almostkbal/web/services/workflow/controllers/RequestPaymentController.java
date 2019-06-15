@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
 import com.almostkbal.web.services.workflow.entities.RequestState;
-import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.repositories.RequestPaymentRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
 
@@ -47,7 +47,7 @@ public class RequestPaymentController {
 		if (!existingRequest.isPresent())
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		if(requestPayment.getPaymentDone() == 1) {
-			existingRequest.get().setState(RequestState.PAYMENT_DONE);
+			existingRequest.get().setState(RequestState.PENDING_CONTINUE_REGISTERING);
 			requestRepository.save(existingRequest.get());
 		}
 		

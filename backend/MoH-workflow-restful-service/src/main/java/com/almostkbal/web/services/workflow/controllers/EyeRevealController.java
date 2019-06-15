@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.almostkbal.web.services.workflow.entities.EyeReveal;
 import com.almostkbal.web.services.workflow.entities.EyeRevealSetting;
+import com.almostkbal.web.services.workflow.entities.EyeRevealState;
 import com.almostkbal.web.services.workflow.entities.Request;
-import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.repositories.EyeRevealRepository;
 import com.almostkbal.web.services.workflow.repositories.EyeRevealSettingRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
@@ -43,13 +43,30 @@ public class EyeRevealController {
 		return eyeRevealRepository.findByRequestId(id);
 	}
 
+	@PostMapping("/api/requests/{id}/eye-reveal")
+	public ResponseEntity<EyeReveal> addRequestEyeReveal(@PathVariable long id, @RequestBody EyeReveal eyeReveal) {
+
+		Optional<Request> existingRequest = requestRepository.findById(id);
+
+		if (!existingRequest.isPresent())
+			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+
+		eyeReveal.setRequest(existingRequest.get());
+		EyeReveal savedEyeReveal = eyeRevealRepository.save(eyeReveal);
+
+		if (eyeReveal.getRevealDone() == 1) {
+			existingRequest.get().setEyeRevealState(EyeRevealState.PENDING_REGISTERING);
+			requestRepository.save(existingRequest.get());
+		}
+
+		return new ResponseEntity<EyeReveal>(savedEyeReveal, HttpStatus.OK);
+
+	}
 	@PutMapping("/api/requests/{requestId}/eye-reveal/{bonesRevealId}")
 	public ResponseEntity<EyeReveal> updateRequestEyeReveal(@PathVariable long requestId,
 			@PathVariable long bonesRevealId, @RequestBody EyeReveal eyeReveal) {
 
-		Optional<Request> existingRequest = requestRepository.findById(requestId);
-
-		if (!existingRequest.isPresent())
+		if (!requestRepository.existsById(requestId))
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 
 		if (!eyeRevealRepository.existsById(bonesRevealId)) {
@@ -61,35 +78,50 @@ public class EyeRevealController {
 				eyeReveal.getRightEye(), eyeReveal.getLeftEye(), eyeReveal.getUseGlasses(),
 				eyeReveal.getDistinguishColor(), eyeReveal.getSquint());
 
-		eyeReveal.setRequest(existingRequest.get());
+		if (setting == null) {
+			throw new ResourceNotFoundException("عفوا لا توجد اعدادات كشف رمد لهذه البيانات");
+		} else {
+			eyeReveal.setResult(setting.getResult());
+		}
+
+		Request request = new Request();
+		request.setId(requestId);
+		eyeReveal.setRequest(request);
 
 		EyeReveal savedEyeReveal = eyeRevealRepository.save(eyeReveal);
 
 		if (eyeReveal.getRevealDone() == 1) {
-			existingRequest.get().setState(RequestState.EYE_REVEAL_REGISTERED);
-			requestRepository.save(existingRequest.get());
+			requestRepository.setEyeRevealState(requestId, EyeRevealState.DONE);
 		}
 
 		return new ResponseEntity<EyeReveal>(savedEyeReveal, HttpStatus.OK);
 
+//		Optional<Request> existingRequest = requestRepository.findById(requestId);
+//
+//		if (!existingRequest.isPresent())
+//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+//
+//		if (!eyeRevealRepository.existsById(bonesRevealId)) {
+//			throw new ResourceNotFoundException("عفوا لم يتم كشف رمد لهذا المواطن");
+//		}
+//
+//		EyeRevealSetting setting = eyeRevealSettingRepository
+//				.findByRightMeasureAndLeftMeasureAndUseGlassesAndDistinguishColorAndSquint(
+//				eyeReveal.getRightEye(), eyeReveal.getLeftEye(), eyeReveal.getUseGlasses(),
+//				eyeReveal.getDistinguishColor(), eyeReveal.getSquint());
+//
+//		eyeReveal.setRequest(existingRequest.get());
+//
+//		EyeReveal savedEyeReveal = eyeRevealRepository.save(eyeReveal);
+//
+//		if (eyeReveal.getRevealDone() == 1) {
+//			existingRequest.get().setState(RequestState.EYE_REVEAL_REGISTERED);
+//			requestRepository.save(existingRequest.get());
+//		}
+//
+//		return new ResponseEntity<EyeReveal>(savedEyeReveal, HttpStatus.OK);
+
 	}
 
-	@PostMapping("/api/requests/{id}/eye-reveal")
-	public ResponseEntity<EyeReveal> addRequestEyeReveal(@PathVariable long id, @RequestBody EyeReveal eyeReveal) {
 
-		Optional<Request> existingRequest = requestRepository.findById(id);
-
-		if (!existingRequest.isPresent())
-			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-		eyeReveal.setRequest(existingRequest.get());
-		EyeReveal savedEyeReveal = eyeRevealRepository.save(eyeReveal);
-
-		if (eyeReveal.getRevealDone() == 1) {
-			existingRequest.get().setState(RequestState.EYE_REVEAL);
-			requestRepository.save(existingRequest.get());
-		}
-
-		return new ResponseEntity<EyeReveal>(savedEyeReveal, HttpStatus.OK);
-
-	}
 }

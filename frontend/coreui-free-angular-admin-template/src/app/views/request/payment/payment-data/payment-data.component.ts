@@ -18,7 +18,7 @@ export class PaymentDataComponent implements OnInit {
   iconPaymentDataCollapse: string = 'icon-arrow-up';
 
   payment : RequestPayment = new RequestPayment();
-  paymentDoneCheck : boolean = false;
+  // paymentDoneCheck : boolean = false;
 
   paymentErrorMessage : string = '';
   paymentSuccessMessage : string = '';
@@ -38,15 +38,16 @@ export class PaymentDataComponent implements OnInit {
     this.isPaymentDataCollapsed = !this.isPaymentDataCollapsed;
     this.iconPaymentDataCollapse = this.isPaymentDataCollapsed ? 'icon-arrow-up' : 'icon-arrow-down';
   }
-  onPaymentDoneChecked( event) {
-    this.paymentDoneCheck = event.target.checked;
-  }
+  // onPaymentDoneChecked( event) {
+  //   this.paymentDoneCheck = event.target.checked;
+  // }
   onSavePayment(){
-    if(this.paymentDoneCheck){
-      this.payment.paymentDone = '1';
-    }else{
-      this.payment.paymentDone= '0';
-    }
+    // if(this.paymentDoneCheck){
+    //   this.payment.paymentDone = '1';
+    // }else{
+    //   this.payment.paymentDone= '0';
+    // }
+    this.payment.paymentDone = '1';
     this.requestService.saveRequestPayment(this.requestId, this.payment).subscribe(
       result => {
         this.payment = result as RequestPayment;
@@ -66,11 +67,11 @@ export class PaymentDataComponent implements OnInit {
     this.requestService.retreiveRequestPayment(this.requestId).subscribe(
       result =>{
         this.payment = result as RequestPayment;
-        if(this.payment.paymentDone == '1'){
-          this.paymentDoneCheck = true;
-        }else{
-          this.paymentDoneCheck = false;
-        }
+        // if(this.payment.paymentDone == '1'){
+        //   this.paymentDoneCheck = true;
+        // }else{
+        //   this.paymentDoneCheck = false;
+        // }
 
         if(this.payment.paymentDate == null){
           this.payment.paymentDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');

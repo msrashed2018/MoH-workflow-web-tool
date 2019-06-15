@@ -258,15 +258,14 @@ export class CitizenViewEditComponent implements OnInit {
     for(var x =0 ; x< this.requestTypes.length ; x++){
       if(this.selectedRequestTypeId == this.requestTypes[x].id){
         if(this.requestTypes[x].name == 'كشف عادي' || this.requestTypes[x].name == 'كشف مستعجل'){
-          request.state = 'NEW';
+          request.state = 'PENDING_PAYMENT';
         }else{
-          request.state = 'PAYMENT_DONE';
+          request.state = 'PENDING_CONTINUE_REGISTERING';
         }
       }
     }
 
 
-    console.log("request.statee = "+request.state)
     // if(requestType.name == 'كشف عادي' || requestType.name == 'كشف مستعجل'){
     //   request.state = 'NEW';
     // }else{

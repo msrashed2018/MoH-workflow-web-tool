@@ -50,7 +50,7 @@ export class ContinueRegisteringListComponent implements OnInit {
     this.noDataFound = false;
     let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retrieveByRequestState('PAYMENT_DONE')
+    this.requestService.retrieveByRequestState('PENDING_CONTINUE_REGISTERING')
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {

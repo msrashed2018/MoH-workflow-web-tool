@@ -20,7 +20,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "request")
@@ -77,6 +76,12 @@ public class Request {
 	@OneToOne
 	@JoinColumn(name = "traffic_management_id")
 	private TrafficManagement trafficManagement;
+
+	@Enumerated(EnumType.STRING)
+	private EyeRevealState eyeRevealState = EyeRevealState.NA;
+
+	@Enumerated(EnumType.STRING)
+	private BonesRevealState bonesRevealState = BonesRevealState.NA;
 
 	@Enumerated(EnumType.STRING)
     private RequestState state;
@@ -202,6 +207,22 @@ public class Request {
 
 	public void setBonesCommittee(Committee bonesCommittee) {
 		this.bonesCommittee = bonesCommittee;
+	}
+
+	public EyeRevealState getEyeRevealState() {
+		return eyeRevealState;
+	}
+
+	public void setEyeRevealState(EyeRevealState eyeRevealState) {
+		this.eyeRevealState = eyeRevealState;
+	}
+
+	public BonesRevealState getBonesRevealState() {
+		return bonesRevealState;
+	}
+
+	public void setBonesRevealState(BonesRevealState bonesRevealState) {
+		this.bonesRevealState = bonesRevealState;
 	}
 
 }

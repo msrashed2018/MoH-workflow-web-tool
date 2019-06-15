@@ -50,7 +50,7 @@ export class ReviewRequestsComponent implements OnInit {
     this.noDataFound = false;
     let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retrieveByRequestState('PAYMENT_DONE')
+    this.requestService.retreiveRequestsForReviewing()
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {
@@ -69,8 +69,24 @@ export class ReviewRequestsComponent implements OnInit {
       );
   }
 
-  onContinue(id) {
-    this.router.navigate(['request/continue-registering-data',{requestId:id}])
+  onApproved(id) {
+    this.confirmationModalService.confirm(' اضغط علي ok', 'هل انت متاكد من  اعتماد الطلب ')
+    .then((confirmed) => {
+      if(confirmed){
+       let request = new Request();
+       request.id=1;
+        this.requestService.approveRequest(id, request).subscribe(
+          result => {
+            this.retriveAllRequests();
+            this.errorMessage = false;
+          },
+          error => {
+            console.log('oops', error);
+            this.errorMessage = true;
+          }
+        )
+      }
+    })
   }
 
 }

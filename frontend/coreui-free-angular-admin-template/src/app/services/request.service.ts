@@ -38,6 +38,34 @@ export class RequestService {
         return data;
       }));
   }
+  retreiveRequestsForEyeReveal() {
+    return this.http.get<Request[]>
+      (`${API_URL}`+'/requests/retreiveRequestsForEyeReveal').pipe( map(
+        data => {
+        return data;
+      }));
+  }
+  retreiveRequestsForBonesReveal() {
+    return this.http.get<Request[]>
+      (`${API_URL}`+'/requests/retreiveRequestsForBonesReveal').pipe( map(
+        data => {
+        return data;
+      }));
+  }
+  retreiveRequestsForRevealsRegistering() {
+    return this.http.get<Request[]>
+      (`${API_URL}`+'/requests/retreiveRequestsForRevealsRegistering').pipe( map(
+        data => {
+        return data;
+      }));
+  }
+  retreiveRequestsForReviewing() {
+    return this.http.get<Request[]>
+      (`${API_URL}`+'/requests/retreiveRequestsForReviewing').pipe( map(
+        data => {
+        return data;
+      }));
+  }
   retrieveByRequestState(state) {
     return this.http.get<Request[]>
       (`${API_URL}`+'/requests/retreiveByRequestState?state='+state).pipe( map(
@@ -53,6 +81,11 @@ export class RequestService {
     return this.http.get<Request>(`${API_URL}/requests/${id}`);
   }
 
+  approveRequest(requestId,request){
+    return this.http.put(
+          `${API_URL}/requests/${requestId}/approve`
+                , request);
+  }
   updateRequest(citizenId, requestId, request){
     return this.http.put(
           `${API_URL}/citizens/${citizenId}/requests/${requestId}`

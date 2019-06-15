@@ -1,5 +1,6 @@
 package com.almostkbal.web.services.workflow.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +21,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.almostkbal.web.services.workflow.entities.BonesRevealState;
 import com.almostkbal.web.services.workflow.entities.Citizen;
+import com.almostkbal.web.services.workflow.entities.EyeRevealState;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
 import com.almostkbal.web.services.workflow.entities.RequestState;
+import com.almostkbal.web.services.workflow.entities.RequestType;
 import com.almostkbal.web.services.workflow.repositories.BonesRevealRepository;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 import com.almostkbal.web.services.workflow.repositories.EyeRevealRepository;
@@ -36,60 +40,97 @@ import com.almostkbal.web.services.workflow.repositories.RequestTypeRepository;
 public class RequestController {
 	@Autowired
 	private RequestRepository requestRepository;
-	
+
 	@Autowired
-	private RequestTypeRepository requestTypeRepository ;
-	
+	private RequestTypeRepository requestTypeRepository;
+
 	@Autowired
 	private CitizenRepository citizenRepository;
-	
+
 	@Autowired
 	private RequestPaymentRepository paymentRepository;
-	
-	
+
 	@Autowired
 	private BonesRevealRepository bonesRevealRepository;
-	
-	
-	
+
 	@Autowired
 	private EyeRevealRepository eyeRevealRepository;
-	
 
 	@GetMapping("/api/requests")
 	public List<Request> retrieveAllRequests() {
 		return requestRepository.findAll();
 	}
 
+
+	@GetMapping("/api/requests/retreiveRequestsForEyeReveal")
+	public List<Request> retreiveRequestsForEyeReveal() {
+		return requestRepository.findByStateAndEyeRevealState(
+				RequestState.CONTINUE_REGISTERING_DONE, EyeRevealState.PENDING_REVEAL);
+	}
+
+	@GetMapping("/api/requests/retreiveRequestsForBonesReveal")
+	public List<Request> retreiveRequestsForBonesReveal() {
+		return requestRepository.findByStateAndBonesRevealState(
+				RequestState.CONTINUE_REGISTERING_DONE, BonesRevealState.PENDING_REVEAL);
+	}
+
+	@GetMapping("/api/requests/retreiveRequestsForRevealsRegistering")
+	public List<Request> retreiveRequestsForRevealsRegistering() {
+
+		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
+		bonesRevealStates.add(BonesRevealState.PENDING_REGISTERING);
+		bonesRevealStates.add(BonesRevealState.NA);
+
+		List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
+		eyeRevealStates.add(EyeRevealState.PENDING_REGISTERING);
+		eyeRevealStates.add(EyeRevealState.NA);
+		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
+				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates);
+	}
+
+	@GetMapping("/api/requests/retreiveRequestsForReviewing")
+	public List<Request> retreiveRequestsForReviewing() {
+		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
+		bonesRevealStates.add(BonesRevealState.DONE);
+		bonesRevealStates.add(BonesRevealState.NA);
+
+		List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
+		eyeRevealStates.add(EyeRevealState.DONE);
+		eyeRevealStates.add(EyeRevealState.NA);
+		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
+				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates);
+	}
+
 	@GetMapping("/api/requests/retreiveByRequestState")
 	public List<Request> retrieveAllRequestsByState(@RequestParam RequestState state) {
 		return requestRepository.findByState(state);
+//		return requestRepository.findAll();
 	}
+
 	@GetMapping("/api/requests/search/findAllByDate")
 	public List<Request> findAllByDate(@RequestParam String date) {
 
 		return requestRepository.findAllByDate(date);
 	}
+
 	@GetMapping("/api/requests/search/findAllByNationalId")
 	public List<Request> findAllByNationalId(@RequestParam long nationalId) {
 		List<Request> requests = requestRepository.findByCitizenNationalId(nationalId);
 		return requests;
 	}
-	
-	
+
 	@GetMapping("/api/citizens/{citizenId}/requests")
 	public List<Request> retrieveCitizenRequests(@PathVariable long citizenId) {
-		if(!citizenRepository.existsById(citizenId)) {
+		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
 		}
 
 		return requestRepository.findByCitizenId(citizenId);
 	}
-	
-	
+
 	@DeleteMapping("/api/citizens/{citizenId}/requests/{requestId}")
 	public void deleteRequest(@PathVariable long citizenId, @PathVariable long requestId) {
-		if(!citizenRepository.existsById(citizenId)) {
+		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
 		}
 		try {
@@ -98,10 +139,7 @@ public class RequestController {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		}
 	}
-	
-	
-	
-	
+
 	@GetMapping("/api/requests/{id}")
 	public Request retrieveRequestById(@PathVariable long id) {
 		Optional<Request> request = requestRepository.findById(id);
@@ -109,100 +147,78 @@ public class RequestController {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		return request.get();
 	}
-	
-	
-//	@GetMapping("/api/requests/{id}/eye-committee")
-//	public Committee retrieveRequestEyeCommittee(@PathVariable long id) {
-//		System.out.println("\n\n Optional<Request> request = requestRepository.findById(id) \n\n");
-//		Optional<Request> request = requestRepository.findById(id);
-//		if (!request.isPresent())
-//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-//		
-//		System.out.println("\n\n Committee eyeCommitttee = request.get().getEyeCommittee(); \n\n");
-//		Committee eyeCommitttee = request.get().getEyeCommittee();
-//		return eyeCommitttee;
-//	}
-//
-//	@PostMapping("/api/requests/{id}/eye-committee")
-//	public void  addRequestEyeCommittee(@PathVariable long id, @RequestBody Committee eyeCommittee) {
-//		
-//		Optional<Request> existingRequest = requestRepository.findById(id);
-//
-//		if (!existingRequest.isPresent())
-//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-//		
-//		existingRequest.get().setEyeCommittee(eyeCommittee);
-//		
-//		requestRepository.save(existingRequest.get());
-////		return new ResponseEntity<Committee>(savedEyeReveal, HttpStatus.OK);
-//		
-//	}
-//	
-//	@PostMapping("/api/requests/{id}/bones-committee")
-//	public void  addRequestBonesCommittee(@PathVariable long id, @RequestBody Committee bonesCommittee) {
-//		
-//		Optional<Request> existingRequest = requestRepository.findById(id);
-//
-//		if (!existingRequest.isPresent())
-//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-//		
-//		existingRequest.get().setBonesCommittee(bonesCommittee);
-//		
-//		requestRepository.save(existingRequest.get());
-////		return new ResponseEntity<Committee>(savedEyeReveal, HttpStatus.OK);
-//		
-//	}
-	
-	
-	@PostMapping("/api/citizens/{citizenId}/requests")
-	public Object createRequest(@PathVariable long citizenId,@Valid @RequestBody Request request) {
-		Optional<Citizen> citizenOptional = citizenRepository.findById(citizenId);
 
-		if (!citizenOptional.isPresent())
+	@PostMapping("/api/citizens/{citizenId}/requests")
+	public Object createRequest(@PathVariable long citizenId, @Valid @RequestBody Request request) {
+
+		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
+		}
+		
+		Optional<RequestType> requestType = requestTypeRepository.findById(request.getRequestType().getId());
+
+		if (!requestType.isPresent()) {
+			throw new ResourceNotFoundException("عفوا نوع الطلب غير موجود");
+		}
+
+		Citizen citizen = new Citizen();
+		citizen.setId(citizenId);
+		request.setCitizen(citizen);
 		
 		Request savedRequest = null;
-		request.setCitizen(citizenOptional.get());
-		
-		
-		
-		
-
-		
-//		request.setState(RequestState.NEW);
-		savedRequest = requestRepository.save(request);
-		
-		
-//		if(request.getRequestType().getPrice()> 0) {
-		RequestPayment requestPayment = new RequestPayment();
-
-		requestPayment.setPrice(request.getRequestType().getPrice());
-		requestPayment.setRequest(savedRequest);
-		paymentRepository.save(requestPayment);
-//		}
+		if (requestType.get().getPrice() > 0) {
+			RequestPayment requestPayment = new RequestPayment();
+			requestPayment.setPrice(requestType.get().getPrice());
+			request.setState(RequestState.PENDING_PAYMENT);
+			savedRequest = requestRepository.save(request);
+			requestPayment.setRequest(savedRequest);
+			paymentRepository.save(requestPayment);
+		} else {
+			request.setState(RequestState.PENDING_CONTINUE_REGISTERING);
+			savedRequest = requestRepository.save(request);
+		}
 		return savedRequest;
 	}
 
 	@PutMapping("/api/citizens/{citizenId}/requests/{requestId}")
-	public ResponseEntity<Request> updateRequest(@PathVariable long citizenId, @PathVariable long requestId, @RequestBody Request request) {
-		
-		Optional<Citizen> citizenOptional = citizenRepository.findById(citizenId);
+	public ResponseEntity<Request> updateRequest(@PathVariable long citizenId, @PathVariable long requestId,
+			@RequestBody Request request) {
 
-		if (!citizenOptional.isPresent())
+		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
-		
-//		if(!citizenRepository.existsById(citizenId)) {
-//			throw new ResourceNotFoundException("هذا المواطن غير موجود");
-//		}
-		Optional<Request> existingRequest = requestRepository.findById(requestId);
+		}
 
-		if (!existingRequest.isPresent())
+		if (!requestRepository.existsById(requestId)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+		}
 
-		
-		request.setCitizen(citizenOptional.get());
+		if (request.getBonesCommittee() != null) {
+			request.setBonesRevealState(BonesRevealState.PENDING_REVEAL);
+		}
+
+		if (request.getEyeCommittee() != null) {
+			request.setEyeRevealState(EyeRevealState.PENDING_REVEAL);
+		}
+		request.setState(RequestState.CONTINUE_REGISTERING_DONE);
+
+		Citizen citizen = new Citizen();
+		citizen.setId(citizenId);
+		request.setCitizen(citizen);
+
 		Request updatedRequest = requestRepository.save(request);
 		return new ResponseEntity<Request>(updatedRequest, HttpStatus.OK);
+
+	}
+
+	@PutMapping("/api/requests/{requestId}/approve")
+	public void approveRequest(@PathVariable long requestId,
+			@RequestBody Request request) {
+
+		if (!requestRepository.existsById(requestId)) {
+			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+		}
+
+		requestRepository.setRequestState(requestId, RequestState.REVIEWED);
 
 	}
 }

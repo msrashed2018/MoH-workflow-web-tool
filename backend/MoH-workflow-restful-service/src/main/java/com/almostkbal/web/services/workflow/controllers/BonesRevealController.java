@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.almostkbal.web.services.workflow.entities.BonesReveal;
+import com.almostkbal.web.services.workflow.entities.BonesRevealState;
 import com.almostkbal.web.services.workflow.entities.Request;
-import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.repositories.BonesRevealRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
 
@@ -52,7 +52,7 @@ public class BonesRevealController {
 		
 		
 		if(bonesReveal.getRevealDone() == 1) {
-			existingRequest.get().setState(RequestState.BONES_REVEAL);
+			existingRequest.get().setBonesRevealState(BonesRevealState.PENDING_REGISTERING);
 			requestRepository.save(existingRequest.get());
 		}
 		
@@ -64,24 +64,41 @@ public class BonesRevealController {
 	public ResponseEntity<BonesReveal> updateRequestBonesReveal(@PathVariable long requestId,
 			@PathVariable long bonesRevealId, @RequestBody BonesReveal bonesReveal) {
 
-		Optional<Request> existingRequest = requestRepository.findById(requestId);
-
-		if (!existingRequest.isPresent())
+		if (!requestRepository.existsById(requestId))
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 
 		if (!bonesRevealRepository.existsById(bonesRevealId)) {
 			throw new ResourceNotFoundException("عفوا لم يتم كشف عظام لهذا المواطن");
 		}
-
-		bonesReveal.setRequest(existingRequest.get());
+		Request request = new Request();
+		request.setId(requestId);
+		bonesReveal.setRequest(request);
 		BonesReveal savedBonesReveal = bonesRevealRepository.save(bonesReveal);
 
 		if (bonesReveal.getRevealDone() == 1) {
-			existingRequest.get().setState(RequestState.BONES_REVEAL_REGISTERED);
-			requestRepository.save(existingRequest.get());
+			requestRepository.setBonesRevealState(requestId, BonesRevealState.DONE);
 		}
 
 		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
+
+//		Optional<Request> existingRequest = requestRepository.findById(requestId);
+//
+//		if (!existingRequest.isPresent())
+//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+//
+//		if (!bonesRevealRepository.existsById(bonesRevealId)) {
+//			throw new ResourceNotFoundException("عفوا لم يتم كشف عظام لهذا المواطن");
+//		}
+//
+//		bonesReveal.setRequest(existingRequest.get());
+//		BonesReveal savedBonesReveal = bonesRevealRepository.save(bonesReveal);
+//
+//		if (bonesReveal.getRevealDone() == 1) {
+//			existingRequest.get().setBonesRevealState(BonesRevealState.DONE);
+//			requestRepository.save(existingRequest.get());
+//		}
+//
+//		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
 
 	}
 	

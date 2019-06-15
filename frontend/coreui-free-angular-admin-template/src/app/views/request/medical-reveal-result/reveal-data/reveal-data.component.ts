@@ -117,6 +117,7 @@ export class RevealDataComponent implements OnInit {
   refreshData(){
     this.requestService.retrieveRequest(this.requestId).subscribe(
     result => {
+      console.log(result)
       this.request = result as Request;
       this.citizen = this.request.citizen;
       this.requestType = this.request.requestType;

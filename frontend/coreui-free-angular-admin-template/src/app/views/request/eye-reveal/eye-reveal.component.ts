@@ -49,13 +49,12 @@ export class EyeRevealComponent implements OnInit {
     this.requests = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    let date=new Date();
+    // let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retrieveByRequestState('PAYMENT_DONE')
+    this.requestService.retreiveRequestsForEyeReveal()
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {
-            console.log(result);
             this.noDataFound = false;
             this.requests= result;
           }else{

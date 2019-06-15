@@ -51,7 +51,7 @@ export class RevealListComponent implements OnInit {
     this.noDataFound = false;
     let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retrieveByRequestState('PAYMENT_DONE')
+    this.requestService.retreiveRequestsForRevealsRegistering()
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {

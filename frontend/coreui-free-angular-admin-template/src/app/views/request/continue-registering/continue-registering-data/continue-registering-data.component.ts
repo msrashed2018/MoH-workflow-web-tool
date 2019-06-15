@@ -41,6 +41,8 @@ export class ContinueRegisteringDataComponent implements OnInit {
   citizen = new Citizen();
   requestType = {};
   public documents = [{}];
+  eyeCommittee = new Committee();
+  bonesCommittee = new Committee();
   committees : Committee[];
   eyeCommittees : Committee[];
   bonesCommittees : Committee[];
@@ -88,6 +90,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
       if(this.request.bonesCommittee != null){
         this.selectedBonesCommitteeId = this.request.bonesCommittee.id;
       }
+     
     },
     error => {
       this.errorMessage = true;
@@ -221,5 +224,21 @@ export class ContinueRegisteringDataComponent implements OnInit {
   toggleFileUploadDataCollapse(): void {
     this.isFileUploadDataCollapsed = !this.isFileUploadDataCollapsed;
     this.iconFileUploadDataCollapse = this.isFileUploadDataCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
+  }
+
+  onEyeCommitteeChanged(committeeId){
+    
+    for(var x=0; x< this.eyeCommittees.length;x++){
+      if(this.eyeCommittees[x].id == committeeId){
+        this.eyeCommittee = this.eyeCommittees[x];
+      }
+    }
+  }
+  onBonesCommitteeChanged(committeeId){
+    for(var x=0; x< this.bonesCommittees.length;x++){
+      if(this.bonesCommittees[x].id == committeeId){
+        this.bonesCommittee = this.bonesCommittees[x];
+      }
+    }
   }
 }
