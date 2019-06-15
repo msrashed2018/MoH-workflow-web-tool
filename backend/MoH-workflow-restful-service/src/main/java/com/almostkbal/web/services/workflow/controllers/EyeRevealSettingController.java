@@ -38,7 +38,7 @@ public class EyeRevealSettingController {
 	}
 	
 	@GetMapping("/api/eye-reveal-settings/{id}")
-	public EyeRevealSetting retrieveEyeRevealSettingById(@PathVariable int id) {
+	public EyeRevealSetting retrieveEyeRevealSettingById(@PathVariable long id) {
 		Optional<EyeRevealSetting> EyeRevealSetting = EyeRevealSettingRepository.findById(id);
 		if(!EyeRevealSetting.isPresent())
 			throw new ResourceNotFoundException("id-"+ id);
@@ -47,7 +47,7 @@ public class EyeRevealSettingController {
 	}
 
 	@DeleteMapping("/api/eye-reveal-settings/{id}")
-	public void deleteEyeRevealSetting(@PathVariable int id) {
+	public void deleteEyeRevealSetting(@PathVariable long id) {
 		try {
 			EyeRevealSettingRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
@@ -68,7 +68,7 @@ public class EyeRevealSettingController {
 	}
 	@PutMapping("/api/eye-reveal-settings/{id}")
 	public ResponseEntity<EyeRevealSetting> updateEyeRevealSetting(
-			@PathVariable int id, @RequestBody EyeRevealSetting EyeRevealSetting){
+			@PathVariable long id, @RequestBody EyeRevealSetting EyeRevealSetting) {
 		Optional<EyeRevealSetting> existingEyeRevealSetting = EyeRevealSettingRepository.findById(id);
 
 		if(!existingEyeRevealSetting.isPresent())

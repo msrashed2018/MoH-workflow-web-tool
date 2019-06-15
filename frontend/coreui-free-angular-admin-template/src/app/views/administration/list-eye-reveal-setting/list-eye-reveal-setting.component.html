@@ -23,6 +23,7 @@
       <th class="text-center">قياس العين اليسري</th>
       <th class="text-center">تمييز الالوان</th>
       <th class="text-center">النظارة</th>
+      <th class="text-center">حول</th>
       <th class="text-center">النتيجة</th>
       <th class="text-center">تعديل</th>
       <th class="text-center">مسح</th>
@@ -47,6 +48,12 @@
           <div>
               <b *ngIf="setting.useGlasses=='1'" >نعم </b>
               <b *ngIf="setting.useGlasses=='0'" >لا </b>
+          </div>
+      </td>
+      <td class="text-center">
+          <div>
+              <b *ngIf="setting.squint=='1'" >نعم </b>
+              <b *ngIf="setting.squint=='0'" >لا </b>
           </div>
       </td>
       <td class="text-center">

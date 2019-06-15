@@ -27,7 +27,7 @@
       <th class="text-center">اسم المواطن</th>
       <th class="text-center">نوع الطلب</th>
       
-      <th class="text-center"> تسجيل الكشف</th>
+      <th class="text-center">اعتماد الطلب</th>
     </tr>
   </thead>
   <tbody>
@@ -52,7 +52,7 @@
         <b *ngIf="request.requestType != null" >{{request.requestType.name}}</b>
       </td>
       <td class="text-center">
-          <button type="button" class="edit-btn btn btn-info" (click)="onContinue(request.id)">تسجيل
+          <button type="button" class="edit-btn btn btn-info" (click)="onContinue(request.id)">اعتماد
               <i class="fa fa-edit"></i>
           </button>
       </td >

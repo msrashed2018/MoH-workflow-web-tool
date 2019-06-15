@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.almostkbal.web.services.workflow.entities.DocumentType;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestDocument;
 import com.almostkbal.web.services.workflow.exceptions.ExceptionResponse;
@@ -44,10 +45,9 @@ public class RequestDocumentController {
 	RequestRepository requestRepository;
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
-	@PostMapping(value ="/api/requests/{id}/documents" /*consumes = "application/pdf"*/)
-	public ResponseEntity<String> handleFileUpload(@PathVariable long id, @RequestParam("file") MultipartFile[] uploadedFiles) {
-		
-		
+	@PostMapping(value = "/api/requests/{id}/documents/{documentType}" /* consumes = "application/pdf" */)
+	public ResponseEntity<String> addRequestDocuments(@PathVariable long id,
+			@PathVariable DocumentType documentType, @RequestParam("file") MultipartFile[] uploadedFiles) {
 		String message = "";
 		String currentUploadFileName = "";
 		try {
@@ -61,11 +61,12 @@ public class RequestDocumentController {
 				}
 				
 				log.info("store file :" + currentUploadFileName);
-				String storedPath = storageService.store(id, currentUploadFileName,file);
+				String storedPath = storageService.store(id, documentType, currentUploadFileName, file);
 				
 				RequestDocument document = new RequestDocument();
 				document.setName(currentUploadFileName);
 				document.setPath(storedPath);
+				document.setType(documentType);
 				Request request = requestRepository.getOne(id);
 				
 				document.setRequest(request);
@@ -86,8 +87,10 @@ public class RequestDocumentController {
 		}
 	}
 
-	@GetMapping("/api/requests/{id}/documents")
-	public ResponseEntity<List<String>> getListFiles(@PathVariable long id, Model model) {
+
+	@GetMapping("/api/requests/{id}/documents/{documentType}")
+	public ResponseEntity<List<String>> getListFiles(@PathVariable long id, @PathVariable DocumentType documentType,
+			Model model) {
 		List<String> files = new ArrayList<String>();
 		
 		log.info("reteive document of request(id="+id+")");
@@ -95,9 +98,7 @@ public class RequestDocumentController {
 		if(!requestRepository.existsById(id)) {
 			throw new ResourceNotFoundException("Request with ID "+id + " is not found");
 		}
-		List<RequestDocument> documents = documentRepository.findByRequestId(id);
-		
-		
+		List<RequestDocument> documents = documentRepository.findByRequestIdAndType(id, documentType);
 		for(RequestDocument document : documents) {
 			log.info("document[ name = "+document.getName()+ ", path = "+document.getPath()); 
 			files.add(document.getName());
@@ -106,7 +107,7 @@ public class RequestDocumentController {
 		return ResponseEntity.ok().body(files);
 	}
 
-	@GetMapping("/api/requests/{id}/documents/{filename:.+}")
+	@GetMapping("/api/requests/{id}/document/{filename:.+}")
 	@ResponseBody
 	public ResponseEntity<Resource> getFile(@PathVariable long id, @PathVariable String filename) {
 		

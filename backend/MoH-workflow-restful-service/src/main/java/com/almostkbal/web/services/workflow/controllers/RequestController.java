@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.almostkbal.web.services.workflow.entities.BonesReveal;
 import com.almostkbal.web.services.workflow.entities.Citizen;
-import com.almostkbal.web.services.workflow.entities.Committee;
-import com.almostkbal.web.services.workflow.entities.EyeReveal;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
 import com.almostkbal.web.services.workflow.entities.RequestState;
@@ -63,6 +60,7 @@ public class RequestController {
 	public List<Request> retrieveAllRequests() {
 		return requestRepository.findAll();
 	}
+
 	@GetMapping("/api/requests/retreiveByRequestState")
 	public List<Request> retrieveAllRequestsByState(@RequestParam RequestState state) {
 		return requestRepository.findByState(state);
@@ -167,26 +165,21 @@ public class RequestController {
 		request.setCitizen(citizenOptional.get());
 		
 		
+		
+		
+
+		
 //		request.setState(RequestState.NEW);
 		savedRequest = requestRepository.save(request);
 		
 		
-//		EyeReveal eyeReveal = new EyeReveal();
-//		eyeReveal.setRequest(savedRequest);
-//		eyeRevealRepository.save(eyeReveal);
-//		
-//		
-//		BonesReveal bonesReveal = new BonesReveal();
-//		bonesReveal.setRequest(savedRequest);
-//		bonesRevealRepository.save(bonesReveal);
-		
+//		if(request.getRequestType().getPrice()> 0) {
 		RequestPayment requestPayment = new RequestPayment();
-		
-		requestPayment.setPrice(requestTypeRepository.findById(request.getRequestType().getId()).get().getPrice());
+
+		requestPayment.setPrice(request.getRequestType().getPrice());
 		requestPayment.setRequest(savedRequest);
-		
-		
 		paymentRepository.save(requestPayment);
+//		}
 		return savedRequest;
 	}
 
@@ -198,7 +191,9 @@ public class RequestController {
 		if (!citizenOptional.isPresent())
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
 		
-		
+//		if(!citizenRepository.existsById(citizenId)) {
+//			throw new ResourceNotFoundException("هذا المواطن غير موجود");
+//		}
 		Optional<Request> existingRequest = requestRepository.findById(requestId);
 
 		if (!existingRequest.isPresent())

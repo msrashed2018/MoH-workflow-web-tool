@@ -6,7 +6,7 @@ export class BonesReveal {
     public id: number;
     // public committee: Committee;
     public disability: Disability;
-    public equipment: Equipment;
+    // public equipment: Equipment;
     public result: string;
     public description: string;
     public revealDone: string;

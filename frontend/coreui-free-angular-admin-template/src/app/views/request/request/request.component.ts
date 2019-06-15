@@ -237,11 +237,11 @@ export class RequestComponent implements OnInit {
       disability.id= this.selectedDisabilityTypeId;
       this.bonesReveal.disability = disability;
     }
-    if(this.selectedEquipmentTypeId !=0){
-      let equipment: Equipment = new Equipment;
-      equipment.id= this.selectedEquipmentTypeId;
-      this.bonesReveal.equipment = equipment;
-    }
+    // if(this.selectedEquipmentTypeId !=0){
+    //   let equipment: Equipment = new Equipment;
+    //   equipment.id= this.selectedEquipmentTypeId;
+    //   this.bonesReveal.equipment = equipment;
+    // }
     this.requestService.saveRequestBonesReveal(this.request.id, this.bonesReveal).subscribe(
       result => {
         this.bonesReveal = result as BonesReveal;
@@ -417,9 +417,9 @@ export class RequestComponent implements OnInit {
           this.selectedDisabilityTypeId = this.bonesReveal.disability.id
         }
 
-        if(this.bonesReveal.equipment != null){
-          this.selectedEquipmentTypeId = this.bonesReveal.equipment.id
-        }
+        // if(this.bonesReveal.equipment != null){
+        //   this.selectedEquipmentTypeId = this.bonesReveal.equipment.id
+        // }
       },
       error=>{
         this.bonesRevealSuccessMessage = "";
@@ -536,7 +536,7 @@ export class RequestComponent implements OnInit {
   showFiles(enable: boolean) {
     this.showFile = enable
     if (enable) {
-      this.requestService.getFiles(this.request.id).subscribe(
+      this.requestService.getFiles(this.request.id,'PERSONAL').subscribe(
         result =>{
           this.requestDocuments = result as any;
           this.requestDocuments .forEach(element => {
@@ -562,7 +562,7 @@ export class RequestComponent implements OnInit {
  }
   upload() {
     this.uploading = true;
-    this.requestService.pushFileToStorage(this.requestId,this.selectedFiles).subscribe(
+    this.requestService.pushFileToStorage(this.requestId,'PERSONAL',this.selectedFiles).subscribe(
       result => {
         // console.log(result);
         if (result.type === HttpEventType.UploadProgress) {

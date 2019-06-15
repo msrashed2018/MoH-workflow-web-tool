@@ -85,6 +85,11 @@ export class RequestService {
               `${API_URL}/requests/${id}/eye-reveal`
                 , eyeReveal);
   }
+  updateRequestEyeReveal(requestId,eyeRevealId,eyeReveal){
+    return this.http.put(
+              `${API_URL}/requests/${requestId}/eye-reveal/${eyeRevealId}`
+                , eyeReveal);
+  }
   retreiveRequestEyeReveal(id){
     return this.http.get(
               `${API_URL}/requests/${id}/eye-reveal`);
@@ -94,17 +99,22 @@ export class RequestService {
               `${API_URL}/requests/${id}/bones-reveal`
                 , eyeReveal);
   }
+  updateRequestBonesReveal(requestId,bonesRevealId,bonesReveal){
+    return this.http.put(
+              `${API_URL}/requests/${requestId}/bones-reveal/${bonesRevealId}`
+                , bonesReveal);
+  }
   retreiveRequestBonesReveal(id){
     return this.http.get(
               `${API_URL}/requests/${id}/bones-reveal`);
   }
-  pushFileToStorage(id, fileList: FileList): Observable<HttpEvent<{}>> {
+  pushFileToStorage(id, documentType,fileList: FileList): Observable<HttpEvent<{}>> {
     
     let formdata: FormData = new FormData();
     for (var i=0; i< fileList.length; i++){
       formdata.append('file', fileList.item(i));
     }
-    const req = new HttpRequest('POST', `${API_URL}/requests/${id}/documents`, formdata, {
+    const req = new HttpRequest('POST', `${API_URL}/requests/${id}/documents/${documentType}`, formdata, {
       reportProgress: true,
       responseType: "text"
     });
@@ -112,12 +122,12 @@ export class RequestService {
     return this.http.request(req);
   }
  
-  getFiles(id) {
-    return this.http.get<string[]>(`${API_URL}/requests/${id}/documents`)
+  getFiles(id,documentType) {
+    return this.http.get<string[]>(`${API_URL}/requests/${id}/documents/${documentType}`)
   }
 //https://stackoverflow.com/questions/51682514/how-download-a-file-from-httpclient
   getFile(id, fileName){
-    this.http.get(`${API_URL}/requests/${id}/documents/${fileName}`,{responseType: 'arraybuffer'} )
+    this.http.get(`${API_URL}/requests/${id}/document/${fileName}`,{responseType: 'arraybuffer'} )
       .subscribe(response => this.downLoadFile(response, "application/pdf"));
   }
 

@@ -25,6 +25,7 @@ export class EyeRevealSettingViewEditComponent implements OnInit {
   public selectedRightMeasureId : number
   public glassesCheck : boolean = false;
   public distinguishCheck : boolean = false;
+  public squintCheck : boolean = false;
 
   constructor(private route:ActivatedRoute, private formBuilder: FormBuilder, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private router: Router ) { }
 
@@ -75,6 +76,11 @@ export class EyeRevealSettingViewEditComponent implements OnInit {
         }else{
           this.glassesCheck = false;
         }
+        if(this.setting.squint == "1"){
+          this.squintCheck = true;
+        }else{
+          this.squintCheck = false;
+        }
       }
     )
   }
@@ -97,6 +103,12 @@ export class EyeRevealSettingViewEditComponent implements OnInit {
       this.setting.useGlasses= '1';
     }else{
       this.setting.useGlasses= '0';
+    }
+
+    if(this.squintCheck){
+      this.setting.squint= '1';
+    }else{
+      this.setting.squint= '0';
     }
 
 
@@ -125,6 +137,10 @@ export class EyeRevealSettingViewEditComponent implements OnInit {
   }
   onGlassesChecked( event) {
     this.glassesCheck = event.target.checked;
+  }
+
+  onSquintChecked( event) {
+    this.squintCheck = event.target.checked;
   }
   onDistinguishChecked( event) {
     this.distinguishCheck = event.target.checked;

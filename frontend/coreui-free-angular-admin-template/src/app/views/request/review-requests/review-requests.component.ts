@@ -1,19 +1,18 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import { Request } from '../../../../model/request.model';
+import { Request } from '../../../model/request.model';
 import { DatePipe, CommonModule } from '@angular/common';
 import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert';
 import * as moment from  'moment';
 import { Router } from '@angular/router';
-import { ConfirmModalService } from '../../../confirm-modal/confirm-modal.service';
-import { RequestService } from '../../../../services/request.service';
-
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
+import { RequestService } from '../../../services/request.service';
 
 @Component({
-  selector: 'app-reveal-list',
-  templateUrl: './reveal-list.component.html',
-  styleUrls: ['./reveal-list.component.scss']
+  selector: 'app-review-requests',
+  templateUrl: './review-requests.component.html',
+  styleUrls: ['./review-requests.component.scss']
 })
-export class RevealListComponent implements OnInit {
+export class ReviewRequestsComponent implements OnInit {
   private requests: Request[];
   private noDataFound: boolean = false;
   private errorMessage: boolean = false;
@@ -71,7 +70,8 @@ export class RevealListComponent implements OnInit {
   }
 
   onContinue(id) {
-    this.router.navigate(['request/medical-reveals-data',{requestId:id}])
+    this.router.navigate(['request/continue-registering-data',{requestId:id}])
   }
 
 }
+

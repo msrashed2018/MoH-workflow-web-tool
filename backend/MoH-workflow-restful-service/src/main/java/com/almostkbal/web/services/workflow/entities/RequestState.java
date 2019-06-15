@@ -7,7 +7,7 @@ public enum RequestState {
 	DOCUMENTS_SCANNING("document-scanning"),
 	EYE_REVEAL("eye-reveal"),
 	BONES_REVEAL("bones-reveal"),
-	REVEAL_REGISTERING("reveal-registering"),
+	EYE_REVEAL_REGISTERED("eye-reveal-registered"), BONES_REVEAL_REGISTERED("bones-reveal-registered"),
 	REVIEWING("reviewing");
     
     RequestState(final String name) {

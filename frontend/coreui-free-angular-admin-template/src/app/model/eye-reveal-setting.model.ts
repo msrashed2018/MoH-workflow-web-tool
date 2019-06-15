@@ -6,6 +6,7 @@ export class EyeRevealSetting {
     public leftMeasure: EyeMeasure
     public useGlasses: string
     public distinguishColor: string
+    public squint: string
     public result: string
     public description: string
 }

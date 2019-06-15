@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,9 +39,9 @@ public class BonesRevealController {
 		}
 		return bonesRevealRepository.findByRequestId(id);
 	}
-
 	@PostMapping("/api/requests/{id}/bones-reveal")
-	public ResponseEntity<BonesReveal> createGender(@PathVariable long id, @RequestBody BonesReveal bonesReveal) {
+	public ResponseEntity<BonesReveal> addRequestBonesReveal(@PathVariable long id,
+			@RequestBody BonesReveal bonesReveal) {
 		
 		Optional<Request> existingRequest = requestRepository.findById(id);
 
@@ -57,6 +58,31 @@ public class BonesRevealController {
 		
 		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
 		
+	}
+
+	@PutMapping("/api/requests/{requestId}/bones-reveal/{bonesRevealId}")
+	public ResponseEntity<BonesReveal> updateRequestBonesReveal(@PathVariable long requestId,
+			@PathVariable long bonesRevealId, @RequestBody BonesReveal bonesReveal) {
+
+		Optional<Request> existingRequest = requestRepository.findById(requestId);
+
+		if (!existingRequest.isPresent())
+			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+
+		if (!bonesRevealRepository.existsById(bonesRevealId)) {
+			throw new ResourceNotFoundException("عفوا لم يتم كشف عظام لهذا المواطن");
+		}
+
+		bonesReveal.setRequest(existingRequest.get());
+		BonesReveal savedBonesReveal = bonesRevealRepository.save(bonesReveal);
+
+		if (bonesReveal.getRevealDone() == 1) {
+			existingRequest.get().setState(RequestState.BONES_REVEAL_REGISTERED);
+			requestRepository.save(existingRequest.get());
+		}
+
+		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
+
 	}
 	
 }

@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -44,7 +43,7 @@ public class EyeReveal {
 	private byte distinguishColor;
 	
 	@Column(name = "squint")
-	private String squint;
+	private byte squint;
 
 	@Column(name = "fieldOfSight")
 	private String fieldOfSight;
@@ -113,11 +112,11 @@ public class EyeReveal {
 		this.distinguishColor = distinguishColor;
 	}
 
-	public String getSquint() {
+	public byte getSquint() {
 		return squint;
 	}
 
-	public void setSquint(String squint) {
+	public void setSquint(byte squint) {
 		this.squint = squint;
 	}
 

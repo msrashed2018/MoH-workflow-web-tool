@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.almostkbal.web.services.workflow.entities.DocumentType;
+
 @Service
 public class StorageService {
 	@Value(value = "${documents.directory}")
@@ -25,9 +27,9 @@ public class StorageService {
 	
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
-	public String store(long requestId, String fileName, MultipartFile file) {
+	public String store(long requestId, DocumentType documentType, String fileName, MultipartFile file) {
 		try {
-			String storedPath = documentsPath+"/"+String.valueOf(requestId);
+			String storedPath = documentsPath + "/" + String.valueOf(requestId) + "/" + documentType.getName();
 			log.info("storedPath :"+storedPath);
 			
 			

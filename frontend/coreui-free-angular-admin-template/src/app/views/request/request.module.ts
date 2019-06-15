@@ -17,9 +17,10 @@ import { BonesRevealComponent } from './bones-reveal/bones-reveal.component';
 import { EyeRevealComponent } from './eye-reveal/eye-reveal.component';
 import { RevealListComponent } from './medical-reveal-result/reveal-list/reveal-list.component';
 import { RevealDataComponent } from './medical-reveal-result/reveal-data/reveal-data.component';
+import { ReviewRequestsComponent } from './review-requests/review-requests.component';
 
 @NgModule({
-  declarations: [ListRequestsComponent, RequestComponent, RequestViewEditComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, RevealListComponent, RevealDataComponent],
+  declarations: [ListRequestsComponent, RequestComponent, RequestViewEditComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, RevealListComponent, RevealDataComponent, ReviewRequestsComponent],
   imports: [
     CommonModule,
     AlertModule,

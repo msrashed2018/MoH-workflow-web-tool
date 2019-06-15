@@ -16,7 +16,7 @@ public class EyeRevealSetting {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO,  generator="SEQ_OCCUPATION")
 	@Column(name = "setting_id")
-	private int id;
+	private long id;
 	
 	@OneToOne
 	@JoinColumn(name = "right_measure_id")
@@ -33,6 +33,9 @@ public class EyeRevealSetting {
 	@Column(name = "DISTINGUISH_COLOR")
 	private byte distinguishColor;
 	
+	@Column(name = "squint")
+	private byte squint;
+
 	@Column(name = "setting_result")
 	private String result;
 	
@@ -43,11 +46,11 @@ public class EyeRevealSetting {
 		
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -89,6 +92,14 @@ public class EyeRevealSetting {
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public byte getSquint() {
+		return squint;
+	}
+
+	public void setSquint(byte squint) {
+		this.squint = squint;
 	}
 
 	public String getDescription() {

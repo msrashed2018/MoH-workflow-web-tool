@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs';
 import { RequestService } from '../../../../services/request.service';
 import { HttpResponse, HttpEventType } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
@@ -16,18 +15,7 @@ import { Committee } from '../../../../model/committee.model';
 import { BasicAuthenticationService } from '../../../../services/authentication/basic-authentication.service';
 import { Request } from '../../../../model/request.model';
 import { API_URL } from '../../../../app.constants';
-import { RequestPayment } from '../../../../model/request-payment.model';
-import { EyeReveal } from '../../../../model/eye-reveal.model';
-import { EyeMeasure } from '../../../../model/eye-measure.model';
-import { BonesReveal } from '../../../../model/bones-reveal.model';
-import { Disability } from '../../../../model/disability.model';
-import { Equipment } from '../../../../model/equipment.model';
 import { ActivatedRoute } from '@angular/router';
-import { Custom } from '../../../../model/custom.model';
-import { RequestStatus } from '../../../../model/request-status.model';
-import { RequestType } from '../../../../model/request-type.model';
-import { TrafficManagement } from '../../../../model/traffic-management.model';
-import { isUndefined } from 'util';
 import { Citizen } from '../../../../model/citizen.model';
 
 @Component({
@@ -158,7 +146,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
   showFiles(enable: boolean) {
     this.showFile = enable
     if (enable) {
-      this.requestService.getFiles(this.request.id).subscribe(
+      this.requestService.getFiles(this.request.id, 'PERSONAL').subscribe(
         result =>{
           this.requestDocuments = result as any;
           this.requestDocuments .forEach(element => {
@@ -177,12 +165,11 @@ export class ContinueRegisteringDataComponent implements OnInit {
     this.uploading = false;
   }
   getFile(fileName){
-    console.log("downloading file :"+ fileName);
     this.requestService.getFile(this.request.id,fileName);
   }
    upload() {
      this.uploading = true;
-     this.requestService.pushFileToStorage(this.requestId,this.selectedFiles).subscribe(
+     this.requestService.pushFileToStorage(this.requestId,'PERSONAL',this.selectedFiles).subscribe(
        result => {
          // console.log(result);
          if (result.type === HttpEventType.UploadProgress) {

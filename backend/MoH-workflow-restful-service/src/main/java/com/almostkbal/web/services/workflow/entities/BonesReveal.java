@@ -32,9 +32,9 @@ public class BonesReveal {
 	@JoinColumn(name = "disability_id")
 	private Disability disability;
 	
-	@OneToOne
-	@JoinColumn(name = "equipment_id")
-	private Equipment equipment;
+//	@OneToOne
+//	@JoinColumn(name = "equipment_id")
+//	private Equipment equipment;
 	
 	@Column(name = "result")
 	private String result;
@@ -72,13 +72,13 @@ public class BonesReveal {
 		this.disability = disability;
 	}
 
-	public Equipment getEquipment() {
-		return equipment;
-	}
-
-	public void setEquipment(Equipment equipment) {
-		this.equipment = equipment;
-	}
+//	public Equipment getEquipment() {
+//		return equipment;
+//	}
+//
+//	public void setEquipment(Equipment equipment) {
+//		this.equipment = equipment;
+//	}
 
 	public String getResult() {
 		return result;

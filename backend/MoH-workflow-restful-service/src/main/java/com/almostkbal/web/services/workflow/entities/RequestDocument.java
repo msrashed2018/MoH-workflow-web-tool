@@ -2,6 +2,8 @@ package com.almostkbal.web.services.workflow.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +28,9 @@ public class RequestDocument {
 	
 	@Column(name = "name",nullable=false)
 	private String name;
+
+	@Enumerated(EnumType.STRING)
+	private DocumentType type;
 
 	@Column(name = "path")
 	private String path;
@@ -62,6 +67,14 @@ public class RequestDocument {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public DocumentType getType() {
+		return type;
+	}
+
+	public void setType(DocumentType type) {
+		this.type = type;
 	}
 
 	public Request getRequest() {

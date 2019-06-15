@@ -1,15 +1,15 @@
 package com.almostkbal.web.services.workflow.repositories;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import com.almostkbal.web.services.workflow.entities.City;
+import com.almostkbal.web.services.workflow.entities.EyeMeasure;
 import com.almostkbal.web.services.workflow.entities.EyeRevealSetting;
-import com.almostkbal.web.services.workflow.entities.Governate;
 
 //@RepositoryRestResource(collectionResourceRel = "cities", path = "cities")
-public interface EyeRevealSettingRepository extends JpaRepository<EyeRevealSetting, Integer> {
+public interface EyeRevealSettingRepository extends JpaRepository<EyeRevealSetting, Long> {
+
+//	@Query("SELECT c FROM EyeRevealSetting c WHERE c.name ")
+	EyeRevealSetting findByRightMeasureAndLeftMeasureAndUseGlassesAndDistinguishColorAndSquint(
+			EyeMeasure rightEyeMeasure, EyeMeasure leftEyeMeasure, byte useGlassess, byte distinguishColor,
+			byte squint);
 }
