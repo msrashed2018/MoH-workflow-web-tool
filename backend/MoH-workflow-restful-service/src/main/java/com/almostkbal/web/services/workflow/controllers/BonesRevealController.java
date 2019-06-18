@@ -2,6 +2,8 @@ package com.almostkbal.web.services.workflow.controllers;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -41,7 +43,7 @@ public class BonesRevealController {
 	}
 	@PostMapping("/api/requests/{id}/bones-reveal")
 	public ResponseEntity<BonesReveal> addRequestBonesReveal(@PathVariable long id,
-			@RequestBody BonesReveal bonesReveal) {
+			@Valid @RequestBody BonesReveal bonesReveal) {
 		
 		Optional<Request> existingRequest = requestRepository.findById(id);
 
@@ -62,7 +64,7 @@ public class BonesRevealController {
 
 	@PutMapping("/api/requests/{requestId}/bones-reveal/{bonesRevealId}")
 	public ResponseEntity<BonesReveal> updateRequestBonesReveal(@PathVariable long requestId,
-			@PathVariable long bonesRevealId, @RequestBody BonesReveal bonesReveal) {
+			@PathVariable long bonesRevealId, @Valid @RequestBody BonesReveal bonesReveal) {
 
 		if (!requestRepository.existsById(requestId))
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");

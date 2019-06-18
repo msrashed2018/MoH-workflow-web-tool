@@ -67,6 +67,9 @@
 
 
             <div class="card-footer">
+                <div *ngIf="errorMessage != '' ">
+                    <alert type="danger">{{errorMessage}}</alert>
+                </div>
               <button type="submit" class="btn btn-sm btn-primary" ><i class="fa fa-dot-circle-o"></i>
                 أضف المستخدم</button>
               <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i class="fa fa-ban"></i> إلغاء</button>

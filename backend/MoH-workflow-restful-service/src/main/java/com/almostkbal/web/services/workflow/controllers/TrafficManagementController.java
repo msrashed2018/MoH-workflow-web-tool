@@ -67,7 +67,7 @@ public class TrafficManagementController {
 	}
 	@PutMapping("/api/traffic-management/{id}")
 	public ResponseEntity<TrafficManagement> updateTrafficManagement(
-			@PathVariable int id, @RequestBody TrafficManagement trafficManagement){
+			@PathVariable int id, @Valid @RequestBody TrafficManagement trafficManagement) {
 		Optional<TrafficManagement> existingTrafficManagement = trafficManagementRepository.findById(id);
 
 		if(!existingTrafficManagement.isPresent())

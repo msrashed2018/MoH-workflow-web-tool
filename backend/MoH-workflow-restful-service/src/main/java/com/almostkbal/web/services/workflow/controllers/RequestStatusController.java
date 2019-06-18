@@ -68,7 +68,7 @@ public class RequestStatusController {
 	}
 	@PutMapping("/api/request-status/{id}")
 	public ResponseEntity<RequestStatus> updateRequestStatus(
-			@PathVariable int id, @RequestBody RequestStatus requestStatus){
+			@PathVariable int id, @Valid @RequestBody RequestStatus requestStatus) {
 		Optional<RequestStatus> existingRequestStatusOptional = requestStatusRepository.findById(id);
 		
 		if(!existingRequestStatusOptional.isPresent())

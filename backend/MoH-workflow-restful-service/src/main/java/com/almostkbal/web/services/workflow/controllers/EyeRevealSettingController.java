@@ -68,7 +68,7 @@ public class EyeRevealSettingController {
 	}
 	@PutMapping("/api/eye-reveal-settings/{id}")
 	public ResponseEntity<EyeRevealSetting> updateEyeRevealSetting(
-			@PathVariable long id, @RequestBody EyeRevealSetting EyeRevealSetting) {
+			@PathVariable long id, @Valid @RequestBody EyeRevealSetting EyeRevealSetting) {
 		Optional<EyeRevealSetting> existingEyeRevealSetting = EyeRevealSettingRepository.findById(id);
 
 		if(!existingEyeRevealSetting.isPresent())

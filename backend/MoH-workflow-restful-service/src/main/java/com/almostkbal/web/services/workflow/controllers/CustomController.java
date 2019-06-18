@@ -67,7 +67,7 @@ public class CustomController {
 	}
 	@PutMapping("/api/customs/{id}")
 	public ResponseEntity<Custom> updateCustom(
-			@PathVariable int id, @RequestBody Custom custom){
+			@PathVariable int id, @Valid @RequestBody Custom custom) {
 		Optional<Custom> existingCustom = customRepository.findById(id);
 		
 		if(!existingCustom.isPresent())

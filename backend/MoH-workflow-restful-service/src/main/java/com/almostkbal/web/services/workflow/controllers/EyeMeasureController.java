@@ -68,7 +68,7 @@ public class EyeMeasureController {
 	}
 	@PutMapping("/api/eye-measures/{id}")
 	public ResponseEntity<EyeMeasure> updateEyeMeasure(
-			@PathVariable int id, @RequestBody EyeMeasure EyeMeasure){
+			@PathVariable int id, @Valid @RequestBody EyeMeasure EyeMeasure) {
 		Optional<EyeMeasure> existingEyeMeasure = EyeMeasureRepository.findById(id);
 
 		if(!existingEyeMeasure.isPresent())

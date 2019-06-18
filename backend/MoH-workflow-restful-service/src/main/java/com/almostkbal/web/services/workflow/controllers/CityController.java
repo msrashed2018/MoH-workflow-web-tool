@@ -67,7 +67,7 @@ public class CityController {
 	}
 	@PutMapping("/api/cities/{id}")
 	public ResponseEntity<City> updateCity(
-			@PathVariable int id, @RequestBody City city){
+			@PathVariable int id, @Valid @RequestBody City city) {
 		Optional<City> existingCity = cityRepository.findById(id);
 
 		if(!existingCity.isPresent())

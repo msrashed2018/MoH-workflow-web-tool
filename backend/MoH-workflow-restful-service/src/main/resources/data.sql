@@ -1,48 +1,3 @@
-
--- USER DATA
-insert into SYSTEM_USER (USER_ID,USERNAME,PASSWORD) values (1,'admin','$2a$10$L9MIF6lIh1bVDi7xnz4g1uZ9Ylcl73e89adMYQ6tmf/G28YnIUueq');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(1,'ROLE_ADMIN','can edit any pages');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(2,'ROLE_CustomLift','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(3,'ROLE_Eye','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(4,'ROLE_EditCitizen','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(5,'ROLE_LetterReview','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(6,'ROLE_EditCitizenAlex','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(7,'ROLE_Register','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(8,'ROLE_Tawsya','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(9,'ROLE_Review','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(10,'ROLE_TawsyaReview','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(11,'ROLE_Confirm','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(12,'ROLE_Inquery','');
-insert into SYSTEM_USER_ROLES (USERS_USER_ID, ROLES_ROLE_ID) VALUES(1,1);
-insert into SYSTEM_USER_ROLES (USERS_USER_ID, ROLES_ROLE_ID) VALUES(1,2);
-
-
--- EQUIPMENT Data
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل تدار باليد وفاصل حركة اوتوماتيك','دواسة البنزين والفرامل تدار باليد وفاصل حركة اوتوماتيك');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل يدار باليد','دواسة البنزين والفرامل يدار باليد');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة يدار باليد','دواسة فاصل الحركة يدار باليد');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة هيدروماتيك','دواسة فاصل الحركة هيدروماتيك');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليسري بالإضافة إلي عجله قيادة مائية مزودة ببكره ومنيم بالكف الصناعي + ناقل سرعة اوتوماتيك','مفاتيح التشغيل والاناره بالجهة اليسري بالإضافة إلي عجله قيادة مائية مزودة ببكره ومنيم بالكف الصناعي + ناقل سرعة اوتوماتيك');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزودة ببكره ومنيم بالكف الصناعي + ناقل سرعة اوتوماتيك','مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزودة ببكره ومنيم بالكف الصناعي + ناقل سرعة اوتوماتيك');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليسري بالإضافة إلي عجله قيادة مائية مزوده ببكره ومنيم باليد اليمني+ ناقل سرعة هيدروماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزوده ببكره ومنيم باليد اليسري + ناقل سرعة هيدروماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليمني بالإضافة إلي عجلة قياده مائيه والبنزين والفرامل يدار باليد وفاصل حركه اوتوماتيك ','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('قيادة يدوية كاملة  دواسة البنزين والفرامل وفاصل الحركة يدار باليد ','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلي عجلة قياده مائيه والبنزين والفرامل يدار باليد وفاصل حركه هيدروماتيك ','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليسري بالإضافة إلي عجله قيادة مائية + ناقل سرعة اوتوماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية + ناقل سرعة اوتوماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('البنزين والفرامل يدار باليد وعجلة قياده مائيه وفاصل حركه هيدروماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('البنزين والفرامل يدار باليد وعجلة قياده مائيه وفاصل حركه هيدروماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل تدار باليد وفاصل الحركة يدار باليد أو اوتوماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة تدار باليد أو اوتوماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة تدار باليد أو اوتوماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلي عجلة قياده مائيه مزوده ببكره ومنيم بالكف الصناعي+دواسة البنزين والفرامل تدار باليد وفاصل حركه هيدروماتيك, ','');
-
---
----- GENDER Data
-Insert into GENDER (GENDER_NAME) values ('ذكر');
-Insert into GENDER (GENDER_NAME) values ('انثي');
-
 ---- ZONE Data
 Insert into ZONE (ZONE_NAME) values('المجلس الطبي الرئيسي بالقاهرة');
 Insert into ZONE (ZONE_NAME) values('المجلس الطبي العام بسوهاج');
@@ -68,6 +23,48 @@ Insert into ZONE (ZONE_NAME) values('مجلس طبي الأقصر');
 Insert into ZONE (ZONE_NAME) values('مجلس طبي الوادي الجديد');
 Insert into ZONE (ZONE_NAME) values('مجلس طبي شمال سيناء');
 Insert into ZONE (ZONE_NAME) values('مجلس طبي جنوب سيناء');
+
+-- USER DATA
+insert into SYSTEM_USER (USER_ID,USERNAME,PASSWORD,ZONE_ID) values (1,'admin','$2a$10$L9MIF6lIh1bVDi7xnz4g1uZ9Ylcl73e89adMYQ6tmf/G28YnIUueq',1);
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(1,'ROLE_ADMIN','can edit any pages');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(2,'ROLE_CustomLift','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(3,'ROLE_Eye','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(4,'ROLE_EditCitizen','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(5,'ROLE_LetterReview','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(6,'ROLE_EditCitizenAlex','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(7,'ROLE_Register','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(8,'ROLE_Tawsya','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(9,'ROLE_Review','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(10,'ROLE_TawsyaReview','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(11,'ROLE_Confirm','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(12,'ROLE_Inquery','');
+insert into SYSTEM_USER_ROLES (USERS_USER_ID, ROLES_ROLE_ID) VALUES(1,1);
+insert into SYSTEM_USER_ROLES (USERS_USER_ID, ROLES_ROLE_ID) VALUES(1,2);
+
+
+-- EQUIPMENT Data
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل تدار باليد وفاصل حركة اوتوماتيك','دواسة البنزين والفرامل تدار باليد وفاصل حركة اوتوماتيك');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل يدار باليد','دواسة البنزين والفرامل يدار باليد');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة يدار باليد','دواسة فاصل الحركة يدار باليد');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة هيدروماتيك','دواسة فاصل الحركة هيدروماتيك');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزودة ببكره ومنيم بالكف الصناعي + ناقل سرعة اوتوماتيك','مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزودة ببكره ومنيم بالكف الصناعي + ناقل سرعة اوتوماتيك');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليسري بالإضافة إلي عجله قيادة مائية مزوده ببكره ومنيم باليد اليمني+ ناقل سرعة هيدروماتيك','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزوده ببكره ومنيم باليد اليسري + ناقل سرعة هيدروماتيك','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليمني بالإضافة إلي عجلة قياده مائيه والبنزين والفرامل يدار باليد وفاصل حركه اوتوماتيك ','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('قيادة يدوية كاملة  دواسة البنزين والفرامل وفاصل الحركة يدار باليد ','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلي عجلة قياده مائيه والبنزين والفرامل يدار باليد وفاصل حركه هيدروماتيك ','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية + ناقل سرعة اوتوماتيك','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('البنزين والفرامل يدار باليد وعجلة قياده مائيه وفاصل حركه هيدروماتيك','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل تدار باليد وفاصل الحركة يدار باليد أو اوتوماتيك','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة تدار باليد أو اوتوماتيك','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلي عجلة قياده مائيه مزوده ببكره ومنيم بالكف الصناعي+دواسة البنزين والفرامل تدار باليد وفاصل حركه هيدروماتيك, ','');
+
+--
+---- GENDER Data
+--Insert into GENDER (GENDER_NAME) values ('ذكر');
+--Insert into GENDER (GENDER_NAME) values ('انثي');
+
+
 --
 --
 ----OCCUPATION DATA
@@ -209,10 +206,10 @@ insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('0', 14,'
 
 
 insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER, GOVERNATE_ID, OCCUPATION_ID)
-values('october', '1989-06-20 03:00:00', 'admin', '2019-06-15', '01015090111', null, null,  'محمد صلاح راشد', '29106202101140', 2, 'ذكر', 1, 3 );
+values('october', '1989-06-20 03:00:00', 'admin', '2019-06-19', '01015090111', null, null,  'محمد صلاح راشد', '29106202101140', 2, 'ذكر', 1, 3 );
 
 insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER, GOVERNATE_ID, OCCUPATION_ID)
-values('october', '1989-06-20 03:00:00', 'admin', '2019-06-15', '01015090111', null, null,  'احمد صلاح راشد', '29106202101141', 2, 'ذكر', 1, 3 );
+values('october', '1989-06-20 03:00:00', 'admin', '2019-06-19', '01015090111', null, null,  'احمد صلاح راشد', '29106202101141', 2, 'ذكر', 1, 3 );
 
 
 
@@ -232,17 +229,17 @@ insert into COMMITTEE_MEMBER (ZONE_ID, MEMBER_MOBILE_NO, MEMBER_NAME, MEMBER_TIT
 
 
 -- COMMITTEE DATA
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-20 02:00:00',1,2,3,4,5, null,1,'لجنة عظام','عظام','اخري' );
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-21 02:00:00',1,2,3,4,5, null,1,'لجنة عظام','عظام','اخري' );
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-08-11 02:00:00',1,2,3,4,5, null,1,'لجنة عظام','عظام','تظلمات' );
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-23 02:00:00',1,2,3,4,5, null,1,'لجنة عظام','عظام','تظلمات' );
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-09-30 02:00:00',1,2,3,4,5, null,1,'لجنة عظام','عظام','اخري' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-20 02:00:00',1,2,3,4,5, null,1,'عظام','اخري' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-21 02:00:00',1,2,3,4,5, null,1,'عظام','اخري' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-08-11 02:00:00',1,2,3,4,5, null,1,'عظام','تظلمات' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-23 02:00:00',1,2,3,4,5, null,1,'عظام','تظلمات' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-09-30 02:00:00',1,2,3,4,5, null,1,'عظام','اخري' );
 
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-20 02:00:00',1,5,null,null,null, null,1,'لجنة رمد','رمد','اخري' );
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-24 02:00:00',1,5,null,null,null, null,1,'لجنة رمد','رمد','اخري' );
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-08-20 02:00:00',1,5,null,null,null, null,1,'لجنة رمد','رمد','اخري' );
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-08-10 02:00:00',1,5,null,null,null, null,1,'لجنة رمد','رمد','اخري' );
-insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID, COMMITTEE_NAME, COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-30 02:00:00',1,5,null,null,null, null,1,'لجنة رمد','رمد','اخري' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-20 02:00:00',1,5,null,null,null, null,1,'رمد','اخري' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-24 02:00:00',1,5,null,null,null, null,1,'رمد','اخري' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-08-20 02:00:00',1,5,null,null,null, null,1,'رمد','اخري' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-08-10 02:00:00',1,5,null,null,null, null,1,'رمد','اخري' );
+insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-30 02:00:00',1,5,null,null,null, null,1,'رمد','اخري' );
 
 
 

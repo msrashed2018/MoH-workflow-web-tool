@@ -18,6 +18,7 @@ export class GovernateDataComponent implements OnInit {
   iconCollapse: string = 'icon-arrow-up';
   public zones : Zone[];
   public selectedZoneId : number
+  errorMessage ="";
   constructor(private formBuilder: FormBuilder,private governateService: GovernateService, private zoneService: ZoneService, private router: Router ) { }
 
   ngOnInit() {
@@ -42,6 +43,11 @@ export class GovernateDataComponent implements OnInit {
         this.router.navigateByUrl("/administration/governates");
       },
       error => {
+        if(error.error.message.includes('Unique index or primary key violation')){
+          this.errorMessage = "بالفعل تم تسجيل هذا المحافظة من قبل";
+        }else{
+          this.errorMessage = error.error.message;
+        }
         console.log('oops', error);
         this.successMessage = false;
       }

@@ -14,7 +14,7 @@
           </div>
           <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body ">
             <form   class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate>
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <label class="col-md-2 col-form-label font-weight-bold" for="name"> الاسم (*)</label>
                 <div class="col-md-6">
                   <input maxlength="100" [(ngModel)]="requestModel.name"  #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required type="text"  name="name" class="form-control" >
@@ -22,7 +22,7 @@
                     <div *ngIf="name.errors.required"> برجاء ادخال اسم اللجنة</div>
                   </div>
                 </div>
-              </div>
+              </div> -->
               
               <div class="form-group row">
                   <label class="col-md-2 col-form-label font-weight-bold" for="type-select">نوع اللجنة</label>
@@ -137,8 +137,11 @@
               
               
               <div class="card-footer">
+                  <div *ngIf="errorMessage != '' ">
+                      <alert type="danger">{{errorMessage}}</alert>
+                  </div> 
                 <button type="submit" class="btn btn-sm btn-primary" ><i class="fa fa-dot-circle-o"></i>
-                  أضف العضو</button>
+                  أضف اللجنة</button>
                 <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i class="fa fa-ban"></i> إلغاء</button>
               </div>
     

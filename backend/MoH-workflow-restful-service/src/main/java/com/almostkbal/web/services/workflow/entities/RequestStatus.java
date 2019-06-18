@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="request_status")
@@ -16,7 +17,8 @@ public class RequestStatus {
 	@Column(name = "REQUEST_STATUS_ID")
 	private int id;
 	
-	@Column(name = "REQUEST_STATUS_NAME")
+	@Column(name = "REQUEST_STATUS_NAME", unique = true, nullable = false)
+	@NotNull
 	private String name;
 	
 	@Column(name = "REQUEST_STATUS_DESCRIPTION")

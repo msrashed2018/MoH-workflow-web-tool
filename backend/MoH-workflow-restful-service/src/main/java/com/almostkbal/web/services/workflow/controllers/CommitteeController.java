@@ -89,7 +89,7 @@ public class CommitteeController {
 	}
 	@PutMapping("/api/committees/{id}")
 	public ResponseEntity<Committee> updateCommittee(
-			@PathVariable long id, @RequestBody Committee committee){
+			@PathVariable long id, @Valid @RequestBody Committee committee) {
 		Optional<Committee> existingCommittee = committeeRepository.findById(id);
 		
 		if(!existingCommittee.isPresent())

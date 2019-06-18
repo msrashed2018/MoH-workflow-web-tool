@@ -2,6 +2,8 @@ package com.almostkbal.web.services.workflow.controllers;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -40,7 +42,8 @@ public class RequestPaymentController {
 	}
 
 	@PostMapping("/api/requests/{id}/payment")
-	public ResponseEntity<RequestPayment> addRequestPayment(@PathVariable long id, @RequestBody RequestPayment requestPayment) {
+	public ResponseEntity<RequestPayment> addRequestPayment(@PathVariable long id,
+			@Valid @RequestBody RequestPayment requestPayment) {
 		
 		Optional<Request> existingRequest = requestRepository.findById(id);
 

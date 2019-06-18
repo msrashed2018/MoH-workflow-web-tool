@@ -9,9 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="city")
@@ -22,7 +20,8 @@ public class City {
 	@Column(name = "city_id")
 	private int id;
 	
-	@Column(name = "city_name",nullable=false)
+	@Column(name = "city_name", nullable = false, unique = true)
+	@NotNull
 	private String name;
 	
 	@ManyToOne(fetch=FetchType.EAGER)

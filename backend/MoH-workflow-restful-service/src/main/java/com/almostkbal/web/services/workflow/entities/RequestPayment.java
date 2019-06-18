@@ -9,15 +9,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -29,7 +28,8 @@ public class RequestPayment {
 	@Column(name = "request_payment_id")
 	private int id;
 	
-	@Column(name = "receipt_serial_no")
+	@Column(name = "receipt_serial_no", nullable = false)
+	@NotNull
 	private String receiptSerialNumber;
 	
 	@Column(name = "payment_done")

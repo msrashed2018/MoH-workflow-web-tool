@@ -26,9 +26,10 @@
             <div class="form-group row">
                 <label class="col-md-1 col-form-label font-weight-bold" for="equipment">نوع السيارة</label>
                 <div class="col-md-6">
-                        <select  [(ngModel)]="selectedEquipmentId" name="equipment" #equipment="ngModel" [ngClass]="{ 'is-invalid': f.submitted && equipment.invalid }" class="form-control" required>
-                          <option *ngFor="let equipment of equipments" [value]="equipment.id" >{{equipment.name}}</option>
-                        </select>
+                  <input list="id-equipment" [(ngModel)]="selectedEquipmentName"   name="equipment" #equipment="ngModel" [ngClass]="{ 'is-invalid': f.submitted && equipment.invalid }" class="form-control" required>
+                  <datalist id="id-equipment">
+                    <option *ngFor="let equipment of equipments" [value]="equipment.name">{{equipment.name}}</option>
+                  </datalist>
                         <div *ngIf="f.submitted && equipment.invalid" class="invalid-feedback">
                           <div *ngIf="equipment.errors.required"> برجاء اختيار نوع السيارة</div>
                         </div>
@@ -56,6 +57,9 @@
             
             
             <div class="card-footer">
+                <div *ngIf="errorMessage != '' ">
+                    <alert type="danger">{{errorMessage}}</alert>
+                </div> 
               <button type="submit" class="btn btn-sm btn-primary" ><i class="fa fa-dot-circle-o"></i>
                 أضف الاعاقة</button>
               <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i class="fa fa-ban"></i> إلغاء</button>

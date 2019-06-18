@@ -13,6 +13,7 @@ export class RequestTypeDataComponent implements OnInit {
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
+  errorMessage ="";
   constructor(private router:Router,  private modalService: NgbModal,  private requestTypeService:RequestTypeService,
   ) { }
   componentViewMode='addMode';
@@ -32,6 +33,13 @@ export class RequestTypeDataComponent implements OnInit {
     this.requestTypeService.createRequestType(this.requestModel).subscribe(
       response => {
         this.router.navigate(["/administration/types"])
+      },
+      error=>{
+        if(error.error.message.includes('Unique index or primary key violation')){
+          this.errorMessage = "بالفعل تم تسجيل هذا النوع من قبل";
+        }else{
+          this.errorMessage = error.error.message;
+        }
       }
     )
   }

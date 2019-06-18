@@ -69,7 +69,7 @@ public class RequestTypeController {
 	}
 	@PutMapping("/api/request-type/{id}")
 	public ResponseEntity<RequestType> updateRequestType(
-			@PathVariable int id, @RequestBody RequestType requestType){
+			@PathVariable int id, @Valid @RequestBody RequestType requestType) {
 		Optional<RequestType> existingRequestType = requestTypeRepository.findById(id);
 
 		if(!existingRequestType.isPresent())

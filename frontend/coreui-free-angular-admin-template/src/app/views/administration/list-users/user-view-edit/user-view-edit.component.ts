@@ -25,6 +25,7 @@ export class UserViewEditComponent implements OnInit {
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
+  errorMessage ="";
   constructor(private formBuilder: FormBuilder,private roleService: RoleService, private zoneService: ZoneService ,private userService: UserService, private router: Router,private route:ActivatedRoute ) { }
 
   ngOnInit() {
@@ -88,6 +89,11 @@ export class UserViewEditComponent implements OnInit {
         this.router.navigateByUrl("/administration/users");
       },
       error => {
+        if(error.error.message.includes('Unique index or primary key violation')){
+          this.errorMessage = "اسم المستخدم بالفعل موجود";
+        }else{
+          this.errorMessage = error.error.message;
+        }
         console.log('oops', error);
         this.successMessage = false;
       }

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -27,12 +28,15 @@ public class RequestDocument {
 	private long id;
 	
 	@Column(name = "name",nullable=false)
+	@NotNull
 	private String name;
 
 	@Enumerated(EnumType.STRING)
+	@NotNull
 	private DocumentType type;
 
-	@Column(name = "path")
+	@Column(name = "path", nullable = false)
+	@NotNull
 	private String path;
 
 	@ManyToOne(fetch=FetchType.LAZY)

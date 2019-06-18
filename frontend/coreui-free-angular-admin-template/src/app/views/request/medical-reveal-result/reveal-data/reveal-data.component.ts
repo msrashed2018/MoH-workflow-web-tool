@@ -74,7 +74,7 @@ export class RevealDataComponent implements OnInit {
 
   bonesReveal = new BonesReveal();
   // selectedBonesCommitteeId: number = 0;
-  selectedDisabilityTypeId : number = 0;
+  selectedDisabilityTypeName : string = "";
   // selectedEquipmentTypeId: number = 0;
 
 
@@ -117,7 +117,6 @@ export class RevealDataComponent implements OnInit {
   refreshData(){
     this.requestService.retrieveRequest(this.requestId).subscribe(
     result => {
-      console.log(result)
       this.request = result as Request;
       this.citizen = this.request.citizen;
       this.requestType = this.request.requestType;
@@ -194,29 +193,28 @@ if(this.eyeReveal.id !=0){
         //   // this.bonesReveal.committee = committee;
         // }
 
-        if(this.selectedDisabilityTypeId != 0){
-          let disability: Disability = new Disability;
-          disability.id= this.selectedDisabilityTypeId;
-          this.bonesReveal.disability = disability;
+        this.bonesReveal.disability = this.disabilities.find((d)=> d.name==this.selectedDisabilityTypeName);
+        if(this.bonesReveal.disability == null){
+          this.bonesRevealErrorMessage = ".نوع الاعاقة غير صحيح .. من فضلك اختر النوع من القائمة";
+        }else{
+          this.bonesRevealErrorMessage = "";
+          this.requestService.updateRequestBonesReveal(this.request.id, this.bonesReveal.id, this.bonesReveal).subscribe(
+            result => {
+              this.bonesReveal = result as BonesReveal;
+              this.bonesRevealSuccessMessage =  "تم حفظ بيانات كشف العظام بنجاح";
+              this.bonesRevealErrorMessage = "";
+            },
+            error => {
+              console.log('oops', error);
+              this.bonesRevealSuccessMessage = "";
+              this.bonesRevealErrorMessage = error.error.message;
+            }
+          )
         }
-        // if(this.selectedEquipmentTypeId !=0){
-        //   let equipment: Equipment = new Equipment;
-        //   equipment.id= this.selectedEquipmentTypeId;
-        //   this.bonesReveal.equipment = equipment;
-        // }
+
+
         
-            this.requestService.updateRequestBonesReveal(this.request.id, this.bonesReveal.id, this.bonesReveal).subscribe(
-              result => {
-                this.bonesReveal = result as BonesReveal;
-                this.bonesRevealSuccessMessage =  "تم حفظ بيانات كشف العظام بنجاح";
-                this.bonesRevealErrorMessage = "";
-              },
-              error => {
-                console.log('oops', error);
-                this.bonesRevealSuccessMessage = "";
-                this.bonesRevealErrorMessage = error.error.message;
-              }
-            )
+            
     }else{
       this.bonesRevealSuccessMessage = "";
       this.bonesRevealErrorMessage = "عفوا لم يتم كشف عظام لهذا المواطن";
@@ -321,7 +319,7 @@ if(this.eyeReveal.id !=0){
               this.bonesReveal = result as BonesReveal;
               // console.log(JSON.stringify(this.bonesReveal))
               if(this.bonesReveal.disability != null){
-                this.selectedDisabilityTypeId = this.bonesReveal.disability.id
+                this.selectedDisabilityTypeName = this.bonesReveal.disability.name
               }
 
               // if(this.bonesReveal.equipment != null){
@@ -339,19 +337,20 @@ if(this.eyeReveal.id !=0){
     )
   }
   onDisabilityChanged(value){
-      for(var x=0; x< this.disabilities.length; x++){
-        if(this.disabilities[x].id == value){
-          // this.selectedEquipmentTypeId = this.disabilities[x].equipment.id;
-           this.equipment = this.disabilities[x].equipment.name;
-          if(this.disabilities[x].accepted == '0'){
-              this.bonesReveal.result = 'مرفوض'
-          }else if(this.disabilities[x].accepted == '1'){
-            this.bonesReveal.result = 'مقبول'
-          }else if(this.disabilities[x].accepted == '2'){
-            this.bonesReveal.result = 'اعادة مناظرة'
-          }
-        }
+    this.bonesReveal.disability = this.disabilities.find((d)=> d.name==value)
+    if( this.bonesReveal.disability == null){
+      this.bonesRevealErrorMessage = ".نوع الاعاقة غير صحيح .. من فضلك اختر النوع من القائمة";
+    }else{
+      this.bonesRevealErrorMessage = "";
+      this.equipment = this.bonesReveal.disability.equipment.name;
+      if(this.bonesReveal.disability.accepted == '0'){
+        this.bonesReveal.result = 'مرفوض'
+      }else if(this.bonesReveal.disability.accepted == '1'){
+        this.bonesReveal.result = 'مقبول'
+      }else if(this.bonesReveal.disability.accepted == '2'){
+        this.bonesReveal.result = 'اعادة مناظرة'
       }
+    }
   }
   toggleBonesRevealDataCollapse(): void {
     this.isBonesRevealDataCollapsed = !this.isBonesRevealDataCollapsed;
@@ -435,7 +434,6 @@ if(this.eyeReveal.id !=0){
     this.uploading = false;
   }
  getFile(fileName){
-   console.log("downloading file :"+ fileName);
    this.requestService.getFile(this.request.id,fileName);
  }
   upload() {
@@ -447,7 +445,6 @@ if(this.eyeReveal.id !=0){
           this.progress.percentage = Math.round(100 * result.loaded / result.total);
           
         } else if (result instanceof HttpResponse) {
-          console.log('File is completely uploaded!');
           this.fileUploadErrorMessage = "";
           this.showFiles(true);
         }

@@ -73,7 +73,7 @@ public class ZoneController {
 	}
 	@PutMapping("/api/zones/{id}")
 	public ResponseEntity<Zone> updateZone(
-			@PathVariable long id, @RequestBody Zone zone){
+			@PathVariable long id, @Valid @RequestBody Zone zone) {
 		Optional<Zone> existingZone = zoneRepository.findById(id);
 
 		if(!existingZone.isPresent())
@@ -83,7 +83,7 @@ public class ZoneController {
 		return new ResponseEntity<Zone>(updatedCitzen, HttpStatus.OK);
 	}
 	@PostMapping("/api/zones/{id}/governates")
-	public ResponseEntity<Object> addGovernate(@PathVariable long id, @RequestBody Governate governate) {
+	public ResponseEntity<Object> addGovernate(@PathVariable long id, @Valid @RequestBody Governate governate) {
 
 		Optional<Zone> governateOptional = zoneRepository.findById(id);
 

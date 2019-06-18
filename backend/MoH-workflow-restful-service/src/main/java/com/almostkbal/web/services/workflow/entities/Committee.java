@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,24 +23,26 @@ public class Committee {
 	@Column(name = "committee_id")
 	private long id;
 	
-	@Column(name = "committee_name",nullable=false)
-	private String name;
+//	@Column(name = "committee_name",nullable=false)
+//	private String name;
 	
 	@Column(name = "committee_description")
 	private String description;
 	
 	@Column(name = "committee_date")
 	@JsonFormat(pattern="yyyy-MM-dd")
+//	@FutureOrPresent(message = "هذا التاريخ غير صحيح... اختر تاريخ في المستقبل")
 	private Date date;
 	
-	@Column(name = "committee_type")
+	@Column(name = "committee_type", nullable = false)
 	private String type;
 	
-	@Column(name = "committee_function")
+	@Column(name = "committee_function", nullable = false)
 	private String function;
 	
 	@OneToOne
-	@JoinColumn(name = "zone_id")
+	@JoinColumn(name = "zone_id", nullable = false)
+	@NotNull(message = "لابد من  ادخال المقر")
 	private Zone zone;
 	
 	@OneToOne
@@ -71,10 +74,6 @@ public class Committee {
 		
 	}
 
-	public Committee(String name) {
-		super();
-		this.name = name;
-	}
 
 	public long getId() {
 		return id;
@@ -84,13 +83,13 @@ public class Committee {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+//	public String getName() {
+//		return name;
+//	}
+//
+//	public void setName(String name) {
+//		this.name = name;
+//	}
 
 	public String getDescription() {
 		return description;

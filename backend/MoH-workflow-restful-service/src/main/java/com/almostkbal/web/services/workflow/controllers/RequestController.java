@@ -169,6 +169,7 @@ public class RequestController {
 		if (requestType.get().getPrice() > 0) {
 			RequestPayment requestPayment = new RequestPayment();
 			requestPayment.setPrice(requestType.get().getPrice());
+			requestPayment.setReceiptSerialNumber("");
 			request.setState(RequestState.PENDING_PAYMENT);
 			savedRequest = requestRepository.save(request);
 			requestPayment.setRequest(savedRequest);
@@ -182,7 +183,7 @@ public class RequestController {
 
 	@PutMapping("/api/citizens/{citizenId}/requests/{requestId}")
 	public ResponseEntity<Request> updateRequest(@PathVariable long citizenId, @PathVariable long requestId,
-			@RequestBody Request request) {
+			@Valid @RequestBody Request request) {
 
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");

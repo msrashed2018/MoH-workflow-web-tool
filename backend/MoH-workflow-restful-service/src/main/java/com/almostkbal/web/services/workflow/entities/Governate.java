@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,10 +25,12 @@ public class Governate {
 	@Column(name = "governate_id")
 	private int id;
 	
-	@Column(name = "governate_name",nullable=false)
+	@Column(name = "governate_name", nullable = false, unique = true)
+	@NotNull
 	private String name;
 	
-	@Column(name = "governate_code",nullable=false)
+	@Column(name = "governate_code", nullable = false, unique = true)
+	@NotNull
 	private int code;
 	
 	@OneToMany(mappedBy = "governate",fetch=FetchType.LAZY)

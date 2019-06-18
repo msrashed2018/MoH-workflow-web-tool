@@ -10,17 +10,18 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class CustomViewEditComponent implements OnInit {
   requestModel={};
-  requestStatusId;
+  customId;
   componentMode;
   disabled : boolean = false;
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
+  errorMessage ="";
   constructor(private formBuilder: FormBuilder, private customService: CustomService, private router: Router,private route:ActivatedRoute ) { }
 
   ngOnInit() {
     this.route.params.forEach((urlParams) => {
-      this.requestStatusId= urlParams['id'];
+      this.customId= urlParams['id'];
       this.componentMode=urlParams['componentMode'];
       this.displayCustomDetails();
 
@@ -41,7 +42,7 @@ export class CustomViewEditComponent implements OnInit {
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
   displayCustomDetails(){
-    this.customService.retrieveCustom(this.requestStatusId).subscribe(
+    this.customService.retrieveCustom(this.customId).subscribe(
       response => {
         this.requestModel = response as any;
       }
@@ -49,11 +50,16 @@ export class CustomViewEditComponent implements OnInit {
   }
   onSave(){
   
-    this.customService.createCustom(this.requestModel).subscribe(
+    this.customService.updateCustom(this.customId,this.requestModel).subscribe(
       result => {
         this.router.navigateByUrl("/administration/customs");
       },
       error => {
+        if(error.error.message.includes('Unique index or primary key violation')){
+          this.errorMessage = "بالفعل تم تسجيل هذا الجمرك من قبل";
+        }else{
+          this.errorMessage = error.error.message;
+        }
         console.log('oops', error);
         this.successMessage = false;
       }

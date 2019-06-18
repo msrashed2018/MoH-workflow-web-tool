@@ -27,7 +27,7 @@ export class CommitteeDataComponent implements OnInit {
   public selectedMember4Id : number = 0;
   public selectedMember5Id : number = 0;
   public selectedMember6Id : number = 0;
-  
+  errorMessage ="";
   constructor(private formBuilder: FormBuilder,private committeeMemberService: CommitteeMemberService ,private zoneService: ZoneService, private committeeService: CommitteeService, private router: Router ) { }
 
   ngOnInit() {
@@ -51,29 +51,36 @@ export class CommitteeDataComponent implements OnInit {
     zone.id = this.selectedZoneId;
     this.requestModel.zone = zone;
    
-    let committeeMember = new CommitteeMember;
-    committeeMember.id = this.selectedMember1Id;
-    this.requestModel.memberOne = committeeMember;
+    let c1 = new CommitteeMember;
+    c1.id = this.selectedMember1Id;
+    this.requestModel.memberOne = c1;
 
-    committeeMember.id = this.selectedMember2Id;
-    this.requestModel.memberTwo = committeeMember;
+    let c2 = new CommitteeMember;
+    c2.id = this.selectedMember2Id;
+    this.requestModel.memberTwo = c2;
+
+
 
     if(this.selectedMember3Id != 0){
-      committeeMember.id = this.selectedMember3Id;
-      this.requestModel.memberThree = committeeMember;
+      let c3 = new CommitteeMember;
+      c3.id = this.selectedMember3Id;
+      this.requestModel.memberThree = c3;
     }
     if(this.selectedMember4Id != 0){
-      committeeMember.id = this.selectedMember4Id;
-      this.requestModel.memberFour = committeeMember;
+      let c4 = new CommitteeMember;
+      c4.id = this.selectedMember4Id;
+      this.requestModel.memberFour = c4;
     }
     if(this.selectedMember5Id != 0){
-      committeeMember.id = this.selectedMember5Id;
-      this.requestModel.memberFive = committeeMember;
+      let c5 = new CommitteeMember;
+      c5.id = this.selectedMember5Id;
+      this.requestModel.memberFive = c5;
     }
 
     if(this.selectedMember6Id != 0){
-      committeeMember.id = this.selectedMember6Id;
-      this.requestModel.memberSix = committeeMember;
+      let c6 = new CommitteeMember;
+      c6.id = this.selectedMember6Id;
+      this.requestModel.memberSix = c6;
     }
 
     
@@ -82,6 +89,9 @@ export class CommitteeDataComponent implements OnInit {
         this.router.navigateByUrl("/administration/committees");
       },
       error => {
+        if(error.error.message != null){
+          this.errorMessage = error.error.message;
+        }
         console.log('oops', error);
         this.successMessage = false;
       }

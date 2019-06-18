@@ -75,7 +75,7 @@ public class UserController {
 	}
 	@PutMapping("/api/users/{id}")
 	public ResponseEntity<User> updateUser(
-			@PathVariable long id, @RequestBody User user){
+			@PathVariable long id, @Valid @RequestBody User user) {
 		Optional<User> existingUser = userRepository.findById(id);
 
 		if(!existingUser.isPresent())

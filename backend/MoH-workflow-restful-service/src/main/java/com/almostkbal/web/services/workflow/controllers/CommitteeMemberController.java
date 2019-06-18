@@ -76,7 +76,7 @@ public class CommitteeMemberController {
 	}
 	@PutMapping("/api/committee-members/{id}")
 	public ResponseEntity<CommitteeMember> updateCommitteeMember(
-			@PathVariable long id, @RequestBody CommitteeMember committeeMember){
+			@PathVariable long id, @Valid @RequestBody CommitteeMember committeeMember) {
 		Optional<CommitteeMember> existingCommitteeMember = committeeMemberRepository.findById(id);
 		
 		if(!existingCommitteeMember.isPresent())

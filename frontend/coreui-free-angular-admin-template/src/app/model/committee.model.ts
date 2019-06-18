@@ -3,7 +3,6 @@ import { Zone } from './zone.model';
 
 export class Committee {
     public id : number;
-    public name: string;
     public description: string;
     public date: string;
     public type: string;

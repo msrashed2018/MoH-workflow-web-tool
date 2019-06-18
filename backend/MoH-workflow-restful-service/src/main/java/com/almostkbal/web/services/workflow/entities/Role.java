@@ -2,18 +2,14 @@ package com.almostkbal.web.services.workflow.entities;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,7 +22,8 @@ public class Role {
 	@Column(name = "role_id")
 	private long id;
 	
-	@Column(name = "role_name")
+	@Column(name = "role_name", nullable = false, unique = true)
+	@NotNull
 	private String name;
 	
 	@Column(name = "role_description")

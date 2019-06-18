@@ -67,7 +67,7 @@ public class DisabilityController {
 	}
 	@PutMapping("/api/disabilities/{id}")
 	public ResponseEntity<Disability> updateDisability(
-			@PathVariable int id, @RequestBody Disability disability){
+			@PathVariable int id, @Valid @RequestBody Disability disability) {
 		Optional<Disability> existingDisability = disabilityRepository.findById(id);
 
 		if(!existingDisability.isPresent())

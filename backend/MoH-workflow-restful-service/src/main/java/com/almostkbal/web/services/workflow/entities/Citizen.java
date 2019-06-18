@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Past;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -30,6 +31,7 @@ public class Citizen {
 	
 	@Column(name = "birth_date")
 	@JsonFormat(pattern="yyyy-MM-dd")
+	@Past
 	private Date birthDate;
 	
 	@Column(name = "address")
@@ -78,6 +80,9 @@ public class Citizen {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date modifiedDate;
 	
+	@Column(name = "fingerprint")
+	private String fingerprint;
+
 	public Citizen() {
 		
 	}
@@ -209,5 +214,22 @@ public class Citizen {
 //	public void setRequests(List<Request> requests) {
 //		this.requests = requests;
 //	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Citizen other = (Citizen) obj;
+		if (nationalId == 0) {
+			if (other.nationalId != 0)
+				return false;
+		} else if (nationalId != other.nationalId)
+			return false;
+		return true;
+	}
 	
 }

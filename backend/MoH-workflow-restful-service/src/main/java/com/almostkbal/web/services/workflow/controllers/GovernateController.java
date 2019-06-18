@@ -72,7 +72,7 @@ public class GovernateController {
 	}
 
 	@PutMapping("/api/governates/{id}")
-	public ResponseEntity<Governate> updateGovernate(@PathVariable int id, @RequestBody Governate governate) {
+	public ResponseEntity<Governate> updateGovernate(@PathVariable int id, @Valid @RequestBody Governate governate) {
 		Optional<Governate> existingGovernate = governateRepository.findById(id);
 
 		if (!existingGovernate.isPresent())
@@ -83,7 +83,7 @@ public class GovernateController {
 	}
 
 	@PostMapping("/api/governates/{id}/cities")
-	public ResponseEntity<Object> addCity(@PathVariable int id, @RequestBody City city) {
+	public ResponseEntity<Object> addCity(@PathVariable int id, @Valid @RequestBody City city) {
 
 		Optional<Governate> governateOptional = governateRepository.findById(id);
 

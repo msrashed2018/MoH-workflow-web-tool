@@ -9,11 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PreRemove;
 import javax.persistence.Table;
-
-import org.apache.tomcat.jni.Poll;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,7 +23,9 @@ public class Zone {
 	@Column(name = "zone_id")
 	private long id;
 	
-	@Column(name = "zone_name", nullable=false)
+	@Column(name = "zone_name", nullable = false, unique = true)
+	@NotNull(message = "لابد من  ادخال اسم المقر")
+
 	private String name;
 	
 	@Column(name = "zone_description")

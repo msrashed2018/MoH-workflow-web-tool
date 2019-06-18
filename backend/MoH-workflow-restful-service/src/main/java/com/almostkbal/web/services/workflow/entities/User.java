@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="system_user")
@@ -27,14 +27,16 @@ public class User {
 	@Column(name = "user_id")
 	private long id;
 	
-	@Column(name = "username")
+	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 	
-	@Column(name = "password")
+	@Column(name = "password", nullable = false)
+	@NotNull
 	private String password;
 	
 	@OneToOne
-	@JoinColumn(name = "zone_id")
+	@JoinColumn(name = "zone_id", nullable = false)
+	@NotNull(message = "لابد من تسجيل المقر")
 	private Zone zone;
 	
 	@Column(name = "created_date")

@@ -89,7 +89,7 @@ public class CitizenController {
 	}
 
 	@PutMapping("/api/citizens/{id}")
-	public ResponseEntity<Citizen> updateCitizen(@PathVariable long id, @RequestBody Citizen citizen) {
+	public ResponseEntity<Citizen> updateCitizen(@PathVariable long id, @Valid @RequestBody Citizen citizen) {
 		Optional<Citizen> existingCitizen = citizenRepository.findById(id);
 
 		if (!existingCitizen.isPresent())

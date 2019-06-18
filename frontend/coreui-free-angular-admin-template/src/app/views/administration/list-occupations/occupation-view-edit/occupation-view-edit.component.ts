@@ -17,6 +17,7 @@ export class OccupationViewEditComponent implements OnInit {
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
+  errorMessage ="";
   constructor(private formBuilder: FormBuilder, private occupationService: OccupationService, private router: Router,private route:ActivatedRoute ) { }
 
   ngOnInit() {
@@ -46,6 +47,13 @@ export class OccupationViewEditComponent implements OnInit {
       response => {
         this.requestModel = response as Occupation;
         console.log(this.requestModel);
+      }, error=>{
+        if(error.error.message.includes('Unique index or primary key violation')){
+          this.errorMessage = "بالفعل تم تسجيل هذا المهنة من قبل";
+        }else{
+          this.errorMessage = error.error.message;
+        }
+        console.log(error)
       }
     )
   }

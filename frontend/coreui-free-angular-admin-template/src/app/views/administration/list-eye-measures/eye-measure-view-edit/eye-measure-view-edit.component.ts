@@ -16,6 +16,7 @@ export class EyeMeasureViewEditComponent implements OnInit {
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
+  errorMessage ="";
   constructor(private formBuilder: FormBuilder, private eyeMeasureService: EyeMeasureService, private router: Router,private route:ActivatedRoute ) { }
 
   ngOnInit() {
@@ -54,6 +55,11 @@ export class EyeMeasureViewEditComponent implements OnInit {
         this.router.navigateByUrl("/administration/eye-measures");
       },
       error => {
+        if(error.error.message.includes('Unique index or primary key violation')){
+          this.errorMessage = "بالفعل تم تسجيل هذا القياس من قبل";
+        }else{
+          this.errorMessage = error.error.message;
+        }
         console.log('oops', error);
         this.successMessage = false;
       }

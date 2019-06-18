@@ -68,7 +68,7 @@ public class EquipmentController {
 	}
 	@PutMapping("/api/equipments/{id}")
 	public ResponseEntity<Equipment> updateEquipment(
-			@PathVariable int id, @RequestBody Equipment equipment){
+			@PathVariable int id, @Valid @RequestBody Equipment equipment) {
 		Optional<Equipment> existingEquipment = equipmentRepository.findById(id);
 
 		if(!existingEquipment.isPresent())

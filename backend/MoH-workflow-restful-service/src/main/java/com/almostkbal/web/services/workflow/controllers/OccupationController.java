@@ -67,7 +67,7 @@ public class OccupationController {
 	}
 	@PutMapping("/api/occupations/{id}")
 	public ResponseEntity<Occupation> updateOccupation(
-			@PathVariable int id, @RequestBody Occupation occupation){
+			@PathVariable int id, @Valid @RequestBody Occupation occupation) {
 		Optional<Occupation> existingOccupation = occupationRepository.findById(id);
 
 		if(!existingOccupation.isPresent())
