@@ -28,9 +28,7 @@ import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
 import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.entities.RequestType;
-import com.almostkbal.web.services.workflow.repositories.BonesRevealRepository;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
-import com.almostkbal.web.services.workflow.repositories.EyeRevealRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestPaymentRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestTypeRepository;
@@ -50,28 +48,31 @@ public class RequestController {
 	@Autowired
 	private RequestPaymentRepository paymentRepository;
 
-	@Autowired
-	private BonesRevealRepository bonesRevealRepository;
-
-	@Autowired
-	private EyeRevealRepository eyeRevealRepository;
-
 	@GetMapping("/api/requests")
 	public List<Request> retrieveAllRequests() {
 		return requestRepository.findAll();
 	}
 
+	@GetMapping("/api/requests/{requestId}/retreiveRequestState")
+	public RequestState retreiveRequestState(@PathVariable long requestId) {
+
+		RequestState state = requestRepository.findRequestState(requestId);
+		if (state == RequestState.PENDING_PAYMENT) {
+			System.out.println(state);
+		}
+		return state;
+	}
 
 	@GetMapping("/api/requests/retreiveRequestsForEyeReveal")
 	public List<Request> retreiveRequestsForEyeReveal() {
-		return requestRepository.findByStateAndEyeRevealState(
-				RequestState.CONTINUE_REGISTERING_DONE, EyeRevealState.PENDING_REVEAL);
+		return requestRepository.findByStateAndEyeRevealState(RequestState.CONTINUE_REGISTERING_DONE,
+				EyeRevealState.PENDING_REVEAL);
 	}
 
 	@GetMapping("/api/requests/retreiveRequestsForBonesReveal")
 	public List<Request> retreiveRequestsForBonesReveal() {
-		return requestRepository.findByStateAndBonesRevealState(
-				RequestState.CONTINUE_REGISTERING_DONE, BonesRevealState.PENDING_REVEAL);
+		return requestRepository.findByStateAndBonesRevealState(RequestState.CONTINUE_REGISTERING_DONE,
+				BonesRevealState.PENDING_REVEAL);
 	}
 
 	@GetMapping("/api/requests/retreiveRequestsForRevealsRegistering")
@@ -99,6 +100,11 @@ public class RequestController {
 		eyeRevealStates.add(EyeRevealState.NA);
 		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
 				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates);
+	}
+
+	@GetMapping("/api/requests/retreiveRequestsForApproving")
+	public List<Request> retreiveRequestsForApproving() {
+		return requestRepository.findByState(RequestState.REVIEWED);
 	}
 
 	@GetMapping("/api/requests/retreiveByRequestState")
@@ -154,7 +160,7 @@ public class RequestController {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
 		}
-		
+
 		Optional<RequestType> requestType = requestTypeRepository.findById(request.getRequestType().getId());
 
 		if (!requestType.isPresent()) {
@@ -164,7 +170,7 @@ public class RequestController {
 		Citizen citizen = new Citizen();
 		citizen.setId(citizenId);
 		request.setCitizen(citizen);
-		
+
 		Request savedRequest = null;
 		if (requestType.get().getPrice() > 0) {
 			RequestPayment requestPayment = new RequestPayment();
@@ -211,15 +217,25 @@ public class RequestController {
 
 	}
 
-	@PutMapping("/api/requests/{requestId}/approve")
-	public void approveRequest(@PathVariable long requestId,
-			@RequestBody Request request) {
+	@PutMapping("/api/requests/{requestId}/review")
+	public void reviewRequest(@PathVariable long requestId, @RequestBody Request request) {
 
 		if (!requestRepository.existsById(requestId)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		}
 
 		requestRepository.setRequestState(requestId, RequestState.REVIEWED);
+
+	}
+
+	@PutMapping("/api/requests/{requestId}/approve")
+	public void approveRequest(@PathVariable long requestId, @RequestBody Request request) {
+
+		if (!requestRepository.existsById(requestId)) {
+			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+		}
+
+		requestRepository.setRequestState(requestId, RequestState.APPROVED);
 
 	}
 }
