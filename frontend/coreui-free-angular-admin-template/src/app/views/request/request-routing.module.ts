@@ -12,6 +12,7 @@ import { EyeRevealComponent } from './eye-reveal/eye-reveal.component';
 import { RevealListComponent } from './medical-reveal-result/reveal-list/reveal-list.component';
 import { RevealDataComponent } from './medical-reveal-result/reveal-data/reveal-data.component';
 import { ReviewRequestsComponent } from './review-requests/review-requests.component';
+import { ApproveRequestsComponent } from './approve-requests/approve-requests.component';
 const routes: Routes = [
   {
     path: 'search',
@@ -81,6 +82,13 @@ const routes: Routes = [
     component: ReviewRequestsComponent,
     data: {
       title: 'review-requests'
+    }
+  },
+  {
+    path: 'approve-requests',
+    component: ApproveRequestsComponent,
+    data: {
+      title: 'approve-requests'
     }
   },
   {
