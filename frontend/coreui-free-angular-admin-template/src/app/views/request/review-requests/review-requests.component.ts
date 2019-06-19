@@ -70,12 +70,12 @@ export class ReviewRequestsComponent implements OnInit {
   }
 
   onApproved(id) {
-    this.confirmationModalService.confirm(' اضغط علي ok', 'هل انت متاكد من  اعتماد الطلب ')
+    this.confirmationModalService.confirm(' اضغط علي ok', 'هل انت متاكد من  مراجعة الطلب ')
     .then((confirmed) => {
       if(confirmed){
        let request = new Request();
        request.id=1;
-        this.requestService.approveRequest(id, request).subscribe(
+        this.requestService.reviewRequest(id, request).subscribe(
           result => {
             this.retriveAllRequests();
             this.errorMessage = false;

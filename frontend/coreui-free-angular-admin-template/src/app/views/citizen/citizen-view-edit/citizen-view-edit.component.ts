@@ -40,7 +40,7 @@ export class CitizenViewEditComponent implements OnInit {
   public requestTypes: RequestType[] = [];
   public governates : Governate[] = [];
   public cities : City[] = [];
-  public genders : Gender[] = [];
+  // public genders : Gender[] = [];
   public selectedOccupationId : number
   selectedRequestTypeId : number = 0;
   public selectedGovernateId : number
@@ -51,7 +51,7 @@ export class CitizenViewEditComponent implements OnInit {
   ngOnInit() {
     // this.fillCities();
     this.fillGovernates();
-    this.fillGenders();
+    // this.fillGenders();
     this.fillOccupations();
     this.fillRequestTypes();
     this.route.params.forEach((urlParams) => {
@@ -194,15 +194,15 @@ export class CitizenViewEditComponent implements OnInit {
       });
   }
 
-  fillGenders(){
-    this.genderService.retrieveAllGenders().subscribe(
-      result => {
-        this.genders = result;
-      },
-      error => {
-        console.log('oops', error);
-      });
-  }
+  // fillGenders(){
+  //   this.genderService.retrieveAllGenders().subscribe(
+  //     result => {
+  //       this.genders = result;
+  //     },
+  //     error => {
+  //       console.log('oops', error);
+  //     });
+  // }
 
   fillCities(governateId){
     this.governateService.retrieveGovernateCities(governateId).subscribe(

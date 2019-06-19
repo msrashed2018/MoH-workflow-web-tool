@@ -49,7 +49,7 @@ export class ApproveRequestsComponent implements OnInit {
     this.noDataFound = false;
     let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retreiveRequestsForReviewing()
+    this.requestService.retreiveRequestsForApproving()
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {

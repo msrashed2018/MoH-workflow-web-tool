@@ -27,6 +27,7 @@ import com.almostkbal.web.services.workflow.entities.EyeRevealState;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
 import com.almostkbal.web.services.workflow.entities.RequestState;
+import com.almostkbal.web.services.workflow.entities.RequestStatus;
 import com.almostkbal.web.services.workflow.entities.RequestType;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestPaymentRepository;
@@ -55,12 +56,7 @@ public class RequestController {
 
 	@GetMapping("/api/requests/{requestId}/retreiveRequestState")
 	public RequestState retreiveRequestState(@PathVariable long requestId) {
-
-		RequestState state = requestRepository.findRequestState(requestId);
-		if (state == RequestState.PENDING_PAYMENT) {
-			System.out.println(state);
-		}
-		return state;
+		return requestRepository.findRequestState(requestId);
 	}
 
 	@GetMapping("/api/requests/retreiveRequestsForEyeReveal")
@@ -199,6 +195,11 @@ public class RequestController {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		}
 
+//		if (requestRepository.findRequestState(requestId) != RequestState.PENDING_CONTINUE_REGISTERING) {
+//			throw new IllegalRequestStateException(new Date(), "هذا الطلب تم تنفيذه من قبل",
+//					"هذا الطلب تم تنفيذه من قبل");
+//		}
+
 		if (request.getBonesCommittee() != null) {
 			request.setBonesRevealState(BonesRevealState.PENDING_REVEAL);
 		}
@@ -215,6 +216,19 @@ public class RequestController {
 		Request updatedRequest = requestRepository.save(request);
 		return new ResponseEntity<Request>(updatedRequest, HttpStatus.OK);
 
+	}
+
+	@PutMapping("/api/citizens/{citizenId}/requests/{requestId}/updateStatus")
+	public void updateRequestStatus(@PathVariable long citizenId, @PathVariable long requestId,
+			@Valid @RequestBody RequestStatus requestStatus) {
+		if (!citizenRepository.existsById(citizenId)) {
+			throw new ResourceNotFoundException("هذا المواطن غير موجود");
+		}
+
+		if (!requestRepository.existsById(requestId)) {
+			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+		}
+		requestRepository.setRequestStatus(requestId, requestStatus);
 	}
 
 	@PutMapping("/api/requests/{requestId}/review")

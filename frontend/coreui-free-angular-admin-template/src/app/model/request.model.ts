@@ -14,11 +14,6 @@ export class Request {
     public citizen: Citizen;
     public requestDate: String;
     public requestType: RequestType;
-   
-    // public payment: RequestPayment;
-    // public eyeReveal: EyeReveal;
-    // public bonesReveal: BonesReveal;
-   
     public eyeCommittee: Committee;
     public bonesCommittee: Committee;
     public custom: Custom;
@@ -29,5 +24,7 @@ export class Request {
     public trafficManagement: TrafficManagement;
     public documents: RequestDocument[];
     public state: string;
+    public eyeRevealState: string;
+    public bonesRevealState: string;
     public description: string;
 }

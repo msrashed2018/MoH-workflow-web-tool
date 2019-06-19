@@ -13,6 +13,7 @@ import { RevealListComponent } from './medical-reveal-result/reveal-list/reveal-
 import { RevealDataComponent } from './medical-reveal-result/reveal-data/reveal-data.component';
 import { ReviewRequestsComponent } from './review-requests/review-requests.component';
 import { ApproveRequestsComponent } from './approve-requests/approve-requests.component';
+import { RequestViewEditComponent } from './request-view-edit/request-view-edit.component';
 const routes: Routes = [
   {
     path: 'search',
@@ -93,7 +94,7 @@ const routes: Routes = [
   },
   {
     path: ':id',
-    component: RequestComponent,
+    component: RequestViewEditComponent,
     data: {
       title: 'Request'
     }

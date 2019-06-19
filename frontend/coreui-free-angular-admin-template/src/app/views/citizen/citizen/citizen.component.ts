@@ -41,7 +41,7 @@ export class CitizenComponent implements OnInit {
   public requestTypes: RequestType[] = [];
   public governates : Governate[] = [];
   public cities : City[] = [];
-  public genders : Gender[] = [];
+  // public genders : Gender[] = [];
   public customs : Custom[] = [];
   public trafficManagements : TrafficManagement[] = [];
   public selectedOccupationId : number
@@ -57,7 +57,7 @@ export class CitizenComponent implements OnInit {
   ngOnInit() {
     // this.fillCities();
     this.fillGovernates();
-    this.fillGenders();
+    // this.fillGenders();
     this.fillOccupations();
     this.fillRequestTypes();
     this.fillTrafficManagements();
@@ -211,15 +211,15 @@ export class CitizenComponent implements OnInit {
   close(){
     this.router.navigateByUrl("/citizens/search");
   }
-  fillGenders(){
-    this.genderService.retrieveAllGenders().subscribe(
-      result => {
-        this.genders = result;
-      },
-      error => {
-        console.log('oops', error);
-      });
-  }
+  // fillGenders(){
+  //   this.genderService.retrieveAllGenders().subscribe(
+  //     result => {
+  //       this.genders = result;
+  //     },
+  //     error => {
+  //       console.log('oops', error);
+  //     });
+  // }
 
   fillCities(governateId){
     this.governateService.retrieveGovernateCities(governateId).subscribe(

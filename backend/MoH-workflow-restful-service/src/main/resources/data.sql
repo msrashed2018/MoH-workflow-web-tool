@@ -43,21 +43,21 @@ insert into SYSTEM_USER_ROLES (USERS_USER_ID, ROLES_ROLE_ID) VALUES(1,2);
 
 
 -- EQUIPMENT Data
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل تدار باليد وفاصل حركة اوتوماتيك','دواسة البنزين والفرامل تدار باليد وفاصل حركة اوتوماتيك');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل تدار باليد وفاصل حركة اوتوماتيك','دواسة البنزين والفركة اوتوماتيك');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل يدار باليد','دواسة البنزين والفرامل يدار باليد');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة يدار باليد','دواسة فاصل الحركة يدار باليد');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة هيدروماتيك','دواسة فاصل الحركة هيدروماتيك');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزودة ببكره ومنيم بالكف الصناعي + ناقل سرعة اوتوماتيك','مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزودة ببكره ومنيم بالكف الصناعي + ناقل سرعة اوتوماتيك');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليسري بالإضافة إلي عجله قيادة مائية مزوده ببكره ومنيم باليد اليمني+ ناقل سرعة هيدروماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزوده ببكره ومنيم باليد اليسري + ناقل سرعة هيدروماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليمني بالإضافة إلي عجلة قياده مائيه والبنزين والفرامل يدار باليد وفاصل حركه اوتوماتيك ','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('م ناقل سرعة اوتوماتيك','مفاتيح التشغيل والاناره بالجهة اليم');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليسري بالإضافة إلي عجله ','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية مزوده ببكره ك','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليمني بالإضافة إلي عجلة قياده مائيه والبناتيك ','');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('قيادة يدوية كاملة  دواسة البنزين والفرامل وفاصل الحركة يدار باليد ','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلي عجلة قياده مائيه والبنزين والفرامل يدار باليد وفاصل حركه هيدروماتيك ','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلي عجلة قياده صل حركه هيدروماتيك ','');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهة اليمني بالإضافة إلي عجله قيادة مائية + ناقل سرعة اوتوماتيك','');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('البنزين والفرامل يدار باليد وعجلة قياده مائيه وفاصل حركه هيدروماتيك','');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة البنزين والفرامل تدار باليد وفاصل الحركة يدار باليد أو اوتوماتيك','');
 Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('دواسة فاصل الحركة تدار باليد أو اوتوماتيك','');
-Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلي عجلة قياده مائيه مزوده ببكره ومنيم بالكف الصناعي+دواسة البنزين والفرامل تدار باليد وفاصل حركه هيدروماتيك, ','');
+Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتيح التشغيل والاناره بالجهه اليسري بالإضافة إلدروماتيك, ','');
 
 --
 ---- GENDER Data
@@ -83,40 +83,69 @@ Insert into OCCUPATION (OCCUPATION_NAME) values ('مهندس');
 
 
 ---- GOVERNATE DATA
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 1,'القاهره');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values (2,'الاسكندريه');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values (29,'الاقصر');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values (19,'الاسماعيلية');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values (18,'البحيرة');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values (21,'الجيزة');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values (12,'الدقهلية');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values (13,'الشرقية');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values (16,'الغربية');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 14,'القليوبية');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 17,'المنوفية');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 24,'المنيا');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 28,'أسوان');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 25,'أسيوط');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 22,'بني سويف');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 26,'سوهاج');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 27,'قنا');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 15,'كفر الشيخ');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 33,'مرسي مطروح');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 88,'مولود خارج الجمهورية');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 3,'بورسعيد');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 4,'السويس ');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 11,'دمياط');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 23,'الفيوم ');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 31,'البحر الأحمر');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 32,'الوادى الجديد');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 34,'شمال سيناء');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 35,'جنوب سيناء');
-Insert into GOVERNATE (GOVERNATE_CODE, GOVERNATE_NAME) values ( 37,'اخرى');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values (1, 1,'القاهره');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values (1,2,'الاسكندريه');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values (1,29,'الاقصر');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values (1, 19,'الاسماعيلية');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values (1, 18,'البحيرة');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values (1, 21,'الجيزة');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values (1, 12,'الدقهلية');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values (1, 13,'الشرقية');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values (1, 16,'الغربية');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 14,'القليوبية');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 17,'المنوفية');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 24,'المنيا');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 28,'أسوان');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 25,'أسيوط');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 22,'بني سويف');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 26,'سوهاج');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 27,'قنا');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 15,'كفر الشيخ');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 33,'مرسي مطروح');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 88,'مولود خارج الجمهورية');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 3,'بورسعيد');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 4,'السويس ');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 11,'دمياط');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 23,'الفيوم ');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 31,'البحر الأحمر');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 32,'الوادى الجديد');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 34,'شمال سيناء');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 35,'جنوب سيناء');
+Insert into GOVERNATE (ZONE_ID, GOVERNATE_CODE, GOVERNATE_NAME) values ( 1, 37,'اخرى');
 
 
 ---- City DATA
 Insert into CITY (GOVERNATE_ID,CITY_NAME) values(6,'الشيخ زايد');
 Insert into CITY (GOVERNATE_ID,CITY_NAME) values(1,'المعادي');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(2,'مدينة س');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(3,'مدينة 3');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(4,'مدينة 4');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(5,'مدينة 5');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(7,'مدينة 6');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(8,'مدينة 7');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(9,'مدينة 8');
+
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(10,'مدينة 9');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(11,'مدينة 10');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(12,'مدينة 11');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(13,'مدينة 12');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(14,'مدينة 13');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(15,'مدينة 14');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(16,'مدينة 15');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(17,'مدينة 16');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(18,'مدينة 17');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(19,'مدينة 18');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(20,'مدينة 19');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(21,'مدينة 20');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(22,'مدينة 21');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(23,'مدينة 22');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(24,'مدينة 23');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(25,'مدينة 24');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(26,'مدينة 25');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(27,'مدينة 26');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(28,'مدينة 27');
+Insert into CITY (GOVERNATE_ID,CITY_NAME) values(29,'مدينة 28');
+
 
 
 ---- EYE MEASURE DATE
@@ -240,6 +269,26 @@ insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THRE
 insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-08-20 02:00:00',1,5,null,null,null, null,1,'رمد','اخري' );
 insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-08-10 02:00:00',1,5,null,null,null, null,1,'رمد','اخري' );
 insert into COMMITTEE (COMMITTEE_DATE, MEMBER_ONE_ID, MEMBER_TWO_ID, MEMBER_THREE_ID, MEMBER_FOUR_ID, MEMBER_FIVE_ID, MEMBER_SIX_ID, ZONE_ID,  COMMITTEE_TYPE, COMMITTEE_FUNCTION) values ('2019-06-30 02:00:00',1,5,null,null,null, null,1,'رمد','اخري' );
+
+
+
+
+-- CUSTOM DATA
+insert into CUSTOM (CUSTOM_NAME) values('بورسعيد');
+insert into CUSTOM (CUSTOM_NAME) values('الاسكندرية');
+insert into CUSTOM (CUSTOM_NAME) values('دمياط');
+insert into CUSTOM (CUSTOM_NAME) values('شبين الكوم');
+insert into CUSTOM (CUSTOM_NAME) values('السويس');
+insert into CUSTOM (CUSTOM_NAME) values('مدينة نصر');
+
+
+-- TRAFFIC_MANAGEMENT DATA
+insert into TRAFFIC_MANAGEMENT (TRAFFIC_NAME) values('إدارة مرور الجيزة');
+insert into TRAFFIC_MANAGEMENT (TRAFFIC_NAME) values('إدارة مرور القاهرة');
+insert into TRAFFIC_MANAGEMENT (TRAFFIC_NAME) values('إدارة مرور الاسكندرية');
+
+
+
 
 
 

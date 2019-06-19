@@ -66,6 +66,13 @@ export class RequestService {
         return data;
       }));
   }
+  retreiveRequestsForApproving() {
+    return this.http.get<Request[]>
+      (`${API_URL}`+'/requests/retreiveRequestsForApproving').pipe( map(
+        data => {
+        return data;
+      }));
+  }
   retrieveByRequestState(state) {
     return this.http.get<Request[]>
       (`${API_URL}`+'/requests/retreiveByRequestState?state='+state).pipe( map(
@@ -86,10 +93,20 @@ export class RequestService {
           `${API_URL}/requests/${requestId}/approve`
                 , request);
   }
+  reviewRequest(requestId,request){
+    return this.http.put(
+          `${API_URL}/requests/${requestId}/review`
+                , request);
+  }
   updateRequest(citizenId, requestId, request){
     return this.http.put(
           `${API_URL}/citizens/${citizenId}/requests/${requestId}`
                 , request);
+  }
+  updateRequestStatus(citizenId, requestId, requestStatus){
+    return this.http.put(
+          `${API_URL}/citizens/${citizenId}/requests/${requestId}/updateStatus`
+                , requestStatus);
   }
 
   createRequest(citizenId,request){

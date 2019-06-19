@@ -14,6 +14,7 @@ import com.almostkbal.web.services.workflow.entities.BonesRevealState;
 import com.almostkbal.web.services.workflow.entities.EyeRevealState;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestState;
+import com.almostkbal.web.services.workflow.entities.RequestStatus;
 
 public interface RequestRepository extends JpaRepository<Request, Long> {
 	@Query("select r.state from Request r where r.id = :requestId")
@@ -30,6 +31,11 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 	@Modifying
 	@Query("update Request r set r.state = :state where r.id= :requestId")
 	void setRequestState(@Param("requestId") long requestId, @Param("state") RequestState state);
+
+	@Transactional
+	@Modifying
+	@Query("update Request r set r.requestStatus = :requestStatus where r.id= :requestId")
+	void setRequestStatus(@Param("requestId") long requestId, @Param("requestStatus") RequestStatus requestStatus);
 
 	@Transactional()
 	@Modifying
