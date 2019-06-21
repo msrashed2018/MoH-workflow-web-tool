@@ -12,9 +12,8 @@ export class UserService {
     private http:HttpClient
   ) { }
 
-  retrieveAllUsers() {
-    return this.http.get<User[]>(`${API_URL}/users`);
-
+  retrieveAllUsers(page,size) {
+    return this.http.get<User[]>(`${API_URL}/users?page=${page}&size=${size}`);
   }
 
   deleteUser(id){

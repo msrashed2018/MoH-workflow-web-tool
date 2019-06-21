@@ -381,9 +381,9 @@ if(this.eyeReveal.id !=0){
   //---------------------------------------------------------------------------------------------------------
 
   fillMeasures(){
-    this.eyeMeasureService.retrieveAllEyeMeasure().subscribe(
+    this.eyeMeasureService.retrieveAllEyeMeasure(0,100).subscribe(
       result => {
-        this.measures = result;
+        this.measures = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -399,9 +399,9 @@ if(this.eyeReveal.id !=0){
   //   });
   // }
   fillDisabilities(){
-    this.disabilityService.retrieveAllDisabilities().subscribe(
+    this.disabilityService.retrieveAllDisabilities(0,100).subscribe(
       result => {
-        this.disabilities = result;
+        this.disabilities = result['content'];
       },
       error => {
         console.log('oops', error);

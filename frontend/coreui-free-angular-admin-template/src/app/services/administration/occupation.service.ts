@@ -12,8 +12,8 @@ export class OccupationService {
     private http:HttpClient
   ) { }
 
-  retrieveAllOccupations() {
-    return this.http.get<Occupation[]>(`${API_URL}/occupations`);
+  retrieveAllOccupations(page,size) {
+    return this.http.get<Occupation[]>(`${API_URL}/occupations?page=${page}&size=${size}`);
 
   }
 

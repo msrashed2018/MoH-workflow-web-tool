@@ -8,6 +8,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +36,8 @@ public class CitizenController {
 	private CitizenRepository citizenRepository;
 
 	@GetMapping("/api/citizens")
-	public List<Citizen> retrieveAllCitizens() {
-		return citizenRepository.findAll();
+	public Page<Citizen> retrieveAllCitizens(@RequestParam("page") int page, @RequestParam("size") int size) {
+		return citizenRepository.findAll(PageRequest.of(page, size, Sort.by("createdDate").descending()));
 	}
 
 	@GetMapping("/api/citizens/search/findByNationalId")

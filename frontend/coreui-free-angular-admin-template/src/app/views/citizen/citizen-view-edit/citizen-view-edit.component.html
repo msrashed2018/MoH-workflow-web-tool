@@ -158,8 +158,8 @@
                                     <th class="text-center"> الجمرك</th>
                                     <th class="text-center">المرور</th>
                                     <th class="text-center">تاريخ التسجيل</th>
-                                    <th class="text-center">تعديل</th>
-                                    <th class="text-center">حذف</th>
+                                    <th *ngIf="componentMode=='editMode'" class="text-center">تعديل</th>
+                                    <th *ngIf="componentMode=='editMode'" class="text-center">حذف</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -183,12 +183,12 @@
                                     <td class="text-center">
                                         <b>{{request.requestDate}}</b>
                                     </td>
-                                    <td class="text-center">
+                                    <td *ngIf="componentMode=='editMode'" class="text-center">
                                         <button [attr.disabled]="disabled ? '' : null" type="button" class="edit-btn btn btn-info" (click)="onEditRequest(request.id)">تعديل
                                             <i class="fa fa-edit"></i>
                                         </button>
                                     </td>
-                                    <td class="text-center">
+                                    <td *ngIf="componentMode=='editMode'" class="text-center">
                                         <button [attr.disabled]="disabled ? '' : null" type="button" class="delete-btn btn btn-danger" (click)="onDeleteRequest(request.id)">حذف
                                             <i class="fa fa-trash"></i>
                                         </button>
@@ -210,6 +210,23 @@
                                                     <div *ngIf="x.submitted && requestType.errors.required"> برجاء اختيار نوع الطلب</div>
                                             </div> -->
                                         </div>
+                                        
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label font-weight-bold" for="custom">الجمرك</label>
+                                    <div class="col-md-6">
+                                        <select name="custom" class="form-control" [(ngModel)]="selectedCustomId" #custom="ngModel">
+                                            <option *ngFor="let custom of customs" [value]="custom.id">{{custom.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label font-weight-bold" for="trafficManagement">المرور</label>
+                                    <div class="col-md-6">
+                                        <select name="trafficManagement" class="form-control" [(ngModel)]="selectedTrafficManagementId" #trafficManagement="ngModel">
+                                            <option *ngFor="let trafficManagement of trafficManagements" [value]="trafficManagement.id">{{trafficManagement.name}}</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>طلب جديد</button>
                             </form>

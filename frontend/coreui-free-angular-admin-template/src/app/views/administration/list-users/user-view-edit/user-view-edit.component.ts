@@ -104,9 +104,9 @@ export class UserViewEditComponent implements OnInit {
   }
 
   fillZones(){
-    this.zoneService.retrieveAllZones().subscribe(
+    this.zoneService.retrieveAllZones(0,100).subscribe(
       result => {
-        this.zones = result;
+        this.zones = result['content'];
       },
       error => {
         console.log('oops', error);

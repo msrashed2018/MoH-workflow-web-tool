@@ -28,7 +28,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let city of cities ; let i=index">
-      <td class="text-center"><b>{{i+1}}</b></td>
+      <td class="text-center"><b>{{items+i+1}}</b></td>
       <td class="text-center"><a [routerLink]="['/administration/cities', city.id,{componentMode: 'viewMode'}]"><b>{{city.name}}</b></a></td>
       <td class="text-center"> <b *ngIf="city.governate != null" >{{city.governate.name}}</b> </td>
       <td class="text-center">  <b *ngIf="city.governate.zone != null">{{city.governate.zone.name}}</b> </td>
@@ -45,3 +45,13 @@
     </tr>
   </tbody>
 </table>
+<hr>
+  <ul class="nav nav-pills justify-content-center">
+    <li class="page-item"><a class="page-link" (click)="prevPage($event)">السابق</a></li>
+
+    <li class="nav-item" *ngFor="let p of pages; let i=index">
+        <a [ngClass]="{'active':i==page}" (click)="setPage(i,$event)" class="nav-link active" href="#">{{i}}</a>
+    </li>
+    <li class="page-item"><a  class="page-link" (click)="nextPage($event)">التالي</a></li>
+  </ul>
+  <hr>

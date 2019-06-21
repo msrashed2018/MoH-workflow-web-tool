@@ -12,8 +12,8 @@ export class CommitteeService {
     private http:HttpClient
   ) { }
 
-  retrieveAllCommittees() {
-    return this.http.get<Committee[]>(`${API_URL}/committees`);
+  retrieveAllCommittees(page,size) {
+    return this.http.get<Committee[]>(`${API_URL}/committees?page=${page}&size=${size}`);
 
   }
   retrieveCommitteesByType(type : string) {

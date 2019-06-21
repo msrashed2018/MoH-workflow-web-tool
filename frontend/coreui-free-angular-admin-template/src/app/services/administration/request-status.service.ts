@@ -12,8 +12,8 @@ export class RequestStatusService {
     private http:HttpClient
   ) { }
 
-  retrieveAllRequestStatus() {
-    return this.http.get<RequestStatus[]>(`${API_URL}/request-status`);
+  retrieveAllRequestStatus(page,size) {
+    return this.http.get<RequestStatus[]>(`${API_URL}/request-status?page=${page}&size=${size}`);
 
   }
 

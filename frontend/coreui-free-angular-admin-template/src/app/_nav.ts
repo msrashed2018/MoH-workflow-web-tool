@@ -111,6 +111,22 @@ export const adminNavItems: NavData[] = [
   }
 ]
 
+export const xnavItems: NavData[] = [
+ {
+    name: `${SYSTEM_ADMINISTRATION}`,
+    url: '/administration',
+    icon: 'cui-briefcase',
+    children: [
+      {
+        name: `${ZONES}`,
+        url: '/administration/zones',
+        icon: 'icon-star'
+      }
+    ]
+  }
+]
+
+
 
 
 export const navItems: NavData[] = [

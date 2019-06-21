@@ -72,9 +72,9 @@ export class DisabilityDataComponent implements OnInit {
     this.router.navigateByUrl("/administration/disabilities");
   }
   fillEquipments(){
-    this.equipmentService.retrieveAllEquipments().subscribe(
+    this.equipmentService.retrieveAllEquipments(0,100).subscribe(
       result => {
-        this.equipments = result;
+        this.equipments = result['content'];
       },
       error => {
         console.log('oops', error);

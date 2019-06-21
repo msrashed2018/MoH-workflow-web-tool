@@ -13,8 +13,8 @@ export class GovernateService {
     private http:HttpClient
   ) { }
 
-  retrieveAllGovernates() {
-    return this.http.get<Governate[]>(`${API_URL}/governates?page=0&size=30`);
+  retrieveAllGovernates(page,size) {
+    return this.http.get<Governate[]>(`${API_URL}/governates?page=${page}&size=${size}`);
   }
   retrieveGovernateCities(governateId) {
     return this.http.get<City[]>(`${API_URL}/governates/${governateId}/cities`);

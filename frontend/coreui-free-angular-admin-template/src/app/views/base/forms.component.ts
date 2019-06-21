@@ -102,7 +102,7 @@ export class FormsComponent implements OnInit {
   }
 
   fillOccupations(){
-    this.occupationService.retrieveAllOccupations().subscribe(
+    this.occupationService.retrieveAllOccupations(0,100).subscribe(
       result => {
         console.log(" occupations list ");
         this.occupations = result;
@@ -124,7 +124,7 @@ export class FormsComponent implements OnInit {
   }
 
   fillGovernates(){
-    this.governateService.retrieveAllGovernates().subscribe(
+    this.governateService.retrieveAllGovernates(0,100).subscribe(
       result => {
         console.log(" governates list ");
         this.governates = result;

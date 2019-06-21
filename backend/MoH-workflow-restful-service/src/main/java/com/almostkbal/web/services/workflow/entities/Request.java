@@ -39,7 +39,7 @@ public class Request {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date requestDate;
 
-	@OneToOne(optional = false)
+	@OneToOne
 	@JoinColumn(name = "request_type_id", nullable = false)
 	@NotNull
 	private RequestType requestType;

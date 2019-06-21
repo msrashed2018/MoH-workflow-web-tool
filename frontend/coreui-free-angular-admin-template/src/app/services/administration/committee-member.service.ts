@@ -12,8 +12,8 @@ export class CommitteeMemberService {
     private http:HttpClient
   ) { }
 
-  retrieveAllCommitteeMembers() {
-    return this.http.get<CommitteeMember[]>(`${API_URL}/committee-members`);
+  retrieveAllCommitteeMembers(page,size) {
+    return this.http.get<CommitteeMember[]>(`${API_URL}/committee-members?page=${page}&size=${size}`);
 
   }
 

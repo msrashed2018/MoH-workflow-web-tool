@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { GovernateService } from '../../../services/administration/governate.service';
 import { Governate } from '../../../model/governate.model';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
+import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
 // import { BrowserModule } from '@angular/platform-browser';
 
 
@@ -13,9 +14,7 @@ import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 })
 export class ListGovernatesComponent implements OnInit {
   governates:  Governate[]
-  pages: number = 5;
   message: string
-  currentPage: number = 5;
 
   constructor(
     private governateService:GovernateService,
@@ -24,25 +23,49 @@ export class ListGovernatesComponent implements OnInit {
   ) { 
 
   }
+  page: number = 0;
+  pages: Array<number>;
+  items: number = 0;
+  setPage(i,event: any): void {
+    // this.currentPage = event.page;
+    event.preventDefault();
+    this.page = i ;
+    this.items = i*PAGINATION_PAGE_SIZE;
+    this.refreshData();
+  }
+  nextPage(event: any): void {
+    event.preventDefault();
+    if((this.page+1) < this.pages.length){
+      this.page = this.page+1
+      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.refreshData();
+    }
+  }
+  prevPage(event: any): void {
+    event.preventDefault();
 
+    if((this.page-1) >= 0){
+      this.page =this.page -1;
+      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.refreshData();
+    }
+  }
   ngOnInit() {
-    this.pages=5;
-    this.refreshGovernates();
+    this.refreshData();
   }
 
-  refreshGovernates(){
-    this.governateService.retrieveAllGovernates().subscribe(
+  refreshData(){
+    this.governateService.retrieveAllGovernates(this.page,PAGINATION_PAGE_SIZE).subscribe(
       response => {
         this.governates = response['content'];
-        // this.pages = response['totalPages'];
+        this.pages = new Array(response['totalPages']);
+      },
+      error =>{
+        console.log('oops',error)
       }
     )
   }
-  pageChanged(event: any): void {
-    this.currentPage = event.page;
-    console.log('Page changed to: ' + event.page);
-    console.log('Number items per page: ' + event.itemsPerPage);
-  }
+  
   onDelete(id) {
     this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المحافظة ')
     .then((confirmed) => {
@@ -50,7 +73,7 @@ export class ListGovernatesComponent implements OnInit {
         this.governateService.deleteGovernate(id).subscribe (
           response => {
             this.message = ` تم حذف المحافظه بنجاح `
-            this.refreshGovernates();
+            this.refreshData();
           },
           error => {
             this.message = 'لا يمكن حذف المحافظة'

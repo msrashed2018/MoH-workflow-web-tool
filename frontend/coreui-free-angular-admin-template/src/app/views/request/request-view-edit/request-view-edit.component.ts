@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { RequestService } from '../../../services/request.service';
 import { HttpResponse, HttpEventType } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
@@ -12,21 +11,14 @@ import { EyeMeasureService } from '../../../services/administration/eye-measure.
 import { EquipmentService } from '../../../services/administration/equipment.service';
 import { DisabilityService } from '../../../services/administration/disability.service';
 import { CommitteeService } from '../../../services/administration/committee.service';
-import { Committee } from '../../../model/committee.model';
 import { BasicAuthenticationService } from '../../../services/authentication/basic-authentication.service';
 import { Request } from '../../../model/request.model';
 import { API_URL } from '../../../app.constants';
 import { RequestPayment } from '../../../model/request-payment.model';
 import { EyeReveal } from '../../../model/eye-reveal.model';
-import { EyeMeasure } from '../../../model/eye-measure.model';
 import { BonesReveal } from '../../../model/bones-reveal.model';
-import { Disability } from '../../../model/disability.model';
-import { Equipment } from '../../../model/equipment.model';
 import { ActivatedRoute } from '@angular/router';
-import { Custom } from '../../../model/custom.model';
 import { RequestStatus } from '../../../model/request-status.model';
-import { RequestType } from '../../../model/request-type.model';
-import { TrafficManagement } from '../../../model/traffic-management.model';
 @Component({
   selector: 'app-request-view-edit',
   templateUrl: './request-view-edit.component.html',
@@ -121,9 +113,9 @@ progress: { percentage: number } = { percentage: 0 }
 
   }
   fillRequestStatuses(){
-    this.requestStatusService.retrieveAllRequestStatus().subscribe(
+    this.requestStatusService.retrieveAllRequestStatus(0,100).subscribe(
       result => {
-        this.requestStatuses = result;
+        this.requestStatuses = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -309,5 +301,5 @@ progress: { percentage: number } = { percentage: 0 }
     )
     this.selectedFiles = undefined
   }
-
+  
 }

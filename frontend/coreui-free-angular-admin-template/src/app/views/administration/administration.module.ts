@@ -114,6 +114,7 @@ import { AuditComponent } from './audit/audit.component';
     ReactiveFormsModule,
     CollapseModule.forRoot(),
     NgbModalModule
+    
   ], 
 })
 export class AdministrationModule { }

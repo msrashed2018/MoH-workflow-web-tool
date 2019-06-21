@@ -28,7 +28,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let measure of measures ; let i=index">
-      <td class="text-center"><b>{{i+1}}</b></td>
+      <td class="text-center"><b>{{items+i+1}}</b></td>
       <td class="text-center">
         <div><a [routerLink]="['/administration/eye-measures', measure.id,{componentMode: 'viewMode'}]"><b>{{measure.title}}</b></a></div>
       </td>
@@ -48,3 +48,13 @@
     </tr>
   </tbody>
 </table>
+<hr>
+  <ul class="nav nav-pills justify-content-center">
+    <li class="page-item"><a class="page-link" (click)="prevPage($event)">السابق</a></li>
+
+    <li class="nav-item" *ngFor="let p of pages; let i=index">
+        <a [ngClass]="{'active':i==page}" (click)="setPage(i,$event)" class="nav-link active" href="#">{{i}}</a>
+    </li>
+    <li class="page-item"><a  class="page-link" (click)="nextPage($event)">التالي</a></li>
+  </ul>
+  <hr>

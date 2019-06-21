@@ -12,8 +12,8 @@ export class EyeMeasureService {
     private http:HttpClient
   ) { }
 
-  retrieveAllEyeMeasure() {
-    return this.http.get<EyeMeasure[]>(`${API_URL}/eye-measures`);
+  retrieveAllEyeMeasure(page,size) {
+    return this.http.get<EyeMeasure[]>(`${API_URL}/eye-measures?page=${page}&size=${size}`);
 
   }
 

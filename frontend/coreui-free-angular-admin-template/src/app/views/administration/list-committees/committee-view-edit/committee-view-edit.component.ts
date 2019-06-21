@@ -153,16 +153,16 @@ export class CommitteeViewEditComponent implements OnInit {
   }
 
   fillZones(){
-    this.zoneService.retrieveAllZones().subscribe(
+    this.zoneService.retrieveAllZones(0,100).subscribe(
       result => {
-        this.zones = result;
+        this.zones = result['content'];
       },
       error => {
         console.log('oops', error);
     });
   }
   fillCommitteeMembers(){
-    this.committeeMemberService.retrieveAllCommitteeMembers().subscribe(
+    this.committeeMemberService.retrieveAllCommitteeMembers(0,100).subscribe(
       result => {
         this.members = result;
       },

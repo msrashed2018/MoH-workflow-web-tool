@@ -127,9 +127,9 @@ export class EyeRevealSettingViewEditComponent implements OnInit {
   }
 
   fillMeasures(){
-    this.eyeMeasureService.retrieveAllEyeMeasure().subscribe(
+    this.eyeMeasureService.retrieveAllEyeMeasure(0,100).subscribe(
       result => {
-        this.measures = result;
+        this.measures = result['content'];
       },
       error => {
         console.log('oops', error);

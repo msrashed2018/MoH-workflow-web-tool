@@ -12,8 +12,8 @@ export class TrafficManagementService {
     private http:HttpClient
   ) { }
 
-  retrieveAllTrafficManagement() {
-    return this.http.get<TrafficManagement[]>(`${API_URL}/traffic-management`);
+  retrieveAllTrafficManagement(page,size) {
+    return this.http.get<TrafficManagement[]>(`${API_URL}/traffic-management?page=${page}&size=${size}`);
 
   }
 

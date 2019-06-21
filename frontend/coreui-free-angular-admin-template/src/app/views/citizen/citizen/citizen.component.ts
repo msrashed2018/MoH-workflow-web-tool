@@ -167,9 +167,9 @@ export class CitizenComponent implements OnInit {
     for(var x =0 ; x< this.requestTypes.length ; x++){
       if(this.selectedRequestTypeId == this.requestTypes[x].id){
         if(this.requestTypes[x].name == 'كشف عادي' || this.requestTypes[x].name == 'كشف مستعجل'){
-          request.state = 'NEW';
+          request.state = 'PENDING_PAYMENT';
         }else{
-          request.state = 'PAYMENT_DONE';
+          request.state = 'PENDING_CONTINUE_REGISTERING';
         }
       }
     }
@@ -200,9 +200,9 @@ export class CitizenComponent implements OnInit {
   }
 
   fillOccupations(){
-    this.occupationService.retrieveAllOccupations().subscribe(
+    this.occupationService.retrieveAllOccupations(0,200).subscribe(
       result => {
-        this.occupations = result;
+        this.occupations = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -232,7 +232,7 @@ export class CitizenComponent implements OnInit {
   }
 
   fillGovernates(){
-    this.governateService.retrieveAllGovernates().subscribe(
+    this.governateService.retrieveAllGovernates(0,100).subscribe(
       result => {
         this.governates = result['content'];
       },
@@ -241,27 +241,27 @@ export class CitizenComponent implements OnInit {
       });
   }
   fillRequestTypes(){
-    this.requestTypeService.retrieveAllRequestTypes().subscribe(
+    this.requestTypeService.retrieveAllRequestTypes(0,100).subscribe(
       result => {
-        this.requestTypes = result;
+        this.requestTypes = result['content'];
       },
       error => {
         console.log('oops', error);
       });
   }
   fillCustoms(){
-    this.customService.retrieveAllCustoms().subscribe(
+    this.customService.retrieveAllCustoms(0,100).subscribe(
       result => {
-        this.customs = result;
+        this.customs = result['content'];
       },
       error => {
         console.log('oops', error);
       });
   }
   fillTrafficManagements(){
-    this.trafficManagementService.retrieveAllTrafficManagement().subscribe(
+    this.trafficManagementService.retrieveAllTrafficManagement(0,100).subscribe(
       result => {
-        this.trafficManagements = result;
+        this.trafficManagements = result['content'];
       },
       error => {
         console.log('oops', error);

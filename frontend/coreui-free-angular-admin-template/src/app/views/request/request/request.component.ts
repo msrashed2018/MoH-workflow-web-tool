@@ -458,7 +458,7 @@ export class RequestComponent implements OnInit {
   //---------------------------------------------------------------------------------------------------------
 
   fillRequestTypes(){
-    this.requestTypeService.retrieveAllRequestTypes().subscribe(
+    this.requestTypeService.retrieveAllRequestTypes(0,100).subscribe(
       result => {
         this.requestTypes = result;
       },
@@ -467,7 +467,7 @@ export class RequestComponent implements OnInit {
       });
   }
   fillCustoms(){
-    this.customService.retrieveAllCustoms().subscribe(
+    this.customService.retrieveAllCustoms(0,100).subscribe(
       result => {
         this.customs = result;
       },
@@ -476,7 +476,7 @@ export class RequestComponent implements OnInit {
       });
   }
   fillTrafficManagements(){
-    this.trafficManagementService.retrieveAllTrafficManagement().subscribe(
+    this.trafficManagementService.retrieveAllTrafficManagement(0,100).subscribe(
       result => {
         this.trafficManagements = result;
       },
@@ -486,7 +486,7 @@ export class RequestComponent implements OnInit {
   }
 
   fillRequestStatuses(){
-    this.requestStatusService.retrieveAllRequestStatus().subscribe(
+    this.requestStatusService.retrieveAllRequestStatus(0,100).subscribe(
       result => {
         this.requestStatuses = result;
       },
@@ -495,7 +495,7 @@ export class RequestComponent implements OnInit {
       });
   }
   fillMeasures(){
-    this.eyeMeasureService.retrieveAllEyeMeasure().subscribe(
+    this.eyeMeasureService.retrieveAllEyeMeasure(0,100).subscribe(
       result => {
         this.measures = result;
       },
@@ -504,7 +504,7 @@ export class RequestComponent implements OnInit {
     });
   }
   fillEquipments(){
-    this.equipmentService.retrieveAllEquipments().subscribe(
+    this.equipmentService.retrieveAllEquipments(0,100).subscribe(
       result => {
         this.equipments = result;
       },
@@ -513,7 +513,7 @@ export class RequestComponent implements OnInit {
     });
   }
   fillDisabilities(){
-    this.disabilityService.retrieveAllDisabilities().subscribe(
+    this.disabilityService.retrieveAllDisabilities(0,100).subscribe(
       result => {
         this.disabilities = result;
       },
@@ -522,7 +522,7 @@ export class RequestComponent implements OnInit {
     });
   }
   fillCommittees(){
-    this.committeeService.retrieveAllCommittees().subscribe(
+    this.committeeService.retrieveAllCommittees(0,100).subscribe(
       result => {
         this.committees = result;
       },

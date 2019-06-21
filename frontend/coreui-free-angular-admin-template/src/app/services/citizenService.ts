@@ -32,6 +32,9 @@ export const AUTHENTICATED_USER = 'authenticaterUser'
   retrieveCitizen(id){
     return this.http.get<Citizen>(`${API_URL}/citizens/${id}`);
   }
+  retrieveAllCitizens(page,size) {
+    return this.http.get<Citizen[]>(`${API_URL}/citizens?page=${page}&size=${size}`);
+  }
   retriveAll(latest_date :string) {
       
     return this.http.get<Citizen[]>

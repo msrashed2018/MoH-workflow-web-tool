@@ -31,7 +31,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let setting of settings ; let i=index">
-      <td class="text-center"><a [routerLink]="['/administration/eye-reveal-settings', setting.id,{componentMode: 'viewMode'}]"><b>{{i+1}}</b></a></td>
+      <td class="text-center"><a [routerLink]="['/administration/eye-reveal-settings', setting.id,{componentMode: 'viewMode'}]"><b>{{items+i+1}}</b></a></td>
       <td class="text-center">
         <div><strong>{{setting.rightMeasure.title}}</strong></div>
       </td>
@@ -76,3 +76,13 @@
     </tr>
   </tbody>
 </table>
+<hr>
+  <ul class="nav nav-pills justify-content-center">
+    <li class="page-item"><a class="page-link" (click)="prevPage($event)">السابق</a></li>
+
+    <li class="nav-item" *ngFor="let p of pages; let i=index">
+        <a [ngClass]="{'active':i==page}" (click)="setPage(i,$event)" class="nav-link active" href="#">{{i}}</a>
+    </li>
+    <li class="page-item"><a  class="page-link" (click)="nextPage($event)">التالي</a></li>
+  </ul>
+  <hr>

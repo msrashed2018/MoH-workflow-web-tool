@@ -12,8 +12,8 @@ export class RequestTypeService {
     private http:HttpClient
   ) { }
 
-  retrieveAllRequestTypes() {
-    return this.http.get<RequestType[]>(`${API_URL}/request-type`);
+  retrieveAllRequestTypes(page,size) {
+    return this.http.get<RequestType[]>(`${API_URL}/request-type?page=${page}&size=${size}`);
 
   }
 

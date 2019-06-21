@@ -16,7 +16,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let committeeMember of committeeMembers; let i=index">
-          <td><b>{{i+1}}</b></td>
+          <td><b>{{items+i+1}}</b></td>
           <td><a [routerLink]="['/administration/committee-members', committeeMember.id,{componentMode: 'viewMode'}]"><b>{{committeeMember.name}}</b></a></td>
           <td><b>{{committeeMember.title}}</b></td>
           <td><b>{{committeeMember.zone.name}}</b></td>
@@ -34,4 +34,14 @@
     </tbody>
 
   </table>
+  <hr>
+  <ul class="nav nav-pills justify-content-center">
+    <li class="page-item"><a class="page-link" (click)="prevPage($event)">السابق</a></li>
+
+    <li class="nav-item" *ngFor="let p of pages; let i=index">
+        <a [ngClass]="{'active':i==page}" (click)="setPage(i,$event)" class="nav-link active" href="#">{{i}}</a>
+    </li>
+    <li class="page-item"><a  class="page-link" (click)="nextPage($event)">التالي</a></li>
+  </ul>
+  <hr>
 <!-- </div> -->

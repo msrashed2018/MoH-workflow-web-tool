@@ -4,6 +4,7 @@ import { DisabilityService } from '../../../services/administration/disability.s
 import { Disability } from '../../../model/disability.model';
 import { FormBuilder } from '@angular/forms';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
+import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
 
 @Component({
   selector: 'app-list-disabilities',
@@ -20,14 +21,44 @@ export class ListDisabilitiesComponent implements OnInit {
   ) { 
 
   }
+  page: number = 0;
+  pages: Array<number>;
+  items: number = 0;
+  setPage(i,event: any): void {
+    // this.currentPage = event.page;
+    event.preventDefault();
+    this.page = i ;
+    this.items = i*PAGINATION_PAGE_SIZE;
+    this.refreshData();
+  }
+  nextPage(event: any): void {
+    event.preventDefault();
+    if((this.page+1) < this.pages.length){
+      this.page = this.page+1
+      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.refreshData();
+    }
+  }
+  prevPage(event: any): void {
+    event.preventDefault();
 
+    if((this.page-1) >= 0){
+      this.page =this.page -1;
+      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.refreshData();
+    }
+  }
   ngOnInit() {
     this.refreshData();
   }
   refreshData(){
-    this.disabilityService.retrieveAllDisabilities().subscribe(
+    this.disabilityService.retrieveAllDisabilities(this.page,PAGINATION_PAGE_SIZE).subscribe(
       response => {
-        this.disabilities = response as Disability[];
+        this.disabilities = response['content'];
+        this.pages = new Array(response['totalPages']);
+      },
+      error =>{
+        console.log('oops',error)
       }
     )
   }

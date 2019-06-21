@@ -12,8 +12,8 @@ export class EyeRevealSettingService {
     private http:HttpClient
   ) { }
 
-  retrieveAllEyeRevealSettings() {
-    return this.http.get<EyeRevealSetting[]>(`${API_URL}/eye-reveal-settings`);
+  retrieveAllEyeRevealSettings(page,size) {
+    return this.http.get<EyeRevealSetting[]>(`${API_URL}/eye-reveal-settings?page=${page}&size=${size}`);
 
   }
 

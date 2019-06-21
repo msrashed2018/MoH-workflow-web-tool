@@ -8,6 +8,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,10 +40,15 @@ public class ZoneController {
 	
 	@Autowired
 	private GovernateRepository governateRepository;
+//	
+//	@GetMapping("/api/zones")
+//	public List<Zone> retrieveAllZones(){
+//		return zoneRepository.findAll();
+//	}
 	
-	@GetMapping("/api/zones")
-	public List<Zone> retrieveAllZones(){
-		return zoneRepository.findAll();
+	@GetMapping(value = "/api/zones", params = { "page", "size" })
+	public Page<Zone> retrieveAllZones(@RequestParam("page") int page, @RequestParam("size") int size) {
+		return zoneRepository.findAll(PageRequest.of(page, size));
 	}
 	
 	@GetMapping("/api/zones/{id}")

@@ -14,7 +14,13 @@ export class RequestService {
   constructor(
     private http:HttpClient
   ) { }
-
+  retrieveAllRequests(page,size) {
+    return this.http.get<Request[]>
+      (`${API_URL}/requests?page=${page}&size=${size}`).pipe( map(
+        data => {
+        return data;
+      }));
+  }
   retrieveCitizenRequests(citizenId) {
     return this.http.get<Request[]>
       (`${API_URL}/citizens/${citizenId}/requests`).pipe( map(
@@ -38,44 +44,44 @@ export class RequestService {
         return data;
       }));
   }
-  retreiveRequestsForEyeReveal() {
+  retreiveRequestsForEyeReveal(page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForEyeReveal').pipe( map(
+      (`${API_URL}`+'/requests/retreiveRequestsForEyeReveal'+`?page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));
   }
-  retreiveRequestsForBonesReveal() {
+  retreiveRequestsForBonesReveal(page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForBonesReveal').pipe( map(
+      (`${API_URL}`+'/requests/retreiveRequestsForBonesReveal'+`?page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));
   }
-  retreiveRequestsForRevealsRegistering() {
+  retreiveRequestsForRevealsRegistering(page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForRevealsRegistering').pipe( map(
+      (`${API_URL}`+'/requests/retreiveRequestsForRevealsRegistering'+`?page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));
   }
-  retreiveRequestsForReviewing() {
+  retreiveRequestsForReviewing(page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForReviewing').pipe( map(
+      (`${API_URL}`+'/requests/retreiveRequestsForReviewing'+`?page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));
   }
-  retreiveRequestsForApproving() {
+  retreiveRequestsForApproving(page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForApproving').pipe( map(
+      (`${API_URL}`+'/requests/retreiveRequestsForApproving'+`?page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));
   }
-  retrieveByRequestState(state) {
+  retrieveByRequestState(state,page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveByRequestState?state='+state).pipe( map(
+      (`${API_URL}/requests/retreiveByRequestState?state=${state}&page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));

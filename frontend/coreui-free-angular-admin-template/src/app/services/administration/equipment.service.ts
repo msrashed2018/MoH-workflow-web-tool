@@ -12,8 +12,8 @@ export class EquipmentService {
     private http:HttpClient
   ) { }
 
-  retrieveAllEquipments() {
-    return this.http.get<Equipment[]>(`${API_URL}/equipments`);
+  retrieveAllEquipments(page,size) {
+    return this.http.get<Equipment[]>(`${API_URL}/equipments?page=${page}&size=${size}`);
 
   }
 

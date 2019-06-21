@@ -15,7 +15,7 @@
     </thead>
     <tbody>
               <tr *ngFor="let status of requestStatus; let i=index">
-                  <td><b>{{i+1}}</b></td>
+                  <td><b>{{items+i+1}}</b></td>
                 <td  ><a [routerLink]="['/administration/request-status', status.id,{componentMode: 'viewMode'}]"><b>{{status.name}}</b></a></td>
                 <td  ><b>{{status.description}}</b></td>
                 <td >
@@ -33,6 +33,15 @@
 
   </table>
 
+  <hr>
+  <ul class="nav nav-pills justify-content-center">
+    <li class="page-item"><a class="page-link" (click)="prevPage($event)">السابق</a></li>
 
+    <li class="nav-item" *ngFor="let p of pages; let i=index">
+        <a [ngClass]="{'active':i==page}" (click)="setPage(i,$event)" class="nav-link active" href="#">{{i}}</a>
+    </li>
+    <li class="page-item"><a  class="page-link" (click)="nextPage($event)">التالي</a></li>
+  </ul>
+  <hr>
 
 <!-- </div> -->

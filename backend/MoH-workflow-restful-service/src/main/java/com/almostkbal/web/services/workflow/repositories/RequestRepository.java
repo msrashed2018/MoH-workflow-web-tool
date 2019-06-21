@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -47,20 +49,24 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 	@Query("update Request r set r.bonesRevealState = :state where r.id= :requestId")
 	void setBonesRevealState(@Param("requestId") long requestId, @Param("state") BonesRevealState bonesRevealState);
 
-	List<Request> findByState(RequestState state);
+	Page<Request> findByState(RequestState state, Pageable pageable);
 
-	List<Request> findByStateIn(Collection<RequestState> states);
+	Page<Request> findByStateIn(Collection<RequestState> states, Pageable pageable);
 
-	List<Request> findByStateAndEyeRevealState(RequestState state,
-			EyeRevealState eyeRevealState);
+	Page<Request> findByStateAndEyeRevealState(RequestState state,
+			EyeRevealState eyeRevealState, Pageable pageable);
 
-	List<Request> findByStateAndBonesRevealState(RequestState state,
-			BonesRevealState bonesRevealState);
+	Page<Request> findByStateAndBonesRevealState(RequestState state,
+			BonesRevealState bonesRevealState, Pageable pageable);
 
-	List<Request> findByStateAndBonesRevealStateInAndEyeRevealStateIn(RequestState state,
-			Collection<BonesRevealState> bonesRevealStates, Collection<EyeRevealState> eyeRevealStates);
+	Page<Request> findByStateAndBonesRevealStateInAndEyeRevealStateIn(RequestState state,
+			Collection<BonesRevealState> bonesRevealStates, Collection<EyeRevealState> eyeRevealStates,
+			Pageable pageable);
+//	Page<Request> findByStateAndBonesRevealStateInOrEyeRevealStateIn(RequestState state,
+//			Collection<BonesRevealState> bonesRevealStates, Collection<EyeRevealState> eyeRevealStates,
+//			Pageable pageable);
 
-	List<Request> findByBonesCommitteeIsNotNullAndState(RequestState state);
+	Page<Request> findByBonesCommitteeIsNotNullAndState(RequestState state, Pageable pageable);
 
 	// for payment'
 //	@Query("select r from Request r , BonesReveal e where e.request = r")

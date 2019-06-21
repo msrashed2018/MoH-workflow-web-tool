@@ -4,6 +4,7 @@ import { RequestStatus } from '../../../model/request-status.model';
 import { RequestStatusService } from '../../../services/administration/request-status.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
+import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
 
 
 
@@ -22,14 +23,44 @@ export class ListRequestStatusComponent implements OnInit {
   ) { 
 
   }
+  page: number = 0;
+  pages: Array<number>;
+  items: number = 0;
+  setPage(i,event: any): void {
+    // this.currentPage = event.page;
+    event.preventDefault();
+    this.page = i ;
+    this.items = i*PAGINATION_PAGE_SIZE;
+    this.refreshData();
+  }
+  nextPage(event: any): void {
+    event.preventDefault();
+    if((this.page+1) < this.pages.length){
+      this.page = this.page+1
+      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.refreshData();
+    }
+  }
+  prevPage(event: any): void {
+    event.preventDefault();
 
+    if((this.page-1) >= 0){
+      this.page =this.page -1;
+      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.refreshData();
+    }
+  }
   ngOnInit() {
     this.refreshData();
   }
   refreshData(){
-    this.requestStatusService.retrieveAllRequestStatus().subscribe(
+    this.requestStatusService.retrieveAllRequestStatus(this.page,PAGINATION_PAGE_SIZE).subscribe(
       response => {
-        this.requestStatus = response;
+        this.requestStatus = response['content'];
+        this.pages = new Array(response['totalPages']);
+      },
+      error =>{
+        console.log('oops',error)
       }
     )
   }

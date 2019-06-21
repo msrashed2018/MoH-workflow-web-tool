@@ -8,6 +8,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,8 +53,8 @@ public class RequestController {
 	private RequestPaymentRepository paymentRepository;
 
 	@GetMapping("/api/requests")
-	public List<Request> retrieveAllRequests() {
-		return requestRepository.findAll();
+	public Page<Request> retrieveAllRequests(@RequestParam("page") int page, @RequestParam("size") int size) {
+		return requestRepository.findAll(PageRequest.of(page, size, Sort.by("requestDate").descending()));
 	}
 
 	@GetMapping("/api/requests/{requestId}/retreiveRequestState")
@@ -60,19 +63,21 @@ public class RequestController {
 	}
 
 	@GetMapping("/api/requests/retreiveRequestsForEyeReveal")
-	public List<Request> retreiveRequestsForEyeReveal() {
+	public Page<Request> retreiveRequestsForEyeReveal(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return requestRepository.findByStateAndEyeRevealState(RequestState.CONTINUE_REGISTERING_DONE,
-				EyeRevealState.PENDING_REVEAL);
+				EyeRevealState.PENDING_REVEAL, PageRequest.of(page, size));
 	}
 
 	@GetMapping("/api/requests/retreiveRequestsForBonesReveal")
-	public List<Request> retreiveRequestsForBonesReveal() {
+	public Page<Request> retreiveRequestsForBonesReveal(@RequestParam("page") int page,
+			@RequestParam("size") int size) {
 		return requestRepository.findByStateAndBonesRevealState(RequestState.CONTINUE_REGISTERING_DONE,
-				BonesRevealState.PENDING_REVEAL);
+				BonesRevealState.PENDING_REVEAL, PageRequest.of(page, size));
 	}
 
 	@GetMapping("/api/requests/retreiveRequestsForRevealsRegistering")
-	public List<Request> retreiveRequestsForRevealsRegistering() {
+	public Page<Request> retreiveRequestsForRevealsRegistering(@RequestParam("page") int page,
+			@RequestParam("size") int size) {
 
 		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
 		bonesRevealStates.add(BonesRevealState.PENDING_REGISTERING);
@@ -82,11 +87,11 @@ public class RequestController {
 		eyeRevealStates.add(EyeRevealState.PENDING_REGISTERING);
 		eyeRevealStates.add(EyeRevealState.NA);
 		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
-				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates);
+				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
 	}
 
 	@GetMapping("/api/requests/retreiveRequestsForReviewing")
-	public List<Request> retreiveRequestsForReviewing() {
+	public Page<Request> retreiveRequestsForReviewing(@RequestParam("page") int page, @RequestParam("size") int size) {
 		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
 		bonesRevealStates.add(BonesRevealState.DONE);
 		bonesRevealStates.add(BonesRevealState.NA);
@@ -95,17 +100,18 @@ public class RequestController {
 		eyeRevealStates.add(EyeRevealState.DONE);
 		eyeRevealStates.add(EyeRevealState.NA);
 		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
-				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates);
+				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
 	}
 
 	@GetMapping("/api/requests/retreiveRequestsForApproving")
-	public List<Request> retreiveRequestsForApproving() {
-		return requestRepository.findByState(RequestState.REVIEWED);
+	public Page<Request> retreiveRequestsForApproving(@RequestParam("page") int page, @RequestParam("size") int size) {
+		return requestRepository.findByState(RequestState.REVIEWED, PageRequest.of(page, size));
 	}
 
 	@GetMapping("/api/requests/retreiveByRequestState")
-	public List<Request> retrieveAllRequestsByState(@RequestParam RequestState state) {
-		return requestRepository.findByState(state);
+	public Page<Request> retrieveAllRequestsByState(@RequestParam RequestState state, @RequestParam("page") int page,
+			@RequestParam("size") int size) {
+		return requestRepository.findByState(state, PageRequest.of(page, size));
 //		return requestRepository.findAll();
 	}
 

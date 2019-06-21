@@ -6,6 +6,7 @@ import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert';
 import * as moment from  'moment';
 import { Router } from '@angular/router';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
+import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
 
 
 @Component({
@@ -19,7 +20,33 @@ export class ListCitizensComponent implements OnInit {
   private noDataFound: boolean = false;
   private errorMessage: boolean = false;
   constructor( private confirmationModalService: ConfirmModalService, private citizenService: CitizenService, private router : Router, private datepipe: DatePipe) { }
+  page: number = 0;
+  pages: Array<number>;
+  items: number = 0;
+  setPage(i,event: any): void {
+    // this.currentPage = event.page;
+    event.preventDefault();
+    this.page = i ;
+    this.items = i*PAGINATION_PAGE_SIZE;
+    this.retriveAllCitizens();
+  }
+  nextPage(event: any): void {
+    event.preventDefault();
+    if((this.page+1) < this.pages.length){
+      this.page = this.page+1
+      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.retriveAllCitizens();
+    }
+  }
+  prevPage(event: any): void {
+    event.preventDefault();
 
+    if((this.page-1) >= 0){
+      this.page =this.page -1;
+      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.retriveAllCitizens();
+    }
+  }
   ngOnInit() {
     this.citizens = [];
     this.retriveAllCitizens();
@@ -56,14 +83,14 @@ export class ListCitizensComponent implements OnInit {
     this.errorMessage = false;
     this.noDataFound = false;
     let date=new Date();
-    let latest_date =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.citizenService.retriveAll(latest_date)
+    // let latest_date =this.datepipe.transform(date, 'yyyy-MM-dd');
+    this.citizenService.retrieveAllCitizens(this.page,PAGINATION_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null) {
-            console.log(result)
             this.noDataFound = false;
-            this.citizens= result;
+            this.citizens= result['content'];
+            this.pages = new Array(result['totalPages']);
           }else{
             this.noDataFound = true;
           }

@@ -16,7 +16,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let request of requestTypes; let i = index">
-        <td scope="row">{{ i + 1 }}</td>
+        <td scope="row">{{items+ i + 1 }}</td>
         <td><b><a [routerLink]="['/administration/types', request.id,{componentMode: 'viewMode'}]">{{ request.name }}</a></b></td>
         <td>{{ request.price }}</td>
         <td>{{ request.description}}</td>
@@ -34,4 +34,14 @@
         
     </tbody>
   </table>
+  <hr>
+  <ul class="nav nav-pills justify-content-center">
+    <li class="page-item"><a class="page-link" (click)="prevPage($event)">السابق</a></li>
+
+    <li class="nav-item" *ngFor="let p of pages; let i=index">
+        <a [ngClass]="{'active':i==page}" (click)="setPage(i,$event)" class="nav-link active" href="#">{{i}}</a>
+    </li>
+    <li class="page-item"><a  class="page-link" (click)="nextPage($event)">التالي</a></li>
+  </ul>
+  <hr>
 <!-- </div> -->

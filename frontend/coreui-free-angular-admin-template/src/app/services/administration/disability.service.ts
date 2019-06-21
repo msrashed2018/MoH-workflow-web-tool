@@ -12,8 +12,8 @@ export class DisabilityService {
     private http:HttpClient
   ) { }
 
-  retrieveAllDisabilities() {
-    return this.http.get<Disability[]>(`${API_URL}/disabilities`);
+  retrieveAllDisabilities(page,size) {
+    return this.http.get<Disability[]>(`${API_URL}/disabilities?page=${page}&size=${size}`);
 
   }
 

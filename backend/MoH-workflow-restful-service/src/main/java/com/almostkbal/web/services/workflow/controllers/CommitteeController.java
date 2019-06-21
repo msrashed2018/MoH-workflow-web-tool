@@ -8,6 +8,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +36,8 @@ public class CommitteeController {
 	private CommitteeRepository committeeRepository;
 	
 	@GetMapping("/api/committees")
-	public List<Committee> retrieveAllCommittees(){
-		return committeeRepository.findAll();
+	public Page<Committee> retrieveAllCommittees(@RequestParam("page") int page, @RequestParam("size") int size) {
+		return committeeRepository.findAll(PageRequest.of(page, size));
 	}
 	@GetMapping("/api/committees/findByType")
 	public List<Committee> retrieveCommitteesByType(@RequestParam String type){

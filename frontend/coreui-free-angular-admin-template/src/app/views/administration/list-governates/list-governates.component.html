@@ -28,7 +28,7 @@
   <tbody>
 
         <tr *ngFor="let governate of governates; let i=index">
-            <td class="text-center"><b>{{i+1}}</b></td>
+            <td class="text-center"><b>{{items+i+1}}</b></td>
             <td class="text-center"><a [routerLink]="['/administration/governates', governate.id,{componentMode: 'viewMode'}]"><b>{{governate.name}}</b></a></td>
             <td class="text-center"><b *ngIf="governate.zone != null">{{governate.zone.name}}</b></td>
             <td class="text-center">
@@ -45,15 +45,15 @@
     </tr>
   </tbody>
 </table>
+<hr>
+  <ul class="nav nav-pills justify-content-center">
+    <li class="page-item"><a class="page-link" (click)="prevPage($event)">السابق</a></li>
 
-<!-- <div class="col-xs-12 col-12">
-    <pagination [boundaryLinks]="true" [totalItems]="15" [(ngModel)]="currentPage" class="pagination-sm" [maxSize]="6"
-                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
-  </div> -->
-<div class="row">
-    <div >
-      <pagination [totalItems]="pages" [(ngModel)]="currentPage"  (pageChanged)="pageChanged($event)" ></pagination>
-    </div>
-  </div>
+    <li class="nav-item" *ngFor="let p of pages; let i=index">
+        <a [ngClass]="{'active':i==page}" (click)="setPage(i,$event)" class="nav-link active" href="#">{{i}}</a>
+    </li>
+    <li class="page-item"><a  class="page-link" (click)="nextPage($event)">التالي</a></li>
+  </ul>
+  <hr>
 
 

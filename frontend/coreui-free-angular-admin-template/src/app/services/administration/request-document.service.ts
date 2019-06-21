@@ -12,8 +12,8 @@ export class RequestDocumentService {
     private http:HttpClient
   ) { }
 
-  retrieveAllRequestDocument() {
-    return this.http.get<RequestDocument[]>(`${API_URL}/request-document`);
+  retrieveAllRequestDocument(page,size) {
+    return this.http.get<RequestDocument[]>(`${API_URL}/request-document?page=${page}&size=${size}`);
 
   }
 

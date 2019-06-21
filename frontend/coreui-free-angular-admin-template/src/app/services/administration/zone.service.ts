@@ -13,11 +13,10 @@ export class ZoneService {
     private http:HttpClient
   ) { }
 
-  retrieveAllZones() {
-    return this.http.get<Zone[]>(`${API_URL}/zones`);
+  retrieveAllZones(page,size) {
+    return this.http.get<Zone[]>(`${API_URL}/zones?page=${page}&size=${size}`);
 
   }
-
   deleteZone(id){
     return this.http.delete(`${API_URL}/zones/${id}`);
   }

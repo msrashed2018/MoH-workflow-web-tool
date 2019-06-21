@@ -1,4 +1,4 @@
-<div class="animated fadeIn ">
+<div class="animated fadeIn " >
 
     <div *ngIf="errorMessage">
         <alert type="danger">
@@ -16,8 +16,8 @@
 
     <div class="row ">
         <div style="width:100% !important;">
-            <div class="card">
-                <div class="card-header">
+            <div class="card" >
+                <div class="card-header" >
                     <strong style="color: rgba(27, 17, 168, 0.582);">البيانات الاساسية للطلب</strong>
                     <div class="card-header-actions">
                         <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleRequestDataCollapse()"><i class={{iconRequestDataCollapse}}></i></button>
@@ -109,6 +109,7 @@
                             <alert type="success"> {{requestDataSuccessMessage}} </alert>
                         </div>
                         <button (click)="onSaveRequestData()" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> حفظ</button>
+                        <button (click)="downloadPdf()" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> طباعة</button>
                     </div>
                     <!-- </form> -->
                 </div>

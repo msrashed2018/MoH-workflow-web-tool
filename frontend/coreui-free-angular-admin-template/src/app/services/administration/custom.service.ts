@@ -12,8 +12,8 @@ export class CustomService {
     private http:HttpClient
   ) { }
 
-  retrieveAllCustoms() {
-    return this.http.get<Custom[]>(`${API_URL}/customs`);
+  retrieveAllCustoms(page,size) {
+    return this.http.get<Custom[]>(`${API_URL}/customs?page=${page}&size=${size}`);
 
   }
 

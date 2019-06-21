@@ -66,9 +66,9 @@ export class DisabilityViewEditComponent implements OnInit {
     )
   }
   fillEquipments(){
-    this.equipmentService.retrieveAllEquipments().subscribe(
+    this.equipmentService.retrieveAllEquipments(0,100).subscribe(
       result => {
-        this.equipments = result;
+        this.equipments = result['content'];
       },
       error => {
         console.log('oops', error);
