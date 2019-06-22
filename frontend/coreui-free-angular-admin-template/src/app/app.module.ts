@@ -46,9 +46,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { RouteGuardService } from './services/authentication/route-guard.service';
-import { HttpIntercepterBasicAuthService } from './services/authentication/http/http-intercepter-basic-auth.service';
 import { ConfirmModalComponent } from './views/confirm-modal/confirm-modal.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthInterceptor } from './services/authentication/jwt/auth-interceptor';
 
 @NgModule({
   imports: [
@@ -88,7 +88,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     useClass: HashLocationStrategy,
   },
   RouteGuardService,
-  {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterBasicAuthService, multi: true },
+  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   DatePipe],
   bootstrap: [ AppComponent ],
   entryComponents : [ ConfirmModalComponent],

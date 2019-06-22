@@ -12,7 +12,6 @@ import { City } from '../../../model/city.model';
 import { Gender } from '../../../model/gender.model';
 import { GenderService } from '../../../services/administration/gender.service';
 import { DatePipe } from '@angular/common';
-import { BasicAuthenticationService } from '../../../services/authentication/basic-authentication.service';
 import { RequestService } from '../../../services/request.service';
 import { Request } from '../../../model/request.model';
 import { RequestType } from '../../../model/request-type.model';
@@ -21,6 +20,7 @@ import { CustomService } from '../../../services/administration/custom.service';
 import { TrafficManagementService } from '../../../services/administration/traffic-management.service';
 import { Custom } from '../../../model/custom.model';
 import { TrafficManagement } from '../../../model/traffic-management.model';
+import { TokenStorageService } from '../../../services/authentication/jwt/token-storage.service';
 
 @Component({
   selector: 'app-citizen-view-edit',
@@ -54,7 +54,7 @@ export class CitizenViewEditComponent implements OnInit {
   public selectedCustomId : number
   public selectedCityId : number
   public selectedGenderId : number
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder,  private requestTypeService: RequestTypeService, private requestService: RequestService, private authenticationService: BasicAuthenticationService, private datepipe: DatePipe, private genderService: GenderService, private governateService: GovernateService, private occupationService: OccupationService, private citizenService: CitizenService, private router: Router, private trafficManagementService: TrafficManagementService, private customService: CustomService) { }
+  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder,  private requestTypeService: RequestTypeService, private requestService: RequestService, private authenticationService: TokenStorageService, private datepipe: DatePipe, private genderService: GenderService, private governateService: GovernateService, private occupationService: OccupationService, private citizenService: CitizenService, private router: Router, private trafficManagementService: TrafficManagementService, private customService: CustomService) { }
 
   ngOnInit() {
     // this.fillCities();
@@ -160,7 +160,7 @@ export class CitizenViewEditComponent implements OnInit {
   }
   onSave(){
   
-    this.citizen.modifiedBy = this.authenticationService.getAuthenticatedUser();
+    this.citizen.modifiedBy = this.authenticationService.getUsername();
     this.citizen.modifiedDate =this.datepipe.transform(new Date(), 'yyyy-MM-dd');
 
     let governate = new Governate
@@ -277,7 +277,7 @@ export class CitizenViewEditComponent implements OnInit {
   createNewRequest(){
     let request = new Request();
     request.requestDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
-    request.createdBy = this.authenticationService.getAuthenticatedUser();
+    request.createdBy = this.authenticationService.getUsername();
 
     let requestType = new RequestType;
     requestType.id = this.selectedRequestTypeId;

@@ -12,7 +12,6 @@ import { City } from '../../../model/city.model';
 import { Gender } from '../../../model/gender.model';
 import { GenderService } from '../../../services/administration/gender.service';
 import { DatePipe } from '@angular/common';
-import { BasicAuthenticationService } from '../../../services/authentication/basic-authentication.service';
 import { RequestService } from '../../../services/request.service';
 import { Request } from '../../../model/request.model';
 import { RequestTypeService } from '../../../services/administration/request-type.service';
@@ -21,6 +20,7 @@ import { Custom } from '../../../model/custom.model';
 import { TrafficManagement } from '../../../model/traffic-management.model';
 import { TrafficManagementService } from '../../../services/administration/traffic-management.service';
 import { CustomService } from '../../../services/administration/custom.service';
+import { TokenStorageService } from '../../../services/authentication/jwt/token-storage.service';
 
 @Component({
   selector: 'app-citizen',
@@ -52,7 +52,7 @@ export class CitizenComponent implements OnInit {
   public selectedTrafficManagementId : number
   public selectedCustomId : number
   public requestPrice : number = 0;
-  constructor(private requestTypeService: RequestTypeService, private requestService: RequestService, private formBuilder: FormBuilder, private authenticationService: BasicAuthenticationService, private datepipe: DatePipe, private genderService: GenderService, private governateService: GovernateService, private occupationService: OccupationService, private citizenService: CitizenService, private trafficManagementService: TrafficManagementService, private customService: CustomService, private router: Router ) { }
+  constructor(private requestTypeService: RequestTypeService, private requestService: RequestService, private formBuilder: FormBuilder, private authenticationService: TokenStorageService, private datepipe: DatePipe, private genderService: GenderService, private governateService: GovernateService, private occupationService: OccupationService, private citizenService: CitizenService, private trafficManagementService: TrafficManagementService, private customService: CustomService, private router: Router ) { }
 
   ngOnInit() {
     // this.fillCities();
@@ -119,7 +119,7 @@ export class CitizenComponent implements OnInit {
   }
   onSave(){
   
-    this.citizen.createdBy = this.authenticationService.getAuthenticatedUser();
+    this.citizen.createdBy = this.authenticationService.getUsername();
     this.citizen.createdDate =this.datepipe.transform(new Date(), 'yyyy-MM-dd');
 
     let governate = new Governate

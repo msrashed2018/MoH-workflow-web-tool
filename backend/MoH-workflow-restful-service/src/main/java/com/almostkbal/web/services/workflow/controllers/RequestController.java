@@ -54,6 +54,7 @@ public class RequestController {
 
 	@GetMapping("/api/requests")
 	public Page<Request> retrieveAllRequests(@RequestParam("page") int page, @RequestParam("size") int size) {
+		System.out.println("\n\nretrieveAllRequests\n\n");
 		return requestRepository.findAll(PageRequest.of(page, size, Sort.by("requestDate").descending()));
 	}
 

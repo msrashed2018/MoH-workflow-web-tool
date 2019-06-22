@@ -2,7 +2,7 @@ import { Component, OnDestroy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { navItems, adminNavItems } from '../../_nav';
 import { Router } from '@angular/router';
-import { BasicAuthenticationService } from '../../services/authentication/basic-authentication.service';
+import { TokenStorageService } from '../../services/authentication/jwt/token-storage.service';
 
 
 @Component({
@@ -14,13 +14,20 @@ export class DefaultLayoutComponent implements OnDestroy {
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement;
-  constructor(private authService: BasicAuthenticationService, private router: Router, @Inject(DOCUMENT) _document?: any ) {
+  constructor(private token: TokenStorageService,  private router: Router, @Inject(DOCUMENT) _document?: any ) {
 
     //you can define navitems depend login user roles and authorities 
     // if(true){
 
     //   this.navItems = adminNavItems;
     // }
+
+
+    // if(token.getAuthorities().includes("ROLE_ADMIN")){
+    //   this.navItems = adminNavItems;
+    // }
+
+
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = _document.body.classList.contains('sidebar-minimized');
     });
@@ -32,8 +39,10 @@ export class DefaultLayoutComponent implements OnDestroy {
   }
 
   logout(){
-    this.authService.logout();
-    this.router.navigateByUrl("/login");
+    this.token.signOut();
+    window.location.reload();
+    // this.authService.logout();
+    // this.router.navigateByUrl("/login");
   }
 
   ngOnDestroy(): void {
@@ -41,6 +50,7 @@ export class DefaultLayoutComponent implements OnDestroy {
   }
 
   getUsername(){
-    return this.authService.getAuthenticatedUser();
+    return this.token.getUsername();
+    // return this.authService.getAuthenticatedUser();
   }
 }

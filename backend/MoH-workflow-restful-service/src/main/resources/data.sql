@@ -26,18 +26,18 @@ Insert into ZONE (ZONE_NAME) values('مجلس طبي جنوب سيناء');
 
 -- USER DATA
 insert into SYSTEM_USER (USER_ID,USERNAME,PASSWORD,ZONE_ID) values (1,'admin','$2a$10$L9MIF6lIh1bVDi7xnz4g1uZ9Ylcl73e89adMYQ6tmf/G28YnIUueq',1);
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(1,'ROLE_ADMIN','can edit any pages');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(2,'ROLE_CustomLift','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(3,'ROLE_Eye','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(4,'ROLE_EditCitizen','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(5,'ROLE_LetterReview','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(6,'ROLE_EditCitizenAlex','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(7,'ROLE_Register','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(8,'ROLE_Tawsya','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(9,'ROLE_Review','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(10,'ROLE_TawsyaReview','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(11,'ROLE_Confirm','');
-insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(12,'ROLE_Inquery','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(1,'ADMIN','can edit any pages');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(2,'CustomLift','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(3,'Eye','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(4,'EditCitizen','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(5,'LetterReview','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(6,'EditCitizenAlex','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(7,'Register','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(8,'Tawsya','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(9,'Review','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(10,'TawsyaReview','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(11,'Confirm','');
+insert into SYSTEM_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION) values(12,'Inquery','');
 insert into SYSTEM_USER_ROLES (USERS_USER_ID, ROLES_ROLE_ID) VALUES(1,1);
 insert into SYSTEM_USER_ROLES (USERS_USER_ID, ROLES_ROLE_ID) VALUES(1,2);
 
@@ -235,11 +235,16 @@ insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('0', 14,'
 
 
 insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER, GOVERNATE_ID, OCCUPATION_ID)
-values('october', '1989-06-20 03:00:00', 'admin', '2019-06-19', '01015090111', null, null,  'محمد صلاح راشد', '29106202101140', 2, 'ذكر', 1, 3 );
+values('october', '1989-06-20 03:00:00', 'admin', '2019-06-20', '01015090111', null, null,  'محمد صلاح راشد', '29106202101140', 2, 'ذكر', 1, 3 );
 
 insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER, GOVERNATE_ID, OCCUPATION_ID)
-values('october', '1989-06-20 03:00:00', 'admin', '2019-06-19', '01015090111', null, null,  'احمد صلاح راشد', '29106202101141', 2, 'ذكر', 1, 3 );
+values('october', '1989-06-20 03:00:00', 'admin', '2019-06-22', '01015090111', null, null,  'احمد صلاح راشد', '29106202101141', 2, 'ذكر', 1, 3 );
 
+insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER, GOVERNATE_ID, OCCUPATION_ID)
+values('october', '1989-06-20 03:00:00', 'admin', '2019-06-24', '01015090111', null, null,  'حسن صلاح راشد', '29106202101142', 2, 'ذكر', 1, 3 );
+
+insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER, GOVERNATE_ID, OCCUPATION_ID)
+values('october', '1989-06-20 03:00:00', 'admin', '2019-06-26', '01015090111', null, null,  'سعيد صلاح راشد', '29106202101143', 2, 'ذكر', 1, 3 );
 
 
 --insert into request ( CREATED_BY  , DESCRIPTION  , MODIFIED_BY  , MODIFIED_DATE  , REQUEST_DATE  , STATE  , CITIZEN_ID  , CUSTOM_ID  , REQUEST_STATUS_ID  , REQUEST_TYPE_ID  , TRAFFIC_MANAGEMENT_ID )

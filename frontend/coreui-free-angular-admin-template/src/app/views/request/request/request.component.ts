@@ -13,7 +13,6 @@ import { EquipmentService } from '../../../services/administration/equipment.ser
 import { DisabilityService } from '../../../services/administration/disability.service';
 import { CommitteeService } from '../../../services/administration/committee.service';
 import { Committee } from '../../../model/committee.model';
-import { BasicAuthenticationService } from '../../../services/authentication/basic-authentication.service';
 import { Request } from '../../../model/request.model';
 import { API_URL } from '../../../app.constants';
 import { RequestPayment } from '../../../model/request-payment.model';
@@ -36,7 +35,7 @@ import { isUndefined } from 'util';
 })
 export class RequestComponent implements OnInit {
   
-  constructor(private route:ActivatedRoute, private basicAuthenticationService: BasicAuthenticationService, private formBuilder: FormBuilder, private committeeService:CommitteeService, private disabilityService:DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
+  constructor(private route:ActivatedRoute, private formBuilder: FormBuilder, private committeeService:CommitteeService, private disabilityService:DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
 
   //cards collapse fields------------------------------------------------------------------------------------
   isRequestDataCollapsed: boolean = false;
