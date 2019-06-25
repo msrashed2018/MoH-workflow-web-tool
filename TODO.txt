@@ -1,7 +1,0 @@
-- migrate to oracle 18c (check required version)
-- define angular models for backend entities
-- develop Restcontrollers for remaining entities (bakcend)
-- check how to use Paging and sorting Respository
-- test backend service with postman or swagger
-- check answers of IHAB
-- conform nadia to use angular 7, and inform her that there are needed forms (up to 20) and editable tables (20)
