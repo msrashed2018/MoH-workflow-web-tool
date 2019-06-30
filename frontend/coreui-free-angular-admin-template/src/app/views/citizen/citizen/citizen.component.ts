@@ -164,15 +164,15 @@ export class CitizenComponent implements OnInit {
     requestType.id = this.selectedRequestTypeId;
     request.requestType = requestType;
 
-    for(var x =0 ; x< this.requestTypes.length ; x++){
-      if(this.selectedRequestTypeId == this.requestTypes[x].id){
-        if(this.requestTypes[x].name == 'كشف عادي' || this.requestTypes[x].name == 'كشف مستعجل'){
-          request.state = 'PENDING_PAYMENT';
-        }else{
-          request.state = 'PENDING_CONTINUE_REGISTERING';
-        }
-      }
-    }
+    // for(var x =0 ; x< this.requestTypes.length ; x++){
+    //   if(this.selectedRequestTypeId == this.requestTypes[x].id){
+    //     if(this.requestTypes[x].name == 'كشف عادي' || this.requestTypes[x].name == 'كشف مستعجل'){
+    //       request.state = 'PENDING_PAYMENT';
+    //     }else{
+    //       request.state = 'PENDING_CONTINUE_REGISTERING';
+    //     }
+    //   }
+    // }
 
     if( this.selectedCustomId > 0 ){
       let custom = new Custom;

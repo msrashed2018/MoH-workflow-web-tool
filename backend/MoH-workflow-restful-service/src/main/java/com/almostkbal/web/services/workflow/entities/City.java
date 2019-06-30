@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -22,11 +23,13 @@ public class City {
 	
 	@Column(name = "city_name", nullable = false, unique = true)
 	@NotNull
+	@NotBlank
 	private String name;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name = "governate_id")
+	@JoinColumn(name = "governate_id", nullable = false)
 //	@JsonIgnore
+	@NotNull
 	private Governate governate;
 	
 	public City() {

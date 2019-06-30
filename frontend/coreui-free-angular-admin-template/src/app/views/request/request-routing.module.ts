@@ -20,7 +20,8 @@ const routes: Routes = [
     component: ListRequestsComponent,
     data: {
       title: 'requests'
-    }
+    },
+    
   },
   {
     path: 'payments',

@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="eye_reveal_setting")
@@ -19,24 +21,30 @@ public class EyeRevealSetting {
 	private long id;
 	
 	@OneToOne
-	@JoinColumn(name = "right_measure_id")
+	@JoinColumn(name = "right_measure_id", nullable = false)
+	@NotNull
+	@NotBlank
 	private EyeMeasure rightMeasure;
 	
 	
 	@OneToOne
-	@JoinColumn(name = "left_measure_id")
+	@JoinColumn(name = "left_measure_id", nullable = false)
+	@NotNull
+	@NotBlank
 	private EyeMeasure leftMeasure;
 	
 	@Column(name = "use_glasses")
-	private byte useGlasses;
+	private byte useGlasses = 0;
 	
 	@Column(name = "DISTINGUISH_COLOR")
-	private byte distinguishColor;
+	private byte distinguishColor = 0;
 	
 	@Column(name = "squint")
-	private byte squint;
+	private byte squint = 0;
 
-	@Column(name = "setting_result")
+	@Column(name = "setting_result", nullable = false)
+	@NotNull
+	@NotBlank
 	private String result;
 	
 	@Column(name = "setting_description")

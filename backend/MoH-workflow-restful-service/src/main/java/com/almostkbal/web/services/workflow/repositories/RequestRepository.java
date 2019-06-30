@@ -27,27 +27,11 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
 	List<Request> findByCitizenNationalId(Long nationalId);
 
+	List<Request> findByCitizenMobileNumber(String mobileNumber);
+
+	List<Request> findByCitizenName(String name);
+
 	List<Request> findByCitizenId(Long nationalId);
-
-	@Transactional
-	@Modifying
-	@Query("update Request r set r.state = :state where r.id= :requestId")
-	void setRequestState(@Param("requestId") long requestId, @Param("state") RequestState state);
-
-	@Transactional
-	@Modifying
-	@Query("update Request r set r.requestStatus = :requestStatus where r.id= :requestId")
-	void setRequestStatus(@Param("requestId") long requestId, @Param("requestStatus") RequestStatus requestStatus);
-
-	@Transactional()
-	@Modifying
-	@Query("update Request r set r.eyeRevealState = :state where r.id= :requestId")
-	void setEyeRevealState(@Param("requestId") long requestId, @Param("state") EyeRevealState eyeRevealState);
-
-	@Transactional
-	@Modifying
-	@Query("update Request r set r.bonesRevealState = :state where r.id= :requestId")
-	void setBonesRevealState(@Param("requestId") long requestId, @Param("state") BonesRevealState bonesRevealState);
 
 	Page<Request> findByState(RequestState state, Pageable pageable);
 
@@ -75,5 +59,25 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 //	@Query("SELECT new com.jeejava.dto.DeptEmpDto(d.name, e.name, e.email, e.address) "
 //			+ "FROM Department d INNER JOIN d.employees e")
 //	List<DeptEmpDto> fetchEmpDeptDataInnerJoin();
+
+	@Transactional
+	@Modifying
+	@Query("update Request r set r.state = :state where r.id= :requestId")
+	void setRequestState(@Param("requestId") long requestId, @Param("state") RequestState state);
+
+	@Transactional
+	@Modifying
+	@Query("update Request r set r.requestStatus = :requestStatus where r.id= :requestId")
+	void setRequestStatus(@Param("requestId") long requestId, @Param("requestStatus") RequestStatus requestStatus);
+
+	@Transactional()
+	@Modifying
+	@Query("update Request r set r.eyeRevealState = :state where r.id= :requestId")
+	void setEyeRevealState(@Param("requestId") long requestId, @Param("state") EyeRevealState eyeRevealState);
+
+	@Transactional
+	@Modifying
+	@Query("update Request r set r.bonesRevealState = :state where r.id= :requestId")
+	void setBonesRevealState(@Param("requestId") long requestId, @Param("state") BonesRevealState bonesRevealState);
 
 }

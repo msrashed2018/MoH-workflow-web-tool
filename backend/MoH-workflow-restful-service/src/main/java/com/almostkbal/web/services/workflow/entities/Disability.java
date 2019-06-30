@@ -27,10 +27,12 @@ public class Disability {
 	private String description;
 	
 	@OneToOne
-	@JoinColumn(name = "equipment_id")
+	@JoinColumn(name = "equipment_id", nullable = false)
+	@NotNull
 	private Equipment equipment;
 	
-	@Column(name = "accepted")
+	@Column(name = "accepted", nullable = false)
+	@NotNull
 	private byte accepted;
 	
 	public Disability() {

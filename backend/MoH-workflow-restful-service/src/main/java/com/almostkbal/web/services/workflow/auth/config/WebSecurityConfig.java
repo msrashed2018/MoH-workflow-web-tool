@@ -1,10 +1,13 @@
 package com.almostkbal.web.services.workflow.auth.config;
 
+import java.util.Arrays;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +20,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.almostkbal.web.services.workflow.auth.jwt.JwtAuthenticationEntryPoint;
 import com.almostkbal.web.services.workflow.auth.jwt.JwtAuthenticationFilter;
@@ -26,7 +32,7 @@ import com.almostkbal.web.services.workflow.auth.jwt.JwtAuthenticationFilter;
 //@EnableGlobalMethodSecurity(securedEnabled = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+	
     @Resource(name = "userService")
     private UserDetailsService userDetailsService;
 
@@ -77,4 +83,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    
 }

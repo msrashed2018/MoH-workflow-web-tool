@@ -44,6 +44,7 @@ import { CityDataComponent } from './list-cities/city-data/city-data.component';
 import { CityViewEditComponent } from './list-cities/city-view-edit/city-view-edit.component';
 import { GovernateDataComponent } from './list-governates/governate-data/governate-data.component';
 import { GovernateViewEditComponent } from './list-governates/governate-view-edit/governate-view-edit.component';
+import { AuditListComponent } from './audit-list/audit-list.component';
 
 const routes: Routes = [
   {
@@ -339,6 +340,13 @@ const routes: Routes = [
         component: EyeRevealSettingViewEditComponent,
         data: {
           title: 'Eye Reveal Settings'
+        }
+      },
+      {
+        path: 'audits',
+        component: AuditListComponent,
+        data: {
+          title: 'Audits'
         }
       }
     ]

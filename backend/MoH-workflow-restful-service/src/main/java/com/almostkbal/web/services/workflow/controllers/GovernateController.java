@@ -113,6 +113,6 @@ public class GovernateController {
 			throw new ResourceNotFoundException("id-" + id);
 		}
 		Governate governate = governateOptional.get();
-		return cityRepository.findByGovernate(governate);
+		return cityRepository.findByGovernateId(id);
 	}
 }

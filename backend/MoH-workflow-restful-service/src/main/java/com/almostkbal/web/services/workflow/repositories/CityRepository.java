@@ -11,6 +11,8 @@ import com.almostkbal.web.services.workflow.entities.Governate;
 
 //@RepositoryRestResource(collectionResourceRel = "cities", path = "cities")
 public interface CityRepository extends JpaRepository<City, Integer> {
-	@Query(value = "SELECT c FROM City c WHERE c.governate = :governate")
-	List<City> findByGovernate(@Param("governate") Governate governate);
+//	@Query(value = "SELECT c FROM City c WHERE c.governate = :governate")
+//	List<City> findByGovernate(@Param("governate") Governate governate);
+	
+	List<City> findByGovernateId(int id);
 }

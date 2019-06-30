@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.BonesRevealState;
 import com.almostkbal.web.services.workflow.entities.Citizen;
 import com.almostkbal.web.services.workflow.entities.EyeRevealState;
@@ -32,6 +34,7 @@ import com.almostkbal.web.services.workflow.entities.RequestPayment;
 import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
 import com.almostkbal.web.services.workflow.entities.RequestType;
+import com.almostkbal.web.services.workflow.repositories.AuditRepository;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestPaymentRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
@@ -51,6 +54,9 @@ public class RequestController {
 
 	@Autowired
 	private RequestPaymentRepository paymentRepository;
+
+	@Autowired
+	private AuditRepository auditRepository;
 
 	@GetMapping("/api/requests")
 	public Page<Request> retrieveAllRequests(@RequestParam("page") int page, @RequestParam("size") int size) {
@@ -128,6 +134,26 @@ public class RequestController {
 		return requests;
 	}
 
+	@GetMapping("/api/requests/search/findBySearchKey")
+	public List<Request> findBySearchKey(@RequestParam String searchKey) {
+		// check if searchKey is number or string
+		try {
+			Long key = Long.parseLong(searchKey);
+
+			// No Thrown exception, so searchKey is number
+			// check if it is national id or mobile number
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
+				return requestRepository.findByCitizenMobileNumber(searchKey);
+			} else {
+				// assuming search key is national id
+				return requestRepository.findByCitizenNationalId(key);
+			}
+		} catch (NumberFormatException | NullPointerException nfe) {
+			return requestRepository.findByCitizenName(searchKey);
+		}
+	}
+
 	@GetMapping("/api/citizens/{citizenId}/requests")
 	public List<Request> retrieveCitizenRequests(@PathVariable long citizenId) {
 		if (!citizenRepository.existsById(citizenId)) {
@@ -138,15 +164,33 @@ public class RequestController {
 	}
 
 	@DeleteMapping("/api/citizens/{citizenId}/requests/{requestId}")
-	public void deleteRequest(@PathVariable long citizenId, @PathVariable long requestId) {
+	public void deleteRequest(@PathVariable long citizenId, @PathVariable long requestId,
+			Authentication authentication) {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
 		}
-		try {
-			requestRepository.deleteById(requestId);
-		} catch (EmptyResultDataAccessException ex) {
+//		try {
+		Optional<Request> request = requestRepository.findById(requestId);
+		if (!request.isPresent())
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+		requestRepository.deleteById(requestId);
+
+		// auditing
+		String action = "مسح طلب";
+		StringBuilder details = new StringBuilder("");
+		details.append(" نوع الطلب : ");
+		details.append(request.get().getRequestType().getName());
+
+		if (request.get().getRequestStatus() != null) {
+			details.append(" نتيجة الطلب : ");
+			details.append(request.get().getRequestStatus().getName());
 		}
+		String performedBy = authentication.getName();
+		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
+		auditRepository.save(audit);
+//		} catch (EmptyResultDataAccessException ex) {
+//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+//		}
 	}
 
 	@GetMapping("/api/requests/{id}")
@@ -158,7 +202,8 @@ public class RequestController {
 	}
 
 	@PostMapping("/api/citizens/{citizenId}/requests")
-	public Object createRequest(@PathVariable long citizenId, @Valid @RequestBody Request request) {
+	public Object createRequest(@PathVariable long citizenId, @Valid @RequestBody Request request,
+			Authentication authentication) {
 
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
@@ -187,12 +232,23 @@ public class RequestController {
 			request.setState(RequestState.PENDING_CONTINUE_REGISTERING);
 			savedRequest = requestRepository.save(request);
 		}
+
+		// auditing
+		String action = "اضافة طلب جديد";
+		StringBuilder details = new StringBuilder("");
+		details.append("نوع الطلب");
+		details.append(" : " + requestType.get().getName());
+		long requestId = savedRequest.getId();
+		String performedBy = authentication.getName();
+		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
+		auditRepository.save(audit);
+
 		return savedRequest;
 	}
 
 	@PutMapping("/api/citizens/{citizenId}/requests/{requestId}")
 	public ResponseEntity<Request> updateRequest(@PathVariable long citizenId, @PathVariable long requestId,
-			@Valid @RequestBody Request request) {
+			@Valid @RequestBody Request request, Authentication authentication) {
 
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
@@ -221,13 +277,34 @@ public class RequestController {
 		request.setCitizen(citizen);
 
 		Request updatedRequest = requestRepository.save(request);
+
+		// auditing
+		String action = "استكمال بيانات طلب";
+		StringBuilder details = new StringBuilder("");
+
+		details.append(" : نوع الطلب");
+		details.append(updatedRequest.getRequestType().getName());
+
+		if (updatedRequest.getBonesCommittee() != null) {
+			details.append(" : ميعاد لجنة العظام");
+			details.append(updatedRequest.getBonesCommittee().getDate().toString());
+		}
+
+		if (request.getEyeCommittee() != null) {
+			details.append(" : ميعاد لجنة الرمد");
+			details.append(updatedRequest.getEyeCommittee().getDate().toString());
+		}
+		String performedBy = authentication.getName();
+		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
+		auditRepository.save(audit);
+
 		return new ResponseEntity<Request>(updatedRequest, HttpStatus.OK);
 
 	}
 
 	@PutMapping("/api/citizens/{citizenId}/requests/{requestId}/updateStatus")
 	public void updateRequestStatus(@PathVariable long citizenId, @PathVariable long requestId,
-			@Valid @RequestBody RequestStatus requestStatus) {
+			@Valid @RequestBody RequestStatus requestStatus, Authentication authentication) {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
 		}
@@ -236,10 +313,20 @@ public class RequestController {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		}
 		requestRepository.setRequestStatus(requestId, requestStatus);
+
+		// auditing
+		String action = "تعديل نتيجة طلب";
+		StringBuilder details = new StringBuilder("");
+		details.append(" : نتيجة الطلب");
+		details.append(requestStatus.getName());
+		String performedBy = authentication.getName();
+		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
+		auditRepository.save(audit);
 	}
 
 	@PutMapping("/api/requests/{requestId}/review")
-	public void reviewRequest(@PathVariable long requestId, @RequestBody Request request) {
+	public void reviewRequest(@PathVariable long requestId, @RequestBody Request request,
+			Authentication authentication) {
 
 		if (!requestRepository.existsById(requestId)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
@@ -247,16 +334,33 @@ public class RequestController {
 
 		requestRepository.setRequestState(requestId, RequestState.REVIEWED);
 
+		// auditing
+		String action = "مراجعة طلب";
+		StringBuilder details = new StringBuilder("");
+		details.append("لا يوجد");
+		String performedBy = authentication.getName();
+		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
+		auditRepository.save(audit);
+
 	}
 
 	@PutMapping("/api/requests/{requestId}/approve")
-	public void approveRequest(@PathVariable long requestId, @RequestBody Request request) {
+	public void approveRequest(@PathVariable long requestId, @RequestBody Request request,
+			Authentication authentication) {
 
 		if (!requestRepository.existsById(requestId)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		}
 
 		requestRepository.setRequestState(requestId, RequestState.APPROVED);
+
+		// auditing
+		String action = "اعتماد طلب";
+		StringBuilder details = new StringBuilder("");
+		details.append("لا يوجد");
+		String performedBy = authentication.getName();
+		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
+		auditRepository.save(audit);
 
 	}
 }

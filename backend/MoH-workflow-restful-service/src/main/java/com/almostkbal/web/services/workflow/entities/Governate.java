@@ -38,8 +38,9 @@ public class Governate {
 	private List<City> cities;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name = "zone_id")
+	@JoinColumn(name = "zone_id", nullable = false)
 //	@JsonIgnore
+	@NotNull
 	private Zone zone;
 	
 	public Governate() {

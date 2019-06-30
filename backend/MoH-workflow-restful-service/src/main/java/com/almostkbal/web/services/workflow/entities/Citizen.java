@@ -26,7 +26,7 @@ public class Citizen {
 	@Column(name = "national_id",unique=true,nullable=false)
 	private long nationalId;
 	
-	@Column(name = "citizen_name",nullable=false)
+	@Column(name = "citizen_name", nullable = false)
 	private String name;
 	
 	@Column(name = "birth_date")

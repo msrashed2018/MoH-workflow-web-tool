@@ -1,18 +1,15 @@
 package com.almostkbal.web.services.workflow.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="committee_member")
@@ -24,9 +21,13 @@ public class CommitteeMember {
 	private long id;
 	
 	@Column(name = "member_name",nullable=false)
+	@NotNull
+	@NotBlank
 	private String name;
 	
-	@Column(name = "member_title")
+	@Column(name = "member_title", nullable = false)
+	@NotNull
+	@NotBlank
 	private String title;
 	
 	@Column(name = "member_mobile_no")

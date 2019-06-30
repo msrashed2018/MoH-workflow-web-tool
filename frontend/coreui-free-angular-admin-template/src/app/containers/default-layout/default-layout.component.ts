@@ -1,6 +1,6 @@
 import { Component, OnDestroy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { navItems, adminNavItems } from '../../_nav';
+import { navItems, adminNavItems, cashierNavItems } from '../../_nav';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../../services/authentication/jwt/token-storage.service';
 
@@ -23,8 +23,8 @@ export class DefaultLayoutComponent implements OnDestroy {
     // }
 
 
-    // if(token.getAuthorities().includes("ROLE_ADMIN")){
-    //   this.navItems = adminNavItems;
+    // if(token.getAuthorities().includes("ROLE_CASHIER")){
+    //   this.navItems = cashierNavItems;
     // }
 
 

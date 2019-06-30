@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.Citizen;
 import com.almostkbal.web.services.workflow.exceptions.CitizenValidationException;
+import com.almostkbal.web.services.workflow.repositories.AuditRepository;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 
 //@CrossOrigin(origins="http://192.168.0.100:4200")
@@ -34,6 +37,9 @@ import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 public class CitizenController {
 	@Autowired
 	private CitizenRepository citizenRepository;
+
+	@Autowired
+	private AuditRepository auditRepository;
 
 	@GetMapping("/api/citizens")
 	public Page<Citizen> retrieveAllCitizens(@RequestParam("page") int page, @RequestParam("size") int size) {
@@ -71,28 +77,56 @@ public class CitizenController {
 	}
 
 	@DeleteMapping("/api/citizens/{id}")
-	public void deleteCitizen(@PathVariable long id) {
+	public void deleteCitizen(@PathVariable long id, Authentication authentication) {
 		try {
+			Optional<Citizen> citizen = citizenRepository.findById(id);
+			if (!citizen.isPresent())
+				throw new ResourceNotFoundException("id-" + id);
+			
 			citizenRepository.deleteById(id);
+
+			// auditing
+			String action = "مسح بيانات مواطن";
+			StringBuilder details = new StringBuilder("");
+			details.append(" اسم المواطن : ");
+			details.append(citizen.get().getName());
+			details.append(" الرقم القومي : ");
+			details.append(citizen.get().getNationalId());
+			String performedBy = authentication.getName();
+			Audit audit = new Audit(action, details.toString(), 0l, performedBy);
+			auditRepository.save(audit);
 		} catch (EmptyResultDataAccessException ex) {
 			throw new ResourceNotFoundException("id-" + id);
 		}
 	}
 
 	@PostMapping("/api/citizens")
-	public Object createCitizen(@Valid @RequestBody Citizen citizen) {
+	public Object createCitizen(@Valid @RequestBody Citizen citizen, Authentication authentication) {
 		Citizen savedCitizen = null;
 		try {
 			savedCitizen = citizenRepository.save(citizen);
+
+			// auditing
+			String action = "تسجيل مواطن جديد";
+			StringBuilder details = new StringBuilder("");
+			details.append(" اسم المواطن : ");
+			details.append(savedCitizen.getName());
+			details.append(" الرقم القومي : ");
+			details.append(savedCitizen.getNationalId());
+			String performedBy = authentication.getName();
+			Audit audit = new Audit(action, details.toString(), 0l, performedBy);
+			auditRepository.save(audit);
+
 			return savedCitizen;
 		} catch (DataIntegrityViolationException ex) {
 			throw new CitizenValidationException("هذا الرقم القومي يوجد بالفعل");
-			
+
 		}
 	}
 
 	@PutMapping("/api/citizens/{id}")
-	public ResponseEntity<Citizen> updateCitizen(@PathVariable long id, @Valid @RequestBody Citizen citizen) {
+	public ResponseEntity<Citizen> updateCitizen(@PathVariable long id, @Valid @RequestBody Citizen citizen,
+			Authentication authentication) {
 		Optional<Citizen> existingCitizen = citizenRepository.findById(id);
 
 		if (!existingCitizen.isPresent())
@@ -103,12 +137,23 @@ public class CitizenController {
 
 		try {
 			updatedCitzen = citizenRepository.save(citizen);
+
+			// auditing
+			String action = "تعديل بيانات مواطن";
+			StringBuilder details = new StringBuilder("");
+			details.append(" اسم المواطن : ");
+			details.append(updatedCitzen.getName());
+			details.append(" الرقم القومي : ");
+			details.append(updatedCitzen.getNationalId());
+			String performedBy = authentication.getName();
+			Audit audit = new Audit(action, details.toString(), 0l, performedBy);
+			auditRepository.save(audit);
+
 			return new ResponseEntity<Citizen>(updatedCitzen, HttpStatus.OK);
 		} catch (DataIntegrityViolationException ex) {
 			throw new CitizenValidationException("هذا الرقم القومي يوجد بالفعل");
-			
+
 		}
-		
-		
+
 	}
 }

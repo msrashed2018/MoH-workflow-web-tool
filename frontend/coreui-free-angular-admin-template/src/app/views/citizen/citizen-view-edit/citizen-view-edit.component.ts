@@ -294,15 +294,15 @@ export class CitizenViewEditComponent implements OnInit {
       request.trafficManagement = trafficManagement;
     }
 
-    for(var x =0 ; x< this.requestTypes.length ; x++){
-      if(this.selectedRequestTypeId == this.requestTypes[x].id){
-        if(this.requestTypes[x].name == 'كشف عادي' || this.requestTypes[x].name == 'كشف مستعجل'){
-          request.state = 'PENDING_PAYMENT';
-        }else{
-          request.state = 'PENDING_CONTINUE_REGISTERING';
-        }
-      }
-    }
+    // for(var x =0 ; x< this.requestTypes.length ; x++){
+    //   if(this.selectedRequestTypeId == this.requestTypes[x].id){
+    //     if(this.requestTypes[x].name == 'كشف عادي' || this.requestTypes[x].name == 'كشف مستعجل'){
+    //       request.state = 'PENDING_PAYMENT';
+    //     }else{
+    //       request.state = 'PENDING_CONTINUE_REGISTERING';
+    //     }
+    //   }
+    // }
 
 
     // if(requestType.name == 'كشف عادي' || requestType.name == 'كشف مستعجل'){

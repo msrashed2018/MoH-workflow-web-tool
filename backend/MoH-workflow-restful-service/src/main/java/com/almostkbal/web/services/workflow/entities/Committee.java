@@ -29,7 +29,7 @@ public class Committee {
 	@Column(name = "committee_description")
 	private String description;
 	
-	@Column(name = "committee_date")
+	@Column(name = "committee_date", nullable = false)
 	@JsonFormat(pattern="yyyy-MM-dd")
 //	@FutureOrPresent(message = "هذا التاريخ غير صحيح... اختر تاريخ في المستقبل")
 	private Date date;

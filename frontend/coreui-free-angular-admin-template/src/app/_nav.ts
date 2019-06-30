@@ -1,4 +1,4 @@
-import { REQUEST_TYPES, REQUEST_STATUS, REQUEST_PRICES, GOVERNATES, CITIES, OCCUPATION_TYPES, ZONES, CUSTOMS, DISABILITIES_TYPES, EQUIPMENTS_TYPES, USERS, COUNCILS, CITIZENS, COMMITTEE_MEMBERS, COMMITTEES, EYE_MEASURES, EYE_REVEAL_SETTINGS, REQUESTS, PAYMENTS, REVIEW_REQUESTS, SYSTEM_ADMINISTRATION, CONTINUE_REGISTERING, BONES_REVEAL, EYE_REVEAL, MEDICAL_REVEAL_REGISTRATION, APPROVE_REQUESTS } from './app-words';
+import { REQUEST_TYPES, REQUEST_STATUS, REQUEST_PRICES, GOVERNATES, CITIES, OCCUPATION_TYPES, ZONES, CUSTOMS, DISABILITIES_TYPES, EQUIPMENTS_TYPES, USERS, COUNCILS, CITIZENS, COMMITTEE_MEMBERS, COMMITTEES, EYE_MEASURES, EYE_REVEAL_SETTINGS, REQUESTS, PAYMENTS, REVIEW_REQUESTS, SYSTEM_ADMINISTRATION, CONTINUE_REGISTERING, BONES_REVEAL, EYE_REVEAL, MEDICAL_REVEAL_REGISTRATION, APPROVE_REQUESTS, AUDITS } from './app-words';
 
 interface NavAttributes {
   [propName: string]: any;
@@ -111,18 +111,11 @@ export const adminNavItems: NavData[] = [
   }
 ]
 
-export const xnavItems: NavData[] = [
+export const cashierNavItems: NavData[] = [
  {
-    name: `${SYSTEM_ADMINISTRATION}`,
-    url: '/administration',
-    icon: 'cui-briefcase',
-    children: [
-      {
-        name: `${ZONES}`,
-        url: '/administration/zones',
-        icon: 'icon-star'
-      }
-    ]
+    name: `${PAYMENTS}`,
+    url: '/request/payments',
+    icon: 'cui-dollar',
   }
 ]
 
@@ -256,6 +249,11 @@ export const navItems: NavData[] = [
       {
         name: `${USERS}`,
         url: '/administration/users',
+        icon: 'icon-star'
+      },
+      {
+        name: `${AUDITS}`,
+        url: '/administration/audits',
         icon: 'icon-star'
       }
     ]
