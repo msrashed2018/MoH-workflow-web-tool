@@ -1,6 +1,6 @@
 import { Component, OnDestroy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { navItems, adminNavItems, cashierNavItems } from '../../_nav';
+import {  adminNavItems, cashierNavItems, citizenNavItems, continueRegisteringNavItems, eyeNavItems, bonesNavItems, medicalRegisteringNavItems, reviewNavItems, approveNavItems } from '../../_nav';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../../services/authentication/jwt/token-storage.service';
 
@@ -10,7 +10,7 @@ import { TokenStorageService } from '../../services/authentication/jwt/token-sto
   templateUrl: './default-layout.component.html'
 })
 export class DefaultLayoutComponent implements OnDestroy {
-  public navItems = navItems;
+  public navItems;
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement;
@@ -22,12 +22,27 @@ export class DefaultLayoutComponent implements OnDestroy {
     //   this.navItems = adminNavItems;
     // }
 
-
-    // if(token.getAuthorities().includes("ROLE_CASHIER")){
-    //   this.navItems = cashierNavItems;
-    // }
-
-
+    if(token.getAuthorities().includes("ROLE_ADMIN")){
+      this.navItems = adminNavItems;
+    }else if(token.getAuthorities().includes("ROLE_CITIZEN")){
+      this.navItems = citizenNavItems;
+    }else if(token.getAuthorities().includes("ROLE_CASHIER")){
+      this.navItems = cashierNavItems;
+    }else if(token.getAuthorities().includes("ROLE_CONTINUE_REGISTERING")){
+      this.navItems = continueRegisteringNavItems;
+    }else if(token.getAuthorities().includes("ROLE_EYE")){
+      this.navItems = eyeNavItems;
+    }else if(token.getAuthorities().includes("ROLE_BONES")){
+      this.navItems = bonesNavItems;
+    }else if(token.getAuthorities().includes("ROLE_MEDICAL_REGISTERING")){
+      this.navItems = medicalRegisteringNavItems;
+    }else if(token.getAuthorities().includes("ROLE_REQUESTS_REVIEWER")){
+      this.navItems = reviewNavItems;
+    }else if(token.getAuthorities().includes("ROLE_REQUESTS_APPROVER")){
+      this.navItems = approveNavItems;
+    }else{
+      console.log("user has no authorities for any app pages")
+    }
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = _document.body.classList.contains('sidebar-minimized');
     });

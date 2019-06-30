@@ -30,92 +30,14 @@ export interface NavData {
   label?: NavLabel;
   wrapper?: NavWrapper;
 }
-export const adminNavItems: NavData[] = [
-  
-  {
-    name: 'ادارة النظام',
-    url: '/administration',
-    icon: 'cui-briefcase',
-    children: [
-      {
-        name: `${COMMITTEE_MEMBERS}`,
-        url: '/administration/committee-members',
-        icon: 'icon-star'
-      },
-      {
-        name: `${COMMITTEES}`,
-        url: '/administration/committees',
-        icon: 'icon-star'
-      },
-      {
-        name: `${REQUEST_TYPES}`,
-        url: '/administration/types',
-        icon: 'icon-star'
-      },
-      {
-        name: `${REQUEST_STATUS}`,
-        url: '/administration/request-status',
-        icon: 'icon-star'
-      },
-      {
-        name: `${EYE_REVEAL_SETTINGS}`,
-        url: '/administration/eye-reveal-settings',
-        icon: 'icon-star'
-      },
-      {
-        name: `${EYE_MEASURES}`,
-        url: '/administration/eye-measures',
-        icon: 'icon-star'
-      },
-      {
-        name: `${GOVERNATES}`,
-        url: '/administration/governates',
-        icon: 'icon-star'
-      },
-      {
-        name: `${CITIES}`,
-        url: '/administration/cities',
-        icon: 'icon-star'
-      },
-      {
-        name: `${OCCUPATION_TYPES}`,
-        url: '/administration/occupations',
-        icon: 'icon-star'
-      },
-      {
-        name: `${ZONES}`,
-        url: '/administration/zones',
-        icon: 'icon-star'
-      },
-      {
-        name: `${CUSTOMS}`,
-        url: '/administration/customs',
-        icon: 'icon-star'
-      },
-      {
-        name: `${DISABILITIES_TYPES}`,
-        url: '/administration/disabilities',
-        icon: 'icon-star'
-      },
-      {
-        name: `${EQUIPMENTS_TYPES}`,
-        url: '/administration/equipments',
-        icon: 'icon-star'
-      },
-      {
-        name: `${DOCUMENT_TYPES}`,
-        url: '/administration/document-types',
-        icon: 'icon-star'
-      },
-      {
-        name: `${USERS}`,
-        url: '/administration/users',
-        icon: 'icon-star'
-      }
-    ]
-  }
-]
 
+export const citizenNavItems: NavData[] = [
+  {
+    name:  `${CITIZENS}`,
+    url: '/citizen/search',
+    icon: 'cui-people',
+  }
+ ]
 export const cashierNavItems: NavData[] = [
  {
     name: `${PAYMENTS}`,
@@ -123,11 +45,55 @@ export const cashierNavItems: NavData[] = [
     icon: 'cui-dollar',
   }
 ]
+export const eyeNavItems: NavData[] = [
+  {
+    name: `${EYE_REVEAL}`,
+    url: '/request/eye-reveal',
+    icon: 'cui-dollar',
+  }
+ ]
+export const bonesNavItems: NavData[] = [
+  {
+    name: `${BONES_REVEAL}`,
+    url: '/request/bones-reveal',
+    icon: 'cui-dollar',
+  }
+ ]
+
+ export const continueRegisteringNavItems: NavData[] = [
+  {
+    name: `${CONTINUE_REGISTERING}`,
+    url: '/request/continue-registering',
+    icon: 'cui-dollar',
+  }
+ ]
+
+ export const medicalRegisteringNavItems: NavData[] = [
+  {
+    name: `${MEDICAL_REVEAL_REGISTRATION}`,
+    url: '/request/medical-reveals',
+    icon: 'cui-dollar',
+  }
+ ]
+ export const reviewNavItems: NavData[] = [
+  {
+    name: `${REVIEW_REQUESTS}`,
+    url: '/request/review-requests',
+    icon: 'icon-layers',
+  }
+ ]
+
+ export const approveNavItems: NavData[] = [
+  {
+    name: `${APPROVE_REQUESTS}`,
+    url: '/request/approve-requests',
+    icon: 'icon-layers',
+  }
+ ]
 
 
 
-
-export const navItems: NavData[] = [
+export const adminNavItems: NavData[] = [
   {
     name:  `${CITIZENS}`,
     url: '/citizen/search',
