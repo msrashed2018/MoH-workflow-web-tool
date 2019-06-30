@@ -121,8 +121,8 @@ public class EyeRevealController {
 		// auditing
 		String action = "تسجيل بيانات كشف رمد";
 		StringBuilder details = new StringBuilder("");
-		details.append("نتيجة الكشف : ");
-		details.append(savedEyeReveal.getResult());
+		details.append("نتيجة الكشف");
+		details.append(" : "+ savedEyeReveal.getResult());
 		String performedBy = authentication.getName();
 		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
 		auditRepository.save(audit);

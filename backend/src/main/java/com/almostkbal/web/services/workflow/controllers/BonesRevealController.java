@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class BonesRevealController {
 	}
 
 	@PostMapping("/api/requests/{id}/bones-reveal")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EYE')")
 	public ResponseEntity<BonesReveal> addRequestBonesReveal(@PathVariable long id,
 			@Valid @RequestBody BonesReveal bonesReveal, Authentication authentication) {
 
@@ -82,7 +84,7 @@ public class BonesRevealController {
 		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
 
 	}
-
+//	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MEDICAL_REGISTERING')")
 	@PutMapping("/api/requests/{requestId}/bones-reveal/{bonesRevealId}")
 	public ResponseEntity<BonesReveal> updateRequestBonesReveal(@PathVariable long requestId,
 			@PathVariable long bonesRevealId, @Valid @RequestBody BonesReveal bonesReveal, Authentication authentication) {
@@ -105,14 +107,14 @@ public class BonesRevealController {
 		String action = "تسجيل بيانات كشف عظام";
 		StringBuilder details = new StringBuilder("");
 		if(savedBonesReveal.getDisability() != null) {
-			details.append("نوع الاعاقة : ");
-			details.append(savedBonesReveal.getDisability().getName());
+			details.append(" نوع الاعاقة ");
+			details.append(" : "+ savedBonesReveal.getDisability().getName());
 			
-			details.append("نوع التجهيزة : ");
-			details.append(savedBonesReveal.getDisability().getEquipment().getName());
+			details.append(" نوع التجهيزة ");
+			details.append(" : "+ savedBonesReveal.getDisability().getEquipment().getName());
 		}
-		details.append("نتيجة الكشف : ");
-		details.append(savedBonesReveal.getResult());
+		details.append(" نتيجة الكشف ");
+		details.append(" : "+ savedBonesReveal.getResult());
 		String performedBy = authentication.getName();
 		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
 		auditRepository.save(audit);

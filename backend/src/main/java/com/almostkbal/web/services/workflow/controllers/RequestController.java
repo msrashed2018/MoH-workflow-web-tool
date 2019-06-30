@@ -60,7 +60,6 @@ public class RequestController {
 
 	@GetMapping("/api/requests")
 	public Page<Request> retrieveAllRequests(@RequestParam("page") int page, @RequestParam("size") int size) {
-		System.out.println("\n\nretrieveAllRequests\n\n");
 		return requestRepository.findAll(PageRequest.of(page, size, Sort.by("requestDate").descending()));
 	}
 
@@ -178,12 +177,12 @@ public class RequestController {
 		// auditing
 		String action = "مسح طلب";
 		StringBuilder details = new StringBuilder("");
-		details.append(" نوع الطلب : ");
-		details.append(request.get().getRequestType().getName());
+		details.append(" نوع الطلب ");
+		details.append(" : " + request.get().getRequestType().getName());
 
 		if (request.get().getRequestStatus() != null) {
-			details.append(" نتيجة الطلب : ");
-			details.append(request.get().getRequestStatus().getName());
+			details.append(" نتيجة الطلب");
+			details.append(" : " + request.get().getRequestStatus().getName());
 		}
 		String performedBy = authentication.getName();
 		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
@@ -282,17 +281,17 @@ public class RequestController {
 		String action = "استكمال بيانات طلب";
 		StringBuilder details = new StringBuilder("");
 
-		details.append(" : نوع الطلب");
-		details.append(updatedRequest.getRequestType().getName());
+		details.append(" نوع الطلب ");
+		details.append((" : " + updatedRequest.getRequestType().getName()));
 
 		if (updatedRequest.getBonesCommittee() != null) {
-			details.append(" : ميعاد لجنة العظام");
-			details.append(updatedRequest.getBonesCommittee().getDate().toString());
+			details.append(" ميعاد لجنة العظام  ");
+			details.append(" : " + updatedRequest.getBonesCommittee().getDate().toString());
 		}
 
 		if (request.getEyeCommittee() != null) {
-			details.append(" : ميعاد لجنة الرمد");
-			details.append(updatedRequest.getEyeCommittee().getDate().toString());
+			details.append("  ميعاد لجنة الرمد  ");
+			details.append(" : " + updatedRequest.getEyeCommittee().getDate().toString());
 		}
 		String performedBy = authentication.getName();
 		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
@@ -317,8 +316,8 @@ public class RequestController {
 		// auditing
 		String action = "تعديل نتيجة طلب";
 		StringBuilder details = new StringBuilder("");
-		details.append(" : نتيجة الطلب");
-		details.append(requestStatus.getName());
+		details.append("نتيجة الطلب");
+		details.append(" : " + requestStatus.getName());
 		String performedBy = authentication.getName();
 		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
 		auditRepository.save(audit);

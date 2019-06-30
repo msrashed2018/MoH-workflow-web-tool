@@ -1,7 +1,5 @@
 package com.almostkbal.web.services.workflow.controllers;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,10 +75,10 @@ public class RequestPaymentController {
 		// auditing
 		String action = "تسجيل مدفوعات طلب";
 		StringBuilder details = new StringBuilder("");
-		details.append("المبلغ :");
-		details.append(savedRequestPayment.getPrice());
-		details.append("رقم الايصال :");
-		details.append(savedRequestPayment.getReceiptSerialNumber());
+		details.append(" المبلغ ");
+		details.append(" : "+ savedRequestPayment.getPrice());
+		details.append(" رقم الايصال ");
+		details.append(" : "+ savedRequestPayment.getReceiptSerialNumber());
 		String performedBy = authentication.getName();
 		Audit audit = new Audit(action, details.toString(), id, performedBy);
 		auditRepository.save(audit);
