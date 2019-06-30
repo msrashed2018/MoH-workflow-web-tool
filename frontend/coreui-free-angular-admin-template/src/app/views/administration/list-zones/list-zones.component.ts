@@ -6,7 +6,6 @@ import { FormBuilder } from '@angular/forms';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
-import *  as jsPDF from "jspdf"
 import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
 
 
@@ -106,28 +105,6 @@ export class ListZonesComponent implements OnInit {
 
 
 
-
-  downloadPdf(){
-    const doc = new jsPDF() ;
-    let specialElementHandlers = {
-      '#editor': function(element, renderer){
-        return true;
-      }
-    };
-
-    let content = this.content.nativeElement;
-    doc.fromHTML(content.innerHTML,15,15,{
-      'width': 190,
-      'elementHandlers': specialElementHandlers
-    });
-    // doc.setFontSize(40)
-    // doc.text('hello js pdf',15,15);
-
-    // doc.text(35, 25, 'Paranyan loves jsPDF')
-    // doc.addImage(imgData, 'JPEG', 15, 40, 180, 160)
-
-    doc.save('first.pdf')
-  }
 
   print(): void {
     let printContents, popupWin;
