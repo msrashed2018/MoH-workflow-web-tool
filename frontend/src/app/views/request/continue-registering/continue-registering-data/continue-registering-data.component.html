@@ -269,7 +269,7 @@
                                 <alert type="success"> {{medicalRevealSuccessMessage}} </alert>
                             </div>
                             <button (click)="onSaveMedicalReveal()" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> حفظ</button>
-                            <button (click)="print()" class="btn btn-sm btn-success"><i class="fa fa-print"></i> طباعة الكشف</button>
+                            <button [disabled]="!printEnabled" (click)="print()" class="btn btn-sm btn-success"><i class="fa fa-print"></i> طباعة الكشف</button>
                         </div>
                         <!-- </form> -->
                     </div>
