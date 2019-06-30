@@ -1,4 +1,4 @@
-import { REQUEST_TYPES, REQUEST_STATUS, REQUEST_PRICES, GOVERNATES, CITIES, OCCUPATION_TYPES, ZONES, CUSTOMS, DISABILITIES_TYPES, EQUIPMENTS_TYPES, USERS, COUNCILS, CITIZENS, COMMITTEE_MEMBERS, COMMITTEES, EYE_MEASURES, EYE_REVEAL_SETTINGS, REQUESTS, PAYMENTS, REVIEW_REQUESTS, SYSTEM_ADMINISTRATION, CONTINUE_REGISTERING, BONES_REVEAL, EYE_REVEAL, MEDICAL_REVEAL_REGISTRATION, APPROVE_REQUESTS, AUDITS } from './app-words';
+import { REQUEST_TYPES, REQUEST_STATUS, REQUEST_PRICES, GOVERNATES, CITIES, OCCUPATION_TYPES, ZONES, CUSTOMS, DISABILITIES_TYPES, EQUIPMENTS_TYPES, USERS, COUNCILS, CITIZENS, COMMITTEE_MEMBERS, COMMITTEES, EYE_MEASURES, EYE_REVEAL_SETTINGS, REQUESTS, PAYMENTS, REVIEW_REQUESTS, SYSTEM_ADMINISTRATION, CONTINUE_REGISTERING, BONES_REVEAL, EYE_REVEAL, MEDICAL_REVEAL_REGISTRATION, APPROVE_REQUESTS, AUDITS, DOCUMENT_TYPES } from './app-words';
 
 interface NavAttributes {
   [propName: string]: any;
@@ -100,6 +100,11 @@ export const adminNavItems: NavData[] = [
       {
         name: `${EQUIPMENTS_TYPES}`,
         url: '/administration/equipments',
+        icon: 'icon-star'
+      },
+      {
+        name: `${DOCUMENT_TYPES}`,
+        url: '/administration/document-types',
         icon: 'icon-star'
       },
       {
@@ -249,6 +254,11 @@ export const navItems: NavData[] = [
       {
         name: `${USERS}`,
         url: '/administration/users',
+        icon: 'icon-star'
+      },
+      {
+        name: `${DOCUMENT_TYPES}`,
+        url: '/administration/document-types',
         icon: 'icon-star'
       },
       {

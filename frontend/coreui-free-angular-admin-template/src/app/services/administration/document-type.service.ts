@@ -12,28 +12,28 @@ export class DocumentTypeService {
     private http:HttpClient
   ) { }
 
-  retrieveAllDocumentType() {
-    return this.http.get<DocumentType[]>(`${API_URL}/document-type`);
+  retrieveAllDocumentTypes(page,size) {
+    return this.http.get<DocumentType[]>(`${API_URL}/document-types?page=${page}&size=${size}`);
 
   }
 
   deleteDocumentType(id){
-    return this.http.delete(`${API_URL}/document-type/${id}`);
+    return this.http.delete(`${API_URL}/document-types/${id}`);
   }
 
   retrieveDocumentType(id){
-    return this.http.get<DocumentType>(`${API_URL}/document-type/${id}`);
+    return this.http.get<DocumentType>(`${API_URL}/document-types/${id}`);
   }
 
   updateDocumentType(id, documentType){
     return this.http.put(
-          `${API_URL}/document-type/${id}`
+          `${API_URL}/document-types/${id}`
                 , documentType);
   }
 
   createDocumentType(documentType){
     return this.http.post(
-              `${API_URL}/document-type`
+              `${API_URL}/document-types`
                 , documentType);
   }
 }

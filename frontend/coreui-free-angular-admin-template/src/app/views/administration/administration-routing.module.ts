@@ -45,6 +45,9 @@ import { CityViewEditComponent } from './list-cities/city-view-edit/city-view-ed
 import { GovernateDataComponent } from './list-governates/governate-data/governate-data.component';
 import { GovernateViewEditComponent } from './list-governates/governate-view-edit/governate-view-edit.component';
 import { AuditListComponent } from './audit-list/audit-list.component';
+import { ListDocumentTypesComponent } from './list-document-types/list-document-types.component';
+import { DocumentTypeDataComponent } from './list-document-types/document-type-data/document-type-data.component';
+import { DocumentTypeViewEditComponent } from './list-document-types/document-type-view-edit/document-type-view-edit.component';
 
 const routes: Routes = [
   {
@@ -298,6 +301,26 @@ const routes: Routes = [
         component: UserViewEditComponent,
         data: {
           title: 'Users'
+        }
+      },
+      {
+        path: 'document-types',
+        component: ListDocumentTypesComponent,
+        data: {
+          title: 'Document Types'
+        }
+      },
+      {
+        path: 'document-type-data',
+        component: DocumentTypeDataComponent,
+        data: {
+          title: 'Document Type Data'
+        }
+      },{
+        path: 'document-types/:id',
+        component: DocumentTypeViewEditComponent,
+        data: {
+          title: 'Document Types'
         }
       },
       {
