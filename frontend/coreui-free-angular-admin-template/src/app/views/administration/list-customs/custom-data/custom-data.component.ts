@@ -35,7 +35,7 @@ export class CustomDataComponent implements OnInit {
         this.router.navigateByUrl("/administration/customs");
       },
       error => {
-        if(error.error.message.includes('Unique index or primary key violation')){
+        if(error.error.message.includes('unique constraint') || error.error.message.includes('Unique index or primary key violation')){
           this.errorMessage = "بالفعل تم تسجيل هذا الجمرك من قبل";
         }else{
           this.errorMessage = error.error.message;

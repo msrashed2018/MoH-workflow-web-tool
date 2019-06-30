@@ -52,7 +52,7 @@ export class DisabilityDataComponent implements OnInit {
           this.router.navigateByUrl("/administration/disabilities");
         },
         error => {
-          if(error.error.message.includes('Unique index or primary key violation')){
+          if(error.error.message.includes('unique constraint') || error.error.message.includes('Unique index or primary key violation')){
             this.errorMessage = "بالفعل تم تسجيل هذا الاعاقة من قبل";
           }else{
             this.errorMessage = error.error.message;

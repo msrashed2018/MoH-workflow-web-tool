@@ -43,7 +43,7 @@ export class GovernateDataComponent implements OnInit {
         this.router.navigateByUrl("/administration/governates");
       },
       error => {
-        if(error.error.message.includes('Unique index or primary key violation')){
+        if(error.error.message.includes('unique constraint') || error.error.message.includes('Unique index or primary key violation')){
           this.errorMessage = "بالفعل تم تسجيل هذا المحافظة من قبل";
         }else{
           this.errorMessage = error.error.message;

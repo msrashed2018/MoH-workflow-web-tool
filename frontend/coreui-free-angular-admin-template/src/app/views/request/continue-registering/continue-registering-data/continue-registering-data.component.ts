@@ -16,6 +16,8 @@ import { Request } from '../../../../model/request.model';
 import { API_URL } from '../../../../app.constants';
 import { ActivatedRoute } from '@angular/router';
 import { Citizen } from '../../../../model/citizen.model';
+import { DocumentTypeService } from '../../../../services/administration/document-type.service';
+import { DocumentType } from '../../../../model/document-type.model';
 
 @Component({
   selector: 'app-continue-registering-data',
@@ -43,6 +45,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
   eyeCommittee = new Committee();
   bonesCommittee = new Committee();
   committees : Committee[];
+  
   eyeCommittees : Committee[];
   bonesCommittees : Committee[];
   selectedEyeCommitteeId: number = 0;
@@ -56,6 +59,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
   successMessage : boolean = false;
   message: string = "";
   //file upload fields---------------------------------------------------------------------------------------
+  documentTypes : DocumentType[];
   showFile = false
   fileUploadErrorMessage : string;
   fileUploads: Map<string, string> = new Map<string, string>();
@@ -67,7 +71,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
   progress: { percentage: number } = { percentage: 0 }
   //---------------------------------------------------------------------------------------------------------
 
-  constructor(private route:ActivatedRoute, private formBuilder: FormBuilder, private committeeService:CommitteeService, private disabilityService:DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
+  constructor(private documentTypeService: DocumentTypeService, private route:ActivatedRoute, private formBuilder: FormBuilder, private committeeService:CommitteeService, private disabilityService:DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
 
   ngOnInit() {
     this.route.params.forEach((urlParams) => {
@@ -147,6 +151,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
 // file upload methods--------------------------------------------------------------------------------------
   showFiles(enable: boolean) {
     this.showFile = enable
+    // this.getDocumentsTypes();
     if (enable) {
       this.requestService.getFiles(this.request.id, 'PERSONAL').subscribe(
         result =>{
@@ -162,6 +167,17 @@ export class ContinueRegisteringDataComponent implements OnInit {
       )
     }
   }
+
+  // getDocumentsTypes(){
+  //   this.documentTypeService.retrieveAllDocumentType().subscribe(
+  //     result =>{
+  //       this.documentTypes = result as DocumentType[];
+  //     },
+  //     error =>{
+  //       console.log('oops', error.error)
+  //     }
+  //   )
+  // }
   selectFile(event) {
     this.selectedFiles = event.target.files;
     this.uploading = false;
