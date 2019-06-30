@@ -110,12 +110,10 @@ public class User {
 	}
 	
 	public Zone getZone() {
-		System.out.println("\n\n Getting Zone\n\n");
 		return zone;
 	}
 
 	public void setZone(Zone zone) {
-		System.out.println("\n\n Setting Zone Zone\n\n");
 		this.zone = zone;
 	}
 
