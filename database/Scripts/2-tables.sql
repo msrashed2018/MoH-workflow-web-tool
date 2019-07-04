@@ -92,7 +92,7 @@
 --------------------------------------------------------
 
   CREATE TABLE "MOH_WORKFLOW_SCHEMA"."EQUIPMENT" 
-   (	"EQUIPMENT_ID" NUMBER DEFAULT, 
+   (	"EQUIPMENT_ID" NUMBER, 
 	"EQUIPMENT_NAME" VARCHAR2(355 BYTE), 
 	"EQUIPMENT_DESCRIPTION" VARCHAR2(355 BYTE)
    );
@@ -238,7 +238,7 @@
 
   CREATE TABLE "MOH_WORKFLOW_SCHEMA"."SYSTEM_ROLE" 
    (	"ROLE_ID" NUMBER, 
-	"ROLE_NAME" VARCHAR2(50 BYTE), 
+	"ROLE_NAME" VARCHAR2(150 BYTE), 
 	"ROLE_DESCRIPTION" VARCHAR2(255 BYTE)
    );
 --------------------------------------------------------
@@ -266,7 +266,7 @@
 --------------------------------------------------------
 
   CREATE TABLE "MOH_WORKFLOW_SCHEMA"."USER_ROLES" 
-   (	"ID" NUMBER, 
+   (	
 	"USER_ID" NUMBER, 
 	"ROLE_ID" NUMBER
    );

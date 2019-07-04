@@ -169,11 +169,6 @@
 
   CREATE UNIQUE INDEX "MOH_WORKFLOW_SCHEMA"."SYSTEM_USER_PK" ON "MOH_WORKFLOW_SCHEMA"."SYSTEM_USER" ("USER_ID");
 --------------------------------------------------------
---  DDL for Index SYSTEM_USER_ROLES_PK
---------------------------------------------------------
-
-  CREATE UNIQUE INDEX "MOH_WORKFLOW_SCHEMA"."SYSTEM_USER_ROLES_PK" ON "MOH_WORKFLOW_SCHEMA"."USER_ROLES" ("ID");
---------------------------------------------------------
 --  DDL for Index SYSTEM_USER_UK1
 --------------------------------------------------------
 

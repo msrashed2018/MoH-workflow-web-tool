@@ -225,12 +225,8 @@
 --  Constraints for Table USER_ROLES
 --------------------------------------------------------
 
-  ALTER TABLE "MOH_WORKFLOW_SCHEMA"."USER_ROLES" MODIFY ("ID" NOT NULL ENABLE);
   ALTER TABLE "MOH_WORKFLOW_SCHEMA"."USER_ROLES" MODIFY ("USER_ID" NOT NULL ENABLE);
   ALTER TABLE "MOH_WORKFLOW_SCHEMA"."USER_ROLES" MODIFY ("ROLE_ID" NOT NULL ENABLE);
-  ALTER TABLE "MOH_WORKFLOW_SCHEMA"."USER_ROLES" ADD CONSTRAINT "USER_ROLES_PK" PRIMARY KEY ("ID")
-  USING INDEX (CREATE UNIQUE INDEX "MOH_WORKFLOW_SCHEMA"."SYSTEM_USER_ROLES_PK" ON "MOH_WORKFLOW_SCHEMA"."USER_ROLES" ("ID") 
-  )  ENABLE;
 --------------------------------------------------------
 --  Constraints for Table ZONE
 --------------------------------------------------------
