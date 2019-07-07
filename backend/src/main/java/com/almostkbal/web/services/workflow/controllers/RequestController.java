@@ -222,7 +222,7 @@ public class RequestController {
 		if (requestType.get().getPrice() > 0) {
 			RequestPayment requestPayment = new RequestPayment();
 			requestPayment.setPrice(requestType.get().getPrice());
-			requestPayment.setReceiptSerialNumber("");
+			requestPayment.setReceiptSerialNumber("0");
 			request.setState(RequestState.PENDING_PAYMENT);
 			savedRequest = requestRepository.save(request);
 			requestPayment.setRequest(savedRequest);
