@@ -24,8 +24,6 @@ public class Zone {
 	private long id;
 	
 	@Column(name = "zone_name", nullable = false, unique = true)
-	@NotNull(message = "لابد من  ادخال اسم المقر")
-
 	private String name;
 	
 	@Column(name = "zone_description")

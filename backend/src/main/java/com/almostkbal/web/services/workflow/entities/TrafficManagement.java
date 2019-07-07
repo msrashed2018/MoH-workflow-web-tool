@@ -19,8 +19,6 @@ public class TrafficManagement {
 	private int id;
 	
 	@Column(name = "traffic_name", nullable = false, unique = true)
-	@NotNull
-	@NotBlank
 	private String name;
 	
 	@Column(name = "traffic_description")

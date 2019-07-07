@@ -18,7 +18,6 @@ public class Occupation {
 	private int id;
 	
 	@Column(name = "occupation_name", nullable = false, unique = true)
-	@NotNull
 	private String name;
 	
 	@Column(name = "occupation_description")

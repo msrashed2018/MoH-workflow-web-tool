@@ -19,7 +19,6 @@ public class FileType {
 	private long id;
 	
 	@Column(name = "document_type_name", nullable = false, unique = true)
-	@NotNull(message = "لابد من ادخال نوع الملف")
 //	@NotBlank(message = "لابد من ادخال نوع الملف")
 	private String type;
 	

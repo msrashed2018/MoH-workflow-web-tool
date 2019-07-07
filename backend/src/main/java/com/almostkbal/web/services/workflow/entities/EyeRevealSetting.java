@@ -22,15 +22,11 @@ public class EyeRevealSetting {
 	
 	@OneToOne
 	@JoinColumn(name = "right_measure_id", nullable = false)
-	@NotNull
-	@NotBlank
 	private EyeMeasure rightMeasure;
 	
 	
 	@OneToOne
 	@JoinColumn(name = "left_measure_id", nullable = false)
-	@NotNull
-	@NotBlank
 	private EyeMeasure leftMeasure;
 	
 	@Column(name = "use_glasses")
@@ -43,8 +39,6 @@ public class EyeRevealSetting {
 	private byte squint = 0;
 
 	@Column(name = "setting_result", nullable = false)
-	@NotNull
-	@NotBlank
 	private String result;
 	
 	@Column(name = "setting_description")

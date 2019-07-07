@@ -18,7 +18,6 @@ public class EyeMeasure {
 	private int id;
 	
 	@Column(name = "MEASURE_TITLE", nullable = false, unique = true)
-	@NotNull
 	private String title;
 	
 	@Column(name = "MEASURE_DESCRIPTION")

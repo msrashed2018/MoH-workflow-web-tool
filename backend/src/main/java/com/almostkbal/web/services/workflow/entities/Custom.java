@@ -18,7 +18,6 @@ public class Custom {
 	private int id;
 	
 	@Column(name = "custom_name", nullable = false, unique = true)
-	@NotNull
 	private String name;
 	
 	@Column(name = "custom_description")

@@ -29,7 +29,6 @@ public class RequestPayment {
 	private int id;
 	
 	@Column(name = "receipt_serial_no", nullable = false)
-	@NotNull
 	private String receiptSerialNumber;
 	
 	@Column(name = "payment_done")

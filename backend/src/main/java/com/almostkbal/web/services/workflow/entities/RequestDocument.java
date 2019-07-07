@@ -28,15 +28,12 @@ public class RequestDocument {
 	private long id;
 	
 	@Column(name = "name",nullable=false)
-	@NotNull
 	private String name;
 
 	@Enumerated(EnumType.STRING)
-	@NotNull
 	private DocumentType type;
 
 	@Column(name = "path", nullable = false)
-	@NotNull
 	private String path;
 
 	@ManyToOne(fetch=FetchType.LAZY)

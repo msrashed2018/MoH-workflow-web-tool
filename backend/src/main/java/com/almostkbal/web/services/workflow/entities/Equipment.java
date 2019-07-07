@@ -18,7 +18,6 @@ public class Equipment {
 	private int id;
 	
 	@Column(name = "EQUIPMENT_NAME", nullable = false, unique = true)
-	@NotNull
 	private String name;
 	
 	@Column(name = "EQUIPMENT_DESCRIPTION")

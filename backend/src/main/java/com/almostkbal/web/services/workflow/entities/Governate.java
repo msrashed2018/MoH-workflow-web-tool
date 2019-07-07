@@ -26,11 +26,9 @@ public class Governate {
 	private int id;
 	
 	@Column(name = "governate_name", nullable = false, unique = true)
-	@NotNull
 	private String name;
 	
 	@Column(name = "governate_code", nullable = false, unique = true)
-	@NotNull
 	private int code;
 	
 	@OneToMany(mappedBy = "governate",fetch=FetchType.LAZY)
@@ -40,7 +38,6 @@ public class Governate {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "zone_id", nullable = false)
 //	@JsonIgnore
-	@NotNull
 	private Zone zone;
 	
 	public Governate() {

@@ -21,13 +21,10 @@ public class CommitteeMember {
 	private long id;
 	
 	@Column(name = "member_name",nullable=false)
-	@NotNull
 	@NotBlank
 	private String name;
 	
 	@Column(name = "member_title", nullable = false)
-	@NotNull
-	@NotBlank
 	private String title;
 	
 	@Column(name = "member_mobile_no")

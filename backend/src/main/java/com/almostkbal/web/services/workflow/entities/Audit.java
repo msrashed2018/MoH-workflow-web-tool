@@ -19,7 +19,6 @@ public class Audit {
 	private long id;
 
 	@Column(name = "action", nullable = false)
-	@NotNull
 	private String action;
 
 	@Column(name = "details")

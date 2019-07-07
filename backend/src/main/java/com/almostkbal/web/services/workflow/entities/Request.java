@@ -41,7 +41,6 @@ public class Request {
 
 	@OneToOne
 	@JoinColumn(name = "request_type_id", nullable = false)
-	@NotNull
 	private RequestType requestType;
 	
 	

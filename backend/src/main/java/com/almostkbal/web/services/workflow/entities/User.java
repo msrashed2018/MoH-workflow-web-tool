@@ -31,12 +31,10 @@ public class User {
 	private String username;
 	
 	@Column(name = "password", nullable = false)
-	@NotNull
 	private String password;
 	
 	@OneToOne
 	@JoinColumn(name = "zone_id", nullable = false)
-	@NotNull(message = "لابد من تسجيل المقر")
 	private Zone zone;
 	
 	@Column(name = "created_date")

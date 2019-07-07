@@ -18,7 +18,6 @@ public class RequestStatus {
 	private int id;
 	
 	@Column(name = "REQUEST_STATUS_NAME", unique = true, nullable = false)
-	@NotNull
 	private String name;
 	
 	@Column(name = "REQUEST_STATUS_DESCRIPTION")

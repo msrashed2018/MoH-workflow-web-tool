@@ -22,14 +22,11 @@ public class City {
 	private int id;
 	
 	@Column(name = "city_name", nullable = false, unique = true)
-	@NotNull
-	@NotBlank
 	private String name;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "governate_id", nullable = false)
 //	@JsonIgnore
-	@NotNull
 	private Governate governate;
 	
 	public City() {

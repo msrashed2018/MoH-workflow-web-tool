@@ -20,7 +20,6 @@ public class Disability {
 	private int id;
 	
 	@Column(name = "disability_name", nullable = false, unique = true)
-	@NotNull
 	private String name;
 	
 	@Column(name = "disability_description")
@@ -28,11 +27,9 @@ public class Disability {
 	
 	@OneToOne
 	@JoinColumn(name = "equipment_id", nullable = false)
-	@NotNull
 	private Equipment equipment;
 	
 	@Column(name = "accepted", nullable = false)
-	@NotNull
 	private byte accepted;
 	
 	public Disability() {

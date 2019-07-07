@@ -23,7 +23,6 @@ public class Role {
 	private long id;
 	
 	@Column(name = "role_name", nullable = false, unique = true)
-	@NotNull
 	private String name;
 	
 	@Column(name = "role_description")

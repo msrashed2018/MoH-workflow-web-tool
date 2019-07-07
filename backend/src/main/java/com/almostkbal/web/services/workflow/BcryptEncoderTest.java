@@ -6,10 +6,10 @@ public class BcryptEncoderTest {
 
 	public static void main(String[] args) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		
+
 		String encodedString = encoder.encode("cashier");
-			System.out.println(encodedString);
-		
+		System.out.println(encodedString);
+
 		// TODO Auto-generated method stub
 
 	}
