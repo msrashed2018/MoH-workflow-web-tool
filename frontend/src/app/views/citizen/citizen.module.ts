@@ -9,10 +9,11 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { CitizenViewEditComponent } from './citizen-view-edit/citizen-view-edit.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
+import { CitizenRequestsComponent } from './citizen-requests/citizen-requests.component';
 
 
 @NgModule({
-  declarations: [ListCitizensComponent, CitizenComponent, CitizenViewEditComponent],
+  declarations: [ListCitizensComponent, CitizenComponent, CitizenViewEditComponent, CitizenRequestsComponent],
   imports: [
     CommonModule,
     AlertModule,

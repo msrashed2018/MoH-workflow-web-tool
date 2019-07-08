@@ -7,6 +7,7 @@ import * as moment from  'moment';
 import { Router } from '@angular/router';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
+import { TokenStorageService } from '../../../services/authentication/jwt/token-storage.service';
 
 
 @Component({
@@ -18,8 +19,9 @@ export class ListCitizensComponent implements OnInit {
   searchByID: string = '';
   private citizens: Citizen[];
   private noDataFound: boolean = false;
+  private isAdmin: boolean = false;
   private errorMessage: boolean = false;
-  constructor( private confirmationModalService: ConfirmModalService, private citizenService: CitizenService, private router : Router, private datepipe: DatePipe) { }
+  constructor( private tokenStorageService: TokenStorageService, private confirmationModalService: ConfirmModalService, private citizenService: CitizenService, private router : Router, private datepipe: DatePipe) { }
   page: number = 0;
   pages: Array<number>;
   items: number = 0;
@@ -48,18 +50,19 @@ export class ListCitizensComponent implements OnInit {
     }
   }
   ngOnInit() {
+    this.isAdmin = this.tokenStorageService.hasAdminRole();
     this.citizens = [];
     this.retriveAllCitizens();
   }
   searchchanged(event: Event) {
-    this.citizens = [];
+    // this.citizens = [];
     this.errorMessage = false;
     this.noDataFound = false;
 
     this.citizenService.findCitizen(this.searchByID)
       .subscribe(
         result => {
-          if (typeof result !== 'undefined' && result !== null) {
+          if (typeof result !== 'undefined' && result !== null && result.length!=0) {
             this.noDataFound = false;
             this.citizens = result;
           }else{
@@ -115,7 +118,17 @@ export class ListCitizensComponent implements OnInit {
       }
     })
   }
-
+  onNewRequest(id) {
+    let citizenName = "";
+    this.citizens.forEach(
+      citizen =>{
+        if(citizen.id == id){
+          citizenName = citizen.name;
+        }
+      }
+      )
+    this.router.navigate(['citizen/citizen-requests',id,{name: citizenName}])
+  }
   onEdit(id) {
     this.router.navigate(['citizen/view-edit',id,{componentMode: "editMode"}])
   }

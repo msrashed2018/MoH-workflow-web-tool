@@ -51,4 +51,17 @@ export class TokenStorageService {
  
     return this.roles;
   }
+
+  public hasAdminRole(): boolean {
+    let isAdmin : boolean = false;
+    if (sessionStorage.getItem(TOKEN_KEY)) {
+      JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY)).forEach(authority => {
+        if(authority.authority == 'ROLE_ADMIN'){
+          isAdmin = true;
+        }
+      });
+    }
+    return isAdmin;
+    
+  }
 }

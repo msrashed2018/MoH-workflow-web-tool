@@ -30,9 +30,9 @@
       <th class="text-center">العمر</th>
       <th class="text-center">المحافظه</th>
       <th class="text-center">المدينة</th>
-      <th class="text-center">تاريخ التسجيل</th>
-      <th class="text-center">تعديل</th>
-      <th class="text-center">مسح</th>
+      <th class="text-center">الطلبات</th>
+      <th *ngIf="isAdmin" class="text-center">تعديل</th>
+      <th *ngIf="isAdmin" class="text-center">مسح</th>
       
     </tr>
   </thead>
@@ -77,16 +77,16 @@
           </div>
       </td>
       <td class="text-center">
-          <div>{{citizen.createdDate}}</div>
-          <div class="small text-muted">
-          </div>
-      </td>
-      <td class="text-center">
+          <button type="button" class="edit-btn btn btn-success" (click)="onNewRequest(citizen.id)">الطلبات
+              <i class="fa fa-edit"></i>
+          </button>
+      </td >
+      <td *ngIf="isAdmin" class="text-center">
           <button type="button" class="edit-btn btn btn-info" (click)="onEdit(citizen.id)">تعديل
               <i class="fa fa-edit"></i>
           </button>
       </td >
-      <td class="text-center">
+      <td *ngIf="isAdmin" class="text-center">
         <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(citizen.id)">حذف
             <i class="fa fa-trash"></i>
         </button>

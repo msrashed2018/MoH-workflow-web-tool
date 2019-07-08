@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ListCitizensComponent } from './list-citizens/list-citizens.component';
 import { CitizenComponent } from './citizen/citizen.component';
 import { CitizenViewEditComponent } from './citizen-view-edit/citizen-view-edit.component';
+import { CitizenRequestsComponent } from './citizen-requests/citizen-requests.component';
 const routes: Routes = [
   {
     path: 'search',
@@ -11,6 +12,13 @@ const routes: Routes = [
     data: {
       title: 'citizens'
     }
+  },
+  {
+      path: 'citizen-requests/:id',
+      component: CitizenRequestsComponent,
+      data: {
+        title: 'Citizen Requests'
+      }
   },
   {
       path: 'new-citizen',
