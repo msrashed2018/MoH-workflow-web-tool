@@ -18,6 +18,7 @@ public class RequestType {
 	private int id;
 	
 	@Column(name = "REQUEST_TYPE_NAME", nullable = false, unique = true)
+	@NotNull
 	private String name;
 	
 	@Column(name = "REQUEST_TYPE_DESCRIPTION")

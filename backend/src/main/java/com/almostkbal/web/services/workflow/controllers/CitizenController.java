@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -77,6 +78,7 @@ public class CitizenController {
 	}
 
 	@DeleteMapping("/api/citizens/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void deleteCitizen(@PathVariable long id, Authentication authentication) {
 		try {
 			Optional<Citizen> citizen = citizenRepository.findById(id);
@@ -125,6 +127,7 @@ public class CitizenController {
 	}
 
 	@PutMapping("/api/citizens/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Citizen> updateCitizen(@PathVariable long id, @Valid @RequestBody Citizen citizen,
 			Authentication authentication) {
 		Optional<Citizen> existingCitizen = citizenRepository.findById(id);
