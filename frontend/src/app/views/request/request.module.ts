@@ -19,9 +19,13 @@ import { RevealListComponent } from './medical-reveal-result/reveal-list/reveal-
 import { RevealDataComponent } from './medical-reveal-result/reveal-data/reveal-data.component';
 import { ReviewRequestsComponent } from './review-requests/review-requests.component';
 import { ApproveRequestsComponent } from './approve-requests/approve-requests.component';
+import { BonesRevealRegisteringListComponent } from './bones-reveal-registering/bones-reveal-registering-list/bones-reveal-registering-list.component';
+import { BonesRevealRegisteringDataComponent } from './bones-reveal-registering/bones-reveal-registering-data/bones-reveal-registering-data.component';
+import { EyeRevealRegisteringListComponent } from './eye-reveal-registering/eye-reveal-registering-list/eye-reveal-registering-list.component';
+import { EyeRevealRegisteringDataComponent } from './eye-reveal-registering/eye-reveal-registering-data/eye-reveal-registering-data.component';
 
 @NgModule({
-  declarations: [ListRequestsComponent, RequestComponent, RequestViewEditComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, RevealListComponent, RevealDataComponent, ReviewRequestsComponent, ApproveRequestsComponent],
+  declarations: [ListRequestsComponent, RequestComponent, RequestViewEditComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, RevealListComponent, RevealDataComponent, ReviewRequestsComponent, ApproveRequestsComponent, BonesRevealRegisteringListComponent, BonesRevealRegisteringDataComponent, EyeRevealRegisteringListComponent, EyeRevealRegisteringDataComponent],
   imports: [
     CommonModule,
     AlertModule,

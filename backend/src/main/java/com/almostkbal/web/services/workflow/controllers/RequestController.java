@@ -1,6 +1,7 @@
 package com.almostkbal.web.services.workflow.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,7 @@ import com.almostkbal.web.services.workflow.entities.RequestPayment;
 import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
 import com.almostkbal.web.services.workflow.entities.RequestType;
+import com.almostkbal.web.services.workflow.exceptions.IllegalRequestStateException;
 import com.almostkbal.web.services.workflow.repositories.AuditRepository;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestPaymentRepository;
@@ -127,29 +129,47 @@ public class RequestController {
 		return requestRepository.findAllByDate(date);
 	}
 
+	//TODO remove this method
 	@GetMapping("/api/requests/search/findAllByNationalId")
 	public List<Request> findAllByNationalId(@RequestParam long nationalId) {
 		List<Request> requests = requestRepository.findByCitizenNationalId(nationalId);
 		return requests;
 	}
 
-	@GetMapping("/api/requests/search/findBySearchKey")
-	public List<Request> findBySearchKey(@RequestParam String searchKey) {
+	@GetMapping("/api/requests/search/findByNationalId")
+	public List<Request> findByNationalId(@RequestParam RequestState state, @RequestParam BonesRevealState bonesRevealState, @RequestParam EyeRevealState eyeRevealState, @RequestParam long nationalId) {
 		// check if searchKey is number or string
-		try {
-			Long key = Long.parseLong(searchKey);
-
-			// No Thrown exception, so searchKey is number
-			// check if it is national id or mobile number
-			if (searchKey.startsWith("01")) {
-				// search key is mobile number because it starts with 01
-				return requestRepository.findByCitizenMobileNumber(searchKey);
-			} else {
-				// assuming search key is national id
-				return requestRepository.findByCitizenNationalId(key);
+//		try {
+//			Long key = Long.parseLong(searchKey);
+//
+//			// No Thrown exception, so searchKey is number
+//			// check if it is national id or mobile number
+//			if (searchKey.startsWith("01")) {
+//				// search key is mobile number because it starts with 01
+//				return requestRepository.findByCitizenMobileNumber(searchKey);
+//			} else {
+//				// assuming search key is national id
+//				return requestRepository.findByCitizenNationalId(key);
+//			}
+//		} catch (NumberFormatException | NullPointerException nfe) {
+//			return requestRepository.findByCitizenName(searchKey);
+//		}
+		
+		
+		if(state == RequestState.PENDING_PAYMENT || state == RequestState.PENDING_CONTINUE_REGISTERING || state == RequestState.REVIEWED || state == RequestState.APPROVED) {
+			return requestRepository.findByStateAndCitizenNationalId(state, nationalId);
+		}else if(state == RequestState.CONTINUE_REGISTERING_DONE) {
+			if(bonesRevealState == BonesRevealState.NA && eyeRevealState != EyeRevealState.NA) {
+				return requestRepository.findByStateAndEyeRevealStateAndCitizenNationalId(state, eyeRevealState, nationalId);
+			}else if(eyeRevealState == EyeRevealState.NA && bonesRevealState != BonesRevealState.NA){
+				return requestRepository.findByStateAndBonesRevealStateAndCitizenNationalId(state, bonesRevealState, nationalId);
+			}else {
+				throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح", String.format("eye or bones state must be one of %s, %s, %s or %s ",
+						BonesRevealState.NA , BonesRevealState.PENDING_REGISTERING, BonesRevealState.PENDING_REVEAL, BonesRevealState.DONE));
 			}
-		} catch (NumberFormatException | NullPointerException nfe) {
-			return requestRepository.findByCitizenName(searchKey);
+		}else {
+			throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح", String.format("request state must be one of %s, %s, %s, %s or %s ",
+					RequestState.PENDING_PAYMENT, RequestState.PENDING_CONTINUE_REGISTERING, RequestState.REVIEWED, RequestState.APPROVED, RequestState.CONTINUE_REGISTERING_DONE));
 		}
 	}
 

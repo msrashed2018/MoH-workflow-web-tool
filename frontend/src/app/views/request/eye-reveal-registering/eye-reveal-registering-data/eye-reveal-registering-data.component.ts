@@ -18,12 +18,13 @@ import { BonesReveal } from '../../../../model/bones-reveal.model';
 import { EyeReveal } from '../../../../model/eye-reveal.model';
 import { Disability } from '../../../../model/disability.model';
 import { EyeMeasure } from '../../../../model/eye-measure.model';
+
 @Component({
-  selector: 'app-reveal-data',
-  templateUrl: './reveal-data.component.html',
-  styleUrls: ['./reveal-data.component.scss']
+  selector: 'app-eye-reveal-registering-data',
+  templateUrl: './eye-reveal-registering-data.component.html',
+  styleUrls: ['./eye-reveal-registering-data.component.scss']
 })
-export class RevealDataComponent implements OnInit {
+export class EyeRevealRegisteringDataComponent implements OnInit {
   //cards collapse fields------------------------------------------------------------------------------------
   isRequestDataCollapsed: boolean = false;
   isEyeRevealDataCollapsed: boolean = true;
@@ -440,7 +441,7 @@ export class RevealDataComponent implements OnInit {
 
         } else if (result instanceof HttpResponse) {
           this.fileUploadErrorMessage = "";
-          this.showFiles(true);ß
+          this.showFiles(true);
         }
 
       },

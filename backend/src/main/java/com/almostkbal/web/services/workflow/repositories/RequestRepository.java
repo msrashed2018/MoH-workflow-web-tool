@@ -34,6 +34,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 	List<Request> findByCitizenId(Long nationalId);
 
 	Page<Request> findByState(RequestState state, Pageable pageable);
+	
 
 	Page<Request> findByStateIn(Collection<RequestState> states, Pageable pageable);
 
@@ -52,6 +53,18 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
 	Page<Request> findByBonesCommitteeIsNotNullAndState(RequestState state, Pageable pageable);
 
+	
+	
+	
+	//============== for search by national Id ===========================================
+	
+	List<Request> findByStateAndCitizenNationalId(RequestState state, Long nationalId);
+	//for search in eye reveal queue
+	List<Request> findByStateAndEyeRevealStateAndCitizenNationalId(RequestState state, EyeRevealState eyeRevealState, Long nationalId);
+	//for search in bones reveal queue
+	List<Request> findByStateAndBonesRevealStateAndCitizenNationalId(RequestState state, BonesRevealState bonesRevealState, Long nationalId);
+	
+	
 	// for payment'
 //	@Query("select r from Request r , BonesReveal e where e.request = r")
 //	List<Request> findForEyeReveal();
