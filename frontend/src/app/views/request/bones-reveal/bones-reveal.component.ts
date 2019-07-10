@@ -54,7 +54,7 @@ export class BonesRevealComponent implements OnInit {
     // this.citizens = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    this.requestService.retrieveRequestsByNationalId(this.searchByID)
+    this.requestService.searchByNationalId("CONTINUE_REGISTERING_DONE","PENDING_REVEAL","NA",this.searchByID)
     .subscribe(
       result => {
         if (typeof result !== 'undefined' && result !== null && result.length !=0) {
@@ -77,7 +77,7 @@ export class BonesRevealComponent implements OnInit {
     this.noDataFound = false;
     let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retreiveRequestsForBonesReveal(this.page,PAGINATION_PAGE_SIZE)
+    this.requestService.retrieveByRequestStates("CONTINUE_REGISTERING_DONE","PENDING_REVEAL","NA",this.page,PAGINATION_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {

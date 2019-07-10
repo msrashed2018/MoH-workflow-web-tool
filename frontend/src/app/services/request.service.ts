@@ -29,13 +29,13 @@ export class RequestService {
       }));
   }
 
-  retrieveRequestsByDate(date :string) {
-    return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/search/findAllByDate?date='+date).pipe( map(
-        data => {
-        return data;
-      }));
-  }
+  // retrieveRequestsByDate(date :string) {
+  //   return this.http.get<Request[]>
+  //     (`${API_URL}`+'/requests/search/findAllByDate?date='+date).pipe( map(
+  //       data => {
+  //       return data;
+  //     }));
+  // }
 
   retrieveRequestsByNationalId(nationalId) {
     return this.http.get<Request[]>
@@ -44,48 +44,66 @@ export class RequestService {
         return data;
       }));
   }
-  retreiveRequestsForEyeReveal(page,size) {
+  // retreiveRequestsForEyeReveal(page,size) {
+  //   return this.http.get<Request[]>
+  //     (`${API_URL}`+'/requests/retreiveRequestsForEyeReveal'+`?page=${page}&size=${size}`).pipe( map(
+  //       data => {
+  //       return data;
+  //     }));
+  // }
+  // retreiveRequestsForBonesReveal(page,size) {
+  //   return this.http.get<Request[]>
+  //     (`${API_URL}`+'/requests/retreiveRequestsForBonesReveal'+`?page=${page}&size=${size}`).pipe( map(
+  //       data => {
+  //       return data;
+  //     }));
+  // }
+  // retreiveRequestsForRevealsRegistering(page,size) {
+  //   return this.http.get<Request[]>
+  //     (`${API_URL}`+'/requests/retreiveRequestsForRevealsRegistering'+`?page=${page}&size=${size}`).pipe( map(
+  //       data => {
+  //       return data;
+  //     }));
+  // }
+  // retreiveRequestsForReviewing(page,size) {
+  //   return this.http.get<Request[]>
+  //     (`${API_URL}`+'/requests/retreiveRequestsForReviewing'+`?page=${page}&size=${size}`).pipe( map(
+  //       data => {
+  //       return data;
+  //     }));
+  // }
+  // retreiveRequestsForApproving(page,size) {
+  //   return this.http.get<Request[]>
+  //     (`${API_URL}`+'/requests/retreiveRequestsForApproving'+`?page=${page}&size=${size}`).pipe( map(
+  //       data => {
+  //       return data;
+  //     }));
+  // }
+
+
+  // retrieveByRequestState(state,page,size) {
+  //   return this.http.get<Request[]>
+  //     (`${API_URL}/requests/retreiveByRequestState?state=${state}&page=${page}&size=${size}`).pipe( map(
+  //       data => {
+  //       return data;
+  //     }));
+  // }
+
+searchByNationalId(state,bonesRevealState, eyeRevealState,nationalId) {
     return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForEyeReveal'+`?page=${page}&size=${size}`).pipe( map(
+      (`${API_URL}/requests/search/findByNationalId?state=${state}&bonesRevealState=${bonesRevealState}&eyeRevealState=${eyeRevealState}&nationalId=${nationalId}`).pipe( map(
         data => {
         return data;
       }));
   }
-  retreiveRequestsForBonesReveal(page,size) {
+  retrieveByRequestStates(state,bonesRevealState, eyeRevealState,page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForBonesReveal'+`?page=${page}&size=${size}`).pipe( map(
+      (`${API_URL}/requests/retreiveByRequestStates?state=${state}&bonesRevealState=${bonesRevealState}&eyeRevealState=${eyeRevealState}&page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));
   }
-  retreiveRequestsForRevealsRegistering(page,size) {
-    return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForRevealsRegistering'+`?page=${page}&size=${size}`).pipe( map(
-        data => {
-        return data;
-      }));
-  }
-  retreiveRequestsForReviewing(page,size) {
-    return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForReviewing'+`?page=${page}&size=${size}`).pipe( map(
-        data => {
-        return data;
-      }));
-  }
-  retreiveRequestsForApproving(page,size) {
-    return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/retreiveRequestsForApproving'+`?page=${page}&size=${size}`).pipe( map(
-        data => {
-        return data;
-      }));
-  }
-  retrieveByRequestState(state,page,size) {
-    return this.http.get<Request[]>
-      (`${API_URL}/requests/retreiveByRequestState?state=${state}&page=${page}&size=${size}`).pipe( map(
-        data => {
-        return data;
-      }));
-  }
+
   deleteRequest(citizenId, requestId){
     return this.http.delete(`${API_URL}/citizens/${citizenId}/requests/${requestId}`);
   }

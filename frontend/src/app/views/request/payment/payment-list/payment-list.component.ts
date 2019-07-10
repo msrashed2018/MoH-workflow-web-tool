@@ -53,7 +53,7 @@ export class PaymentListComponent implements OnInit {
     // this.citizens = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    this.requestService.retrieveRequestsByNationalId(this.searchByID)
+    this.requestService.searchByNationalId("PENDING_PAYMENT","NA","NA",this.searchByID)
     .subscribe(
       result => {
         if (typeof result !== 'undefined' && result !== null && result.length !=0) {
@@ -76,7 +76,7 @@ export class PaymentListComponent implements OnInit {
     this.noDataFound = false;
     let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retrieveByRequestState('PENDING_PAYMENT',this.page,PAGINATION_PAGE_SIZE)
+    this.requestService.retrieveByRequestStates("PENDING_PAYMENT","NA","NA",this.page,PAGINATION_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {

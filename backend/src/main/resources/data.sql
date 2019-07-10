@@ -79,7 +79,6 @@ Insert into EQUIPMENT (EQUIPMENT_NAME,EQUIPMENT_DESCRIPTION) values ('مفاتي
 --Insert into GENDER (GENDER_NAME) values ('ذكر');
 --Insert into GENDER (GENDER_NAME) values ('انثي');
 
-
 --
 --
 ----OCCUPATION DATA
@@ -350,7 +349,7 @@ insert into DISABILITY(ACCEPTED, EQUIPMENT_ID, DISABILITY_NAME) values('0', 14,'
 
 
 insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER, GOVERNATE_ID, OCCUPATION_ID)
-values('october', '1989-06-20 03:00:00', 'admin', '2019-06-20', '01015090111', null, null,  'محمد صلاح راشد', '29106202101140', 2, 'ذكر', 1, 3 );
+values('october', '1989-06-20 03:00:00', 'admin', '2019-06-20', '01015090111', null, null,  'محمدي صلاح راشد', '29106202101140', 2, 'ذكر', 1, 3 );
 
 insert into CITIZEN ( ADDRESS, BIRTH_DATE, CREATED_BY, CREATED_DATE, MOBILE_NO, MODIFIED_BY, MODIFIED_DATE, CITIZEN_NAME, NATIONAL_ID, CITY_ID, GENDER, GOVERNATE_ID, OCCUPATION_ID)
 values('october', '1989-06-20 03:00:00', 'admin', '2019-06-22', '01015090111', null, null,  'احمد صلاح راشد', '29106202101141', 2, 'ذكر', 1, 3 );

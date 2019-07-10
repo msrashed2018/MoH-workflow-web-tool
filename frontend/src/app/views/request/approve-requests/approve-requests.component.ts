@@ -53,7 +53,7 @@ export class ApproveRequestsComponent implements OnInit {
     // this.citizens = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    this.requestService.retrieveRequestsByNationalId(this.searchByID)
+    this.requestService.searchByNationalId("REVIEWED","DONE","DONE",this.searchByID)
     .subscribe(
       result => {
         if (typeof result !== 'undefined' && result !== null && result.length !=0) {
@@ -76,7 +76,7 @@ export class ApproveRequestsComponent implements OnInit {
     this.noDataFound = false;
     let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retreiveRequestsForApproving(this.page,PAGINATION_PAGE_SIZE)
+    this.requestService.retrieveByRequestStates("REVIEWED","DONE","DONE",this.page,PAGINATION_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length !=0) {

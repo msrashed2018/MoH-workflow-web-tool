@@ -440,7 +440,7 @@ export class RevealDataComponent implements OnInit {
 
         } else if (result instanceof HttpResponse) {
           this.fileUploadErrorMessage = "";
-          this.showFiles(true);ß
+          this.showFiles(true);
         }
 
       },

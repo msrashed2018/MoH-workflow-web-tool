@@ -73,29 +73,29 @@ export class RevealListComponent implements OnInit {
    
   }
   retriveAllRequests(){
-    this.requests = [];
-    this.errorMessage = false;
-    this.noDataFound = false;
-    let date=new Date();
-    // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retreiveRequestsForRevealsRegistering(this.page,PAGINATION_PAGE_SIZE)
-      .subscribe(
-        result => {
-          if (typeof result !== 'undefined' && result !== null && result.length !=0) {
-            this.noDataFound = false;
-            this.requests= result['content'];
-            this.pages = new Array(result['totalPages']);
-          }else{
-            console.log("no data found ")
-            this.noDataFound = true;
-          }
-        },
-        error => {
-          console.log('oops: ', error);
-          this.errorMessage = true;
+    // this.requests = [];
+    // this.errorMessage = false;
+    // this.noDataFound = false;
+    // let date=new Date();
+    // // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
+    // this.requestService.retreiveRequestsForRevealsRegistering(this.page,PAGINATION_PAGE_SIZE)
+    //   .subscribe(
+    //     result => {
+    //       if (typeof result !== 'undefined' && result !== null && result.length !=0) {
+    //         this.noDataFound = false;
+    //         this.requests= result['content'];
+    //         this.pages = new Array(result['totalPages']);
+    //       }else{
+    //         console.log("no data found ")
+    //         this.noDataFound = true;
+    //       }
+    //     },
+    //     error => {
+    //       console.log('oops: ', error);
+    //       this.errorMessage = true;
 
-        }
-      );
+    //     }
+    //   );
   }
 
   onContinue(id) {

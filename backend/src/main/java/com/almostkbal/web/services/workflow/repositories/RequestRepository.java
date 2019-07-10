@@ -64,6 +64,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 	//for search in bones reveal queue
 	List<Request> findByStateAndBonesRevealStateAndCitizenNationalId(RequestState state, BonesRevealState bonesRevealState, Long nationalId);
 	
+	List<Request> findByStateAndBonesRevealStateInAndEyeRevealStateInAndCitizenNationalId(RequestState state,
+			Collection<BonesRevealState> bonesRevealStates, Collection<EyeRevealState> eyeRevealStates, Long nationalId);
 	
 	// for payment'
 //	@Query("select r from Request r , BonesReveal e where e.request = r")

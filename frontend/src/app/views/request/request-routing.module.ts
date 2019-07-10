@@ -14,6 +14,10 @@ import { RevealDataComponent } from './medical-reveal-result/reveal-data/reveal-
 import { ReviewRequestsComponent } from './review-requests/review-requests.component';
 import { ApproveRequestsComponent } from './approve-requests/approve-requests.component';
 import { RequestViewEditComponent } from './request-view-edit/request-view-edit.component';
+import { EyeRevealRegisteringListComponent } from './eye-reveal-registering/eye-reveal-registering-list/eye-reveal-registering-list.component';
+import { EyeRevealRegisteringDataComponent } from './eye-reveal-registering/eye-reveal-registering-data/eye-reveal-registering-data.component';
+import { BonesRevealRegisteringListComponent } from './bones-reveal-registering/bones-reveal-registering-list/bones-reveal-registering-list.component';
+import { BonesRevealRegisteringDataComponent } from './bones-reveal-registering/bones-reveal-registering-data/bones-reveal-registering-data.component';
 const routes: Routes = [
   {
     path: 'search',
@@ -63,6 +67,34 @@ const routes: Routes = [
     component: EyeRevealComponent,
     data: {
       title: 'eye-reveal data'
+    }
+  },
+  {
+    path: 'eye-reveal-registering',
+    component: EyeRevealRegisteringListComponent,
+    data: {
+      title: 'eye-reveal-registering'
+    }
+  },
+  {
+    path: 'eye-reveal-registering-data',
+    component: EyeRevealRegisteringDataComponent,
+    data: {
+      title: 'eye-reveal-registering-data'
+    }
+  },
+  {
+    path: 'bones-reveal-registering',
+    component: BonesRevealRegisteringListComponent,
+    data: {
+      title: 'bones-reveal-registering'
+    }
+  },
+  {
+    path: 'bones-reveal-registering-data',
+    component: BonesRevealRegisteringDataComponent,
+    data: {
+      title: 'bones-reveal-registering-data'
     }
   },
   {

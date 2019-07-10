@@ -53,7 +53,7 @@ export class ListRequestsComponent implements OnInit {
     // this.citizens = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    this.requestService.retrieveRequestsByNationalId(this.searchByID)
+    this.requestService.  retrieveRequestsByNationalId(this.searchByID)
     .subscribe(
       result => {
         if (typeof result !== 'undefined' && result !== null && result.length !=0) {

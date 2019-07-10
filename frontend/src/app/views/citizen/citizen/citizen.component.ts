@@ -243,7 +243,14 @@ export class CitizenComponent implements OnInit {
   fillRequestTypes(){
     this.requestTypeService.retrieveAllRequestTypes(0,100).subscribe(
       result => {
-        this.requestTypes = result['content'];
+        let types: RequestType[] = result['content'];
+        types.forEach(
+          type =>{
+            if(type.price > 0){
+             this.requestTypes.push(type);
+            }
+          });
+        // this.requestTypes = result['content'];
       },
       error => {
         console.log('oops', error);

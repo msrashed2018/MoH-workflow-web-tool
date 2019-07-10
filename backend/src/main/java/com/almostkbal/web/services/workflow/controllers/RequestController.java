@@ -8,7 +8,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -65,71 +64,102 @@ public class RequestController {
 		return requestRepository.findAll(PageRequest.of(page, size, Sort.by("requestDate").descending()));
 	}
 
-	@GetMapping("/api/requests/{requestId}/retreiveRequestState")
-	public RequestState retreiveRequestState(@PathVariable long requestId) {
-		return requestRepository.findRequestState(requestId);
-	}
+//	@GetMapping("/api/requests/{requestId}/retreiveRequestState")
+//	public RequestState retreiveRequestState(@PathVariable long requestId) {
+//		return requestRepository.findRequestState(requestId);
+//	}
 
-	@GetMapping("/api/requests/retreiveRequestsForEyeReveal")
-	public Page<Request> retreiveRequestsForEyeReveal(@RequestParam("page") int page, @RequestParam("size") int size) {
-		return requestRepository.findByStateAndEyeRevealState(RequestState.CONTINUE_REGISTERING_DONE,
-				EyeRevealState.PENDING_REVEAL, PageRequest.of(page, size));
-	}
+//	@GetMapping("/api/requests/retreiveRequestsForEyeReveal")
+//	public Page<Request> retreiveRequestsForEyeReveal(@RequestParam("page") int page, @RequestParam("size") int size) {
+//		return requestRepository.findByStateAndEyeRevealState(RequestState.CONTINUE_REGISTERING_DONE,
+//				EyeRevealState.PENDING_REVEAL, PageRequest.of(page, size));
+//	}
 
-	@GetMapping("/api/requests/retreiveRequestsForBonesReveal")
-	public Page<Request> retreiveRequestsForBonesReveal(@RequestParam("page") int page,
-			@RequestParam("size") int size) {
-		return requestRepository.findByStateAndBonesRevealState(RequestState.CONTINUE_REGISTERING_DONE,
-				BonesRevealState.PENDING_REVEAL, PageRequest.of(page, size));
-	}
+//	@GetMapping("/api/requests/retreiveRequestsForBonesReveal")
+//	public Page<Request> retreiveRequestsForBonesReveal(@RequestParam("page") int page,
+//			@RequestParam("size") int size) {
+//		return requestRepository.findByStateAndBonesRevealState(RequestState.CONTINUE_REGISTERING_DONE,
+//				BonesRevealState.PENDING_REVEAL, PageRequest.of(page, size));
+//	}
 
-	@GetMapping("/api/requests/retreiveRequestsForRevealsRegistering")
-	public Page<Request> retreiveRequestsForRevealsRegistering(@RequestParam("page") int page,
-			@RequestParam("size") int size) {
+//	@GetMapping("/api/requests/retreiveRequestsForRevealsRegistering")
+//	public Page<Request> retreiveRequestsForRevealsRegistering(@RequestParam("page") int page,
+//			@RequestParam("size") int size) {
+//
+//		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
+//		bonesRevealStates.add(BonesRevealState.PENDING_REGISTERING);
+//		bonesRevealStates.add(BonesRevealState.NA);
+//
+//		List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
+//		eyeRevealStates.add(EyeRevealState.PENDING_REGISTERING);
+//		eyeRevealStates.add(EyeRevealState.NA);
+//		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
+//				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
+//	}
+//
+//	@GetMapping("/api/requests/retreiveRequestsForReviewing")
+//	public Page<Request> retreiveRequestsForReviewing(@RequestParam("page") int page, @RequestParam("size") int size) {
+//		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
+//		bonesRevealStates.add(BonesRevealState.DONE);
+//		bonesRevealStates.add(BonesRevealState.NA);
+//
+//		List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
+//		eyeRevealStates.add(EyeRevealState.DONE);
+//		eyeRevealStates.add(EyeRevealState.NA);
+//		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
+//				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
+//	}
 
-		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
-		bonesRevealStates.add(BonesRevealState.PENDING_REGISTERING);
-		bonesRevealStates.add(BonesRevealState.NA);
+//	@GetMapping("/api/requests/retreiveRequestsForApproving")
+//	public Page<Request> retreiveRequestsForApproving(@RequestParam("page") int page, @RequestParam("size") int size) {
+//		return requestRepository.findByState(RequestState.REVIEWED, PageRequest.of(page, size));
+//	}
+//
+//	@GetMapping("/api/requests/retreiveByRequestState")
+//	public Page<Request> retrieveAllRequestsByState(@RequestParam RequestState state, @RequestParam("page") int page,
+//			@RequestParam("size") int size) {
+//		return requestRepository.findByState(state, PageRequest.of(page, size));
+////		return requestRepository.findAll();
+//	}
 
-		List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
-		eyeRevealStates.add(EyeRevealState.PENDING_REGISTERING);
-		eyeRevealStates.add(EyeRevealState.NA);
-		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
-				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
-	}
+	@GetMapping("/api/requests/retreiveByRequestStates")
+	public Page<Request> retrieveAllRequestsByStates(@RequestParam RequestState state, @RequestParam BonesRevealState bonesRevealState, @RequestParam EyeRevealState eyeRevealState, @RequestParam("page") int page, @RequestParam("size") int size) {
+		if(state == RequestState.PENDING_PAYMENT || state == RequestState.PENDING_CONTINUE_REGISTERING || state == RequestState.REVIEWED || state == RequestState.APPROVED) {
+			return requestRepository.findByState(state,  PageRequest.of(page, size));
+		}else if(state == RequestState.CONTINUE_REGISTERING_DONE) {
+			if(bonesRevealState == BonesRevealState.NA && (eyeRevealState == EyeRevealState.PENDING_REGISTERING || eyeRevealState == EyeRevealState.PENDING_REVEAL)) {
+				// for Eye Reveal attending and registering
+				return requestRepository.findByStateAndEyeRevealState(state, eyeRevealState,  PageRequest.of(page, size));
+			}else if(eyeRevealState == EyeRevealState.NA && (bonesRevealState == BonesRevealState.PENDING_REGISTERING || bonesRevealState == BonesRevealState.PENDING_REVEAL)){
+				// for Bones Reveal attending and registering
+				return requestRepository.findByStateAndBonesRevealState(state, bonesRevealState,  PageRequest.of(page, size));
+			}else if(bonesRevealState == BonesRevealState.DONE && eyeRevealState == EyeRevealState.DONE){
+				// for reviewing
+				List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
+				bonesRevealStates.add(BonesRevealState.DONE);
+				bonesRevealStates.add(BonesRevealState.NA);
 
-	@GetMapping("/api/requests/retreiveRequestsForReviewing")
-	public Page<Request> retreiveRequestsForReviewing(@RequestParam("page") int page, @RequestParam("size") int size) {
-		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
-		bonesRevealStates.add(BonesRevealState.DONE);
-		bonesRevealStates.add(BonesRevealState.NA);
+				List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
+				eyeRevealStates.add(EyeRevealState.DONE);
+				eyeRevealStates.add(EyeRevealState.NA);
+				return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
+						state, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
+			}else {
+				throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح", String.format("eye or bones state must be one of %s, %s, %s or %s ",
+						BonesRevealState.NA , BonesRevealState.PENDING_REGISTERING, BonesRevealState.PENDING_REVEAL, BonesRevealState.DONE));
+			}
+		}else {
+			throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح", String.format("request state must be one of %s, %s, %s, %s or %s ",
+					RequestState.PENDING_PAYMENT, RequestState.PENDING_CONTINUE_REGISTERING, RequestState.REVIEWED, RequestState.APPROVED, RequestState.CONTINUE_REGISTERING_DONE));
+		}
+	}	
+	
+//	@GetMapping("/api/requests/search/findAllByDate")
+//	public List<Request> findAllByDate(@RequestParam String date) {
+//
+//		return requestRepository.findAllByDate(date);
+//	}
 
-		List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
-		eyeRevealStates.add(EyeRevealState.DONE);
-		eyeRevealStates.add(EyeRevealState.NA);
-		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
-				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
-	}
-
-	@GetMapping("/api/requests/retreiveRequestsForApproving")
-	public Page<Request> retreiveRequestsForApproving(@RequestParam("page") int page, @RequestParam("size") int size) {
-		return requestRepository.findByState(RequestState.REVIEWED, PageRequest.of(page, size));
-	}
-
-	@GetMapping("/api/requests/retreiveByRequestState")
-	public Page<Request> retrieveAllRequestsByState(@RequestParam RequestState state, @RequestParam("page") int page,
-			@RequestParam("size") int size) {
-		return requestRepository.findByState(state, PageRequest.of(page, size));
-//		return requestRepository.findAll();
-	}
-
-	@GetMapping("/api/requests/search/findAllByDate")
-	public List<Request> findAllByDate(@RequestParam String date) {
-
-		return requestRepository.findAllByDate(date);
-	}
-
-	//TODO remove this method
 	@GetMapping("/api/requests/search/findAllByNationalId")
 	public List<Request> findAllByNationalId(@RequestParam long nationalId) {
 		List<Request> requests = requestRepository.findByCitizenNationalId(nationalId);
@@ -159,10 +189,20 @@ public class RequestController {
 		if(state == RequestState.PENDING_PAYMENT || state == RequestState.PENDING_CONTINUE_REGISTERING || state == RequestState.REVIEWED || state == RequestState.APPROVED) {
 			return requestRepository.findByStateAndCitizenNationalId(state, nationalId);
 		}else if(state == RequestState.CONTINUE_REGISTERING_DONE) {
-			if(bonesRevealState == BonesRevealState.NA && eyeRevealState != EyeRevealState.NA) {
+			if(bonesRevealState == BonesRevealState.NA && (eyeRevealState == EyeRevealState.PENDING_REGISTERING || eyeRevealState == EyeRevealState.PENDING_REVEAL)) {
 				return requestRepository.findByStateAndEyeRevealStateAndCitizenNationalId(state, eyeRevealState, nationalId);
-			}else if(eyeRevealState == EyeRevealState.NA && bonesRevealState != BonesRevealState.NA){
+			}else if(eyeRevealState == EyeRevealState.NA && (bonesRevealState == BonesRevealState.PENDING_REGISTERING || bonesRevealState == BonesRevealState.PENDING_REVEAL)){
 				return requestRepository.findByStateAndBonesRevealStateAndCitizenNationalId(state, bonesRevealState, nationalId);
+			}else if(bonesRevealState == BonesRevealState.DONE && eyeRevealState == EyeRevealState.DONE){
+				// for reviewing
+				List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
+				bonesRevealStates.add(BonesRevealState.DONE);
+				bonesRevealStates.add(BonesRevealState.NA);
+
+				List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
+				eyeRevealStates.add(EyeRevealState.DONE);
+				eyeRevealStates.add(EyeRevealState.NA);
+				return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateInAndCitizenNationalId(state, bonesRevealStates, eyeRevealStates, nationalId);
 			}else {
 				throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح", String.format("eye or bones state must be one of %s, %s, %s or %s ",
 						BonesRevealState.NA , BonesRevealState.PENDING_REGISTERING, BonesRevealState.PENDING_REVEAL, BonesRevealState.DONE));
