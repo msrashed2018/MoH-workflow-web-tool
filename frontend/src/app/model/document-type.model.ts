@@ -1,5 +1,8 @@
+import { DocumentCategory } from './document-category.enum';
+
 export class DocumentType {
     public id : number;
-    public type: string;
-    public description: string
+    public name: string;
+    public category: DocumentCategory;
+    public description: string;
 }

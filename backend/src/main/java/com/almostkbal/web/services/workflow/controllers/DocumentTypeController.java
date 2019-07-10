@@ -1,6 +1,7 @@
 package com.almostkbal.web.services.workflow.controllers;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -24,7 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.almostkbal.web.services.workflow.entities.FileType;
+import com.almostkbal.web.services.workflow.entities.DocumentCategory;
+import com.almostkbal.web.services.workflow.entities.DocumentType;
 import com.almostkbal.web.services.workflow.repositories.DocumentTypeRepository;
 
 
@@ -37,13 +39,16 @@ public class DocumentTypeController {
 	private DocumentTypeRepository documentTypeRepository;
 	
 	@GetMapping("/api/document-types")
-	public Page<FileType> retrieveAllDocumentTypes(@RequestParam("page") int page, @RequestParam("size") int size) {
+	public Page<DocumentType> retrieveAllDocumentTypes(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return documentTypeRepository.findAll(PageRequest.of(page, size));
 	}
-	
+	@GetMapping("/api/document-types/findByCategory")
+	public List<DocumentType> retreiveDocumentTypesByCategory(@RequestParam("category") DocumentCategory category) {
+		return documentTypeRepository.findByCategory(category);
+	}
 	@GetMapping("/api/document-types/{id}")
-	public FileType retrieveDocumentTypeById(@PathVariable long id) {
-		Optional<FileType> DocumentType = documentTypeRepository.findById(id);
+	public DocumentType retrieveDocumentTypeById(@PathVariable long id) {
+		Optional<DocumentType> DocumentType = documentTypeRepository.findById(id);
 		if(!DocumentType.isPresent())
 			throw new ResourceNotFoundException("id-"+ id);
 //		Resource<DocumentType> resource = new Resource<DocumentType>(DocumentType.get());
@@ -60,8 +65,8 @@ public class DocumentTypeController {
 	}
 
 	@PostMapping("/api/document-types")
-	public ResponseEntity<Object> createDocumentType(@Valid @RequestBody FileType DocumentType) {
-		FileType savedDocumentType = documentTypeRepository.save(DocumentType);
+	public ResponseEntity<Object> createDocumentType(@Valid @RequestBody DocumentType DocumentType) {
+		DocumentType savedDocumentType = documentTypeRepository.save(DocumentType);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
 			.path("/{id}")
@@ -70,13 +75,13 @@ public class DocumentTypeController {
 		
 	}
 	@PutMapping("/api/document-types/{id}")
-	public ResponseEntity<FileType> updateDocumentType(
-			@PathVariable long id, @Valid @RequestBody FileType documentType) {
-		Optional<FileType> existingDocumentType = documentTypeRepository.findById(id);
+	public ResponseEntity<DocumentType> updateDocumentType(
+			@PathVariable long id, @Valid @RequestBody DocumentType documentType) {
+		Optional<DocumentType> existingDocumentType = documentTypeRepository.findById(id);
 		
 		if(!existingDocumentType.isPresent())
 			throw new ResourceNotFoundException("id-"+ id);
-		FileType updatedDocumentType = documentTypeRepository.save(documentType);
-		return new ResponseEntity<FileType>(updatedDocumentType, HttpStatus.OK);
+		DocumentType updatedDocumentType = documentTypeRepository.save(documentType);
+		return new ResponseEntity<DocumentType>(updatedDocumentType, HttpStatus.OK);
 	}
 }

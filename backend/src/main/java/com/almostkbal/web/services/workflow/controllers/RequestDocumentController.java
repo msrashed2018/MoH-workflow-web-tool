@@ -1,18 +1,24 @@
 package com.almostkbal.web.services.workflow.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +27,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.almostkbal.web.services.workflow.entities.DocumentCategory;
 import com.almostkbal.web.services.workflow.entities.DocumentType;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestDocument;
 import com.almostkbal.web.services.workflow.exceptions.ExceptionResponse;
+import com.almostkbal.web.services.workflow.repositories.DocumentTypeRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestDocumentRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
 import com.almostkbal.web.services.workflow.services.StorageService;
@@ -40,85 +48,123 @@ public class RequestDocumentController {
 
 	@Autowired
 	RequestDocumentRepository documentRepository;
-	
+
+	@Autowired
+	DocumentTypeRepository documentTypeRepository;
+
 	@Autowired
 	RequestRepository requestRepository;
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
-	@PostMapping(value = "/api/requests/{id}/documents/{documentType}" /* consumes = "application/pdf" */)
-	public ResponseEntity<String> addRequestDocuments(@PathVariable long id,
-			@PathVariable DocumentType documentType, @RequestParam("file") MultipartFile[] uploadedFiles) {
+	@PostMapping(value = "/api/requests/{id}/documents" /* consumes = "application/pdf" */)
+	public ResponseEntity<String> uploadRequestDocument(@PathVariable long id, @RequestParam long documentTypeId,
+			@RequestParam("file") MultipartFile file) {
 		String message = "";
 		String currentUploadFileName = "";
 		try {
 
-			for (MultipartFile file : uploadedFiles) {
-				currentUploadFileName = file.getOriginalFilename();
-				if(!file.getContentType().equals("application/pdf")) {
-					 ExceptionResponse exceptionResponse = 
-							 new ExceptionResponse(new Date(), "file[ "+currentUploadFileName+" ] type is not supported ", "file[ "+currentUploadFileName+" ] type is not supported ");
-				        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
-				}
-				
-				log.info("store file :" + currentUploadFileName);
-				String storedPath = storageService.store(id, documentType, currentUploadFileName, file);
-				
-				RequestDocument document = new RequestDocument();
-				document.setName(currentUploadFileName);
-				document.setPath(storedPath);
-				document.setType(documentType);
-				Request request = requestRepository.getOne(id);
-				
-				document.setRequest(request);
-//				files.add(file.getOriginalFilename());
-				
-				documentRepository.save(document);
-				
-				message = currentUploadFileName +" is successfully stored...";
+			if (!requestRepository.existsById(id)) {
+				throw new ResourceNotFoundException("هذا الطلب غير موجود");
 			}
+
+			Optional<DocumentType> documentType = documentTypeRepository.findById(documentTypeId);
+			if (!documentType.isPresent()) {
+				throw new ResourceNotFoundException("نوع الملف غير موجود");
+			}
+
+			Request request = new Request();
+			request.setId(id);
+
+			currentUploadFileName = file.getOriginalFilename();
+			if (!file.getContentType().equals("application/pdf")) {
+				ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(),
+						"file[ " + currentUploadFileName + " ] type is not supported ",
+						"file[ " + currentUploadFileName + " ] type is not supported ");
+				return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+			}
+
+			log.info("store file :" + currentUploadFileName);
+			String documentName = documentType.get().getName().concat(".pdf");
+			String storedPath = storageService.store(id, documentType.get(), documentName, file);
+
+			RequestDocument document = new RequestDocument();
+
+			document.setName(documentName);
+			document.setPath(storedPath);
+			document.setDocumentType(documentType.get());
+			document.setRequest(request);
+//				files.add(file.getOriginalFilename());
+
+			documentRepository.save(document);
+
+			message = currentUploadFileName + " is successfully stored...";
 			return ResponseEntity.status(HttpStatus.OK).body(message);
 
-		} catch(ResourceNotFoundException e) {
-			throw new ResourceNotFoundException("Request with ID "+id + " is not found");
-		}catch (Exception e) {
-			log.error(e.getMessage(),e);
-			message = "FAIL to store " + currentUploadFileName + "!";
+		} catch (ResourceNotFoundException e) {
+			throw new ResourceNotFoundException("Request with ID " + id + " is not found");
+		} catch (DataIntegrityViolationException ex) {
+			log.error(ex.getMessage(), ex);
+			message = "تم حفظ ملف من هذا النوع من قبل";
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			message = " فشل في حفظ الملف" + currentUploadFileName + "!";
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
 		}
 	}
 
-
-	@GetMapping("/api/requests/{id}/documents/{documentType}")
-	public ResponseEntity<List<String>> getListFiles(@PathVariable long id, @PathVariable DocumentType documentType,
-			Model model) {
+	@GetMapping("/api/requests/{id}/documents/findByCategory")
+	public ResponseEntity<List<RequestDocument>> getRequestDocuments(@PathVariable long id,
+			@RequestParam DocumentCategory category, Model model) {
 		List<String> files = new ArrayList<String>();
-		
-		log.info("reteive document of request(id="+id+")");
-		
-		if(!requestRepository.existsById(id)) {
-			throw new ResourceNotFoundException("Request with ID "+id + " is not found");
-		}
-		List<RequestDocument> documents = documentRepository.findByRequestIdAndType(id, documentType);
-		for(RequestDocument document : documents) {
-			log.info("document[ name = "+document.getName()+ ", path = "+document.getPath()); 
-			files.add(document.getName());
+
+		log.info("reteive document of request(id=" + id + ")");
+
+		if (!requestRepository.existsById(id)) {
+			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		}
 
-		return ResponseEntity.ok().body(files);
+		List<RequestDocument> documents = documentRepository.findByRequestIdAndDocumentTypeCategory(id, category);
+//		for(RequestDocument document : documents) {
+//			log.info("document[ name = "+document.getName()+ ", path = "+document.getPath()); 
+//			files.add(document.getName());
+//		}
+
+		return ResponseEntity.ok().body(documents);
 	}
 
-	@GetMapping("/api/requests/{id}/document/{filename:.+}")
+	@GetMapping("/api/requests/{id}/documents/{filename:.+}")
 	@ResponseBody
-	public ResponseEntity<Resource> getFile(@PathVariable long id, @PathVariable String filename) {
-		
+	public ResponseEntity<Resource> retreiveRequestDocument(@PathVariable long id, @PathVariable String filename) {
+
 		RequestDocument document = documentRepository.findByRequestIdAndName(id, filename);
-		if(document == null) {
-			throw new ResourceNotFoundException("document["+filename+"] is not found");
+		if (document == null) {
+			throw new ResourceNotFoundException("document[" + filename + "] is not found");
 		}
-		log.info("getFile , request-ID="+id+ " docuemnt-path="+ document.getPath() +"  filename="+document.getName());
-		Resource file = storageService.loadFile(document.getPath(),document.getName());
+		log.info("getFile , request-ID=" + id + " docuemnt-path=" + document.getPath() + "  filename="
+				+ document.getName());
+		Resource file = storageService.loadFile(document.getPath(), document.getName());
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
 				.body(file);
+	}
+
+	@DeleteMapping("/api/requests/{id}/documents/{filename:.+}")
+	@ResponseBody
+	public void deleteRequestDocument(@PathVariable long id, @PathVariable String filename) {
+
+		RequestDocument document = documentRepository.findByRequestIdAndName(id, filename);
+		if (document == null) {
+			throw new ResourceNotFoundException("هذا الملف غير موجود");
+		}
+		int deleted = documentRepository.deleteByRequestIdAndName(id, filename);
+
+		if (deleted != 0) {
+			try {
+				storageService.deleteFile(document.getPath(), document.getName());
+			} catch (IOException e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
 	}
 }

@@ -2,14 +2,13 @@ package com.almostkbal.web.services.workflow.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
@@ -29,8 +28,9 @@ public class RequestDocument {
 	@Column(name = "name",nullable=false)
 	private String name;
 
-	@Enumerated(EnumType.STRING)
-	private DocumentType type;
+	@JoinColumn(name = "document_type_id")
+	@OneToOne
+	private DocumentType documentType;
 
 	@Column(name = "path", nullable = false)
 	private String path;
@@ -69,12 +69,12 @@ public class RequestDocument {
 		this.path = path;
 	}
 
-	public DocumentType getType() {
-		return type;
+	public DocumentType getDocumentType() {
+		return documentType;
 	}
 
-	public void setType(DocumentType type) {
-		this.type = type;
+	public void setDocumentType(DocumentType documentType) {
+		this.documentType = documentType;
 	}
 
 	public Request getRequest() {

@@ -18,14 +18,19 @@ import { EyeReveal } from '../../../model/eye-reveal.model';
 import { BonesReveal } from '../../../model/bones-reveal.model';
 import { ActivatedRoute } from '@angular/router';
 import { RequestStatus } from '../../../model/request-status.model';
+import { DocumentCategory } from '../../../model/document-category.enum';
+import { DocumentTypeService } from '../../../services/administration/document-type.service';
+import { RequestDocument } from '../../../model/request-document.model';
+import { DocumentType } from '../../../model/document-type.model';
 @Component({
   selector: 'app-request-view-edit',
   templateUrl: './request-view-edit.component.html',
   styleUrls: ['./request-view-edit.component.scss']
 })
 export class RequestViewEditComponent implements OnInit {
+  
 
-  constructor(private route:ActivatedRoute, private formBuilder: FormBuilder, private committeeService:CommitteeService, private disabilityService:DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
+  constructor(private documentTypeService: DocumentTypeService, private route:ActivatedRoute, private formBuilder: FormBuilder, private committeeService:CommitteeService, private disabilityService:DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
 
 
   //cards collapse fields------------------------------------------------------------------------------------
@@ -74,14 +79,15 @@ message: string = "";
 
 //file upload fields---------------------------------------------------------------------------------------
 showFile = false
+documentTypes: DocumentType[];
+requestDocuments: RequestDocument[];
 fileUploadErrorMessage : string;
-fileUploads: Map<string, string> = new Map<string, string>();
-requestDocuments: string[];
 uploading = false;
 @Input() fileUpload: string;
 selectedFiles: FileList
 currentFileUpload: File
 progress: { percentage: number } = { percentage: 0 }
+selectedDocumentTypeId: number = 0;
 //---------------------------------------------------------------------------------------------------------
 
   ngOnInit() {
@@ -223,6 +229,7 @@ progress: { percentage: number } = { percentage: 0 }
   fileUploadDataCollapsed(event: any): void {
   }
   fileUploadDataExpanded(event: any): void {
+    this.fillDocumentTypes();
     this.showFiles(true);
   }
   toggleFileUploadDataCollapse(): void {
@@ -249,56 +256,86 @@ progress: { percentage: number } = { percentage: 0 }
     )
   }
 
-  // file upload methods--------------------------------------------------------------------------------------
-  showFiles(enable: boolean) {
-    this.showFile = enable
-    if (enable) {
-      this.requestService.getFiles(this.request.id,'PERSONAL').subscribe(
-        result =>{
-          this.requestDocuments = result as any;
-          this.requestDocuments .forEach(element => {
-            this.fileUploads.set(element,`${API_URL}/requests/${this.request.id}/documents/${element}`);
-            // console.log("key: "+ element + "   value :"+`${API_URL}/requests/${this.request.id}/documents/${element}`);
-          });
-        },
-        error =>{
-          console.log('oops', error.error)
-        }
-      )
-    }
-  }
+ // file upload methods--------------------------------------------------------------------------------------
+ showFiles(enable: boolean) {
+  this.showFile = enable
+  // this.getDocumentsTypes();
+  if (enable) {
 
-
-  selectFile(event) {
-    this.selectedFiles = event.target.files;
-    this.uploading = false;
-  }
- getFile(fileName){
-   console.log("downloading file :"+ fileName);
-   this.requestService.getFile(this.request.id,fileName);
- }
-  upload() {
-    this.uploading = true;
-    this.requestService.pushFileToStorage(this.requestId,'PERSONAL',this.selectedFiles).subscribe(
+    this.requestService.getRequestDocumentsByCategory(this.request.id, DocumentCategory.ALL).subscribe(
       result => {
-        // console.log(result);
+        this.requestDocuments = result as RequestDocument[];
+        // this.requestDocuments .forEach(element => {
+        //   this.fileUploads.set(element,`${API_URL}/requests/${this.request.id}/documents/${element}`);
+        //   // console.log("key: "+ element + "   value :"+`${API_URL}/requests/${this.request.id}/documents/${element}`);
+        // });
+      },
+      error => {
+        console.log('oops', error.error)
+      }
+    )
+  }
+}
+
+fillDocumentTypes() {
+  this.documentTypeService.retrieveDocumentTypesByCategory(DocumentCategory.ALL).subscribe(
+    result => {
+      this.documentTypes = result as DocumentType[];
+    },
+    error => {
+      console.log('oops', error.error)
+    }
+  )
+}
+selectFile(event) {
+  this.selectedFiles = event.target.files;
+  this.uploading = false;
+}
+getFile(requestDocumentName) {
+  this.requestService.getRequestDocument(this.request.id, requestDocumentName);
+}
+deleteFile(requestDocumentName) {
+  this.requestService.deleteRequestDocument(this.request.id, requestDocumentName).subscribe(
+    result => {
+      this.fileUploadErrorMessage = "";
+      this.showFiles(true);
+    },
+    error => {
+      this.fileUploadErrorMessage = error.error.message;
+    }
+
+
+  );
+}
+upload() {
+
+  if (this.selectedDocumentTypeId != 0) {
+    this.uploading = true;
+    this.requestService.uploadRequestDocument(this.requestId, this.selectedDocumentTypeId, this.selectedFiles).subscribe(
+      result => {
+        this.fileUploadErrorMessage = "";
         if (result.type === HttpEventType.UploadProgress) {
           this.progress.percentage = Math.round(100 * result.loaded / result.total);
-          
+
         } else if (result instanceof HttpResponse) {
           console.log('File is completely uploaded!');
+
           this.showFiles(true);
         }
-        
+
       },
-      error =>{
+      error => {
         this.fileUploadErrorMessage = error.error;
         console.log('oops', error.error.message)
         console.log('oops', error.error)
       }
-    
+
     )
     this.selectedFiles = undefined
+  } else {
+    this.fileUploadErrorMessage = "اختر نوع الملف اولا";
   }
+
+}
   
 }

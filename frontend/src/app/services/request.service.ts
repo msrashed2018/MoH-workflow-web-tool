@@ -5,6 +5,7 @@ import { API_URL } from '../app.constants';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { text } from '@angular/core/src/render3';
+import { RequestDocument } from '../model/request-document.model';
 
 @Injectable({
   providedIn: 'root'
@@ -182,13 +183,13 @@ searchByNationalId(state,bonesRevealState, eyeRevealState,nationalId) {
     return this.http.get(
               `${API_URL}/requests/${id}/bones-reveal`);
   }
-  pushFileToStorage(id, documentType,fileList: FileList): Observable<HttpEvent<{}>> {
+  uploadRequestDocument(id, documentTypeId,fileList: FileList): Observable<HttpEvent<{}>> {
     
     let formdata: FormData = new FormData();
     for (var i=0; i< fileList.length; i++){
       formdata.append('file', fileList.item(i));
     }
-    const req = new HttpRequest('POST', `${API_URL}/requests/${id}/documents/${documentType}`, formdata, {
+    const req = new HttpRequest('POST', `${API_URL}/requests/${id}/documents?documentTypeId=${documentTypeId}`, formdata, {
       reportProgress: true,
       responseType: "text"
     });
@@ -196,13 +197,17 @@ searchByNationalId(state,bonesRevealState, eyeRevealState,nationalId) {
     return this.http.request(req);
   }
  
-  getFiles(id,documentType) {
-    return this.http.get<string[]>(`${API_URL}/requests/${id}/documents/${documentType}`)
+  getRequestDocumentsByCategory(id,category) {
+    return this.http.get<RequestDocument[]>(`${API_URL}/requests/${id}/documents/findByCategory?category=${category}`)
   }
 //https://stackoverflow.com/questions/51682514/how-download-a-file-from-httpclient
-  getFile(id, fileName){
-    this.http.get(`${API_URL}/requests/${id}/document/${fileName}`,{responseType: 'arraybuffer'} )
+  getRequestDocument(id, fileName){
+    this.http.get(`${API_URL}/requests/${id}/documents/${fileName}`,{responseType: 'arraybuffer'} )
       .subscribe(response => this.downLoadFile(response, "application/pdf"));
+  }
+
+  deleteRequestDocument(id, fileName){
+    return this.http.delete(`${API_URL}/requests/${id}/documents/${fileName}`);
   }
 
       /**

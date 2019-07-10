@@ -19,7 +19,7 @@ public class MoHRestfulApplication implements ApplicationRunner{
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		storageService.deleteAll();
+//		storageService.deleteAll();
 		storageService.init();
 		
 	}

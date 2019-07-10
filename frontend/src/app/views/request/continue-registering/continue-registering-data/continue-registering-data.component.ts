@@ -18,6 +18,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Citizen } from '../../../../model/citizen.model';
 import { DocumentTypeService } from '../../../../services/administration/document-type.service';
 import { DocumentType } from '../../../../model/document-type.model';
+import { DocumentCategory } from '../../../../model/document-category.enum';
+import { RequestDocument } from '../../../../model/request-document.model';
 
 @Component({
   selector: 'app-continue-registering-data',
@@ -34,37 +36,38 @@ export class ContinueRegisteringDataComponent implements OnInit {
 
 
   //---------------------------------------------------------------------------------------------------------
-  
+
   //models fields--------------------------------------------------------------------------------------------
-  citizenId : number = 0;
-  requestId : number = 0;
-  request : Request = new Request();
+  citizenId: number = 0;
+  requestId: number = 0;
+  request: Request = new Request();
   citizen = new Citizen();
   requestType = {};
   public documents = [{}];
   eyeCommittee = new Committee();
   bonesCommittee = new Committee();
-  committees : Committee[];
-  printEnabled : boolean = false;
-  
-  eyeCommittees : Committee[];
-  bonesCommittees : Committee[];
+  committees: Committee[];
+  printEnabled: boolean = false;
+
+  eyeCommittees: Committee[];
+  bonesCommittees: Committee[];
   selectedEyeCommitteeId: number = 0;
   selectedBonesCommitteeId: number = 0;
 
-  errorMessage : boolean = false;
-  requestDataErrorMessage : string = '';
-  requestDataSuccessMessage : string = '';
-  medicalRevealErrorMessage : string = '';
-  medicalRevealSuccessMessage : string = '';
-  successMessage : boolean = false;
+  errorMessage: boolean = false;
+  requestDataErrorMessage: string = '';
+  requestDataSuccessMessage: string = '';
+  medicalRevealErrorMessage: string = '';
+  medicalRevealSuccessMessage: string = '';
+  successMessage: boolean = false;
   message: string = "";
   //file upload fields---------------------------------------------------------------------------------------
-  documentTypes : DocumentType[];
+  selectedDocumentTypeId: number = 0;
+  documentTypes: DocumentType[];
   showFile = false
-  fileUploadErrorMessage : string;
+  fileUploadErrorMessage: string;
   fileUploads: Map<string, string> = new Map<string, string>();
-  requestDocuments: string[];
+  requestDocuments: RequestDocument[];
   uploading = false;
   @Input() fileUpload: string;
   selectedFiles: FileList
@@ -72,58 +75,58 @@ export class ContinueRegisteringDataComponent implements OnInit {
   progress: { percentage: number } = { percentage: 0 }
   //---------------------------------------------------------------------------------------------------------
 
-  constructor(private documentTypeService: DocumentTypeService, private route:ActivatedRoute, private formBuilder: FormBuilder, private committeeService:CommitteeService, private disabilityService:DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
+  constructor(private documentTypeService: DocumentTypeService, private route: ActivatedRoute, private formBuilder: FormBuilder, private committeeService: CommitteeService, private disabilityService: DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
 
   ngOnInit() {
     this.route.params.forEach((urlParams) => {
-      this.requestId= urlParams['requestId'];
+      this.requestId = urlParams['requestId'];
       // this.requestId= 1;
       this.refreshData();
-      
+
     });
   }
-  refreshData(){
+  refreshData() {
     this.requestService.retrieveRequest(this.requestId).subscribe(
-    result => {
-      this.request = result as Request;
-      this.citizen = this.request.citizen;
-      this.requestType = this.request.requestType;
-      
-      if(this.request.eyeCommittee != null){
-        this.selectedEyeCommitteeId = this.request.eyeCommittee.id;
-        this.printEnabled = true;
-      }
-      if(this.request.bonesCommittee != null){
-        this.selectedBonesCommitteeId = this.request.bonesCommittee.id;
-        this.printEnabled = true;
-      }
-     
-    },
-    error => {
-      this.errorMessage = true;
-      this.message = error.error.message;
-      console.log('oops', error);
-    });
+      result => {
+        this.request = result as Request;
+        this.citizen = this.request.citizen;
+        this.requestType = this.request.requestType;
+
+        if (this.request.eyeCommittee != null) {
+          this.selectedEyeCommitteeId = this.request.eyeCommittee.id;
+          this.printEnabled = true;
+        }
+        if (this.request.bonesCommittee != null) {
+          this.selectedBonesCommitteeId = this.request.bonesCommittee.id;
+          this.printEnabled = true;
+        }
+
+      },
+      error => {
+        this.errorMessage = true;
+        this.message = error.error.message;
+        console.log('oops', error);
+      });
 
   }
 
-  onSaveMedicalReveal(){
+  onSaveMedicalReveal() {
 
-  
+
     // console.log(JSON.stringify(this.request))
 
-    if(this.selectedEyeCommitteeId !=0 ){
+    if (this.selectedEyeCommitteeId != 0) {
       let committee: Committee = new Committee;
-      committee.id= this.selectedEyeCommitteeId;
+      committee.id = this.selectedEyeCommitteeId;
       this.request.eyeCommittee = committee;
     }
 
-    if(this.selectedBonesCommitteeId !=0 ){
+    if (this.selectedBonesCommitteeId != 0) {
       let committee: Committee = new Committee;
-      committee.id= this.selectedBonesCommitteeId;
+      committee.id = this.selectedBonesCommitteeId;
       this.request.bonesCommittee = committee;
     }
-    this.requestService.updateRequest(this.citizen.id,this.request.id, this.request).subscribe(
+    this.requestService.updateRequest(this.citizen.id, this.request.id, this.request).subscribe(
       result => {
         this.medicalRevealErrorMessage = "";
         this.medicalRevealSuccessMessage = "تم حفظ بيانات الكشف الطبي بنجاح"
@@ -132,88 +135,109 @@ export class ContinueRegisteringDataComponent implements OnInit {
       },
       error => {
         console.log('oops', error);
-        this.medicalRevealSuccessMessage ="";
+        this.medicalRevealSuccessMessage = "";
         this.medicalRevealErrorMessage = error.error.message;
-       }
+      }
     )
   }
 
-  fillCommittees(){
+  fillCommittees() {
     this.committeeService.retrieveCommitteesByType('رمد').subscribe(
       result => {
         this.eyeCommittees = result;
       },
       error => {
         console.log('oops', error);
-    });
+      });
     this.committeeService.retrieveCommitteesByType('عظام').subscribe(
       result => {
         this.bonesCommittees = result;
       },
       error => {
         console.log('oops', error);
-    });
+      });
   }
-// file upload methods--------------------------------------------------------------------------------------
+  // file upload methods--------------------------------------------------------------------------------------
   showFiles(enable: boolean) {
     this.showFile = enable
     // this.getDocumentsTypes();
     if (enable) {
-      this.requestService.getFiles(this.request.id, 'PERSONAL').subscribe(
-        result =>{
-          this.requestDocuments = result as any;
-          this.requestDocuments .forEach(element => {
-            this.fileUploads.set(element,`${API_URL}/requests/${this.request.id}/documents/${element}`);
-            // console.log("key: "+ element + "   value :"+`${API_URL}/requests/${this.request.id}/documents/${element}`);
-          });
+
+      this.requestService.getRequestDocumentsByCategory(this.request.id, DocumentCategory.PERSONAL).subscribe(
+        result => {
+          this.requestDocuments = result as RequestDocument[];
+          // this.requestDocuments .forEach(element => {
+          //   this.fileUploads.set(element,`${API_URL}/requests/${this.request.id}/documents/${element}`);
+          //   // console.log("key: "+ element + "   value :"+`${API_URL}/requests/${this.request.id}/documents/${element}`);
+          // });
         },
-        error =>{
+        error => {
           console.log('oops', error.error)
         }
       )
     }
   }
 
-  // getDocumentsTypes(){
-  //   this.documentTypeService.retrieveAllDocumentType().subscribe(
-  //     result =>{
-  //       this.documentTypes = result as DocumentType[];
-  //     },
-  //     error =>{
-  //       console.log('oops', error.error)
-  //     }
-  //   )
-  // }
+  fillDocumentTypes() {
+    this.documentTypeService.retrieveDocumentTypesByCategory(DocumentCategory.PERSONAL).subscribe(
+      result => {
+        this.documentTypes = result as DocumentType[];
+      },
+      error => {
+        console.log('oops', error.error)
+      }
+    )
+  }
   selectFile(event) {
     this.selectedFiles = event.target.files;
     this.uploading = false;
   }
-  getFile(fileName){
-    this.requestService.getFile(this.request.id,fileName);
+  getFile(requestDocumentName) {
+    this.requestService.getRequestDocument(this.request.id, requestDocumentName);
   }
-   upload() {
-     this.uploading = true;
-     this.requestService.pushFileToStorage(this.requestId,'PERSONAL',this.selectedFiles).subscribe(
-       result => {
-         // console.log(result);
-         if (result.type === HttpEventType.UploadProgress) {
-           this.progress.percentage = Math.round(100 * result.loaded / result.total);
-           
-         } else if (result instanceof HttpResponse) {
-           console.log('File is completely uploaded!');
-           this.showFiles(true);
-         }
-         
-       },
-       error =>{
-         this.fileUploadErrorMessage = error.error;
-         console.log('oops', error.error.message)
-         console.log('oops', error.error)
-       }
-     
-     )
-     this.selectedFiles = undefined
-   }
+  deleteFile(requestDocumentName) {
+    this.requestService.deleteRequestDocument(this.request.id, requestDocumentName).subscribe(
+      result =>{
+        this.fileUploadErrorMessage = "";
+        this.showFiles(true);
+      },
+      error=>{
+        this.fileUploadErrorMessage = error.error.message;
+      }
+
+
+    );
+  }
+  upload() {
+
+    if (this.selectedDocumentTypeId != 0) {
+      this.uploading = true;
+      this.requestService.uploadRequestDocument(this.requestId, this.selectedDocumentTypeId, this.selectedFiles).subscribe(
+        result => {
+          this.fileUploadErrorMessage = "";
+          if (result.type === HttpEventType.UploadProgress) {
+            this.progress.percentage = Math.round(100 * result.loaded / result.total);
+
+          } else if (result instanceof HttpResponse) {
+            console.log('File is completely uploaded!');
+            
+            this.showFiles(true);
+          }
+
+        },
+        error => {
+          this.fileUploadErrorMessage = error.error;
+          console.log('oops', error.error.message)
+          console.log('oops', error.error)
+        }
+
+      )
+      this.selectedFiles = undefined
+    }else{
+      this.fileUploadErrorMessage = "اختر نوع الملف اولا";
+    }
+
+  }
   //--------------------------------------------------------------------------------------
 
 
@@ -221,7 +245,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
   medicalRevealDataCollapsed(event: any): void {
   }
   medicalRevealDataExpanded(event: any): void {
-   this.fillCommittees();
+    this.fillCommittees();
   }
   toggleMedicalRevealDataCollapse(): void {
     this.isMedicalRevealDataCollapsed = !this.isMedicalRevealDataCollapsed;
@@ -240,6 +264,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
   fileUploadDataCollapsed(event: any): void {
   }
   fileUploadDataExpanded(event: any): void {
+    this.fillDocumentTypes();
     this.showFiles(true);
   }
   toggleFileUploadDataCollapse(): void {
@@ -247,17 +272,17 @@ export class ContinueRegisteringDataComponent implements OnInit {
     this.iconFileUploadDataCollapse = this.isFileUploadDataCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
 
-  onEyeCommitteeChanged(committeeId){
-    
-    for(var x=0; x< this.eyeCommittees.length;x++){
-      if(this.eyeCommittees[x].id == committeeId){
+  onEyeCommitteeChanged(committeeId) {
+
+    for (var x = 0; x < this.eyeCommittees.length; x++) {
+      if (this.eyeCommittees[x].id == committeeId) {
         this.eyeCommittee = this.eyeCommittees[x];
       }
     }
   }
-  onBonesCommitteeChanged(committeeId){
-    for(var x=0; x< this.bonesCommittees.length;x++){
-      if(this.bonesCommittees[x].id == committeeId){
+  onBonesCommitteeChanged(committeeId) {
+    for (var x = 0; x < this.bonesCommittees.length; x++) {
+      if (this.bonesCommittees[x].id == committeeId) {
         this.bonesCommittee = this.bonesCommittees[x];
       }
     }
@@ -265,40 +290,40 @@ export class ContinueRegisteringDataComponent implements OnInit {
 
 
   print(): void {
-    let bonesPageContents,eyePageContents, popupWin, name = "" , address  =  ""
-    , nationalId = 0, occupation = "", birthDate = "", mobileNumber = ""
-    , governate = "", custom = "", bonesCommittee=" لم يتم تحديد اللجنة" , eyeCommittee=" لم يتم تحديد اللجنة";
+    let bonesPageContents, eyePageContents, popupWin, name = "", address = ""
+      , nationalId = 0, occupation = "", birthDate = "", mobileNumber = ""
+      , governate = "", custom = "", bonesCommittee = " لم يتم تحديد اللجنة", eyeCommittee = " لم يتم تحديد اللجنة";
 
-    if(this.citizen.name != null){
+    if (this.citizen.name != null) {
       name = this.citizen.name;
     }
-    if(this.citizen.address != null){
+    if (this.citizen.address != null) {
       address = this.citizen.address
     }
-    if(this.citizen.nationalId != null){
+    if (this.citizen.nationalId != null) {
       nationalId = this.citizen.nationalId;
     }
-    if(this.citizen.occupation != null){
+    if (this.citizen.occupation != null) {
       occupation = this.citizen.occupation.name
     }
-    if(this.citizen.birthDate != null){
+    if (this.citizen.birthDate != null) {
       birthDate = this.citizen.birthDate
     }
-    if(this.citizen.mobileNumber != null){
+    if (this.citizen.mobileNumber != null) {
       mobileNumber = this.citizen.mobileNumber
     }
 
-    if(this.citizen.governate != null){
+    if (this.citizen.governate != null) {
       governate = this.citizen.governate.name
     }
 
-    if(this.request.custom != null){
+    if (this.request.custom != null) {
       custom = this.request.custom.name;
     }
 
-    if(this.request.bonesCommittee != null){
+    if (this.request.bonesCommittee != null) {
       bonesCommittee = this.request.bonesCommittee.date;
-      bonesPageContents =`
+      bonesPageContents = `
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ar" dir="rtl" lang="ar">
 
 <head>
@@ -487,7 +512,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
     `
     }
 
-    if(this.request.eyeCommittee != null){
+    if (this.request.eyeCommittee != null) {
       eyeCommittee = this.request.eyeCommittee.date;
       eyePageContents = `
     <!DOCTYPE html>
@@ -647,13 +672,13 @@ export class ContinueRegisteringDataComponent implements OnInit {
 </html>
     `
     }
-    
-    
 
 
 
 
-    
+
+
+
 
 
     popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');

@@ -18,6 +18,7 @@ import { BonesReveal } from '../../../../model/bones-reveal.model';
 import { EyeReveal } from '../../../../model/eye-reveal.model';
 import { Disability } from '../../../../model/disability.model';
 import { EyeMeasure } from '../../../../model/eye-measure.model';
+import { DocumentCategory } from '../../../../model/document-category.enum';
 @Component({
   selector: 'app-reveal-data',
   templateUrl: './reveal-data.component.html',
@@ -354,7 +355,7 @@ export class RevealDataComponent implements OnInit {
   fileUploadDataCollapsed(event: any): void {
   }
   fileUploadDataExpanded(event: any): void {
-    this.showFiles(true);
+    // this.showFiles(true);
   }
   toggleFileUploadDataCollapse(): void {
     this.isFileUploadDataCollapsed = !this.isFileUploadDataCollapsed;
@@ -404,57 +405,57 @@ export class RevealDataComponent implements OnInit {
 
 
   // file upload methods--------------------------------------------------------------------------------------
-  showFiles(enable: boolean) {
-    this.showFile = enable
-    if (enable) {
-      this.requestService.getFiles(this.request.id, 'MEDICAL').subscribe(
-        result => {
-          this.requestDocuments = result as any;
-          this.requestDocuments.forEach(element => {
-            this.fileUploads.set(element, `${API_URL}/requests/${this.request.id}/documents/${element}`);
-            // console.log("key: "+ element + "   value :"+`${API_URL}/requests/${this.request.id}/documents/${element}`);
-          });
-        },
-        error => {
-          console.log('oops', error.error)
-        }
-      )
-    }
-  }
+//   showFiles(enable: boolean) {
+//     this.showFile = enable
+//     if (enable) {
+//       this.requestService.getRequestDocumentsByCategory(this.request.id, DocumentCategory.EYE).subscribe(
+//         result => {
+//           this.requestDocuments = result as any;
+//           this.requestDocuments.forEach(element => {
+//             this.fileUploads.set(element, `${API_URL}/requests/${this.request.id}/documents/${element}`);
+//             // console.log("key: "+ element + "   value :"+`${API_URL}/requests/${this.request.id}/documents/${element}`);
+//           });
+//         },
+//         error => {
+//           console.log('oops', error.error)
+//         }
+//       )
+//     }
+//   }
 
 
-  selectFile(event) {
-    this.selectedFiles = event.target.files;
-    this.uploading = false;
-  }
-  getFile(fileName) {
-    this.requestService.getFile(this.request.id, fileName);
-  }
-  upload() {
-    this.uploading = true;
-    this.requestService.pushFileToStorage(this.requestId, 'MEDICAL', this.selectedFiles).subscribe(
-      result => {
-        // console.log(result);
-        if (result.type === HttpEventType.UploadProgress) {
-          this.progress.percentage = Math.round(100 * result.loaded / result.total);
+//   selectFile(event) {
+//     this.selectedFiles = event.target.files;
+//     this.uploading = false;
+//   }
+//   getFile(fileName) {
+//     this.requestService.getFile(this.request.id, fileName);
+//   }
+//   upload() {
+//     this.uploading = true;
+//     this.requestService.pushFileToStorage(this.requestId, 'MEDICAL', this.selectedFiles).subscribe(
+//       result => {
+//         // console.log(result);
+//         if (result.type === HttpEventType.UploadProgress) {
+//           this.progress.percentage = Math.round(100 * result.loaded / result.total);
 
-        } else if (result instanceof HttpResponse) {
-          this.fileUploadErrorMessage = "";
-          this.showFiles(true);
-        }
+//         } else if (result instanceof HttpResponse) {
+//           this.fileUploadErrorMessage = "";
+//           this.showFiles(true);
+//         }
 
-      },
-      error => {
-        this.fileUploadErrorMessage = error.error;
-        console.log('oops', error.error.message)
-        console.log('oops', error.error)
-      }
+//       },
+//       error => {
+//         this.fileUploadErrorMessage = error.error;
+//         console.log('oops', error.error.message)
+//         console.log('oops', error.error)
+//       }
 
-    )
-    this.selectedFiles = undefined
-  }
+//     )
+//     this.selectedFiles = undefined
+//   }
 
-}
+// }
 //----------------------------------------------------------------------------------------------------------
-
+}
 

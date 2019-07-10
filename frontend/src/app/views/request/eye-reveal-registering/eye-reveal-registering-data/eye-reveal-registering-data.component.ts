@@ -18,6 +18,10 @@ import { BonesReveal } from '../../../../model/bones-reveal.model';
 import { EyeReveal } from '../../../../model/eye-reveal.model';
 import { Disability } from '../../../../model/disability.model';
 import { EyeMeasure } from '../../../../model/eye-measure.model';
+import { DocumentCategory } from '../../../../model/document-category.enum';
+import { RequestDocument } from '../../../../model/request-document.model';
+import { DocumentTypeService } from '../../../../services/administration/document-type.service';
+import { DocumentType } from '../../../../model/document-type.model';
 
 @Component({
   selector: 'app-eye-reveal-registering-data',
@@ -87,19 +91,21 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
 
   //file upload fields---------------------------------------------------------------------------------------
   showFile = false
+  documentTypes: DocumentType[];
   fileUploadErrorMessage: string;
+  requestDocuments: RequestDocument[];
   fileUploads: Map<string, string> = new Map<string, string>();
-  requestDocuments: string[];
   uploading = false;
   @Input() fileUpload: string;
   selectedFiles: FileList
   currentFileUpload: File
   progress: { percentage: number } = { percentage: 0 }
+  selectedDocumentTypeId: number = 0;
   //---------------------------------------------------------------------------------------------------------
 
 
 
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private committeeService: CommitteeService, private disabilityService: DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
+  constructor(private documentTypeService: DocumentTypeService, private route: ActivatedRoute, private formBuilder: FormBuilder, private committeeService: CommitteeService, private disabilityService: DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
 
   ngOnInit() {
 
@@ -355,6 +361,7 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
   fileUploadDataCollapsed(event: any): void {
   }
   fileUploadDataExpanded(event: any): void {
+    this.fillDocumentTypes();
     this.showFiles(true);
   }
   toggleFileUploadDataCollapse(): void {
@@ -404,17 +411,19 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
   }
 
 
-  // file upload methods--------------------------------------------------------------------------------------
-  showFiles(enable: boolean) {
+   // file upload methods--------------------------------------------------------------------------------------
+   showFiles(enable: boolean) {
     this.showFile = enable
+    // this.getDocumentsTypes();
     if (enable) {
-      this.requestService.getFiles(this.request.id, 'MEDICAL').subscribe(
+
+      this.requestService.getRequestDocumentsByCategory(this.request.id, DocumentCategory.EYE).subscribe(
         result => {
-          this.requestDocuments = result as any;
-          this.requestDocuments.forEach(element => {
-            this.fileUploads.set(element, `${API_URL}/requests/${this.request.id}/documents/${element}`);
-            // console.log("key: "+ element + "   value :"+`${API_URL}/requests/${this.request.id}/documents/${element}`);
-          });
+          this.requestDocuments = result as RequestDocument[];
+          // this.requestDocuments .forEach(element => {
+          //   this.fileUploads.set(element,`${API_URL}/requests/${this.request.id}/documents/${element}`);
+          //   // console.log("key: "+ element + "   value :"+`${API_URL}/requests/${this.request.id}/documents/${element}`);
+          // });
         },
         error => {
           console.log('oops', error.error)
@@ -423,36 +432,65 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
     }
   }
 
-
+  fillDocumentTypes() {
+    this.documentTypeService.retrieveDocumentTypesByCategory(DocumentCategory.EYE).subscribe(
+      result => {
+        this.documentTypes = result as DocumentType[];
+      },
+      error => {
+        console.log('oops', error.error)
+      }
+    )
+  }
   selectFile(event) {
     this.selectedFiles = event.target.files;
     this.uploading = false;
   }
-  getFile(fileName) {
-    this.requestService.getFile(this.request.id, fileName);
+  getFile(requestDocumentName) {
+    this.requestService.getRequestDocument(this.request.id, requestDocumentName);
   }
-  upload() {
-    this.uploading = true;
-    this.requestService.pushFileToStorage(this.requestId, 'MEDICAL', this.selectedFiles).subscribe(
+  deleteFile(requestDocumentName) {
+    this.requestService.deleteRequestDocument(this.request.id, requestDocumentName).subscribe(
       result => {
-        // console.log(result);
-        if (result.type === HttpEventType.UploadProgress) {
-          this.progress.percentage = Math.round(100 * result.loaded / result.total);
-
-        } else if (result instanceof HttpResponse) {
-          this.fileUploadErrorMessage = "";
-          this.showFiles(true);
-        }
-
+        this.fileUploadErrorMessage = "";
+        this.showFiles(true);
       },
       error => {
-        this.fileUploadErrorMessage = error.error;
-        console.log('oops', error.error.message)
-        console.log('oops', error.error)
+        this.fileUploadErrorMessage = error.error.message;
       }
 
-    )
-    this.selectedFiles = undefined
+
+    );
+  }
+  upload() {
+
+    if (this.selectedDocumentTypeId != 0) {
+      this.uploading = true;
+      this.requestService.uploadRequestDocument(this.requestId, this.selectedDocumentTypeId, this.selectedFiles).subscribe(
+        result => {
+          this.fileUploadErrorMessage = "";
+          if (result.type === HttpEventType.UploadProgress) {
+            this.progress.percentage = Math.round(100 * result.loaded / result.total);
+
+          } else if (result instanceof HttpResponse) {
+            console.log('File is completely uploaded!');
+
+            this.showFiles(true);
+          }
+
+        },
+        error => {
+          this.fileUploadErrorMessage = error.error;
+          console.log('oops', error.error.message)
+          console.log('oops', error.error)
+        }
+
+      )
+      this.selectedFiles = undefined
+    } else {
+      this.fileUploadErrorMessage = "اختر نوع الملف اولا";
+    }
+
   }
 
 }

@@ -22,31 +22,29 @@ import com.almostkbal.web.services.workflow.entities.DocumentType;
 public class StorageService {
 	@Value(value = "${documents.directory}")
 	private String documentsPath;
-	
-	
-	
+
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
 	public String store(long requestId, DocumentType documentType, String fileName, MultipartFile file) {
 		try {
-			String storedPath = documentsPath + "/" + String.valueOf(requestId) + "/" + documentType.getName();
-			log.info("storedPath :"+storedPath);
-			
-			
+			String storedPath = documentsPath + "/" + String.valueOf(requestId) + "/"
+					+ documentType.getCategory().getName();
+			log.info("storedPath :" + storedPath);
+
 			File directory = new File(storedPath);
-		    if (! directory.exists()){
-		        directory.mkdirs();
-		        // If you require it to make the entire directory path including parents,
-		        // use directory.mkdirs(); here instead.
-		    }
-			
+			if (!directory.exists()) {
+				directory.mkdirs();
+				// If you require it to make the entire directory path including parents,
+				// use directory.mkdirs(); here instead.
+			}
+
 			Path rootLocation = Paths.get(storedPath);
 			Files.copy(file.getInputStream(), rootLocation.resolve(fileName));
-			
+
 			return storedPath;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			throw new RuntimeException("FAIL! to store file "+ fileName);
+			throw new RuntimeException("FAIL! to store file " + fileName);
 		}
 	}
 
@@ -65,7 +63,17 @@ public class StorageService {
 			throw new RuntimeException("FAIL!");
 		}
 	}
-
+	public void deleteFile(String path, String filename) throws IOException {
+			Path rootLocation = Paths.get(path);
+			Path file = rootLocation.resolve(filename);
+			Resource resource = new UrlResource(file.toUri());
+			if (resource.exists() || resource.isReadable()) {
+				Files.delete(file);
+			} else {
+				throw new RuntimeException("file "+filename+" not found");
+			}
+		
+	}
 	public void deleteAll() {
 		Path rootLocation = Paths.get(documentsPath);
 		FileSystemUtils.deleteRecursively(rootLocation.toFile());
@@ -74,7 +82,9 @@ public class StorageService {
 	public void init() {
 		try {
 			Path rootLocation = Paths.get(documentsPath);
-			Files.createDirectory(rootLocation);
+			if (!Files.exists(rootLocation)) {
+				Files.createDirectory(rootLocation);
+			}
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 			throw new RuntimeException("Could not initialize storage!");

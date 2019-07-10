@@ -12,9 +12,11 @@ export class DocumentTypeService {
     private http:HttpClient
   ) { }
 
+  retrieveDocumentTypesByCategory(category) {
+    return this.http.get<DocumentType[]>(`${API_URL}/document-types/findByCategory?category=${category}`);
+  }
   retrieveAllDocumentTypes(page,size) {
     return this.http.get<DocumentType[]>(`${API_URL}/document-types?page=${page}&size=${size}`);
-
   }
 
   deleteDocumentType(id){
