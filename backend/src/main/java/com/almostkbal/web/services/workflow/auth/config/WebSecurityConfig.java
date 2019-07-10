@@ -65,11 +65,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //		.anyRequest().authenticated()
 //				.and().httpBasic();
 //    	//TODO this line is add to allow connection for h2-console management UI
-//    	http.headers().frameOptions().sameOrigin();
+    	http.headers().frameOptions().sameOrigin();
 
         http.cors().and().csrf().disable().
                 authorizeRequests()
 				.antMatchers("/api/signin").permitAll()
+				.antMatchers("/h2-console/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
