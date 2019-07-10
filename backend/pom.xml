@@ -50,11 +50,11 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!--dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.4.0</version>
-		</dependency-->
+		<dependency>
+		    <groupId>com.oracle</groupId>
+		    <artifactId>ojdbc7</artifactId>
+		    <version>12.1.0.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -113,6 +113,16 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
+		</repository>
+		<repository>
+			<id>mvnrepository</id>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</repository>
 	</repositories>
 
