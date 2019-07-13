@@ -1,4 +1,7 @@
-
+<br/>
+<div>
+  <h4 style="text-align: center; color: rgb(3, 54, 148)">المدفوعات</h4>
+</div>
 <br/>
 <div *ngIf="noDataFound">
   <br>
@@ -13,6 +16,8 @@
     <strong>عفوا، حدث خطا، حاول مره أخرى. </strong>
   </alert>
 </div> 
+
+
 <button type="button" class="btn btn-pill btn-primary" style="width: 100px;  color:white !important;"  (click)="searchByNationalId($event)">بحث  <i class="fa fa-search"></i></button>
 <!-- <output class="searchHint" > من فضلك ادخل الرقم القومي :</output> -->
 <input style=" width: 200px; border: 2px solid grey; border-radius: 4px;" type="number"  placeholder="   بحث بالرقم القومي " [(ngModel)]="searchByID" />

@@ -1,24 +1,32 @@
-
-<br/>
+<br />
+<div>
+  <h4 style="text-align: center; color: rgb(3, 54, 148)">المواطنين</h4>
+</div>
+<br />
 <div *ngIf="noDataFound">
   <br>
   <alert type="info">
     <strong>لا توجد بيانات مطابقه للمدخلات. </strong>
   </alert>
-</div> 
+</div>
 
 <div *ngIf="errorMessage">
   <br>
   <alert type="danger">
     <strong>عفوا، حدث خطا، حاول مره أخرى. </strong>
   </alert>
-</div> 
-<div>
-  <button  (click)="onAdd()" class="btn btn-success "><strong> مواطن جديد</strong>  <i class="fa fa-plus-circle"></i></button>
-</div><br/>
-<button type="button" class="btn btn-pill btn-primary" style="width: 100px;  color:white !important;"  (click)="searchchanged($event)">بحث  <i class="fa fa-search"></i></button>
-<input style=" width: 200px; border: 2px solid grey; border-radius: 4px;" type="number"  placeholder="   ادخل الرقم القومي " [(ngModel)]="searchByID" />
-<br/>
+</div>
+<div >
+  <button (click)="onAdd()" class="btn btn-success "><strong> مواطن جديد</strong> <i
+      class="fa fa-plus-circle"></i></button>
+</div><br />
+<div >
+  <button type="button" class="btn btn-pill btn-primary" style="width: 100px;  color:white !important;"
+    (click)="searchchanged($event)">بحث <i class="fa fa-search"></i></button>
+  <input style=" width: 200px; border: 2px solid grey; border-radius: 4px;" type="number"
+    placeholder="   ادخل الرقم القومي " [(ngModel)]="searchByID" />
+</div>
+<br />
 <table class="table table-responsive-sm table-hover table-outline mb-0">
   <thead class="thead-light">
     <tr>
@@ -33,16 +41,18 @@
       <th class="text-center">الطلبات</th>
       <th *ngIf="isAdmin" class="text-center">تعديل</th>
       <th *ngIf="isAdmin" class="text-center">مسح</th>
-      
+
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let citizen of citizens ; let i=index">
       <td class="text-center"><b>{{i+1}}</b></td>
       <td class="text-center">
-        <div><a [routerLink]="['/citizen/view-edit', citizen.id,{componentMode: 'viewMode'}]"><b>{{citizen.name}}</b></a></div>
+        <div><a
+            [routerLink]="['/citizen/view-edit', citizen.id,{componentMode: 'viewMode'}]"><b>{{citizen.name}}</b></a>
+        </div>
         <div class="small text-muted">
-           <span>جديد</span> | تسجيل: {{citizen.createdDate}} 
+          <span>جديد</span> | تسجيل: {{citizen.createdDate}}
         </div>
       </td>
       <td class="text-center">
@@ -51,58 +61,58 @@
         </div>
       </td>
       <td class="text-center">
-          <div>{{citizen.gender}}</div>
-          <div class="small text-muted">
-          </div>
-        </td>
+        <div>{{citizen.gender}}</div>
+        <div class="small text-muted">
+        </div>
+      </td>
       <td class="text-center">
         <div>{{citizen.occupation.name}}</div>
         <div class="small text-muted">
         </div>
       </td>
-      
+
       <td class="text-center">
-          <div>{{calculateAge(citizen.birthDate)}}</div>
-          <div class="small text-muted">
-          </div>
+        <div>{{calculateAge(citizen.birthDate)}}</div>
+        <div class="small text-muted">
+        </div>
       </td>
       <td class="text-center">
-          <div>{{citizen.governate.name}}</div>
-          <div class="small text-muted">
-          </div>
+        <div>{{citizen.governate.name}}</div>
+        <div class="small text-muted">
+        </div>
       </td>
       <td class="text-center">
-          <div>{{citizen.city.name}}</div>
-          <div class="small text-muted">
-          </div>
+        <div>{{citizen.city.name}}</div>
+        <div class="small text-muted">
+        </div>
       </td>
       <td class="text-center">
-          <button type="button" class="edit-btn btn btn-success" (click)="onNewRequest(citizen.id)">الطلبات
-              <i class="fa fa-edit"></i>
-          </button>
-      </td >
+        <button type="button" class="edit-btn btn btn-success" (click)="onNewRequest(citizen.id)">الطلبات
+          <i class="fa fa-edit"></i>
+        </button>
+      </td>
       <td *ngIf="isAdmin" class="text-center">
-          <button type="button" class="edit-btn btn btn-info" (click)="onEdit(citizen.id)">تعديل
-              <i class="fa fa-edit"></i>
-          </button>
-      </td >
+        <button type="button" class="edit-btn btn btn-info" (click)="onEdit(citizen.id)">تعديل
+          <i class="fa fa-edit"></i>
+        </button>
+      </td>
       <td *ngIf="isAdmin" class="text-center">
         <button type="button" class="delete-btn btn btn-danger" (click)="onDelete(citizen.id)">حذف
-            <i class="fa fa-trash"></i>
+          <i class="fa fa-trash"></i>
         </button>
       </td>
     </tr>
-    
-   
+
+
   </tbody>
 </table>
 <hr>
-  <ul class="nav nav-pills justify-content-center">
-    <li class="page-item"><a class="page-link" (click)="prevPage($event)">السابق</a></li>
+<ul class="nav nav-pills justify-content-center">
+  <li class="page-item"><a class="page-link" (click)="prevPage($event)">السابق</a></li>
 
-    <li class="nav-item" *ngFor="let p of pages; let i=index">
-        <a [ngClass]="{'active':i==page}" (click)="setPage(i,$event)" class="nav-link active" href="#">{{i}}</a>
-    </li>
-    <li class="page-item"><a  class="page-link" (click)="nextPage($event)">التالي</a></li>
-  </ul>
-  <hr>
+  <li class="nav-item" *ngFor="let p of pages; let i=index">
+    <a [ngClass]="{'active':i==page}" (click)="setPage(i,$event)" class="nav-link active" href="#">{{i}}</a>
+  </li>
+  <li class="page-item"><a class="page-link" (click)="nextPage($event)">التالي</a></li>
+</ul>
+<hr>
