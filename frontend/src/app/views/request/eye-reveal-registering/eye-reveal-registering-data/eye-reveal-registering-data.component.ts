@@ -14,7 +14,6 @@ import { CommitteeService } from '../../../../services/administration/committee.
 import { Request } from '../../../../model/request.model';
 import { API_URL } from '../../../../app.constants';
 import { ActivatedRoute } from '@angular/router';
-import { BonesReveal } from '../../../../model/bones-reveal.model';
 import { EyeReveal } from '../../../../model/eye-reveal.model';
 import { Disability } from '../../../../model/disability.model';
 import { EyeMeasure } from '../../../../model/eye-measure.model';
@@ -32,11 +31,9 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
   //cards collapse fields------------------------------------------------------------------------------------
   isRequestDataCollapsed: boolean = false;
   isEyeRevealDataCollapsed: boolean = true;
-  isBonesRevealDataCollapsed: boolean = true;
   isFileUploadDataCollapsed: boolean = true;
   iconRequestDataCollapse: string = 'icon-arrow-up';
   iconEyeRevealDataCollapse: string = 'icon-arrow-down';
-  iconBonesRevealDataCollapse: string = 'icon-arrow-down';
   iconFileUploadDataCollapse: string = 'icon-arrow-down';
   //---------------------------------------------------------------------------------------------------------
 
@@ -48,7 +45,6 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
   requestType = {};
   equipment: string = "";
   eyeCommittee = {};
-  bonesCommittee = {};
   selectedRequestTypeId: number = 0;
   selectedCustomId: number = 0;
   selectedTrafficManagementId: number = 0;
@@ -71,8 +67,6 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
   selectedLeftEyeMeasureId: number = 0;
   selectedRightEyeMeasureId: number = 0;
 
-  bonesReveal = new BonesReveal();
-  // selectedBonesCommitteeId: number = 0;
   selectedDisabilityTypeName: string = "";
   // selectedEquipmentTypeId: number = 0;
 
@@ -81,8 +75,6 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
   requestDataErrorMessage: string = '';
   requestDataSuccessMessage: string = '';
 
-  bonesRevealErrorMessage: string = '';
-  bonesRevealSuccessMessage: string = '';
   eyeRevealErrorMessage: string = '';
   eyeRevealSuccessMessage: string = '';
   successMessage: boolean = false;
@@ -122,7 +114,6 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
         this.citizen = this.request.citizen;
         this.requestType = this.request.requestType;
         this.eyeCommittee = this.request.eyeCommittee;
-        this.bonesCommittee = this.request.bonesCommittee;
       },
       error => {
         this.errorMessage = true;
@@ -186,41 +177,6 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
     }
   }
 
-  onSaveBonesReveal() {
-    if (this.bonesReveal.id != 0) {
-      // if(this.selectedBonesCommitteeId !=0){
-      //   let committee: Committee = new Committee;
-      //   committee.id= this.selectedBonesCommitteeId;
-      //   // this.bonesReveal.committee = committee;
-      // }
-
-      this.bonesReveal.disability = this.disabilities.find((d) => d.name == this.selectedDisabilityTypeName);
-      if (this.bonesReveal.disability == null) {
-        this.bonesRevealErrorMessage = ".نوع الاعاقة غير صحيح .. من فضلك اختر النوع من القائمة";
-      } else {
-        this.bonesRevealErrorMessage = "";
-        this.requestService.updateRequestBonesReveal(this.request.id, this.bonesReveal.id, this.bonesReveal).subscribe(
-          result => {
-            this.bonesReveal = result as BonesReveal;
-            this.bonesRevealSuccessMessage = "تم حفظ بيانات كشف العظام بنجاح";
-            this.bonesRevealErrorMessage = "";
-          },
-          error => {
-            console.log('oops', error);
-            this.bonesRevealSuccessMessage = "";
-            this.bonesRevealErrorMessage = error.error.message;
-          }
-        )
-      }
-
-
-
-
-    } else {
-      this.bonesRevealSuccessMessage = "";
-      this.bonesRevealErrorMessage = "عفوا لم يتم كشف عظام لهذا المواطن";
-    }
-  }
   onSaveRequestData() {
   }
 
@@ -260,8 +216,6 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
       result => {
         if (result != null) {
           this.eyeReveal = result as EyeReveal;
-          console.log(JSON.stringify(this.eyeReveal))
-
           if (this.eyeReveal.distinguishColor == '1') {
             this.distinguishCheck = true;
           } else {
@@ -308,55 +262,8 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
     this.iconEyeRevealDataCollapse = this.isEyeRevealDataCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
 
-  bonesRevealDataCollapsed(event: any): void {
-  }
-  bonesRevealDataExpanded(event: any): void {
-    // this.fillEquipments();
-    this.fillDisabilities();
 
-    this.requestService.retreiveRequestBonesReveal(this.requestId).subscribe(
-      result => {
-        if (result != null) {
-          this.bonesReveal = result as BonesReveal;
-          // console.log(JSON.stringify(this.bonesReveal))
-          if (this.bonesReveal.disability != null) {
-            this.selectedDisabilityTypeName = this.bonesReveal.disability.name
-          }
 
-          // if(this.bonesReveal.equipment != null){
-          //   this.selectedEquipmentTypeId = this.bonesReveal.equipment.id
-          // }
-        } else {
-          this.bonesRevealSuccessMessage = "";
-          this.bonesRevealErrorMessage = "عفوا لم يتم كشف عظام لهذا المواطن";
-        }
-      },
-      error => {
-        this.bonesRevealSuccessMessage = "";
-        this.bonesRevealErrorMessage = error.error.message;
-      }
-    )
-  }
-  onDisabilityChanged(value) {
-    this.bonesReveal.disability = this.disabilities.find((d) => d.name == value)
-    if (this.bonesReveal.disability == null) {
-      this.bonesRevealErrorMessage = ".نوع الاعاقة غير صحيح .. من فضلك اختر النوع من القائمة";
-    } else {
-      this.bonesRevealErrorMessage = "";
-      this.equipment = this.bonesReveal.disability.equipment.name;
-      if (this.bonesReveal.disability.accepted == '0') {
-        this.bonesReveal.result = 'مرفوض'
-      } else if (this.bonesReveal.disability.accepted == '1') {
-        this.bonesReveal.result = 'مقبول'
-      } else if (this.bonesReveal.disability.accepted == '2') {
-        this.bonesReveal.result = 'اعادة مناظرة'
-      }
-    }
-  }
-  toggleBonesRevealDataCollapse(): void {
-    this.isBonesRevealDataCollapsed = !this.isBonesRevealDataCollapsed;
-    this.iconBonesRevealDataCollapse = this.isBonesRevealDataCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
-  }
 
   fileUploadDataCollapsed(event: any): void {
   }
@@ -411,8 +318,8 @@ export class EyeRevealRegisteringDataComponent implements OnInit {
   }
 
 
-   // file upload methods--------------------------------------------------------------------------------------
-   showFiles(enable: boolean) {
+  // file upload methods--------------------------------------------------------------------------------------
+  showFiles(enable: boolean) {
     this.showFile = enable
     // this.getDocumentsTypes();
     if (enable) {

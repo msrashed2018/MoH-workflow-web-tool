@@ -3,4 +3,5 @@ export enum DocumentCategory {
 	EYE = "EYE",
     BONES ="BONES",
     ALL = "ALL",
+    OTHER = "OTHER"
 }

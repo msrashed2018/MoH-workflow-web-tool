@@ -122,6 +122,7 @@
 	"DESCRIPTION" VARCHAR2(255 BYTE), 
 	"REQUEST_ID" NUMBER
    );
+
 --------------------------------------------------------
 --  DDL for Table EYE_REVEAL_SETTING
 --------------------------------------------------------

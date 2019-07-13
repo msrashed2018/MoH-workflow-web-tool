@@ -4,6 +4,7 @@ import { DocumentType } from '../../../model/document-type.model';
 import { DocumentTypeService } from '../../../services/administration/document-type.service';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
+import { DocumentCategory } from '../../../model/document-category.enum';
 @Component({
   selector: 'app-list-document-types',
   templateUrl: './list-document-types.component.html',
@@ -52,7 +53,7 @@ export class ListDocumentTypesComponent implements OnInit {
   refreshData(){
     this.documentTypeService.retrieveAllDocumentTypes(this.page,PAGINATION_PAGE_SIZE).subscribe(
       response => {
-        this.documentTypes = response['content'];
+        this.documentTypes = response['content'] as DocumentType[];
         this.pages = new Array(response['totalPages']);
       },
       error =>{
@@ -84,4 +85,16 @@ export class ListDocumentTypesComponent implements OnInit {
   onAdd() {
     this.router.navigate(['administration/document-type-data'])
   }
+  getCategoryName(category : string) : string{
+    if(category === DocumentCategory.BONES){
+       return "اوراق كشف العظام";
+   }else if(category === DocumentCategory.EYE){
+       return "اوراق كشف الرمد";
+   }else if(category === DocumentCategory.PERSONAL){
+       return "اوراق شخصية";
+   }else if(category === DocumentCategory.OTHER){
+    return "اوراق اخري";
+}
+   return "";
+}
 }

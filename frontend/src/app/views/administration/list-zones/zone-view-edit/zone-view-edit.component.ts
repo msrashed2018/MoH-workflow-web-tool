@@ -52,7 +52,7 @@ export class ZoneViewEditComponent implements OnInit {
   }
   onSave(){
   
-    this.zoneService.createZone(this.requestModel).subscribe(
+    this.zoneService.updateZone((this.requestModel as Zone).id,this.requestModel).subscribe(
       result => {
         this.router.navigateByUrl("/administration/zones");
       },

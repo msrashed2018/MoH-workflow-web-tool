@@ -6,17 +6,13 @@ import { RequestTypeService } from '../../../../services/administration/request-
 import { RequestStatusService } from '../../../../services/administration/request-status.service';
 import { TrafficManagementService } from '../../../../services/administration/traffic-management.service';
 import { CustomService } from '../../../../services/administration/custom.service';
-import { EyeRevealSettingService } from '../../../../services/administration/eye-reveal-setting.service';
-import { EyeMeasureService } from '../../../../services/administration/eye-measure.service';
 import { EquipmentService } from '../../../../services/administration/equipment.service';
 import { DisabilityService } from '../../../../services/administration/disability.service';
 import { CommitteeService } from '../../../../services/administration/committee.service';
 import { Request } from '../../../../model/request.model';
 import { ActivatedRoute } from '@angular/router';
 import { BonesReveal } from '../../../../model/bones-reveal.model';
-import { EyeReveal } from '../../../../model/eye-reveal.model';
 import { Disability } from '../../../../model/disability.model';
-import { EyeMeasure } from '../../../../model/eye-measure.model';
 import { DocumentCategory } from '../../../../model/document-category.enum';
 import { RequestDocument } from '../../../../model/request-document.model';
 import { DocumentTypeService } from '../../../../services/administration/document-type.service';
@@ -30,11 +26,9 @@ import { DocumentType } from '../../../../model/document-type.model';
 export class BonesRevealRegisteringDataComponent implements OnInit {
   //cards collapse fields------------------------------------------------------------------------------------
   isRequestDataCollapsed: boolean = false;
-  isEyeRevealDataCollapsed: boolean = true;
   isBonesRevealDataCollapsed: boolean = true;
   isFileUploadDataCollapsed: boolean = true;
   iconRequestDataCollapse: string = 'icon-arrow-up';
-  iconEyeRevealDataCollapse: string = 'icon-arrow-down';
   iconBonesRevealDataCollapse: string = 'icon-arrow-down';
   iconFileUploadDataCollapse: string = 'icon-arrow-down';
   //---------------------------------------------------------------------------------------------------------
@@ -46,7 +40,6 @@ export class BonesRevealRegisteringDataComponent implements OnInit {
   request: Request = new Request();
   requestType = {};
   equipment: string = "";
-  eyeCommittee = {};
   bonesCommittee = {};
   selectedRequestTypeId: number = 0;
   selectedCustomId: number = 0;
@@ -62,13 +55,9 @@ export class BonesRevealRegisteringDataComponent implements OnInit {
 
 
   measures = [{}];
-  eyeReveal = new EyeReveal();
   distinguishCheck: boolean = false;
   glassesCheck: boolean = false;
   squintCheck: boolean = false;
-  // selectedEyeCommitteeId: number = 0;
-  selectedLeftEyeMeasureId: number = 0;
-  selectedRightEyeMeasureId: number = 0;
 
   bonesReveal = new BonesReveal();
   // selectedBonesCommitteeId: number = 0;
@@ -82,8 +71,6 @@ export class BonesRevealRegisteringDataComponent implements OnInit {
 
   bonesRevealErrorMessage: string = '';
   bonesRevealSuccessMessage: string = '';
-  eyeRevealErrorMessage: string = '';
-  eyeRevealSuccessMessage: string = '';
   successMessage: boolean = false;
   message: string = "";
   //---------------------------------------------------------------------------------------------------------
@@ -103,7 +90,7 @@ export class BonesRevealRegisteringDataComponent implements OnInit {
 
 
 
-  constructor(private documentTypeService: DocumentTypeService, private route: ActivatedRoute, private formBuilder: FormBuilder, private committeeService: CommitteeService, private disabilityService: DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
+  constructor(private documentTypeService: DocumentTypeService, private route: ActivatedRoute, private formBuilder: FormBuilder, private committeeService: CommitteeService, private disabilityService: DisabilityService, private equipmentService: EquipmentService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
 
   ngOnInit() {
 
@@ -119,7 +106,6 @@ export class BonesRevealRegisteringDataComponent implements OnInit {
         this.request = result as Request;
         this.citizen = this.request.citizen;
         this.requestType = this.request.requestType;
-        this.eyeCommittee = this.request.eyeCommittee;
         this.bonesCommittee = this.request.bonesCommittee;
       },
       error => {
@@ -128,60 +114,6 @@ export class BonesRevealRegisteringDataComponent implements OnInit {
         console.log('oops', error);
       });
 
-  }
-
-  onSaveEyeReveal() {
-
-    if (this.eyeReveal.id != 0) {
-
-      if (this.distinguishCheck) {
-        this.eyeReveal.distinguishColor = '1';
-      } else {
-        this.eyeReveal.distinguishColor = '0';
-      }
-      if (this.glassesCheck) {
-        this.eyeReveal.useGlasses = '1';
-      } else {
-        this.eyeReveal.useGlasses = '0';
-      }
-
-      if (this.squintCheck) {
-        this.eyeReveal.squint = '1';
-      } else {
-        this.eyeReveal.squint = '0';
-      }
-      // if(this.selectedEyeCommitteeId !=0){
-      //   let committee: Committee = new Committee;
-      //   committee.id= this.selectedEyeCommitteeId;
-      //   // this.eyeReveal.committee = committee;
-      // }
-      if (this.selectedLeftEyeMeasureId != 0) {
-        let eyeMeasure: EyeMeasure = new EyeMeasure;
-        eyeMeasure.id = this.selectedLeftEyeMeasureId;
-
-        this.eyeReveal.leftEye = eyeMeasure;
-      }
-      if (this.selectedRightEyeMeasureId != 0) {
-        let eyeMeasure: EyeMeasure = new EyeMeasure;
-        eyeMeasure.id = this.selectedRightEyeMeasureId;
-        this.eyeReveal.rightEye = eyeMeasure;
-      }
-      this.requestService.updateRequestEyeReveal(this.requestId, this.eyeReveal.id, this.eyeReveal).subscribe(
-        result => {
-          this.eyeReveal = result as EyeReveal;
-          this.eyeRevealErrorMessage = '';
-          this.eyeRevealSuccessMessage = "تم حفظ بيانات كشف الرمد بنجاح"
-        },
-        error => {
-          console.log('oops', error);
-          this.eyeRevealErrorMessage = error.error.message;
-          this.eyeRevealSuccessMessage = '';
-        }
-      )
-    } else {
-      this.eyeRevealErrorMessage = 'عفوا لم يتم كشف رمد لهذا المواطن';
-      this.eyeRevealSuccessMessage = '';
-    }
   }
 
   onSaveBonesReveal() {
@@ -250,62 +182,6 @@ export class BonesRevealRegisteringDataComponent implements OnInit {
     this.iconRequestDataCollapse = this.isRequestDataCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
 
-
-  eyeRevealDataCollapsed(event: any): void {
-  }
-  eyeRevealDataExpanded(event: any): void {
-    this.requestService.retreiveRequestEyeReveal(this.requestId).subscribe(
-      result => {
-        if (result != null) {
-          this.eyeReveal = result as EyeReveal;
-          console.log(JSON.stringify(this.eyeReveal))
-
-          if (this.eyeReveal.distinguishColor == '1') {
-            this.distinguishCheck = true;
-          } else {
-            this.distinguishCheck = false;
-          }
-          if (this.eyeReveal.useGlasses == '1') {
-            this.glassesCheck = true;
-          } else {
-            this.glassesCheck = false;
-          }
-          if (this.eyeReveal.squint == "1") {
-            this.squintCheck = true;
-          } else {
-            this.squintCheck = false;
-          }
-
-          // if(this.eyeReveal.committee != null){
-          //   this.selectedEyeCommitteeId = this.eyeReveal.committee.id
-          // }
-
-          if (this.eyeReveal.leftEye != null) {
-            this.selectedLeftEyeMeasureId = this.eyeReveal.leftEye.id
-          }
-          if (this.eyeReveal.rightEye != null) {
-            this.selectedRightEyeMeasureId = this.eyeReveal.rightEye.id
-          }
-        } else {
-          this.eyeRevealSuccessMessage = "";
-          this.eyeRevealErrorMessage = "عفوا لم يتم كشف رمد لهذا المواطن";
-        }
-      },
-      error => {
-        this.eyeRevealSuccessMessage = "";
-        this.eyeRevealErrorMessage = error.error.message;
-      }
-    )
-
-    this.fillMeasures();
-
-  }
-
-  toggleEyeRevealDataCollapse(): void {
-    this.isEyeRevealDataCollapsed = !this.isEyeRevealDataCollapsed;
-    this.iconEyeRevealDataCollapse = this.isEyeRevealDataCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
-  }
-
   bonesRevealDataCollapsed(event: any): void {
   }
   bonesRevealDataExpanded(event: any): void {
@@ -367,37 +243,6 @@ export class BonesRevealRegisteringDataComponent implements OnInit {
     this.iconFileUploadDataCollapse = this.isFileUploadDataCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
 
-  // createNewRequest(){
-
-  //   this.requestService.createRequest(this.request).subscribe(
-  //     result => {
-  //       this.request = result as Request;
-  //       this.request.id= 1;
-  //     },
-  //     error => {
-  //       console.log('oops', error);
-  //     });
-  // }
-  //---------------------------------------------------------------------------------------------------------
-
-  fillMeasures() {
-    this.eyeMeasureService.retrieveAllEyeMeasure(0, 100).subscribe(
-      result => {
-        this.measures = result['content'];
-      },
-      error => {
-        console.log('oops', error);
-      });
-  }
-  // fillEquipments(){
-  //   this.equipmentService.retrieveAllEquipments().subscribe(
-  //     result => {
-  //       this.equipments = result;
-  //     },
-  //     error => {
-  //       console.log('oops', error);
-  //   });
-  // }
   fillDisabilities() {
     this.disabilityService.retrieveAllDisabilities(0, 100).subscribe(
       result => {

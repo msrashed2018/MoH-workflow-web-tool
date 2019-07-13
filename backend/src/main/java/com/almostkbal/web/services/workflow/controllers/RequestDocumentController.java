@@ -1,6 +1,7 @@
 package com.almostkbal.web.services.workflow.controllers;
 
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -106,9 +107,13 @@ public class RequestDocumentController {
 			log.error(ex.getMessage(), ex);
 			message = "تم حفظ ملف من هذا النوع من قبل";
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
-		} catch (Exception e) {
+		}catch (FileAlreadyExistsException ex) {
+			log.error(ex.getMessage(), ex);
+			message = "تم حفظ ملف من هذا النوع من قبل";
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+		}catch (Exception e) {
 			log.error(e.getMessage(), e);
-			message = " فشل في حفظ الملف" + currentUploadFileName + "!";
+			message = "  فشل في حفظ الملف " + currentUploadFileName + "!";
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
 		}
 	}

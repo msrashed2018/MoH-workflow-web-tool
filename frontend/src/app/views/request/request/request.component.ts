@@ -442,8 +442,7 @@ export class RequestComponent implements OnInit {
   fileUploadDataCollapsed(event: any): void {
   }
   fileUploadDataExpanded(event: any): void {
-    this.fillDocumentTypes();
-    this.showFiles(true);
+        this.showFiles(true);
   }
   toggleFileUploadDataCollapse(): void {
     this.isFileUploadDataCollapsed = !this.isFileUploadDataCollapsed;

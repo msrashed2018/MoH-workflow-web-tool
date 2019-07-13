@@ -1,7 +1,7 @@
 package com.almostkbal.web.services.workflow.entities;
 
 public enum DocumentCategory {
-	PERSONAL("personal"), EYE("eye"), BONES("bones"), ALL("all"), NA("not applicable");
+	PERSONAL("personal"), EYE("eye"), BONES("bones"), ALL("all"),OTHER("other"), NA("not applicable");
 
 	DocumentCategory(final String name) {
 		this.name = name;

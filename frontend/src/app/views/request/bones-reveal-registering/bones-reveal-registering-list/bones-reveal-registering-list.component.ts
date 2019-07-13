@@ -99,7 +99,7 @@ export class BonesRevealRegisteringListComponent implements OnInit {
   }
 
   onContinue(id) {
-    this.router.navigate(['request/medical-reveals-data',{requestId:id}])
+    this.router.navigate(['request/bones-reveal-registering-data',{requestId:id}])
   }
 
 }

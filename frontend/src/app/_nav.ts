@@ -1,4 +1,4 @@
-import { REQUEST_TYPES, REQUEST_STATUS, REQUEST_PRICES, GOVERNATES, CITIES, OCCUPATION_TYPES, ZONES, CUSTOMS, DISABILITIES_TYPES, EQUIPMENTS_TYPES, USERS, COUNCILS, CITIZENS, COMMITTEE_MEMBERS, COMMITTEES, EYE_MEASURES, EYE_REVEAL_SETTINGS, REQUESTS, PAYMENTS, REVIEW_REQUESTS, SYSTEM_ADMINISTRATION, CONTINUE_REGISTERING, BONES_REVEAL, EYE_REVEAL, MEDICAL_REVEAL_REGISTRATION, APPROVE_REQUESTS, AUDITS, DOCUMENT_TYPES, EYE_REVEAL_REGISTRATION, BONES_REVEAL_REGISTRATION } from './app-words';
+import { REQUEST_TYPES, REQUEST_STATUS, REQUEST_PRICES, GOVERNATES, CITIES, OCCUPATION_TYPES, ZONES, CUSTOMS, DISABILITIES_TYPES, EQUIPMENTS_TYPES, USERS, COUNCILS, CITIZENS, COMMITTEE_MEMBERS, COMMITTEES, EYE_MEASURES, EYE_REVEAL_SETTINGS, REQUESTS, PAYMENTS, REVIEW_REQUESTS, SYSTEM_ADMINISTRATION, CONTINUE_REGISTERING, BONES_REVEAL, EYE_REVEAL, APPROVE_REQUESTS, AUDITS, DOCUMENT_TYPES, EYE_REVEAL_REGISTRATION, BONES_REVEAL_REGISTRATION } from './app-words';
 
 interface NavAttributes {
   [propName: string]: any;
@@ -70,8 +70,13 @@ export const bonesNavItems: NavData[] = [
 
  export const medicalRegisteringNavItems: NavData[] = [
   {
-    name: `${MEDICAL_REVEAL_REGISTRATION}`,
-    url: '/request/medical-reveals',
+    name: `${EYE_REVEAL_REGISTRATION}`,
+    url: '/request/eye-reveal-registering',
+    icon: 'cui-dollar',
+  },
+  {
+    name: `${BONES_REVEAL_REGISTRATION}`,
+    url: '/request/bones-reveal-registering',
     icon: 'cui-dollar',
   }
  ]
@@ -133,11 +138,6 @@ export const adminNavItems: NavData[] = [
   {
     name: `${BONES_REVEAL_REGISTRATION}`,
     url: '/request/bones-reveal-registering',
-    icon: 'cui-dollar',
-  },
-  {
-    name: `${MEDICAL_REVEAL_REGISTRATION}`,
-    url: '/request/medical-reveals',
     icon: 'cui-dollar',
   },
   

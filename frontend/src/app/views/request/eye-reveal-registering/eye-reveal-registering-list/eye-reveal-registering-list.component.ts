@@ -98,7 +98,7 @@ export class EyeRevealRegisteringListComponent implements OnInit {
   }
 
   onContinue(id) {
-    this.router.navigate(['request/medical-reveals-data',{requestId:id}])
+    this.router.navigate(['request/eye-reveal-registering-data',{requestId:id}])
   }
 
 }

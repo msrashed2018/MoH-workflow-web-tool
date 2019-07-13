@@ -15,8 +15,6 @@ import { ContinueRegisteringDataComponent } from './continue-registering/continu
 import { ContinueRegisteringListComponent } from './continue-registering/continue-registering-list/continue-registering-list.component';
 import { BonesRevealComponent } from './bones-reveal/bones-reveal.component';
 import { EyeRevealComponent } from './eye-reveal/eye-reveal.component';
-import { RevealListComponent } from './medical-reveal-result/reveal-list/reveal-list.component';
-import { RevealDataComponent } from './medical-reveal-result/reveal-data/reveal-data.component';
 import { ReviewRequestsComponent } from './review-requests/review-requests.component';
 import { ApproveRequestsComponent } from './approve-requests/approve-requests.component';
 import { BonesRevealRegisteringListComponent } from './bones-reveal-registering/bones-reveal-registering-list/bones-reveal-registering-list.component';
@@ -25,7 +23,7 @@ import { EyeRevealRegisteringListComponent } from './eye-reveal-registering/eye-
 import { EyeRevealRegisteringDataComponent } from './eye-reveal-registering/eye-reveal-registering-data/eye-reveal-registering-data.component';
 
 @NgModule({
-  declarations: [ListRequestsComponent, RequestComponent, RequestViewEditComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, RevealListComponent, RevealDataComponent, ReviewRequestsComponent, ApproveRequestsComponent, BonesRevealRegisteringListComponent, BonesRevealRegisteringDataComponent, EyeRevealRegisteringListComponent, EyeRevealRegisteringDataComponent],
+  declarations: [ListRequestsComponent, RequestComponent, RequestViewEditComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, ReviewRequestsComponent, ApproveRequestsComponent, BonesRevealRegisteringListComponent, BonesRevealRegisteringDataComponent, EyeRevealRegisteringListComponent, EyeRevealRegisteringDataComponent],
   imports: [
     CommonModule,
     AlertModule,

@@ -25,8 +25,7 @@ public class StorageService {
 
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
-	public String store(long requestId, DocumentType documentType, String fileName, MultipartFile file) {
-		try {
+	public String store(long requestId, DocumentType documentType, String fileName, MultipartFile file) throws IOException {
 			String storedPath = documentsPath + "/" + String.valueOf(requestId) + "/"
 					+ documentType.getCategory().getName();
 			log.info("storedPath :" + storedPath);
@@ -42,10 +41,7 @@ public class StorageService {
 			Files.copy(file.getInputStream(), rootLocation.resolve(fileName));
 
 			return storedPath;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			throw new RuntimeException("FAIL! to store file " + fileName);
-		}
+		
 	}
 
 	public Resource loadFile(String path, String filename) {

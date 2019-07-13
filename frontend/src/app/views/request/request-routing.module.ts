@@ -9,8 +9,6 @@ import { ContinueRegisteringListComponent } from './continue-registering/continu
 import { ContinueRegisteringDataComponent } from './continue-registering/continue-registering-data/continue-registering-data.component';
 import { BonesRevealComponent } from './bones-reveal/bones-reveal.component';
 import { EyeRevealComponent } from './eye-reveal/eye-reveal.component';
-import { RevealListComponent } from './medical-reveal-result/reveal-list/reveal-list.component';
-import { RevealDataComponent } from './medical-reveal-result/reveal-data/reveal-data.component';
 import { ReviewRequestsComponent } from './review-requests/review-requests.component';
 import { ApproveRequestsComponent } from './approve-requests/approve-requests.component';
 import { RequestViewEditComponent } from './request-view-edit/request-view-edit.component';
@@ -95,20 +93,6 @@ const routes: Routes = [
     component: BonesRevealRegisteringDataComponent,
     data: {
       title: 'bones-reveal-registering-data'
-    }
-  },
-  {
-    path: 'medical-reveals',
-    component: RevealListComponent,
-    data: {
-      title: 'medical-reveals'
-    }
-  },
-  {
-    path: 'medical-reveals-data',
-    component: RevealDataComponent,
-    data: {
-      title: 'medical-reveals-data'
     }
   },
   {
