@@ -172,6 +172,7 @@
                         <div class="col-md-5">
                             <select name="eyeCommittee" class="form-control" [(ngModel)]="selectedEyeCommitteeId"
                                 #committee1="ngModel" (change)="onEyeCommitteeChanged(committee1.value)">
+                                <option></option>
                                 <option *ngFor="let c of eyeCommittees" [ngValue]="c.id">{{c.type}} | {{c.function}} |
                                     {{c.date}}</option>
                             </select>
@@ -258,6 +259,7 @@
                         <div class="col-md-5">
                             <select name="bonesCommittee" class="form-control" [(ngModel)]="selectedBonesCommitteeId"
                                 #committee2="ngModel" (change)="onBonesCommitteeChanged(committee2.value)">
+                                <option></option>
                                 <option *ngFor="let committee of bonesCommittees" [value]="committee.id">
                                     {{committee.type}} | {{committee.function}} | {{committee.date}}</option>
                             </select>

@@ -144,6 +144,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
   fillCommittees() {
     this.committeeService.retrieveCommitteesByType('رمد').subscribe(
       result => {
+        console.log(result)
         this.eyeCommittees = result;
       },
       error => {
@@ -151,6 +152,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
       });
     this.committeeService.retrieveCommitteesByType('عظام').subscribe(
       result => {
+        console.log(result)
         this.bonesCommittees = result;
       },
       error => {

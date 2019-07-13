@@ -17,7 +17,7 @@ export class CommitteeService {
 
   }
   retrieveCommitteesByType(type : string) {
-    return this.http.get<Committee[]>(`${API_URL}/committees/findByType?type=`+type);
+    return this.http.get<Committee[]>(`${API_URL}/committees/findUpcommingCommitteesByType?type=`+type);
 
   }
 

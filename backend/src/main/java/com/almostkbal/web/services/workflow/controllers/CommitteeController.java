@@ -1,6 +1,8 @@
 package com.almostkbal.web.services.workflow.controllers;
 
 import java.net.URI;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,15 +43,15 @@ public class CommitteeController {
 	public Page<Committee> retrieveAllCommittees(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return committeeRepository.findAll(PageRequest.of(page, size));
 	}
-	@GetMapping("/api/committees/findByType")
-	public List<Committee> retrieveCommitteesByType(@RequestParam String type){
+	@GetMapping("/api/committees/findUpcommingCommitteesByType")
+	public List<Committee> retrieveUpcommingCommitteesByType(@RequestParam String type){
 //		List<Committee> eyeCommittees = committeeRepository.findAll();
 //		for(Committee committee : eyeCommittees ) {
 //			if(committee.getType().equals("عظام") ){
 //				eyeCommittees.remove(committee);
 //			}
 //		}
-		return committeeRepository.findByType(type);
+		return committeeRepository.findByTypeAndDateGreaterThan(type, yesterday());
 	}
 	
 //	@GetMapping("/api/bones-committees")
@@ -101,5 +103,10 @@ public class CommitteeController {
 //		committeeRepository.deleteById(id);
 		Committee updatedCitzen = committeeRepository.save(committee);
 		return new ResponseEntity<Committee>(updatedCitzen, HttpStatus.OK);
+	}
+	private Date yesterday() {
+	    final Calendar cal = Calendar.getInstance();
+	    cal.add(Calendar.DATE, -1);
+	    return cal.getTime();
 	}
 }

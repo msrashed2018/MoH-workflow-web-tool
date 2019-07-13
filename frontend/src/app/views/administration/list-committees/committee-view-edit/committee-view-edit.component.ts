@@ -22,7 +22,7 @@ export class CommitteeViewEditComponent implements OnInit {
   disabled : boolean = false;
   iconCollapse: string = 'icon-arrow-up';
   public zones : Zone[];
-  public members : CommitteeMember[]
+  public members : CommitteeMember[] = [];
   public selectedZoneId : number
   public selectedMember1Id : number 
   public selectedMember2Id : number 
@@ -56,8 +56,7 @@ export class CommitteeViewEditComponent implements OnInit {
   displayCommitteeDetails(){
     this.committeeService.retrieveCommittee(this.committeeId).subscribe(
       response => {
-        this.requestModel = response as any;
-
+        this.requestModel = response as Committee;
         if(this.requestModel.memberOne !=null){
           this.selectedMember1Id = this.requestModel.memberOne.id
         }
@@ -162,9 +161,9 @@ export class CommitteeViewEditComponent implements OnInit {
     });
   }
   fillCommitteeMembers(){
-    this.committeeMemberService.retrieveAllCommitteeMembers(0,100).subscribe(
+    this.committeeMemberService.retrieveAllCommitteeMembers(0,1000).subscribe(
       result => {
-        this.members = result;
+        this.members = result['content'] as CommitteeMember[];
       },
       error => {
         console.log('oops', error);

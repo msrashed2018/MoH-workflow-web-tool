@@ -111,7 +111,7 @@ export class CommitteeDataComponent implements OnInit {
     });
   }
   fillCommitteeMembers(){
-    this.committeeMemberService.retrieveAllCommitteeMembers(0,100).subscribe(
+    this.committeeMemberService.retrieveAllCommitteeMembers(0,1000).subscribe(
       result => {
         this.members = result['content'];
       },
