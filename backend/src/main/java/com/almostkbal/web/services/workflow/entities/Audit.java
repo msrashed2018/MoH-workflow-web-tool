@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "SYSTEM_AUDIT")
@@ -32,16 +31,20 @@ public class Audit {
 
 	@Column(name = "timestamp")
 	private Date timestamp;
+	
+	@Column(name = "zone_id")
+	private long zoneId;
 
 	public Audit() {
 	}
 
-	public Audit(String action, String details, long requestId, String performedBy) {
+	public Audit(String action, String details, long requestId, String performedBy, long zoneId) {
 		super();
 		this.action = action;
 		this.details = details;
 		this.requestId = requestId;
 		this.performedBy = performedBy;
+		this.zoneId = zoneId;
 		this.timestamp = new Date();
 	}
 
@@ -92,5 +95,14 @@ public class Audit {
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
+
+	public long getZoneId() {
+		return zoneId;
+	}
+
+	public void setZoneId(long zoneId) {
+		this.zoneId = zoneId;
+	}
+
 
 }

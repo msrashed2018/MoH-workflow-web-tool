@@ -31,7 +31,6 @@ import com.almostkbal.web.services.workflow.repositories.EquipmentRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class EquipmentController {
 	@Autowired
 	private EquipmentRepository equipmentRepository;
@@ -42,6 +41,7 @@ public class EquipmentController {
 	}
 	
 	@GetMapping("/api/equipments/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public Equipment retrieveEquipmentById(@PathVariable int id) {
 		Optional<Equipment> equipment = equipmentRepository.findById(id);
 		if(!equipment.isPresent())
@@ -51,6 +51,7 @@ public class EquipmentController {
 	}
 
 	@DeleteMapping("/api/equipments/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteEquipment(@PathVariable int id) {
 		try {
 			equipmentRepository.deleteById(id);
@@ -61,6 +62,7 @@ public class EquipmentController {
 	}
 
 	@PostMapping("/api/equipments")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createEquipment(@Valid @RequestBody Equipment equipment) {
 		Equipment savedEquipment = equipmentRepository.save(equipment);
 		URI location = ServletUriComponentsBuilder
@@ -71,6 +73,7 @@ public class EquipmentController {
 		
 	}
 	@PutMapping("/api/equipments/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Equipment> updateEquipment(
 			@PathVariable int id, @Valid @RequestBody Equipment equipment) {
 		Optional<Equipment> existingEquipment = equipmentRepository.findById(id);

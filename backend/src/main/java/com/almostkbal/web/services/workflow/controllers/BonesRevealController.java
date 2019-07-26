@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.almostkbal.web.services.workflow.auth.UserService;
 import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.BonesReveal;
 import com.almostkbal.web.services.workflow.entities.BonesRevealState;
@@ -36,8 +37,13 @@ public class BonesRevealController {
 
 	@Autowired
 	private AuditRepository auditRepository;
+	
+	
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("/api/requests/{id}/bones-reveal")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_BONES_REVEAL') OR hasRole('ROLE_REQUEST_REVIEWING')  OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING')")
 	public BonesReveal retrieveRequestBonesReveal(@PathVariable long id) {
 		if (!requestRepository.existsById(id)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
@@ -46,7 +52,7 @@ public class BonesRevealController {
 	}
 
 	@PostMapping("/api/requests/{id}/bones-reveal")
-//	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EYE')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_BONES_REVEAL')")
 	public ResponseEntity<BonesReveal> addRequestBonesReveal(@PathVariable long id,
 			@Valid @RequestBody BonesReveal bonesReveal, Authentication authentication) {
 
@@ -62,23 +68,12 @@ public class BonesRevealController {
 			requestRepository.setBonesRevealState(id, BonesRevealState.PENDING_REGISTERING);
 		}
 
-//		Optional<Request> existingRequest = requestRepository.findById(id);
-//		if (!existingRequest.isPresent())
-//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-//		bonesReveal.setRequest(existingRequest.get());
-//		BonesReveal savedBonesReveal = bonesRevealRepository.save(bonesReveal);
-//
-//		if (bonesReveal.getRevealDone() == 1) {
-//			existingRequest.get().setBonesRevealState(BonesRevealState.PENDING_REGISTERING);
-//			requestRepository.save(existingRequest.get());
-//		}
-
 		// auditing
 		String action = "تسجيل حضور مواطن لكشف العظام";
 		StringBuilder details = new StringBuilder("");
 		details.append("لا يوجد");
 		String performedBy = authentication.getName();
-		Audit audit = new Audit(action, details.toString(), id, performedBy);
+		Audit audit = new Audit(action, details.toString(), id, performedBy, userService.getUserZoneId());
 		auditRepository.save(audit);
 
 		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
@@ -86,6 +81,7 @@ public class BonesRevealController {
 	}
 //	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MEDICAL_REGISTERING')")
 	@PutMapping("/api/requests/{requestId}/bones-reveal/{bonesRevealId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_REQUEST_REVIEWING')")
 	public ResponseEntity<BonesReveal> updateRequestBonesReveal(@PathVariable long requestId,
 			@PathVariable long bonesRevealId, @Valid @RequestBody BonesReveal bonesReveal, Authentication authentication) {
 
@@ -116,30 +112,10 @@ public class BonesRevealController {
 		details.append(" نتيجة الكشف ");
 		details.append(" : "+ savedBonesReveal.getResult());
 		String performedBy = authentication.getName();
-		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
+		Audit audit = new Audit(action, details.toString(), requestId, performedBy, userService.getUserZoneId());
 		auditRepository.save(audit);
 
 		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
-
-//		Optional<Request> existingRequest = requestRepository.findById(requestId);
-//
-//		if (!existingRequest.isPresent())
-//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-//
-//		if (!bonesRevealRepository.existsById(bonesRevealId)) {
-//			throw new ResourceNotFoundException("عفوا لم يتم كشف عظام لهذا المواطن");
-//		}
-//
-//		bonesReveal.setRequest(existingRequest.get());
-//		BonesReveal savedBonesReveal = bonesRevealRepository.save(bonesReveal);
-//
-//		if (bonesReveal.getRevealDone() == 1) {
-//			existingRequest.get().setBonesRevealState(BonesRevealState.DONE);
-//			requestRepository.save(existingRequest.get());
-//		}
-//
-//		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
-
 	}
 
 }

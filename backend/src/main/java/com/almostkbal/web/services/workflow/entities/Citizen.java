@@ -56,6 +56,10 @@ public class Citizen {
 	@OneToOne
 	@JoinColumn(name = "governate_id")
 	private Governate governate;
+
+	@OneToOne
+	@JoinColumn(name = "zone_id")
+	private Zone zone;
 	
 	@OneToOne
 	@JoinColumn(name = "occupation_id")
@@ -214,6 +218,22 @@ public class Citizen {
 //	public void setRequests(List<Request> requests) {
 //		this.requests = requests;
 //	}
+
+	public Zone getZone() {
+		return zone;
+	}
+
+	public void setZone(Zone zone) {
+		this.zone = zone;
+	}
+
+	public String getFingerprint() {
+		return fingerprint;
+	}
+
+	public void setFingerprint(String fingerprint) {
+		this.fingerprint = fingerprint;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

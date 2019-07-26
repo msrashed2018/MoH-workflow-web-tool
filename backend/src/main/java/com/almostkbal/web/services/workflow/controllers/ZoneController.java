@@ -35,7 +35,6 @@ import com.almostkbal.web.services.workflow.repositories.ZoneRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class ZoneController {
 	@Autowired
 	private ZoneRepository zoneRepository;

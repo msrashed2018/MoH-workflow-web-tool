@@ -1,9 +1,7 @@
 package com.almostkbal.web.services.workflow.controllers;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -11,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,401 +21,186 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.BonesRevealState;
-import com.almostkbal.web.services.workflow.entities.Citizen;
 import com.almostkbal.web.services.workflow.entities.EyeRevealState;
 import com.almostkbal.web.services.workflow.entities.Request;
-import com.almostkbal.web.services.workflow.entities.RequestPayment;
 import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
-import com.almostkbal.web.services.workflow.entities.RequestType;
 import com.almostkbal.web.services.workflow.exceptions.IllegalRequestStateException;
-import com.almostkbal.web.services.workflow.repositories.AuditRepository;
-import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
-import com.almostkbal.web.services.workflow.repositories.RequestPaymentRepository;
-import com.almostkbal.web.services.workflow.repositories.RequestRepository;
-import com.almostkbal.web.services.workflow.repositories.RequestTypeRepository;
+import com.almostkbal.web.services.workflow.services.RequestService;
 
 @CrossOrigin(origins = "*")
 @RestController
 public class RequestController {
-	@Autowired
-	private RequestRepository requestRepository;
 
 	@Autowired
-	private RequestTypeRepository requestTypeRepository;
-
-	@Autowired
-	private CitizenRepository citizenRepository;
-
-	@Autowired
-	private RequestPaymentRepository paymentRepository;
-
-	@Autowired
-	private AuditRepository auditRepository;
+	private RequestService requestService;
 
 	@GetMapping("/api/requests")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_REQUEST_REVIEWING')")
 	public Page<Request> retrieveAllRequests(@RequestParam("page") int page, @RequestParam("size") int size) {
-		return requestRepository.findAll(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+
+		return requestService.getAllRequests(PageRequest.of(page, size, Sort.by("requestDate").descending()));
 	}
-
-//	@GetMapping("/api/requests/{requestId}/retreiveRequestState")
-//	public RequestState retreiveRequestState(@PathVariable long requestId) {
-//		return requestRepository.findRequestState(requestId);
-//	}
-
-//	@GetMapping("/api/requests/retreiveRequestsForEyeReveal")
-//	public Page<Request> retreiveRequestsForEyeReveal(@RequestParam("page") int page, @RequestParam("size") int size) {
-//		return requestRepository.findByStateAndEyeRevealState(RequestState.CONTINUE_REGISTERING_DONE,
-//				EyeRevealState.PENDING_REVEAL, PageRequest.of(page, size));
-//	}
-
-//	@GetMapping("/api/requests/retreiveRequestsForBonesReveal")
-//	public Page<Request> retreiveRequestsForBonesReveal(@RequestParam("page") int page,
-//			@RequestParam("size") int size) {
-//		return requestRepository.findByStateAndBonesRevealState(RequestState.CONTINUE_REGISTERING_DONE,
-//				BonesRevealState.PENDING_REVEAL, PageRequest.of(page, size));
-//	}
-
-//	@GetMapping("/api/requests/retreiveRequestsForRevealsRegistering")
-//	public Page<Request> retreiveRequestsForRevealsRegistering(@RequestParam("page") int page,
-//			@RequestParam("size") int size) {
-//
-//		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
-//		bonesRevealStates.add(BonesRevealState.PENDING_REGISTERING);
-//		bonesRevealStates.add(BonesRevealState.NA);
-//
-//		List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
-//		eyeRevealStates.add(EyeRevealState.PENDING_REGISTERING);
-//		eyeRevealStates.add(EyeRevealState.NA);
-//		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
-//				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
-//	}
-//
-//	@GetMapping("/api/requests/retreiveRequestsForReviewing")
-//	public Page<Request> retreiveRequestsForReviewing(@RequestParam("page") int page, @RequestParam("size") int size) {
-//		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
-//		bonesRevealStates.add(BonesRevealState.DONE);
-//		bonesRevealStates.add(BonesRevealState.NA);
-//
-//		List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
-//		eyeRevealStates.add(EyeRevealState.DONE);
-//		eyeRevealStates.add(EyeRevealState.NA);
-//		return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
-//				RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
-//	}
-
-//	@GetMapping("/api/requests/retreiveRequestsForApproving")
-//	public Page<Request> retreiveRequestsForApproving(@RequestParam("page") int page, @RequestParam("size") int size) {
-//		return requestRepository.findByState(RequestState.REVIEWED, PageRequest.of(page, size));
-//	}
-//
-//	@GetMapping("/api/requests/retreiveByRequestState")
-//	public Page<Request> retrieveAllRequestsByState(@RequestParam RequestState state, @RequestParam("page") int page,
-//			@RequestParam("size") int size) {
-//		return requestRepository.findByState(state, PageRequest.of(page, size));
-////		return requestRepository.findAll();
-//	}
 
 	@GetMapping("/api/requests/retreiveByRequestStates")
-	public Page<Request> retrieveAllRequestsByStates(@RequestParam RequestState state, @RequestParam BonesRevealState bonesRevealState, @RequestParam EyeRevealState eyeRevealState, @RequestParam("page") int page, @RequestParam("size") int size) {
-		if(state == RequestState.PENDING_PAYMENT || state == RequestState.PENDING_CONTINUE_REGISTERING || state == RequestState.REVIEWED || state == RequestState.APPROVED) {
-			return requestRepository.findByState(state,  PageRequest.of(page, size));
-		}else if(state == RequestState.CONTINUE_REGISTERING_DONE) {
-			if(bonesRevealState == BonesRevealState.NA && (eyeRevealState == EyeRevealState.PENDING_REGISTERING || eyeRevealState == EyeRevealState.PENDING_REVEAL)) {
-				// for Eye Reveal attending and registering
-				return requestRepository.findByStateAndEyeRevealState(state, eyeRevealState,  PageRequest.of(page, size));
-			}else if(eyeRevealState == EyeRevealState.NA && (bonesRevealState == BonesRevealState.PENDING_REGISTERING || bonesRevealState == BonesRevealState.PENDING_REVEAL)){
-				// for Bones Reveal attending and registering
-				return requestRepository.findByStateAndBonesRevealState(state, bonesRevealState,  PageRequest.of(page, size));
-			}else if(bonesRevealState == BonesRevealState.DONE && eyeRevealState == EyeRevealState.DONE){
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_REQUEST_REVIEWING')")
+	public Page<Request> retrieveAllRequestsByStates(@RequestParam RequestState state,
+			@RequestParam BonesRevealState bonesRevealState, @RequestParam EyeRevealState eyeRevealState,
+			@RequestParam("page") int page, @RequestParam("size") int size) {
+
+		if (state == RequestState.PENDING_PAYMENT) {
+			return requestService.getRequestsForPayment(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+		} else if (state == RequestState.PENDING_CONTINUE_REGISTERING) {
+			return requestService.getRequestsForContinueRegistering(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+		} else if (state == RequestState.CONTINUE_REGISTERING_DONE) {
+			if (bonesRevealState == BonesRevealState.NA) {
+				if (eyeRevealState == EyeRevealState.PENDING_REGISTERING) {
+					return requestService.getRequestsForEyeRevealResultRegistering(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+				} else if (eyeRevealState == EyeRevealState.PENDING_REVEAL) {
+					return requestService.getRequestsForEyeRevealAttending(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+				} else {
+					throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح",
+							String.format("eye state must be one of %s or %s ", EyeRevealState.PENDING_REGISTERING,
+									EyeRevealState.PENDING_REVEAL));
+				}
+			} else if (eyeRevealState == EyeRevealState.NA) {
+				if (bonesRevealState == BonesRevealState.PENDING_REGISTERING) {
+					return requestService.getRequestsForBonesRevealResultRegistering(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+				} else if (bonesRevealState == BonesRevealState.PENDING_REVEAL) {
+					return requestService.getRequestsForBonesRevealAttending(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+				} else {
+					throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح",
+							String.format("bones state must be one of %s or %s ", BonesRevealState.PENDING_REGISTERING,
+									BonesRevealState.PENDING_REVEAL));
+				}
+			} else if (bonesRevealState == BonesRevealState.DONE && eyeRevealState == EyeRevealState.DONE) {
 				// for reviewing
-				List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
-				bonesRevealStates.add(BonesRevealState.DONE);
-				bonesRevealStates.add(BonesRevealState.NA);
-
-				List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
-				eyeRevealStates.add(EyeRevealState.DONE);
-				eyeRevealStates.add(EyeRevealState.NA);
-				return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateIn(
-						state, bonesRevealStates, eyeRevealStates, PageRequest.of(page, size));
-			}else {
-				throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح", String.format("eye or bones state must be one of %s, %s, %s or %s ",
-						BonesRevealState.NA , BonesRevealState.PENDING_REGISTERING, BonesRevealState.PENDING_REVEAL, BonesRevealState.DONE));
+				return requestService.getRequestsForReviewing(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+			} else {
+				throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح",
+						String.format("eye or bones state must be one of %s, %s, %s or %s ", BonesRevealState.NA,
+								BonesRevealState.PENDING_REGISTERING, BonesRevealState.PENDING_REVEAL,
+								BonesRevealState.DONE));
 			}
-		}else {
-			throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح", String.format("request state must be one of %s, %s, %s, %s or %s ",
-					RequestState.PENDING_PAYMENT, RequestState.PENDING_CONTINUE_REGISTERING, RequestState.REVIEWED, RequestState.APPROVED, RequestState.CONTINUE_REGISTERING_DONE));
+		} else if (state == RequestState.REVIEWED) {
+			return requestService.getRequestsForApproving(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+		} else if (state == RequestState.APPROVED) {
+			return requestService.getApprovedRequests(PageRequest.of(page, size, Sort.by("requestDate").descending()));
+		} else {
+			throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح",
+					String.format("request state must be one of %s, %s, %s, %s or %s ", RequestState.PENDING_PAYMENT,
+							RequestState.PENDING_CONTINUE_REGISTERING, RequestState.REVIEWED, RequestState.APPROVED,
+							RequestState.CONTINUE_REGISTERING_DONE));
 		}
-	}	
-	
-//	@GetMapping("/api/requests/search/findAllByDate")
-//	public List<Request> findAllByDate(@RequestParam String date) {
-//
-//		return requestRepository.findAllByDate(date);
-//	}
-
-	@GetMapping("/api/requests/search/findAllByNationalId")
-	public List<Request> findAllByNationalId(@RequestParam long nationalId) {
-		List<Request> requests = requestRepository.findByCitizenNationalId(nationalId);
-		return requests;
 	}
 
-	@GetMapping("/api/requests/search/findByNationalId")
-	public List<Request> findByNationalId(@RequestParam RequestState state, @RequestParam BonesRevealState bonesRevealState, @RequestParam EyeRevealState eyeRevealState, @RequestParam long nationalId) {
-		// check if searchKey is number or string
-//		try {
-//			Long key = Long.parseLong(searchKey);
-//
-//			// No Thrown exception, so searchKey is number
-//			// check if it is national id or mobile number
-//			if (searchKey.startsWith("01")) {
-//				// search key is mobile number because it starts with 01
-//				return requestRepository.findByCitizenMobileNumber(searchKey);
-//			} else {
-//				// assuming search key is national id
-//				return requestRepository.findByCitizenNationalId(key);
-//			}
-//		} catch (NumberFormatException | NullPointerException nfe) {
-//			return requestRepository.findByCitizenName(searchKey);
-//		}
-		
-		
-		if(state == RequestState.PENDING_PAYMENT || state == RequestState.PENDING_CONTINUE_REGISTERING || state == RequestState.REVIEWED || state == RequestState.APPROVED) {
-			return requestRepository.findByStateAndCitizenNationalId(state, nationalId);
-		}else if(state == RequestState.CONTINUE_REGISTERING_DONE) {
-			if(bonesRevealState == BonesRevealState.NA && (eyeRevealState == EyeRevealState.PENDING_REGISTERING || eyeRevealState == EyeRevealState.PENDING_REVEAL)) {
-				return requestRepository.findByStateAndEyeRevealStateAndCitizenNationalId(state, eyeRevealState, nationalId);
-			}else if(eyeRevealState == EyeRevealState.NA && (bonesRevealState == BonesRevealState.PENDING_REGISTERING || bonesRevealState == BonesRevealState.PENDING_REVEAL)){
-				return requestRepository.findByStateAndBonesRevealStateAndCitizenNationalId(state, bonesRevealState, nationalId);
-			}else if(bonesRevealState == BonesRevealState.DONE && eyeRevealState == EyeRevealState.DONE){
-				// for reviewing
-				List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
-				bonesRevealStates.add(BonesRevealState.DONE);
-				bonesRevealStates.add(BonesRevealState.NA);
+	@GetMapping("/api/requests/search/findAllRequestsBySearchKey")
+	public Page<Request> findAllRequestsBySearchKey(@RequestParam String searchKey, @RequestParam("page") int page,
+			@RequestParam("size") int size) {
+		return requestService.getAllRequestsBySearchKey(searchKey,
+				PageRequest.of(page, size, Sort.by("requestDate").descending()));
+	}
 
-				List<EyeRevealState> eyeRevealStates = new ArrayList<EyeRevealState>();
-				eyeRevealStates.add(EyeRevealState.DONE);
-				eyeRevealStates.add(EyeRevealState.NA);
-				return requestRepository.findByStateAndBonesRevealStateInAndEyeRevealStateInAndCitizenNationalId(state, bonesRevealStates, eyeRevealStates, nationalId);
-			}else {
-				throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح", String.format("eye or bones state must be one of %s, %s, %s or %s ",
-						BonesRevealState.NA , BonesRevealState.PENDING_REGISTERING, BonesRevealState.PENDING_REVEAL, BonesRevealState.DONE));
+	@GetMapping("/api/requests/search/findByStatesAndSearchKey")
+	public Page<Request> findByNationalId(@RequestParam RequestState state,
+			@RequestParam BonesRevealState bonesRevealState, @RequestParam EyeRevealState eyeRevealState,
+			@RequestParam String searchKey, @RequestParam("page") int page, @RequestParam("size") int size) {
+
+		if (state == RequestState.PENDING_PAYMENT) {
+			return requestService.getRequestsBySearchKeyForPayment(searchKey, PageRequest.of(page, size, Sort.by("requestDate").descending()));
+		} else if (state == RequestState.PENDING_CONTINUE_REGISTERING) {
+			return requestService.getRequestsBySearchKeyForContinueRegistering(searchKey, PageRequest.of(page, size, Sort.by("requestDate").descending()));
+		} else if (state == RequestState.CONTINUE_REGISTERING_DONE) {
+			if (bonesRevealState == BonesRevealState.NA) {
+				if (eyeRevealState == EyeRevealState.PENDING_REGISTERING) {
+					return requestService.getRequestsBySearchKeyForEyeRevealResultRegistering(searchKey,
+							PageRequest.of(page, size, Sort.by("requestDate").descending()));
+				} else if (eyeRevealState == EyeRevealState.PENDING_REVEAL) {
+					return requestService.getRequestsBySearchKeyForEyeRevealAttending(searchKey,
+							PageRequest.of(page, size, Sort.by("requestDate").descending()));
+				} else {
+					throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح",
+							String.format("eye state must be one of %s or %s ", EyeRevealState.PENDING_REGISTERING,
+									EyeRevealState.PENDING_REVEAL));
+				}
+			} else if (eyeRevealState == EyeRevealState.NA) {
+				if (bonesRevealState == BonesRevealState.PENDING_REGISTERING) {
+					return requestService.getRequestsBySearchKeyForBonesRevealResultRegistering(searchKey,
+							PageRequest.of(page, size, Sort.by("requestDate").descending()));
+				} else if (bonesRevealState == BonesRevealState.PENDING_REVEAL) {
+					return requestService.getRequestsBySearchKeyForBonesRevealAttending(searchKey,
+							PageRequest.of(page, size, Sort.by("requestDate").descending()));
+				} else {
+					throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح",
+							String.format("bones state must be one of %s or %s ", BonesRevealState.PENDING_REGISTERING,
+									BonesRevealState.PENDING_REVEAL));
+				}
+			} else if (bonesRevealState == BonesRevealState.DONE && eyeRevealState == EyeRevealState.DONE) {
+				// for reviewing
+				return requestService.getRequestsBySearchKeyForReviewing(searchKey, PageRequest.of(page, size, Sort.by("requestDate").descending()));
+			} else {
+				throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح",
+						String.format("eye or bones state must be one of %s, %s, %s or %s ", BonesRevealState.NA,
+								BonesRevealState.PENDING_REGISTERING, BonesRevealState.PENDING_REVEAL,
+								BonesRevealState.DONE));
 			}
-		}else {
-			throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح", String.format("request state must be one of %s, %s, %s, %s or %s ",
-					RequestState.PENDING_PAYMENT, RequestState.PENDING_CONTINUE_REGISTERING, RequestState.REVIEWED, RequestState.APPROVED, RequestState.CONTINUE_REGISTERING_DONE));
+		} else if (state == RequestState.REVIEWED) {
+			return requestService.getRequestsBySearchKeyForApproving(searchKey, PageRequest.of(page, size, Sort.by("requestDate").descending()));
+		} else if (state == RequestState.APPROVED) {
+			return requestService.getApprovedRequestsBySearchKey(searchKey, PageRequest.of(page, size, Sort.by("requestDate").descending()));
+		} else {
+			throw new IllegalRequestStateException(new Date(), "هذا الطلب غير صحيح",
+					String.format("request state must be one of %s, %s, %s, %s or %s ", RequestState.PENDING_PAYMENT,
+							RequestState.PENDING_CONTINUE_REGISTERING, RequestState.REVIEWED, RequestState.APPROVED,
+							RequestState.CONTINUE_REGISTERING_DONE));
 		}
+
 	}
 
 	@GetMapping("/api/citizens/{citizenId}/requests")
 	public List<Request> retrieveCitizenRequests(@PathVariable long citizenId) {
-		if (!citizenRepository.existsById(citizenId)) {
-			throw new ResourceNotFoundException("هذا المواطن غير موجود");
-		}
-
-		return requestRepository.findByCitizenId(citizenId);
+		return requestService.getCitizenRequests(citizenId);
 	}
 
 	@DeleteMapping("/api/citizens/{citizenId}/requests/{requestId}")
-	public void deleteRequest(@PathVariable long citizenId, @PathVariable long requestId,
-			Authentication authentication) {
-		if (!citizenRepository.existsById(citizenId)) {
-			throw new ResourceNotFoundException("هذا المواطن غير موجود");
-		}
-//		try {
-		Optional<Request> request = requestRepository.findById(requestId);
-		if (!request.isPresent())
-			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-		requestRepository.deleteById(requestId);
-
-		// auditing
-		String action = "مسح طلب";
-		StringBuilder details = new StringBuilder("");
-		details.append(" نوع الطلب ");
-		details.append(" : " + request.get().getRequestType().getName());
-
-		if (request.get().getRequestStatus() != null) {
-			details.append(" نتيجة الطلب");
-			details.append(" : " + request.get().getRequestStatus().getName());
-		}
-		String performedBy = authentication.getName();
-		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
-		auditRepository.save(audit);
-//		} catch (EmptyResultDataAccessException ex) {
-//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-//		}
+	public void deleteRequest(@PathVariable long citizenId, @PathVariable long requestId) {
+		requestService.deleteRequest(citizenId, requestId);
 	}
 
 	@GetMapping("/api/requests/{id}")
 	public Request retrieveRequestById(@PathVariable long id) {
-		Optional<Request> request = requestRepository.findById(id);
-		if (!request.isPresent())
-			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-		return request.get();
+		return requestService.getRequestById(id);
 	}
 
 	@PostMapping("/api/citizens/{citizenId}/requests")
-	public Object createRequest(@PathVariable long citizenId, @Valid @RequestBody Request request,
-			Authentication authentication) {
+	public Object createRequest(@PathVariable long citizenId, @Valid @RequestBody Request request) {
 
-		if (!citizenRepository.existsById(citizenId)) {
-			throw new ResourceNotFoundException("هذا المواطن غير موجود");
-		}
-
-		Optional<RequestType> requestType = requestTypeRepository.findById(request.getRequestType().getId());
-
-		if (!requestType.isPresent()) {
-			throw new ResourceNotFoundException("عفوا نوع الطلب غير موجود");
-		}
-
-		Citizen citizen = new Citizen();
-		citizen.setId(citizenId);
-		request.setCitizen(citizen);
-
-		Request savedRequest = null;
-		if (requestType.get().getPrice() > 0) {
-			RequestPayment requestPayment = new RequestPayment();
-			requestPayment.setPrice(requestType.get().getPrice());
-			requestPayment.setReceiptSerialNumber("0");
-			request.setState(RequestState.PENDING_PAYMENT);
-			savedRequest = requestRepository.save(request);
-			requestPayment.setRequest(savedRequest);
-			paymentRepository.save(requestPayment);
-		} else {
-			request.setState(RequestState.PENDING_CONTINUE_REGISTERING);
-			savedRequest = requestRepository.save(request);
-		}
-
-		// auditing
-		String action = "اضافة طلب جديد";
-		StringBuilder details = new StringBuilder("");
-		details.append("نوع الطلب");
-		details.append(" : " + requestType.get().getName());
-		long requestId = savedRequest.getId();
-		String performedBy = authentication.getName();
-		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
-		auditRepository.save(audit);
-
-		return savedRequest;
+		return requestService.createRequest(citizenId, request);
 	}
 
 	@PutMapping("/api/citizens/{citizenId}/requests/{requestId}")
 	public ResponseEntity<Request> updateRequest(@PathVariable long citizenId, @PathVariable long requestId,
-			@Valid @RequestBody Request request, Authentication authentication) {
-
-		if (!citizenRepository.existsById(citizenId)) {
-			throw new ResourceNotFoundException("هذا المواطن غير موجود");
-		}
-
-		if (!requestRepository.existsById(requestId)) {
-			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-		}
-
-//		if (requestRepository.findRequestState(requestId) != RequestState.PENDING_CONTINUE_REGISTERING) {
-//			throw new IllegalRequestStateException(new Date(), "هذا الطلب تم تنفيذه من قبل",
-//					"هذا الطلب تم تنفيذه من قبل");
-//		}
-
-		if (request.getBonesCommittee() != null) {
-			request.setBonesRevealState(BonesRevealState.PENDING_REVEAL);
-		}
-
-		if (request.getEyeCommittee() != null) {
-			request.setEyeRevealState(EyeRevealState.PENDING_REVEAL);
-		}
-		request.setState(RequestState.CONTINUE_REGISTERING_DONE);
-
-		Citizen citizen = new Citizen();
-		citizen.setId(citizenId);
-		request.setCitizen(citizen);
-
-		Request updatedRequest = requestRepository.save(request);
-
-		// auditing
-		String action = "استكمال بيانات طلب";
-		StringBuilder details = new StringBuilder("");
-
-		details.append(" نوع الطلب ");
-		details.append((" : " + updatedRequest.getRequestType().getName()));
-
-		if (updatedRequest.getBonesCommittee() != null) {
-			details.append(" ميعاد لجنة العظام  ");
-			details.append(" : " + updatedRequest.getBonesCommittee().getDate().toString());
-		}
-
-		if (request.getEyeCommittee() != null) {
-			details.append("  ميعاد لجنة الرمد  ");
-			details.append(" : " + updatedRequest.getEyeCommittee().getDate().toString());
-		}
-		String performedBy = authentication.getName();
-		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
-		auditRepository.save(audit);
-
-		return new ResponseEntity<Request>(updatedRequest, HttpStatus.OK);
-
+			@Valid @RequestBody Request request) {
+		return requestService.updateRequest(citizenId, requestId, request);
 	}
 
 	@PutMapping("/api/citizens/{citizenId}/requests/{requestId}/updateStatus")
 	public void updateRequestStatus(@PathVariable long citizenId, @PathVariable long requestId,
-			@Valid @RequestBody RequestStatus requestStatus, Authentication authentication) {
-		if (!citizenRepository.existsById(citizenId)) {
-			throw new ResourceNotFoundException("هذا المواطن غير موجود");
-		}
-
-		if (!requestRepository.existsById(requestId)) {
-			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-		}
-		requestRepository.setRequestStatus(requestId, requestStatus);
-
-		// auditing
-		String action = "تعديل نتيجة طلب";
-		StringBuilder details = new StringBuilder("");
-		details.append("نتيجة الطلب");
-		details.append(" : " + requestStatus.getName());
-		String performedBy = authentication.getName();
-		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
-		auditRepository.save(audit);
+			@Valid @RequestBody RequestStatus requestStatus) {
+		requestService.updateRequestStatus(citizenId, requestId, requestStatus);
 	}
 
 	@PutMapping("/api/requests/{requestId}/review")
-	public void reviewRequest(@PathVariable long requestId, @RequestBody Request request,
-			Authentication authentication) {
+	public void reviewRequest(@PathVariable long requestId, @RequestBody Request request) {
 
-		if (!requestRepository.existsById(requestId)) {
-			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-		}
-
-		requestRepository.setRequestState(requestId, RequestState.REVIEWED);
-
-		// auditing
-		String action = "مراجعة طلب";
-		StringBuilder details = new StringBuilder("");
-		details.append("لا يوجد");
-		String performedBy = authentication.getName();
-		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
-		auditRepository.save(audit);
+		requestService.reviewRequest(requestId, request);
 
 	}
 
 	@PutMapping("/api/requests/{requestId}/approve")
-	public void approveRequest(@PathVariable long requestId, @RequestBody Request request,
-			Authentication authentication) {
-
-		if (!requestRepository.existsById(requestId)) {
-			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-		}
-
-		requestRepository.setRequestState(requestId, RequestState.APPROVED);
-
-		// auditing
-		String action = "اعتماد طلب";
-		StringBuilder details = new StringBuilder("");
-		details.append("لا يوجد");
-		String performedBy = authentication.getName();
-		Audit audit = new Audit(action, details.toString(), requestId, performedBy);
-		auditRepository.save(audit);
+	public void approveRequest(@PathVariable long requestId, @RequestBody Request request) {
+		requestService.approveRequest(requestId, request);
 
 	}
 }

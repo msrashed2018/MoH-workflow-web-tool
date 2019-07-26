@@ -1,7 +1,9 @@
 package com.almostkbal.web.services.workflow.repositories;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -19,54 +21,123 @@ import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
 
 public interface RequestRepository extends JpaRepository<Request, Long> {
-	@Query("select r.state from Request r where r.id = :requestId")
-	RequestState findRequestState(@Param("requestId") long requestId);
 
-	@Query(value = "SELECT r FROM Request r WHERE TRUNC(r.requestDate) = TO_DATE(:date, 'yyyy-MM-dd')")
-	List<Request> findAllByDate(@Param("date") String date);
+//	@Query("select r.state from Request r where r.id = :requestId")
+//	RequestState findZoneIdAndRequestState(@Param("requestId") long requestId);
 
-	List<Request> findByCitizenNationalId(Long nationalId);
+//	@Query(value = "SELECT r FROM Request r WHERE TRUNC(r.requestDate) = TO_DATE(:date, 'yyyy-MM-dd')")
+//	List<Request> findAllByDate(@Param("date") String date);
 
-	List<Request> findByCitizenMobileNumber(String mobileNumber);
+//	List<Request> findByZoneIdAndCitizenNationalId(long zoneId, Long nationalId);
 
-	List<Request> findByCitizenName(String name);
+//	List<Request> findByZoneIdAndCitizenMobileNumber(long zoneId, String mobileNumber);
 
-	List<Request> findByCitizenId(Long nationalId);
+//	List<Request> findByZoneIdAndCitizenName(long zoneId, String name);
 
-	Page<Request> findByState(RequestState state, Pageable pageable);
-	
+	Optional<Request> findByZoneIdAndId(long zoneId, long id);
 
-	Page<Request> findByStateIn(Collection<RequestState> states, Pageable pageable);
+	// retreive citizen requests
+	List<Request> findByZoneIdAndCitizenId(long zoneId, Long nationalId);
 
-	Page<Request> findByStateAndEyeRevealState(RequestState state,
-			EyeRevealState eyeRevealState, Pageable pageable);
+	// retreive all requests
+	Page<Request> findByZoneId(long zoneId, Pageable pageable);
 
-	Page<Request> findByStateAndBonesRevealState(RequestState state,
+	Page<Request> findByZoneIdAndState(long zoneId, RequestState state, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateIn(long zoneId, Collection<RequestState> states, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndEyeRevealState(long zoneId, RequestState state, EyeRevealState eyeRevealState,
+			Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndBonesRevealState(long zoneId, RequestState state,
 			BonesRevealState bonesRevealState, Pageable pageable);
 
-	Page<Request> findByStateAndBonesRevealStateInAndEyeRevealStateIn(RequestState state,
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateIn(long zoneId, RequestState state,
 			Collection<BonesRevealState> bonesRevealStates, Collection<EyeRevealState> eyeRevealStates,
 			Pageable pageable);
-//	Page<Request> findByStateAndBonesRevealStateInOrEyeRevealStateIn(RequestState state,
-//			Collection<BonesRevealState> bonesRevealStates, Collection<EyeRevealState> eyeRevealStates,
-//			Pageable pageable);
 
-	Page<Request> findByBonesCommitteeIsNotNullAndState(RequestState state, Pageable pageable);
+	Page<Request> findByZoneIdAndBonesCommitteeIsNotNullAndState(long zoneId, RequestState state, Pageable pageable);
 
-	
-	
-	
-	//============== for search by national Id ===========================================
-	
-	List<Request> findByStateAndCitizenNationalId(RequestState state, Long nationalId);
-	//for search in eye reveal queue
-	List<Request> findByStateAndEyeRevealStateAndCitizenNationalId(RequestState state, EyeRevealState eyeRevealState, Long nationalId);
-	//for search in bones reveal queue
-	List<Request> findByStateAndBonesRevealStateAndCitizenNationalId(RequestState state, BonesRevealState bonesRevealState, Long nationalId);
-	
-	List<Request> findByStateAndBonesRevealStateInAndEyeRevealStateInAndCitizenNationalId(RequestState state,
-			Collection<BonesRevealState> bonesRevealStates, Collection<EyeRevealState> eyeRevealStates, Long nationalId);
-	
+	// ============== for search by national Id
+	// ===========================================
+
+	Page<Request> findByZoneIdAndCitizenNationalId(long zoneId, Long nationalId, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndCitizenNationalId(long zoneId, RequestState state, Long nationalId,
+			Pageable pageable);
+
+	// for search in eye reveal queue
+	Page<Request> findByZoneIdAndStateAndEyeRevealStateAndCitizenNationalId(long zoneId, RequestState state,
+			EyeRevealState eyeRevealState, Long nationalId, Pageable pageable);
+
+	// for search in bones reveal queue
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateAndCitizenNationalId(long zoneId, RequestState state,
+			BonesRevealState bonesRevealState, Long nationalId, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndCitizenNationalId(long zoneId,
+			RequestState state, Collection<BonesRevealState> bonesRevealStates,
+			Collection<EyeRevealState> eyeRevealStates, Long nationalId, Pageable pageable);
+
+	// ============== for search by mobile number
+	// ===========================================
+
+	Page<Request> findByZoneIdAndCitizenMobileNumber(long zoneId, String mobileNumber, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndCitizenMobileNumber(long zoneId, RequestState state, String mobileNumber,
+			Pageable pageable);
+
+	// for search in eye reveal queue
+	Page<Request> findByZoneIdAndStateAndEyeRevealStateAndCitizenMobileNumber(long zoneId, RequestState state,
+			EyeRevealState eyeRevealState, String mobileNumber, Pageable pageable);
+
+	// for search in bones reveal queue
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateAndCitizenMobileNumber(long zoneId, RequestState state,
+			BonesRevealState bonesRevealState, String mobileNumber, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndCitizenMobileNumber(long zoneId,
+			RequestState state, Collection<BonesRevealState> bonesRevealStates,
+			Collection<EyeRevealState> eyeRevealStates, String mobileNumber, Pageable pageable);
+
+	// ============== for search by name containing
+	// ===========================================
+
+	Page<Request> findByZoneIdAndCitizenNameContaining(long zoneId, String name, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndCitizenNameContaining(long zoneId, RequestState state, String name,
+			Pageable pageable);
+
+	// for search in eye reveal queue
+	Page<Request> findByZoneIdAndStateAndEyeRevealStateAndCitizenNameContaining(long zoneId, RequestState state,
+			EyeRevealState eyeRevealState, String name, Pageable pageable);
+
+	// for search in bones reveal queue
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateAndCitizenNameContaining(long zoneId, RequestState state,
+			BonesRevealState bonesRevealState, String name, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndCitizenNameContaining(long zoneId,
+			RequestState state, Collection<BonesRevealState> bonesRevealStates,
+			Collection<EyeRevealState> eyeRevealStates, String name, Pageable pageable);
+
+	// ============== for search by request date
+	// ===========================================
+
+	Page<Request> findByZoneIdAndRequestDate(long zoneId, Date requestDate, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndRequestDate(long zoneId, RequestState state, Date requestDate,
+			Pageable pageable);
+
+	// for search in eye reveal queue
+	Page<Request> findByZoneIdAndStateAndEyeRevealStateAndRequestDate(long zoneId, RequestState state,
+			EyeRevealState eyeRevealState, Date requestDate, Pageable pageable);
+
+	// for search in bones reveal queue
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateAndRequestDate(long zoneId, RequestState state,
+			BonesRevealState bonesRevealState, Date requestDate, Pageable pageable);
+
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndRequestDate(long zoneId,
+			RequestState state, Collection<BonesRevealState> bonesRevealStates,
+			Collection<EyeRevealState> eyeRevealStates, Date requestDate, Pageable pageable);
+
 	// for payment'
 //	@Query("select r from Request r , BonesReveal e where e.request = r")
 //	List<Request> findForEyeReveal();
@@ -75,6 +146,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 //			+ "FROM Department d INNER JOIN d.employees e")
 //	List<DeptEmpDto> fetchEmpDeptDataInnerJoin();
 
+	// ================================Updating
+	// Request==================================//
 	@Transactional
 	@Modifying
 	@Query("update Request r set r.state = :state where r.id= :requestId")

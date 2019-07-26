@@ -31,7 +31,6 @@ import com.almostkbal.web.services.workflow.repositories.RequestTypeRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class RequestTypeController {
 	@Autowired
 	private RequestTypeRepository requestTypeRepository;
@@ -44,6 +43,7 @@ public class RequestTypeController {
 
 	
 	@GetMapping("/api/request-type/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public RequestType retrieveRequestTypeById(@PathVariable int id) {
 		Optional<RequestType> requestType = requestTypeRepository.findById(id);
 		if(!requestType.isPresent())
@@ -53,6 +53,7 @@ public class RequestTypeController {
 	}
 
 	@DeleteMapping("/api/request-type/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteRequestType(@PathVariable int id) {
 		try {
 			requestTypeRepository.deleteById(id);
@@ -62,6 +63,7 @@ public class RequestTypeController {
 	}
 
 	@PostMapping("/api/request-type")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createRequestType(@Valid @RequestBody RequestType requestType) {
 		RequestType savedRequestType = requestTypeRepository.save(requestType);
 		URI location = ServletUriComponentsBuilder
@@ -72,6 +74,7 @@ public class RequestTypeController {
 		
 	}
 	@PutMapping("/api/request-type/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<RequestType> updateRequestType(
 			@PathVariable int id, @Valid @RequestBody RequestType requestType) {
 		Optional<RequestType> existingRequestType = requestTypeRepository.findById(id);

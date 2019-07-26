@@ -31,7 +31,6 @@ import com.almostkbal.web.services.workflow.repositories.OccupationRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class OccupationController {
 	@Autowired
 	private OccupationRepository occupationRepository;
@@ -44,6 +43,7 @@ public class OccupationController {
 	}
 	
 	@GetMapping("/api/occupations/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public Occupation retrieveOccupationById(@PathVariable int id) {
 		Optional<Occupation> occupation = occupationRepository.findById(id);
 		if(!occupation.isPresent())
@@ -53,6 +53,7 @@ public class OccupationController {
 	}
 
 	@DeleteMapping("/api/occupations/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteOccupation(@PathVariable int id) {
 		try {
 			occupationRepository.deleteById(id);
@@ -62,6 +63,7 @@ public class OccupationController {
 	}
 
 	@PostMapping("/api/occupations")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createOccupation(@Valid @RequestBody Occupation occupation) {
 		Occupation savedOccupation = occupationRepository.save(occupation);
 		URI location = ServletUriComponentsBuilder
@@ -72,6 +74,7 @@ public class OccupationController {
 		
 	}
 	@PutMapping("/api/occupations/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Occupation> updateOccupation(
 			@PathVariable int id, @Valid @RequestBody Occupation occupation) {
 		Optional<Occupation> existingOccupation = occupationRepository.findById(id);

@@ -58,6 +58,10 @@ public class Request {
 	@JoinColumn(name = "custom_id")
 	private Custom custom;
 
+	@OneToOne
+	@JoinColumn(name = "zone_id")
+	private Zone zone;
+	
 	@Column(name = "created_by")
 	private String createdBy;
 
@@ -222,6 +226,14 @@ public class Request {
 
 	public void setBonesRevealState(BonesRevealState bonesRevealState) {
 		this.bonesRevealState = bonesRevealState;
+	}
+
+	public Zone getZone() {
+		return zone;
+	}
+
+	public void setZone(Zone zone) {
+		this.zone = zone;
 	}
 
 }

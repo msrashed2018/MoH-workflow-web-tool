@@ -14,6 +14,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.almostkbal.web.services.workflow.auth.UserPrincipal;
 import com.almostkbal.web.services.workflow.entities.City;
+import com.almostkbal.web.services.workflow.entities.DocumentCategory;
 import com.almostkbal.web.services.workflow.entities.Governate;
 import com.almostkbal.web.services.workflow.repositories.CityRepository;
 import com.almostkbal.web.services.workflow.repositories.GovernateRepository;
@@ -33,7 +36,6 @@ import com.almostkbal.web.services.workflow.repositories.GovernateRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins = "*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class GovernateController {
 	@Autowired
 	private GovernateRepository governateRepository;
@@ -41,12 +43,20 @@ public class GovernateController {
 	@Autowired
 	private CityRepository cityRepository;
 
-	@GetMapping(value="/api/governates", params= {"page","size"})
+	@GetMapping(value="/api/governates/findZoneGovernates", params= {"page","size"})
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')  ")
+	public Page<Governate> retrieveZoneGovernates( @RequestParam("page") int page, @RequestParam("size") int size, Authentication authentication) {
+		return governateRepository.findByZoneId(((UserPrincipal)authentication.getPrincipal()).getZoneId(), PageRequest.of(page, size));
+	}
+
+	@GetMapping(value="/api/governates/findAll", params= {"page","size"})
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
 	public Page<Governate> retrieveAllGovernates( @RequestParam("page") int page, @RequestParam("size") int size) {
 		return governateRepository.findAll(PageRequest.of(page, size));
 	}
-
+	
 	@GetMapping("/api/governates/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public Governate retrieveGovernateById(@PathVariable int id) {
 		Optional<Governate> governate = governateRepository.findById(id);
 		if (!governate.isPresent())
@@ -56,6 +66,7 @@ public class GovernateController {
 	}
 
 	@DeleteMapping("/api/governates/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteGovernate(@PathVariable int id) {
 		try {
 			governateRepository.deleteById(id);
@@ -65,6 +76,7 @@ public class GovernateController {
 	}
 
 	@PostMapping("/api/governates")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createGovernate(@Valid @RequestBody Governate governate) {
 		Governate savedGovernate = governateRepository.save(governate);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -74,6 +86,7 @@ public class GovernateController {
 	}
 
 	@PutMapping("/api/governates/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Governate> updateGovernate(@PathVariable int id, @Valid @RequestBody Governate governate) {
 		Optional<Governate> existingGovernate = governateRepository.findById(id);
 
@@ -85,6 +98,7 @@ public class GovernateController {
 	}
 
 	@PostMapping("/api/governates/{id}/cities")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> addCity(@PathVariable int id, @Valid @RequestBody City city) {
 
 		Optional<Governate> governateOptional = governateRepository.findById(id);
@@ -107,6 +121,7 @@ public class GovernateController {
 	}
 
 	@GetMapping("/api/governates/{id}/cities")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public List<City> retrieveGovernateCities(@PathVariable int id) {
 		Optional<Governate> governateOptional = governateRepository.findById(id);
 		if (!governateOptional.isPresent()) {

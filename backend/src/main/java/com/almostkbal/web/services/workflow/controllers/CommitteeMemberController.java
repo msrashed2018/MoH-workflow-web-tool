@@ -31,7 +31,6 @@ import com.almostkbal.web.services.workflow.repositories.CommitteeMemberReposito
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CommitteeMemberController {
 	@Autowired
 	private CommitteeMemberRepository committeeMemberRepository;
@@ -43,15 +42,16 @@ public class CommitteeMemberController {
 	}
 	
 	@GetMapping("/api/committee-members/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')  OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public CommitteeMember retrieveCommitteeMemberById(@PathVariable long id) {
 		Optional<CommitteeMember> committeeMember = committeeMemberRepository.findById(id);
 		if(!committeeMember.isPresent())
 			throw new ResourceNotFoundException("id-"+ id);
-//		Resource<CommitteeMember> resource = new Resource<CommitteeMember>(committeeMember.get());
 		return committeeMember.get();
 	}
 
 	@DeleteMapping("/api/committee-members/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')  OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public void deleteCommitteeMember(@PathVariable long id) {
 		try {
 			committeeMemberRepository.deleteById(id);
@@ -61,16 +61,9 @@ public class CommitteeMemberController {
 	}
 
 	@PostMapping("/api/committee-members")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public ResponseEntity<Object> createCommitteeMember(@Valid @RequestBody CommitteeMember committeeMember) {
 		
-		System.out.println("\n\n Committte Member "+ committeeMember.getName());
-		System.out.println(committeeMember.getDescription());
-		System.out.println(committeeMember.getMobileNumber());
-		System.out.println(committeeMember.getName());
-		System.out.println(committeeMember.getTitle());
-		System.out.println(committeeMember.getZone().getId());
-		System.out.println(committeeMember.getZone().getName());
-		System.out.println(committeeMember.getZone().getDescription());
 		CommitteeMember savedCommitteeMember = committeeMemberRepository.save(committeeMember);
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
@@ -80,13 +73,13 @@ public class CommitteeMemberController {
 		
 	}
 	@PutMapping("/api/committee-members/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public ResponseEntity<CommitteeMember> updateCommitteeMember(
 			@PathVariable long id, @Valid @RequestBody CommitteeMember committeeMember) {
 		Optional<CommitteeMember> existingCommitteeMember = committeeMemberRepository.findById(id);
 		
 		if(!existingCommitteeMember.isPresent())
 			throw new ResourceNotFoundException("id-"+ id);
-//		committeeMemberRepository.deleteById(id);
 		CommitteeMember updatedCitzen = committeeMemberRepository.save(committeeMember);
 		return new ResponseEntity<CommitteeMember>(updatedCitzen, HttpStatus.OK);
 	}

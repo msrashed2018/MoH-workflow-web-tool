@@ -26,8 +26,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.almostkbal.web.services.workflow.auth.UserPrincipal;
+import com.almostkbal.web.services.workflow.auth.UserService;
 import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.Citizen;
+import com.almostkbal.web.services.workflow.entities.Zone;
 import com.almostkbal.web.services.workflow.exceptions.CitizenValidationException;
 import com.almostkbal.web.services.workflow.repositories.AuditRepository;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
@@ -41,28 +44,37 @@ public class CitizenController {
 
 	@Autowired
 	private AuditRepository auditRepository;
+	
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("/api/citizens")
-	public Page<Citizen> retrieveAllCitizens(@RequestParam("page") int page, @RequestParam("size") int size) {
-		return citizenRepository.findAll(PageRequest.of(page, size, Sort.by("createdDate").descending()));
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	public Page<Citizen> retrieveAllCitizens(@RequestParam("page") int page, @RequestParam("size") int size, Authentication authentication) {
+		
+		return citizenRepository.findByZoneId(((UserPrincipal)authentication.getPrincipal()).getZoneId(),PageRequest.of(page, size, Sort.by("createdDate").descending()));
 	}
 
 	@GetMapping("/api/citizens/search/findByNationalId")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public List<Citizen> findByNationalId(@RequestParam long id) {
 		return citizenRepository.findByNationalId(id);
 	}
 
 	@GetMapping("/api/citizens/search/findAllByName")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public List<Citizen> findAllByName(@RequestParam String name) {
 		return citizenRepository.findByName(name);
 	}
 
 	@GetMapping("/api/citizens/search/findAllByNameContaining")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public List<Citizen> findAllByNameContaining(@RequestParam String name) {
 		return citizenRepository.findByNameContaining(name);
 	}
 
 	@GetMapping("/api/citizens/search/findAllByDate")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public List<Citizen> findAllByDate(@RequestParam String date) {
 
 		return citizenRepository.findAllByDate(date);
@@ -78,7 +90,7 @@ public class CitizenController {
 	}
 
 	@DeleteMapping("/api/citizens/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public void deleteCitizen(@PathVariable long id, Authentication authentication) {
 		try {
 			Optional<Citizen> citizen = citizenRepository.findById(id);
@@ -95,7 +107,7 @@ public class CitizenController {
 			details.append(" الرقم القومي : ");
 			details.append(citizen.get().getNationalId());
 			String performedBy = authentication.getName();
-			Audit audit = new Audit(action, details.toString(), 0l, performedBy);
+			Audit audit = new Audit(action, details.toString(), 0l, performedBy, userService.getUserZoneId());
 			auditRepository.save(audit);
 		} catch (EmptyResultDataAccessException ex) {
 			throw new ResourceNotFoundException("id-" + id);
@@ -103,9 +115,13 @@ public class CitizenController {
 	}
 
 	@PostMapping("/api/citizens")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING')")
 	public Object createCitizen(@Valid @RequestBody Citizen citizen, Authentication authentication) {
 		Citizen savedCitizen = null;
 		try {
+			Zone zone = new Zone();
+			zone.setId(((UserPrincipal)authentication.getPrincipal()).getZoneId());
+			citizen.setZone(zone);
 			savedCitizen = citizenRepository.save(citizen);
 
 			// auditing
@@ -116,7 +132,7 @@ public class CitizenController {
 			details.append(" الرقم القومي : ");
 			details.append(savedCitizen.getNationalId());
 			String performedBy = authentication.getName();
-			Audit audit = new Audit(action, details.toString(), 0l, performedBy);
+			Audit audit = new Audit(action, details.toString(), 0l, performedBy, userService.getUserZoneId());
 			auditRepository.save(audit);
 
 			return savedCitizen;
@@ -127,7 +143,7 @@ public class CitizenController {
 	}
 
 	@PutMapping("/api/citizens/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public ResponseEntity<Citizen> updateCitizen(@PathVariable long id, @Valid @RequestBody Citizen citizen,
 			Authentication authentication) {
 		Optional<Citizen> existingCitizen = citizenRepository.findById(id);
@@ -149,7 +165,7 @@ public class CitizenController {
 			details.append(" الرقم القومي : ");
 			details.append(updatedCitzen.getNationalId());
 			String performedBy = authentication.getName();
-			Audit audit = new Audit(action, details.toString(), 0l, performedBy);
+			Audit audit = new Audit(action, details.toString(), 0l, performedBy, userService.getUserZoneId());
 			auditRepository.save(audit);
 
 			return new ResponseEntity<Citizen>(updatedCitzen, HttpStatus.OK);

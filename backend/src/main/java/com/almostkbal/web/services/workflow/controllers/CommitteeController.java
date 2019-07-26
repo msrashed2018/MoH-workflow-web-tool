@@ -34,38 +34,22 @@ import com.almostkbal.web.services.workflow.repositories.CommitteeRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CommitteeController {
 	@Autowired
 	private CommitteeRepository committeeRepository;
 	
 	@GetMapping("/api/committees")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public Page<Committee> retrieveAllCommittees(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return committeeRepository.findAll(PageRequest.of(page, size));
 	}
 	@GetMapping("/api/committees/findUpcommingCommitteesByType")
 	public List<Committee> retrieveUpcommingCommitteesByType(@RequestParam String type){
-//		List<Committee> eyeCommittees = committeeRepository.findAll();
-//		for(Committee committee : eyeCommittees ) {
-//			if(committee.getType().equals("عظام") ){
-//				eyeCommittees.remove(committee);
-//			}
-//		}
 		return committeeRepository.findByTypeAndDateGreaterThan(type, yesterday());
 	}
 	
-//	@GetMapping("/api/bones-committees")
-//	public List<Committee> retrieveBonesCommittees(){
-////		List<Committee> eyeCommittees = committeeRepository.findAll();
-////		for(Committee committee : eyeCommittees ) {
-////			if(committee.getType().equals("رمد") ){
-////				eyeCommittees.remove(committee);
-////			}
-////		}
-//		return committeeRepository.findByType("عظام");
-//	}
-	
 	@GetMapping("/api/committees/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public Committee retrieveCommitteeById(@PathVariable long id) {
 		Optional<Committee> committee = committeeRepository.findById(id);
 		if(!committee.isPresent())
@@ -75,6 +59,7 @@ public class CommitteeController {
 	}
 
 	@DeleteMapping("/api/committees/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public void deleteCommittee(@PathVariable long id) {
 		try {
 			committeeRepository.deleteById(id);
@@ -84,6 +69,7 @@ public class CommitteeController {
 	}
 
 	@PostMapping("/api/committees")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public ResponseEntity<Object> createCommittee(@Valid @RequestBody Committee committee) {
 		Committee savedCommittee = committeeRepository.save(committee);
 		URI location = ServletUriComponentsBuilder
@@ -94,13 +80,13 @@ public class CommitteeController {
 		
 	}
 	@PutMapping("/api/committees/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public ResponseEntity<Committee> updateCommittee(
 			@PathVariable long id, @Valid @RequestBody Committee committee) {
 		Optional<Committee> existingCommittee = committeeRepository.findById(id);
 		
 		if(!existingCommittee.isPresent())
 			throw new ResourceNotFoundException("id-"+ id);
-//		committeeRepository.deleteById(id);
 		Committee updatedCitzen = committeeRepository.save(committee);
 		return new ResponseEntity<Committee>(updatedCitzen, HttpStatus.OK);
 	}

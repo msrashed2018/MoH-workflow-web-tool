@@ -31,17 +31,18 @@ import com.almostkbal.web.services.workflow.repositories.CustomRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CustomController {
 	@Autowired
 	private CustomRepository customRepository;
 	
 	@GetMapping("/api/customs")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public Page<Custom> retrieveAllCustoms(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return customRepository.findAll(PageRequest.of(page, size));
 	}
 	
 	@GetMapping("/api/customs/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public Custom retrieveCustomById(@PathVariable int id) {
 		Optional<Custom> custom = customRepository.findById(id);
 		if(!custom.isPresent())
@@ -51,6 +52,7 @@ public class CustomController {
 	}
 
 	@DeleteMapping("/api/customs/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteCustom(@PathVariable int id) {
 		try {
 			customRepository.deleteById(id);
@@ -60,6 +62,7 @@ public class CustomController {
 	}
 
 	@PostMapping("/api/customs")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createCustom(@Valid @RequestBody Custom custom) {
 		Custom savedCustom = customRepository.save(custom);
 		URI location = ServletUriComponentsBuilder
@@ -70,6 +73,7 @@ public class CustomController {
 		
 	}
 	@PutMapping("/api/customs/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Custom> updateCustom(
 			@PathVariable int id, @Valid @RequestBody Custom custom) {
 		Optional<Custom> existingCustom = customRepository.findById(id);

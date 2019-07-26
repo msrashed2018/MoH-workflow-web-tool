@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.almostkbal.web.services.workflow.auth.UserService;
 import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
@@ -35,7 +37,11 @@ public class RequestPaymentController {
 	@Autowired
 	private AuditRepository auditRepository;
 
+	@Autowired
+	private UserService userService;
+	
 	@GetMapping("/api/requests/{id}/payment")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_PAYMENTS_REGISTRATION')")
 	public RequestPayment retrieveRequestRequestPayment(@PathVariable long id) {
 		if (!requestRepository.existsById(id)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
@@ -44,6 +50,7 @@ public class RequestPaymentController {
 	}
 
 	@PostMapping("/api/requests/{id}/payment")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_PAYMENTS_REGISTRATION')")
 	public ResponseEntity<RequestPayment> addRequestPayment(@PathVariable long id,
 			@Valid @RequestBody RequestPayment requestPayment, Authentication authentication) {
 
@@ -60,18 +67,6 @@ public class RequestPaymentController {
 		RequestPayment savedRequestPayment = requestPaymentRepository.save(requestPayment);
 		
 		
-//		Optional<Request> existingRequest = requestRepository.findById(id);
-//
-//		if (!existingRequest.isPresent())
-//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
-//		if (requestPayment.getPaymentDone() == 1) {
-//			existingRequest.get().setState(RequestState.PENDING_CONTINUE_REGISTERING);
-//			requestRepository.save(existingRequest.get());
-//		}
-//
-//		requestPayment.setRequest(existingRequest.get());
-//		RequestPayment savedRequestPayment = requestPaymentRepository.save(requestPayment);
-
 		// auditing
 		String action = "تسجيل مدفوعات طلب";
 		StringBuilder details = new StringBuilder("");
@@ -80,7 +75,7 @@ public class RequestPaymentController {
 		details.append(" رقم الايصال ");
 		details.append(" : "+ savedRequestPayment.getReceiptSerialNumber());
 		String performedBy = authentication.getName();
-		Audit audit = new Audit(action, details.toString(), id, performedBy);
+		Audit audit = new Audit(action, details.toString(), id, performedBy, userService.getUserZoneId());
 		auditRepository.save(audit);
 
 		return new ResponseEntity<RequestPayment>(savedRequestPayment, HttpStatus.OK);

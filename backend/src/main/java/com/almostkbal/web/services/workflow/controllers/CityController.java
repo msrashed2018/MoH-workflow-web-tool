@@ -27,55 +27,56 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.almostkbal.web.services.workflow.entities.City;
 import com.almostkbal.web.services.workflow.repositories.CityRepository;
 
-
 //@CrossOrigin(origins="http://192.168.0.100:4200")
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CityController {
 	@Autowired
 	private CityRepository cityRepository;
-	
+
 	@GetMapping("/api/cities")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public Page<City> retrieveAllCities(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return cityRepository.findAll(PageRequest.of(page, size));
 	}
-	
+
 	@GetMapping("/api/cities/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public City retrieveCityById(@PathVariable int id) {
 		Optional<City> city = cityRepository.findById(id);
-		if(!city.isPresent())
-			throw new ResourceNotFoundException("id-"+ id);
+		if (!city.isPresent())
+			throw new ResourceNotFoundException("id-" + id);
 //		Resource<City> resource = new Resource<City>(city.get());
 		return city.get();
 	}
 
 	@DeleteMapping("/api/cities/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteCity(@PathVariable int id) {
 		try {
 			cityRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException ex) {
-			throw new ResourceNotFoundException("id-"+ id);
-	    }
+			throw new ResourceNotFoundException("id-" + id);
+		}
 	}
 
 	@PostMapping("/api/cities")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createCity(@Valid @RequestBody City city) {
 		City savedCity = cityRepository.save(city);
-		URI location = ServletUriComponentsBuilder
-			.fromCurrentRequest()
-			.path("/{id}")
-			.buildAndExpand(savedCity.getId()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedCity.getId())
+				.toUri();
 		return ResponseEntity.created(location).build();
-		
+
 	}
+
 	@PutMapping("/api/cities/{id}")
-	public ResponseEntity<City> updateCity(
-			@PathVariable int id, @Valid @RequestBody City city) {
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
+	public ResponseEntity<City> updateCity(@PathVariable int id, @Valid @RequestBody City city) {
 		Optional<City> existingCity = cityRepository.findById(id);
 
-		if(!existingCity.isPresent())
-			throw new ResourceNotFoundException("id-"+ id);
+		if (!existingCity.isPresent())
+			throw new ResourceNotFoundException("id-" + id);
 //		cityRepository.deleteById(id);
 		City updatedCitzen = cityRepository.save(city);
 		return new ResponseEntity<City>(updatedCitzen, HttpStatus.OK);

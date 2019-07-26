@@ -31,7 +31,6 @@ import com.almostkbal.web.services.workflow.repositories.EyeMeasureRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class EyeMeasureController {
 	@Autowired
 	private EyeMeasureRepository EyeMeasureRepository;
@@ -42,6 +41,7 @@ public class EyeMeasureController {
 	}
 	
 	@GetMapping("/api/eye-measures/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public EyeMeasure retrieveEyeMeasureById(@PathVariable int id) {
 		Optional<EyeMeasure> EyeMeasure = EyeMeasureRepository.findById(id);
 		if(!EyeMeasure.isPresent())
@@ -51,6 +51,7 @@ public class EyeMeasureController {
 	}
 
 	@DeleteMapping("/api/eye-measures/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteEyeMeasure(@PathVariable int id) {
 		try {
 			EyeMeasureRepository.deleteById(id);
@@ -61,6 +62,7 @@ public class EyeMeasureController {
 	}
 
 	@PostMapping("/api/eye-measures")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createEyeMeasure(@Valid @RequestBody EyeMeasure EyeMeasure) {
 		EyeMeasure savedEyeMeasure = EyeMeasureRepository.save(EyeMeasure);
 		URI location = ServletUriComponentsBuilder
@@ -71,6 +73,7 @@ public class EyeMeasureController {
 		
 	}
 	@PutMapping("/api/eye-measures/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<EyeMeasure> updateEyeMeasure(
 			@PathVariable int id, @Valid @RequestBody EyeMeasure EyeMeasure) {
 		Optional<EyeMeasure> existingEyeMeasure = EyeMeasureRepository.findById(id);

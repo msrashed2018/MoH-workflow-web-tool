@@ -31,7 +31,6 @@ import com.almostkbal.web.services.workflow.repositories.TrafficManagementReposi
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class TrafficManagementController {
 	@Autowired
 	private TrafficManagementRepository trafficManagementRepository;
@@ -43,6 +42,7 @@ public class TrafficManagementController {
 	}
 	
 	@GetMapping("/api/traffic-management/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public TrafficManagement retrieveTrafficManagementById(@PathVariable int id) {
 		Optional<TrafficManagement> trafficManagement = trafficManagementRepository.findById(id);
 		if(!trafficManagement.isPresent())
@@ -52,6 +52,7 @@ public class TrafficManagementController {
 	}
 
 	@DeleteMapping("/api/traffic-management/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteTrafficManagement(@PathVariable int id) {
 		try {
 			trafficManagementRepository.deleteById(id);
@@ -61,6 +62,7 @@ public class TrafficManagementController {
 	}
 
 	@PostMapping("/api/traffic-management")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createTrafficManagement(@Valid @RequestBody TrafficManagement trafficManagement) {
 		TrafficManagement savedTrafficManagement = trafficManagementRepository.save(trafficManagement);
 		URI location = ServletUriComponentsBuilder

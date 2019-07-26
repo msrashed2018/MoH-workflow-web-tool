@@ -31,17 +31,18 @@ import com.almostkbal.web.services.workflow.repositories.DisabilityRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class DisabilityController {
 	@Autowired
 	private DisabilityRepository disabilityRepository;
 	
 	@GetMapping("/api/disabilities")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_REQUEST_REVIEWING')")
 	public Page<Disability> retrieveAllDisabilities(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return disabilityRepository.findAll(PageRequest.of(page, size));
 	}
 	
 	@GetMapping("/api/disabilities/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public Disability retrieveDisabilityById(@PathVariable int id) {
 		Optional<Disability> disability = disabilityRepository.findById(id);
 		if(!disability.isPresent())
@@ -51,6 +52,7 @@ public class DisabilityController {
 	}
 
 	@DeleteMapping("/api/disabilities/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteDisability(@PathVariable int id) {
 		try {
 			disabilityRepository.deleteById(id);
@@ -60,6 +62,7 @@ public class DisabilityController {
 	}
 
 	@PostMapping("/api/disabilities")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createDisability(@Valid @RequestBody Disability disability) {
 		Disability savedDisability = disabilityRepository.save(disability);
 		URI location = ServletUriComponentsBuilder
@@ -70,6 +73,7 @@ public class DisabilityController {
 		
 	}
 	@PutMapping("/api/disabilities/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Disability> updateDisability(
 			@PathVariable int id, @Valid @RequestBody Disability disability) {
 		Optional<Disability> existingDisability = disabilityRepository.findById(id);

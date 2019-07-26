@@ -31,7 +31,6 @@ import com.almostkbal.web.services.workflow.repositories.EyeRevealSettingReposit
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class EyeRevealSettingController {
 	@Autowired
 	private EyeRevealSettingRepository EyeRevealSettingRepository;
@@ -43,6 +42,7 @@ public class EyeRevealSettingController {
 	}
 	
 	@GetMapping("/api/eye-reveal-settings/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public EyeRevealSetting retrieveEyeRevealSettingById(@PathVariable long id) {
 		Optional<EyeRevealSetting> EyeRevealSetting = EyeRevealSettingRepository.findById(id);
 		if(!EyeRevealSetting.isPresent())
@@ -52,6 +52,7 @@ public class EyeRevealSettingController {
 	}
 
 	@DeleteMapping("/api/eye-reveal-settings/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteEyeRevealSetting(@PathVariable long id) {
 		try {
 			EyeRevealSettingRepository.deleteById(id);
@@ -62,6 +63,7 @@ public class EyeRevealSettingController {
 	}
 
 	@PostMapping("/api/eye-reveal-settings")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createEyeRevealSetting(@Valid @RequestBody EyeRevealSetting EyeRevealSetting) {
 		EyeRevealSetting savedEyeRevealSetting = EyeRevealSettingRepository.save(EyeRevealSetting);
 		URI location = ServletUriComponentsBuilder
@@ -72,6 +74,7 @@ public class EyeRevealSettingController {
 		
 	}
 	@PutMapping("/api/eye-reveal-settings/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<EyeRevealSetting> updateEyeRevealSetting(
 			@PathVariable long id, @Valid @RequestBody EyeRevealSetting EyeRevealSetting) {
 		Optional<EyeRevealSetting> existingEyeRevealSetting = EyeRevealSettingRepository.findById(id);

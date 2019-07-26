@@ -33,7 +33,6 @@ import com.almostkbal.web.services.workflow.repositories.DocumentTypeRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class DocumentTypeController {
 	@Autowired
 	private DocumentTypeRepository documentTypeRepository;
@@ -43,10 +42,12 @@ public class DocumentTypeController {
 		return documentTypeRepository.findAll(PageRequest.of(page, size));
 	}
 	@GetMapping("/api/document-types/findByCategory")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public List<DocumentType> retreiveDocumentTypesByCategory(@RequestParam("category") DocumentCategory category) {
 		return documentTypeRepository.findByCategory(category);
 	}
 	@GetMapping("/api/document-types/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public DocumentType retrieveDocumentTypeById(@PathVariable long id) {
 		Optional<DocumentType> DocumentType = documentTypeRepository.findById(id);
 		if(!DocumentType.isPresent())
@@ -56,6 +57,7 @@ public class DocumentTypeController {
 	}
 
 	@DeleteMapping("/api/document-types/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteDocumentType(@PathVariable long id) {
 		try {
 			documentTypeRepository.deleteById(id);
@@ -65,6 +67,7 @@ public class DocumentTypeController {
 	}
 
 	@PostMapping("/api/document-types")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createDocumentType(@Valid @RequestBody DocumentType DocumentType) {
 		DocumentType savedDocumentType = documentTypeRepository.save(DocumentType);
 		URI location = ServletUriComponentsBuilder
@@ -75,6 +78,7 @@ public class DocumentTypeController {
 		
 	}
 	@PutMapping("/api/document-types/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<DocumentType> updateDocumentType(
 			@PathVariable long id, @Valid @RequestBody DocumentType documentType) {
 		Optional<DocumentType> existingDocumentType = documentTypeRepository.findById(id);

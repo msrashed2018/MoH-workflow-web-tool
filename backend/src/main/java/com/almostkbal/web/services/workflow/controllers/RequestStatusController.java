@@ -31,7 +31,6 @@ import com.almostkbal.web.services.workflow.repositories.RequestStatusRepository
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins="*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class RequestStatusController {
 	@Autowired
 	private RequestStatusRepository requestStatusRepository;
@@ -44,6 +43,7 @@ public class RequestStatusController {
 
 	
 	@GetMapping("/api/request-status/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public RequestStatus retrieveRequestStatusById(@PathVariable int id) {
 		Optional<RequestStatus> requestStatus = requestStatusRepository.findById(id);
 		if(!requestStatus.isPresent())
@@ -53,6 +53,7 @@ public class RequestStatusController {
 	}
 
 	@DeleteMapping("/api/request-status/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteRequestStatus(@PathVariable int id) {
 		try {
 			requestStatusRepository.deleteById(id);
@@ -62,6 +63,7 @@ public class RequestStatusController {
 	}
 
 	@PostMapping("/api/request-status")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createRequestStatus(@Valid @RequestBody RequestStatus requestStatus) {
 		RequestStatus savedRequestStatus = requestStatusRepository.save(requestStatus);
 		URI location = ServletUriComponentsBuilder
@@ -72,6 +74,7 @@ public class RequestStatusController {
 		
 	}
 	@PutMapping("/api/request-status/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<RequestStatus> updateRequestStatus(
 			@PathVariable int id, @Valid @RequestBody RequestStatus requestStatus) {
 		Optional<RequestStatus> existingRequestStatusOptional = requestStatusRepository.findById(id);

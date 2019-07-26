@@ -17,6 +17,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +37,7 @@ import com.almostkbal.web.services.workflow.exceptions.ExceptionResponse;
 import com.almostkbal.web.services.workflow.repositories.DocumentTypeRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestDocumentRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestRepository;
-import com.almostkbal.web.services.workflow.services.StorageService;
+import com.almostkbal.web.services.workflow.services.impl.StorageServiceImpl;
 import com.google.common.net.HttpHeaders;
 
 //@CrossOrigin(origins="http://192.168.0.100:4200")
@@ -45,7 +46,7 @@ import com.google.common.net.HttpHeaders;
 public class RequestDocumentController {
 
 	@Autowired
-	StorageService storageService;
+	StorageServiceImpl storageService;
 
 	@Autowired
 	RequestDocumentRepository documentRepository;
@@ -58,6 +59,7 @@ public class RequestDocumentController {
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
 	@PostMapping(value = "/api/requests/{id}/documents" /* consumes = "application/pdf" */)
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING')")
 	public ResponseEntity<String> uploadRequestDocument(@PathVariable long id, @RequestParam long documentTypeId,
 			@RequestParam("file") MultipartFile file) {
 		String message = "";
@@ -119,6 +121,7 @@ public class RequestDocumentController {
 	}
 
 	@GetMapping("/api/requests/{id}/documents/findByCategory")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_REQUEST_REVIEWING') ")
 	public ResponseEntity<List<RequestDocument>> getRequestDocuments(@PathVariable long id,
 			@RequestParam DocumentCategory category, Model model) {
 		List<String> files = new ArrayList<String>();
@@ -140,6 +143,7 @@ public class RequestDocumentController {
 
 	@GetMapping("/api/requests/{id}/documents/{filename:.+}")
 	@ResponseBody
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_REQUEST_REVIEWING') ")
 	public ResponseEntity<Resource> retreiveRequestDocument(@PathVariable long id, @PathVariable String filename) {
 
 		RequestDocument document = documentRepository.findByRequestIdAndName(id, filename);
@@ -156,6 +160,7 @@ public class RequestDocumentController {
 
 	@DeleteMapping("/api/requests/{id}/documents/{filename:.+}")
 	@ResponseBody
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') ")
 	public void deleteRequestDocument(@PathVariable long id, @PathVariable String filename) {
 
 		RequestDocument document = documentRepository.findByRequestIdAndName(id, filename);

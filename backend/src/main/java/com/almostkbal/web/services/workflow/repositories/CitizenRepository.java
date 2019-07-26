@@ -2,6 +2,8 @@ package com.almostkbal.web.services.workflow.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,4 +28,7 @@ public interface CitizenRepository extends JpaRepository<Citizen, Long> {
 	
 //	@Query("SELECT c FROM Citizen c WHERE c.name LIKE CONCAT('%',:name,'%')")
 	List<Citizen> findByNameContaining(String name);
+
+	Page<Citizen> findByZoneId(long zoneId, Pageable pageable);
+
 }
