@@ -12,7 +12,9 @@ export class GovernateService {
   constructor(
     private http:HttpClient
   ) { }
-
+  retrieveZoneGovernates(page,size) {
+    return this.http.get<Governate[]>(`${API_URL}/governates/findZoneGovernates?page=${page}&size=${size}`);
+  }
   retrieveAllGovernates(page,size) {
     return this.http.get<Governate[]>(`${API_URL}/governates?page=${page}&size=${size}`);
   }

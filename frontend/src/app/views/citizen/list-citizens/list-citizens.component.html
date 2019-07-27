@@ -23,8 +23,9 @@
 <div >
   <button type="button" class="btn btn-pill btn-primary" style="width: 100px;  color:white !important;"
     (click)="searchchanged($event)">بحث <i class="fa fa-search"></i></button>
-  <input style=" width: 200px; border: 2px solid grey; border-radius: 4px;" type="number"
-    placeholder="   ادخل الرقم القومي " [(ngModel)]="searchByID" />
+  <input style=" width: 200px; border: 2px solid grey; border-radius: 4px;" type="text"
+    placeholder="   ادخل الرقم القومي " [(ngModel)]="searchKey" 
+ (keyup.enter)="searchByKey($event)"/>
 </div>
 <br />
 <table class="table table-responsive-sm table-hover table-outline mb-0">

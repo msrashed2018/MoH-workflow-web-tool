@@ -101,39 +101,23 @@ export class CommitteeViewEditComponent implements OnInit {
     zone.id = this.selectedZoneId;
     this.requestModel.zone = zone;
    
-    let c1 = new CommitteeMember;
-    c1.id = this.selectedMember1Id;
-    this.requestModel.memberOne = c1;
-
-    let c2 = new CommitteeMember;
-    c2.id = this.selectedMember2Id;
-    this.requestModel.memberTwo = c2;
-
-
+    this.requestModel.memberOne = this.members.find((c)=> c.id==this.selectedMember1Id);
+    this.requestModel.memberTwo = this.members.find((c)=> c.id==this.selectedMember2Id);
 
     if(this.selectedMember3Id != 0){
-      let c3 = new CommitteeMember;
-      c3.id = this.selectedMember3Id;
-      this.requestModel.memberThree = c3;
+      this.requestModel.memberThree = this.members.find((c)=> c.id==this.selectedMember3Id);
     }
     if(this.selectedMember4Id != 0){
-      let c4 = new CommitteeMember;
-      c4.id = this.selectedMember4Id;
-      this.requestModel.memberFour = c4;
+      this.requestModel.memberFour = this.members.find((c)=> c.id==this.selectedMember4Id);
     }
     if(this.selectedMember5Id != 0){
-      let c5 = new CommitteeMember;
-      c5.id = this.selectedMember5Id;
-      this.requestModel.memberFive = c5;
+      this.requestModel.memberFive = this.members.find((c)=> c.id==this.selectedMember5Id);
     }
 
     if(this.selectedMember6Id != 0){
-      let c6 = new CommitteeMember;
-      c6.id = this.selectedMember6Id;
-      this.requestModel.memberSix = c6;
+      this.requestModel.memberSix = this.members.find((c)=> c.id==this.selectedMember6Id);
     }
 
-    
     this.committeeService.updateCommittee(this.committeeId,this.requestModel).subscribe(
       result => {
         this.router.navigateByUrl("/administration/committees");

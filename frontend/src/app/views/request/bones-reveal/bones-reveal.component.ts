@@ -17,7 +17,7 @@ export class BonesRevealComponent implements OnInit {
   private requests: Request[];
   private noDataFound: boolean = false;
   private errorMessage: boolean = false;
-  searchByID: string = '';
+  searchKey: string = '';
   constructor( private confirmationModalService: ConfirmModalService, private requestService: RequestService, private router : Router, private datepipe: DatePipe) { }
   page: number = 0;
   pages: Array<number>;
@@ -50,17 +50,22 @@ export class BonesRevealComponent implements OnInit {
     this.requests = [];
     this.retriveAllRequests();
   }
-  searchByNationalId(event: Event) {
+  searchByKey(event: Event) {
+    this.requests = [];
+    this.page=0;
     // this.citizens = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    this.requestService.searchByNationalId("CONTINUE_REGISTERING_DONE","PENDING_REVEAL","NA",this.searchByID)
+    this.requestService.searchByStatesAndSearchKey("CONTINUE_REGISTERING_DONE","PENDING_REVEAL","NA",this.searchKey,this.page,PAGINATION_PAGE_SIZE)
     .subscribe(
       result => {
         if (typeof result !== 'undefined' && result !== null && result.length !=0) {
           this.noDataFound = false;
-          this.requests= result;
+          this.requests= result['content'];
+          this.pages = new Array(result['totalPages']);
         }else{
+          
+this.pages = new Array(0);
           this.noDataFound = true;
         }
       },
@@ -85,7 +90,7 @@ export class BonesRevealComponent implements OnInit {
             this.requests= result['content'];
             this.pages = new Array(result['totalPages']);
           }else{
-            console.log("no data found ")
+            
             this.noDataFound = true;
           }
         },

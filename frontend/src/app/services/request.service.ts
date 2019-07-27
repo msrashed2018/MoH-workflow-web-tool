@@ -30,69 +30,17 @@ export class RequestService {
       }));
   }
 
-  // retrieveRequestsByDate(date :string) {
-  //   return this.http.get<Request[]>
-  //     (`${API_URL}`+'/requests/search/findAllByDate?date='+date).pipe( map(
-  //       data => {
-  //       return data;
-  //     }));
-  // }
-
-  retrieveRequestsByNationalId(nationalId) {
+  retrieveRequestsBySearchKey(searchKey, page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}`+'/requests/search/findAllByNationalId?nationalId='+nationalId).pipe( map(
+      (`${API_URL}/requests/search/findAllRequestsBySearchKey?searchKey=${searchKey}&page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));
   }
-  // retreiveRequestsForEyeReveal(page,size) {
-  //   return this.http.get<Request[]>
-  //     (`${API_URL}`+'/requests/retreiveRequestsForEyeReveal'+`?page=${page}&size=${size}`).pipe( map(
-  //       data => {
-  //       return data;
-  //     }));
-  // }
-  // retreiveRequestsForBonesReveal(page,size) {
-  //   return this.http.get<Request[]>
-  //     (`${API_URL}`+'/requests/retreiveRequestsForBonesReveal'+`?page=${page}&size=${size}`).pipe( map(
-  //       data => {
-  //       return data;
-  //     }));
-  // }
-  // retreiveRequestsForRevealsRegistering(page,size) {
-  //   return this.http.get<Request[]>
-  //     (`${API_URL}`+'/requests/retreiveRequestsForRevealsRegistering'+`?page=${page}&size=${size}`).pipe( map(
-  //       data => {
-  //       return data;
-  //     }));
-  // }
-  // retreiveRequestsForReviewing(page,size) {
-  //   return this.http.get<Request[]>
-  //     (`${API_URL}`+'/requests/retreiveRequestsForReviewing'+`?page=${page}&size=${size}`).pipe( map(
-  //       data => {
-  //       return data;
-  //     }));
-  // }
-  // retreiveRequestsForApproving(page,size) {
-  //   return this.http.get<Request[]>
-  //     (`${API_URL}`+'/requests/retreiveRequestsForApproving'+`?page=${page}&size=${size}`).pipe( map(
-  //       data => {
-  //       return data;
-  //     }));
-  // }
 
-
-  // retrieveByRequestState(state,page,size) {
-  //   return this.http.get<Request[]>
-  //     (`${API_URL}/requests/retreiveByRequestState?state=${state}&page=${page}&size=${size}`).pipe( map(
-  //       data => {
-  //       return data;
-  //     }));
-  // }
-
-searchByNationalId(state,bonesRevealState, eyeRevealState,nationalId) {
+searchByStatesAndSearchKey(state,bonesRevealState, eyeRevealState,searchKey,page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}/requests/search/findByNationalId?state=${state}&bonesRevealState=${bonesRevealState}&eyeRevealState=${eyeRevealState}&nationalId=${nationalId}`).pipe( map(
+      (`${API_URL}/requests/search/findByStatesAndSearchKey?state=${state}&bonesRevealState=${bonesRevealState}&eyeRevealState=${eyeRevealState}&searchKey=${searchKey}&page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));

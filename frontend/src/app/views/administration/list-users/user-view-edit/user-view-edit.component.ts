@@ -84,7 +84,7 @@ export class UserViewEditComponent implements OnInit {
     this.requestModel.roles = this.selectedRoles;
 
 
-    this.userService.createUser(this.requestModel).subscribe(
+    this.userService.updateUser(this.requestModel.id, this.requestModel).subscribe(
       result => {
         this.router.navigateByUrl("/administration/users");
       },

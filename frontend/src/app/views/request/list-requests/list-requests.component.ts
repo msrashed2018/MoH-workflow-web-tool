@@ -16,24 +16,25 @@ export class ListRequestsComponent implements OnInit {
   private requests: Request[];
   private noDataFound: boolean = false;
   private errorMessage: boolean = false;
-  searchByID: string = '';
+  searchKey: string = '';
   constructor( private confirmationModalService: ConfirmModalService, private requestService: RequestService, private router : Router, private datepipe: DatePipe) { }
   page: number = 0;
   pages: Array<number>;
   items: number = 0;
+  isForSearch :boolean = true;
   setPage(i,event: any): void {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i ;
     this.items = i*PAGINATION_PAGE_SIZE;
-    this.retriveAllRequests();
+    if(this.isForSearch){         this.searchByKey(null);       }else{         this.retriveAllRequests();       }
   }
   nextPage(event: any): void {
     event.preventDefault();
     if((this.page+1) < this.pages.length){
       this.page = this.page+1
       this.items = (this.page)*PAGINATION_PAGE_SIZE;
-      this.retriveAllRequests();
+      if(this.isForSearch){         this.searchByKey(null);       }else{         this.retriveAllRequests();       }
     }
   }
   prevPage(event: any): void {
@@ -42,25 +43,31 @@ export class ListRequestsComponent implements OnInit {
     if((this.page-1) >= 0){
       this.page =this.page -1;
       this.items = (this.page)*PAGINATION_PAGE_SIZE;
-      this.retriveAllRequests();
+      if(this.isForSearch){         this.searchByKey(null);       }else{         this.retriveAllRequests();       }
     }
   }
   ngOnInit() {
     this.requests = [];
     this.retriveAllRequests();
   }
-  searchByNationalId(event: Event) {
+  searchByKey(event: Event) {
+    this.requests = [];
+    this.page=0;
     // this.citizens = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    this.requestService.  retrieveRequestsByNationalId(this.searchByID)
+    this.requestService.  retrieveRequestsBySearchKey(this.searchKey,this.page,PAGINATION_PAGE_SIZE)
     .subscribe(
       result => {
-        if (typeof result !== 'undefined' && result !== null && result.length !=0) {
-          console.log("result = "+ result)
+        if (typeof result !== 'undefined' && result !== null && result['content'].length !=0) {
           this.noDataFound = false;
-          this.requests= result;
+          this.requests= result['content'];
+          this.pages = new Array(result['totalPages']);
+          this.isForSearch = true;
+          console.log(result)
         }else{
+          
+          this.pages = new Array(0);
           this.noDataFound = true;
         }
       },
@@ -75,7 +82,7 @@ export class ListRequestsComponent implements OnInit {
     this.requests = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    let date=new Date();
+    // let date=new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
     this.requestService.retrieveAllRequests(this.page,PAGINATION_PAGE_SIZE)
       .subscribe(
@@ -84,8 +91,9 @@ export class ListRequestsComponent implements OnInit {
             this.noDataFound = false;
             this.requests= result['content'];
             this.pages = new Array(result['totalPages']);
+            this.isForSearch = false;
           }else{
-            console.log("no data found ")
+            
             this.noDataFound = true;
           }
         },
@@ -103,7 +111,7 @@ export class ListRequestsComponent implements OnInit {
       if(confirmed){
         this.requestService.deleteRequest(citizenId, requestId).subscribe (
           response => {
-            this.retriveAllRequests();
+            if(this.isForSearch){         this.searchByKey(null);       }else{         this.retriveAllRequests();       }
           }
         )
       }

@@ -232,7 +232,7 @@ export class CitizenComponent implements OnInit {
   }
 
   fillGovernates(){
-    this.governateService.retrieveAllGovernates(0,100).subscribe(
+    this.governateService.retrieveZoneGovernates(0,100).subscribe(
       result => {
         this.governates = result['content'];
       },

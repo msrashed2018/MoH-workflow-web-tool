@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
 			Object principal = authentication.getPrincipal();
-			if (principal instanceof User) {
+			if (principal instanceof UserPrincipal) {
 				return ((UserPrincipal) authentication.getPrincipal()).getUsername();
 			}
 
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
 			Object principal = authentication.getPrincipal();
-			if (principal instanceof User) {
+			if (principal instanceof UserPrincipal) {
 				return ((UserPrincipal) authentication.getPrincipal()).getZoneId();
 			}
 

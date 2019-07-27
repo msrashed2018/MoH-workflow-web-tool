@@ -1,7 +1,6 @@
 package com.almostkbal.web.services.workflow.services.impl;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,7 +88,7 @@ public class RequestServiceImpl implements RequestService {
 					Date requestDate = (Date) formatter.parse(searchKey);
 					return requestRepository.findByZoneIdAndStateAndRequestDate(userService.getUserZoneId(),
 							RequestState.PENDING_PAYMENT, requestDate, pageable);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -134,7 +133,7 @@ public class RequestServiceImpl implements RequestService {
 					Date requestDate = (Date) formatter.parse(searchKey);
 					return requestRepository.findByZoneIdAndStateAndRequestDate(userService.getUserZoneId(),
 							RequestState.PENDING_CONTINUE_REGISTERING, requestDate, pageable);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -184,7 +183,7 @@ public class RequestServiceImpl implements RequestService {
 					return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndRequestDate(
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
 							EyeRevealState.PENDING_REVEAL, requestDate, page);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -234,7 +233,7 @@ public class RequestServiceImpl implements RequestService {
 					return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndRequestDate(
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
 							BonesRevealState.PENDING_REVEAL, requestDate, page);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -284,7 +283,7 @@ public class RequestServiceImpl implements RequestService {
 					return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndRequestDate(
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
 							EyeRevealState.PENDING_REGISTERING, requestDate, page);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -334,7 +333,7 @@ public class RequestServiceImpl implements RequestService {
 					return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndRequestDate(
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
 							BonesRevealState.PENDING_REGISTERING, requestDate, page);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -407,7 +406,7 @@ public class RequestServiceImpl implements RequestService {
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates,
 							eyeRevealStates, requestDate, page);
 
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -454,7 +453,7 @@ public class RequestServiceImpl implements RequestService {
 					Date requestDate = (Date) formatter.parse(searchKey);
 					return requestRepository.findByZoneIdAndStateAndRequestDate(userService.getUserZoneId(),
 							RequestState.REVIEWED, requestDate, pageable);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -498,7 +497,7 @@ public class RequestServiceImpl implements RequestService {
 					Date requestDate = (Date) formatter.parse(searchKey);
 					return requestRepository.findByZoneIdAndStateAndRequestDate(userService.getUserZoneId(),
 							RequestState.APPROVED, requestDate, pageable);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -523,7 +522,6 @@ public class RequestServiceImpl implements RequestService {
 		// check if searchKey is number or string
 		try {
 			Long key = Long.parseLong(searchKey);
-
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
 			if (searchKey.startsWith("01")) {
@@ -536,14 +534,15 @@ public class RequestServiceImpl implements RequestService {
 				return requestRepository.findByZoneIdAndCitizenNationalId(userService.getUserZoneId(), key, pageable);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
+			
 			if (searchKey.contains("-")) {
 				// search key is date
 				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				try {
 					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndRequestDate(userService.getUserZoneId(), requestDate,
+					return requestRepository.findByZoneIdAndRequestDateGreaterThan(userService.getUserZoneId(), requestDate,
 							pageable);
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}

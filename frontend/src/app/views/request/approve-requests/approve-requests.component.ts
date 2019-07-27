@@ -16,7 +16,8 @@ export class ApproveRequestsComponent implements OnInit {
   private requests: Request[];
   private noDataFound: boolean = false;
   private errorMessage: boolean = false;
-  searchByID: string = '';
+  searchKey: string = '';
+  isForSearch :boolean = true;
   constructor( private confirmationModalService: ConfirmModalService, private requestService: RequestService, private router : Router, private datepipe: DatePipe) { }
   page: number = 0;
   pages: Array<number>;
@@ -26,14 +27,19 @@ export class ApproveRequestsComponent implements OnInit {
     event.preventDefault();
     this.page = i ;
     this.items = i*PAGINATION_PAGE_SIZE;
-    this.retriveAllRequests();
+    if(this.isForSearch){         this.searchByKey(null);       }else{         this.retriveAllRequests();       }
   }
   nextPage(event: any): void {
     event.preventDefault();
     if((this.page+1) < this.pages.length){
       this.page = this.page+1
       this.items = (this.page)*PAGINATION_PAGE_SIZE;
-      this.retriveAllRequests();
+      if(this.isForSearch){
+        this.searchByKey(null);
+      }else{
+        this.retriveAllRequests();
+      }
+      
     }
   }
   prevPage(event: any): void {
@@ -42,24 +48,34 @@ export class ApproveRequestsComponent implements OnInit {
     if((this.page-1) >= 0){
       this.page =this.page -1;
       this.items = (this.page)*PAGINATION_PAGE_SIZE;
-      this.retriveAllRequests();
+      if(this.isForSearch){
+        this.searchByKey(null);
+      }else{
+        this.retriveAllRequests();
+      }
     }
   }
   ngOnInit() {
     this.requests = [];
     this.retriveAllRequests();
   }
-  searchByNationalId(event: Event) {
+  searchByKey(event: Event) {
+    this.requests = [];
+    this.page=0;
     // this.citizens = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    this.requestService.searchByNationalId("REVIEWED","DONE","DONE",this.searchByID)
+    this.requestService.searchByStatesAndSearchKey("REVIEWED","DONE","DONE",this.searchKey,this.page,PAGINATION_PAGE_SIZE)
     .subscribe(
       result => {
         if (typeof result !== 'undefined' && result !== null && result.length !=0) {
           this.noDataFound = false;
-          this.requests= result;
+          this.requests= result['content'];
+          this.isForSearch = true;
+          this.pages = new Array(result['totalPages']);
         }else{
+          
+this.pages = new Array(0);
           this.noDataFound = true;
         }
       },
@@ -83,8 +99,9 @@ export class ApproveRequestsComponent implements OnInit {
             this.noDataFound = false;
             this.requests= result['content'];
             this.pages = new Array(result['totalPages']);
+            this.isForSearch = false;
           }else{
-            console.log("no data found ")
+            
             this.noDataFound = true;
           }
         },

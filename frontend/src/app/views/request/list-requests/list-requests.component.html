@@ -17,10 +17,11 @@
   </alert>
 </div>
 <button type="button" class="btn btn-pill btn-primary" style="width: 100px;  color:white !important;"
-  (click)="searchByNationalId($event)">بحث <i class="fa fa-search"></i></button>
+  (click)="searchByKey($event)">بحث <i class="fa fa-search"></i></button>
 <!-- <output class="searchHint" > من فضلك ادخل الرقم القومي :</output> -->
-<input style=" width: 200px; border: 2px solid grey; border-radius: 4px;" type="number"
-  placeholder="   بحث بالرقم القومي " [(ngModel)]="searchByID" />
+<input style=" width: 200px; border: 2px solid grey; border-radius: 4px;" type="text"
+  placeholder="    " [(ngModel)]="searchKey" 
+ (keyup.enter)="searchByKey($event)"/>
 
 <br /><br />
 <table class="table table-responsive-sm table-hover table-outline mb-0">
@@ -41,7 +42,9 @@
     <tr *ngFor="let request of requests ; let i=index">
       <td class="text-center"><b>{{items+i+1}}</b></td>
       <td class="text-center"><a
-          [routerLink]="['/request/', request.id,{componentMode: 'viewMode'}]"><b>{{request.id}}</b></a></td>
+          [routerLink]="['/request/', request.id,{componentMode: 'viewMode'}]"><b>{{request.id}}</b></a><div class="small text-muted">
+            تسجيل بواسطة: {{request.createdBy}}
+          </div></td>
       <td class="text-center">
         <b *ngIf="request.citizen != null">{{request.citizen.nationalId}}</b>
       </td>

@@ -121,7 +121,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 	// ============== for search by request date
 	// ===========================================
 
-	Page<Request> findByZoneIdAndRequestDate(long zoneId, Date requestDate, Pageable pageable);
+	Page<Request> findByZoneIdAndRequestDateGreaterThan(long zoneId, Date requestDate, Pageable pageable);
 
 	Page<Request> findByZoneIdAndStateAndRequestDate(long zoneId, RequestState state, Date requestDate,
 			Pageable pageable);

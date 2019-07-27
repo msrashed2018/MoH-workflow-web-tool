@@ -25,7 +25,7 @@
       <td><a [routerLink]="['/administration/users', user.id,{componentMode: 'viewMode'}]"><b>{{user.username}}</b></a>
       </td>
       <td>
-        <a *ngFor="let role of user.roles">{{role.name}}<br></a>
+        <a *ngFor="let role of user.roles">{{role.description}}<br></a>
       </td>
       <td>
         <p *ngIf="user.zone != null">{{user.zone.name}}</p>

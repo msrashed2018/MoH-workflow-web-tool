@@ -16,7 +16,7 @@ import { TokenStorageService } from '../../../services/authentication/jwt/token-
   styleUrls: ['./list-citizens.component.scss']
 })
 export class ListCitizensComponent implements OnInit {
-  searchByID: string = '';
+  searchKey: string = '';
   private citizens: Citizen[];
   private noDataFound: boolean = false;
   private isAdmin: boolean = false;
@@ -59,7 +59,7 @@ export class ListCitizensComponent implements OnInit {
     this.errorMessage = false;
     this.noDataFound = false;
 
-    this.citizenService.findCitizen(this.searchByID)
+    this.citizenService.findCitizen(this.searchKey)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result.length!=0) {

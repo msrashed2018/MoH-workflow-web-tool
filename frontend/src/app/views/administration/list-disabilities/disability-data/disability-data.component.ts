@@ -37,7 +37,7 @@ export class DisabilityDataComponent implements OnInit {
   onSave(){
     // console.log(this.selectedEquipmentName)
 
-    this.requestModel.equipment = this.equipments.find((e)=> e  .name==this.selectedEquipmentName);
+    this.requestModel.equipment = this.equipments.find((e)=> e.name==this.selectedEquipmentName);
     if(this.requestModel.equipment == null){
       this.errorMessage = ".نوع السيارة غير صحيح .. من فضلك اختر النوع من القائمة";
     }else{

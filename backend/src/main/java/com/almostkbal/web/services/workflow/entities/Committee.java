@@ -42,6 +42,7 @@ public class Committee {
 	
 	@OneToOne
 	@JoinColumn(name = "zone_id", nullable = false)
+	@NotNull(message = "لابد من ادخال المقر التابع لها اللجنة")
 	private Zone zone;
 	
 	@OneToOne
@@ -177,4 +178,6 @@ public class Committee {
 	public void setMemberSix(CommitteeMember memberSix) {
 		this.memberSix = memberSix;
 	}
+	
+	
 }

@@ -50,9 +50,9 @@ public class CitizenController {
 
 	@GetMapping("/api/citizens")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-	public Page<Citizen> retrieveAllCitizens(@RequestParam("page") int page, @RequestParam("size") int size, Authentication authentication) {
+	public Page<Citizen> retrieveAllCitizens(@RequestParam("page") int page, @RequestParam("size") int size) {
 		
-		return citizenRepository.findByZoneId(((UserPrincipal)authentication.getPrincipal()).getZoneId(),PageRequest.of(page, size, Sort.by("createdDate").descending()));
+		return citizenRepository.findByZoneId(userService.getUserZoneId(),PageRequest.of(page, size, Sort.by("createdDate").descending()));
 	}
 
 	@GetMapping("/api/citizens/search/findByNationalId")
@@ -91,7 +91,7 @@ public class CitizenController {
 
 	@DeleteMapping("/api/citizens/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-	public void deleteCitizen(@PathVariable long id, Authentication authentication) {
+	public void deleteCitizen(@PathVariable long id) {
 		try {
 			Optional<Citizen> citizen = citizenRepository.findById(id);
 			if (!citizen.isPresent())
@@ -106,7 +106,7 @@ public class CitizenController {
 			details.append(citizen.get().getName());
 			details.append(" الرقم القومي : ");
 			details.append(citizen.get().getNationalId());
-			String performedBy = authentication.getName();
+			String performedBy = userService.getUsername();
 			Audit audit = new Audit(action, details.toString(), 0l, performedBy, userService.getUserZoneId());
 			auditRepository.save(audit);
 		} catch (EmptyResultDataAccessException ex) {
@@ -120,7 +120,7 @@ public class CitizenController {
 		Citizen savedCitizen = null;
 		try {
 			Zone zone = new Zone();
-			zone.setId(((UserPrincipal)authentication.getPrincipal()).getZoneId());
+			zone.setId(userService.getUserZoneId());
 			citizen.setZone(zone);
 			savedCitizen = citizenRepository.save(citizen);
 
@@ -146,15 +146,18 @@ public class CitizenController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public ResponseEntity<Citizen> updateCitizen(@PathVariable long id, @Valid @RequestBody Citizen citizen,
 			Authentication authentication) {
-		Optional<Citizen> existingCitizen = citizenRepository.findById(id);
 
-		if (!existingCitizen.isPresent())
+		if (!citizenRepository.existsById(id))
 			throw new ResourceNotFoundException("id-" + id);
 //		citizenRepository.deleteById(id);
 
 		Citizen updatedCitzen = null;
 
 		try {
+			Zone zone = new Zone();
+			zone.setId(userService.getUserZoneId());
+			citizen.setZone(zone);
+			
 			updatedCitzen = citizenRepository.save(citizen);
 
 			// auditing

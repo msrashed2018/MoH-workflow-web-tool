@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.almostkbal.web.services.workflow.auth.UserService;
 import com.almostkbal.web.services.workflow.entities.CommitteeMember;
 import com.almostkbal.web.services.workflow.repositories.CommitteeMemberRepository;
 
@@ -35,10 +36,13 @@ public class CommitteeMemberController {
 	@Autowired
 	private CommitteeMemberRepository committeeMemberRepository;
 	
+	@Autowired
+	private UserService userService; 
+	
 	@GetMapping("/api/committee-members")
 	public Page<CommitteeMember> retrieveAllCommitteeMembers(@RequestParam("page") int page,
 			@RequestParam("size") int size) {
-		return committeeMemberRepository.findAll(PageRequest.of(page, size));
+		return committeeMemberRepository.findByZoneId(userService.getUserZoneId(),PageRequest.of(page, size));
 	}
 	
 	@GetMapping("/api/committee-members/{id}")
@@ -54,7 +58,7 @@ public class CommitteeMemberController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')  OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public void deleteCommitteeMember(@PathVariable long id) {
 		try {
-			committeeMemberRepository.deleteById(id);
+			committeeMemberRepository.deleteByIdAndZoneId(id, userService.getUserZoneId());
 		} catch (EmptyResultDataAccessException ex) {
 			throw new ResourceNotFoundException("id-"+ id);
 	    }
