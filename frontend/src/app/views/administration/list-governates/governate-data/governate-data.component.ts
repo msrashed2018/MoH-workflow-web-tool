@@ -12,17 +12,17 @@ import { Governate } from '../../../../model/governate.model';
   styleUrls: ['./governate-data.component.scss']
 })
 export class GovernateDataComponent implements OnInit {
-  governate : Governate= new Governate;
+  governate: Governate = new Governate;
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
-  public zones : Zone[];
-  public selectedZoneId : number
-  errorMessage ="";
-  constructor(private formBuilder: FormBuilder,private governateService: GovernateService, private zoneService: ZoneService, private router: Router ) { }
+  // public zones : Zone[];
+  // public selectedZoneId : number
+  errorMessage = "";
+  constructor(private formBuilder: FormBuilder, private governateService: GovernateService, private zoneService: ZoneService, private router: Router) { }
 
   ngOnInit() {
-    this.fillZones();
+    // this.fillZones();
   }
   collapsed(event: any): void {
   }
@@ -33,19 +33,19 @@ export class GovernateDataComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
-  onSave(){
-    let zone = new Zone;
-    zone.id = this.selectedZoneId;
-    this.governate.zone = zone;
+  onSave() {
+    // let zone = new Zone;
+    // zone.id = this.selectedZoneId;
+    // this.governate.zone = zone;
 
     this.governateService.createGovernate(this.governate).subscribe(
       result => {
         this.router.navigateByUrl("/administration/governates");
       },
       error => {
-        if(error.error.message.includes('unique constraint') || error.error.message.includes('Unique index or primary key violation')){
-          this.errorMessage = "بالفعل تم تسجيل هذا المحافظة من قبل";
-        }else{
+        if (error.error.message.includes('unique constraint') || error.error.message.includes('Unique index or primary key violation')) {
+          this.errorMessage = "بالفعل تم تسجيل هذا المحافظة من قبل في احدي المقرات";
+        } else {
           this.errorMessage = error.error.message;
         }
         console.log('oops', error);
@@ -53,17 +53,17 @@ export class GovernateDataComponent implements OnInit {
       }
     );
   }
-  close(){
+  close() {
     this.router.navigateByUrl("/administration/governates");
   }
-  fillZones(){
-    this.zoneService.retrieveAllZones(0,100).subscribe(
-      result => {
-        this.zones = result['content'];
-      },
-      error => {
-        console.log('oops', error);
-    });
-  }
+  // fillZones(){
+  //   this.zoneService.retrieveAllZones(0,100).subscribe(
+  //     result => {
+  //       this.zones = result['content'];
+  //     },
+  //     error => {
+  //       console.log('oops', error);
+  //   });
+  // }
 
 }

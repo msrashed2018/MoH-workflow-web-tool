@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.almostkbal.web.services.workflow.auth.UserService;
 import com.almostkbal.web.services.workflow.entities.City;
 import com.almostkbal.web.services.workflow.repositories.CityRepository;
 
@@ -34,16 +35,20 @@ public class CityController {
 	@Autowired
 	private CityRepository cityRepository;
 
+	
+	@Autowired
+	private UserService userService;
+	
 	@GetMapping("/api/cities")
 //	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public Page<City> retrieveAllCities(@RequestParam("page") int page, @RequestParam("size") int size) {
-		return cityRepository.findAll(PageRequest.of(page, size));
+		return cityRepository.findByGovernateZoneId(userService.getUserZoneId(), PageRequest.of(page, size));
 	}
 
 	@GetMapping("/api/cities/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public City retrieveCityById(@PathVariable int id) {
-		Optional<City> city = cityRepository.findById(id);
+		Optional<City> city = cityRepository.findByIdAndGovernateZoneId(id, userService.getUserZoneId());
 		if (!city.isPresent())
 			throw new ResourceNotFoundException("id-" + id);
 //		Resource<City> resource = new Resource<City>(city.get());
@@ -54,7 +59,7 @@ public class CityController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public void deleteCity(@PathVariable int id) {
 		try {
-			cityRepository.deleteById(id);
+			cityRepository.deleteByIdAndGovernateZoneId(id, userService.getUserZoneId());
 		} catch (EmptyResultDataAccessException ex) {
 			throw new ResourceNotFoundException("id-" + id);
 		}

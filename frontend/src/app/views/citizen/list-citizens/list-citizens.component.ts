@@ -3,7 +3,7 @@ import { Citizen } from '../../../model/citizen.model';
 import { CitizenService } from '../../../services/citizenService';
 import { DatePipe, CommonModule } from '@angular/common';
 import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert';
-import * as moment from  'moment';
+import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
@@ -21,32 +21,41 @@ export class ListCitizensComponent implements OnInit {
   private noDataFound: boolean = false;
   private isAdmin: boolean = false;
   private errorMessage: boolean = false;
-  constructor( private tokenStorageService: TokenStorageService, private confirmationModalService: ConfirmModalService, private citizenService: CitizenService, private router : Router, private datepipe: DatePipe) { }
+  isForSearch: boolean = true;
+  constructor(private tokenStorageService: TokenStorageService, private confirmationModalService: ConfirmModalService, private citizenService: CitizenService, private router: Router, private datepipe: DatePipe) { }
   page: number = 0;
   pages: Array<number>;
   items: number = 0;
-  setPage(i,event: any): void {
+  setPage(i, event: any): void {
     // this.currentPage = event.page;
     event.preventDefault();
-    this.page = i ;
-    this.items = i*PAGINATION_PAGE_SIZE;
-    this.retriveAllCitizens();
+    this.page = i;
+    this.items = i * PAGINATION_PAGE_SIZE;
+    if (this.isForSearch) { this.searchByKey(null); } else { this.retriveAllCitizens(); }
   }
   nextPage(event: any): void {
     event.preventDefault();
-    if((this.page+1) < this.pages.length){
-      this.page = this.page+1
-      this.items = (this.page)*PAGINATION_PAGE_SIZE;
-      this.retriveAllCitizens();
+    if ((this.page + 1) < this.pages.length) {
+      this.page = this.page + 1
+      this.items = (this.page) * PAGINATION_PAGE_SIZE;
+      if (this.isForSearch) {
+        this.searchByKey(null);
+      } else {
+        this.retriveAllCitizens();
+      }
     }
   }
   prevPage(event: any): void {
     event.preventDefault();
 
-    if((this.page-1) >= 0){
-      this.page =this.page -1;
-      this.items = (this.page)*PAGINATION_PAGE_SIZE;
-      this.retriveAllCitizens();
+    if ((this.page - 1) >= 0) {
+      this.page = this.page - 1;
+      this.items = (this.page) * PAGINATION_PAGE_SIZE;
+      if (this.isForSearch) {
+        this.searchByKey(null);
+      } else {
+        this.retriveAllCitizens();
+      }
     }
   }
   ngOnInit() {
@@ -54,18 +63,22 @@ export class ListCitizensComponent implements OnInit {
     this.citizens = [];
     this.retriveAllCitizens();
   }
-  searchchanged(event: Event) {
-    // this.citizens = [];
+  searchByKey(event: Event) {
+    this.citizens = [];
+    this.page = 0;
     this.errorMessage = false;
     this.noDataFound = false;
 
-    this.citizenService.findCitizen(this.searchKey)
+    this.citizenService.findCitizensBySearchKey(this.searchKey, this.page, PAGINATION_PAGE_SIZE)
       .subscribe(
         result => {
-          if (typeof result !== 'undefined' && result !== null && result.length!=0) {
+          if (typeof result !== 'undefined' && result !== null) {
             this.noDataFound = false;
-            this.citizens = result;
-          }else{
+            this.citizens = result['content'];
+            this.isForSearch = true;
+            this.pages = new Array(result['totalPages']);
+          } else {
+            this.pages = new Array(0);
             this.noDataFound = true;
           }
         },
@@ -76,25 +89,25 @@ export class ListCitizensComponent implements OnInit {
         }
       );
   }
-  calculateAge(dateString)
-  {
-      let birthDate : Date = new Date(dateString);
-      return moment().diff(birthDate, 'years');
+  calculateAge(dateString) {
+    let birthDate: Date = new Date(dateString);
+    return moment().diff(birthDate, 'years');
   }
-  retriveAllCitizens(){
+  retriveAllCitizens() {
     this.citizens = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    let date=new Date();
+    let date = new Date();
     // let latest_date =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.citizenService.retrieveAllCitizens(this.page,PAGINATION_PAGE_SIZE)
+    this.citizenService.retrieveAllCitizens(this.page, PAGINATION_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null) {
             this.noDataFound = false;
-            this.citizens= result['content'];
+            this.citizens = result['content'];
+            this.isForSearch = false;
             this.pages = new Array(result['totalPages']);
-          }else{
+          } else {
             this.noDataFound = true;
           }
         },
@@ -108,29 +121,29 @@ export class ListCitizensComponent implements OnInit {
 
   onDelete(id) {
     this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف المواطن؟ ')
-    .then((confirmed) => {
-      if(confirmed){
-        this.citizenService.deleteCitizen(id).subscribe (
-          response => {
-            this.retriveAllCitizens();
-          }
-        )
-      }
-    })
+      .then((confirmed) => {
+        if (confirmed) {
+          this.citizenService.deleteCitizen(id).subscribe(
+            response => {
+              this.retriveAllCitizens();
+            }
+          )
+        }
+      })
   }
   onNewRequest(id) {
     let citizenName = "";
     this.citizens.forEach(
-      citizen =>{
-        if(citizen.id == id){
+      citizen => {
+        if (citizen.id == id) {
           citizenName = citizen.name;
         }
       }
-      )
-    this.router.navigate(['citizen/citizen-requests',id,{name: citizenName}])
+    )
+    this.router.navigate(['citizen/citizen-requests', id, { name: citizenName }])
   }
   onEdit(id) {
-    this.router.navigate(['citizen/view-edit',id,{componentMode: "editMode"}])
+    this.router.navigate(['citizen/view-edit', id, { componentMode: "editMode" }])
   }
   onAdd() {
     this.router.navigate(['citizen/new-citizen'])

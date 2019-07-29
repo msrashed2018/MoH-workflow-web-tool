@@ -124,7 +124,7 @@ export class FormsComponent implements OnInit {
   }
 
   fillGovernates(){
-    this.governateService.retrieveAllGovernates(0,100).subscribe(
+    this.governateService.retrieveZoneGovernates(0,200).subscribe(
       result => {
         console.log(" governates list ");
         this.governates = result;

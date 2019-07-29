@@ -13,72 +13,116 @@ import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
 export class AuditListComponent implements OnInit {
   audits: Audit[]
   message: string
-
+  private noDataFound: boolean = false;
+  private errorMessage: boolean = false;
+  searchKey: string = '';
+  isForSearch: boolean = true;
   constructor(
-    private auditService:AuditService,
-    private router : Router, 
+    private auditService: AuditService,
+    private router: Router,
     private confirmationModalService: ConfirmModalService
-  ) { 
+  ) {
 
   }
   page: number = 0;
   pages: Array<number>;
   items: number = 0;
-  setPage(i,event: any): void {
+  setPage(i, event: any): void {
     // this.currentPage = event.page;
     event.preventDefault();
-    this.page = i ;
-    this.items = i*PAGINATION_PAGE_SIZE;
+    this.page = i;
+    this.items = i * PAGINATION_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
-    if((this.page+1) < this.pages.length){
-      this.page = this.page+1
-      this.items = (this.page)*PAGINATION_PAGE_SIZE;
-      this.refreshData();
+    if ((this.page + 1) < this.pages.length) {
+      this.page = this.page + 1
+      this.items = (this.page) * PAGINATION_PAGE_SIZE;
+      if(this.isForSearch){
+        this.searchByKey(null);
+      }else{
+        this.refreshData();
+      }
     }
   }
   prevPage(event: any): void {
     event.preventDefault();
 
-    if((this.page-1) >= 0){
-      this.page =this.page -1;
-      this.items = (this.page)*PAGINATION_PAGE_SIZE;
-      this.refreshData();
+    if ((this.page - 1) >= 0) {
+      this.page = this.page - 1;
+      this.items = (this.page) * PAGINATION_PAGE_SIZE;
+      if(this.isForSearch){
+        this.searchByKey(null);
+      }else{
+        this.refreshData();
+      }
     }
   }
 
   ngOnInit() {
     this.refreshData();
   }
-  refreshData(){
-    this.auditService.retrieveAllAudits(this.page,PAGINATION_PAGE_SIZE).subscribe(
+
+
+  searchByKey(event: Event) {
+    this.audits = [];
+    this.page = 0;
+    // this.citizens = [];
+    this.errorMessage = false;
+    this.noDataFound = false;
+    this.auditService.retrieveAuditsBySearchKey(this.searchKey, this.page, PAGINATION_PAGE_SIZE)
+      .subscribe(
+        result => {
+          if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
+            this.noDataFound = false;
+            this.audits = result['content'];
+            this.isForSearch = true;
+            this.pages = new Array(result['totalPages']);
+          } else {
+
+            this.pages = new Array(0);
+            this.noDataFound = true;
+          }
+        },
+        error => {
+          console.log('oops: ', error);
+          this.errorMessage = true;
+        }
+      );
+
+  }
+
+  refreshData() {
+    this.auditService.retrieveAllAudits(this.page, PAGINATION_PAGE_SIZE).subscribe(
       response => {
+        this.noDataFound = false;
         this.audits = response['content'];
         this.pages = new Array(response['totalPages']);
+        this.isForSearch = false;
       },
-      error =>{
-        console.log('oops',error)
+      error => {
+        console.log('oops', error);
+        this.errorMessage = true;
       }
     )
   }
 
   onDelete(id) {
     this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف هذا الحدث ')
-    .then((confirmed) => {
-      if(confirmed){
-        this.auditService.deleteAudit(id).subscribe (
-          response => {
-            this.refreshData();
-          }
-        )
-      }
-    })
+      .then((confirmed) => {
+        if (confirmed) {
+          this.auditService.deleteAudit(id).subscribe(
+            response => {
+              this.refreshData();
+            }
+          )
+        }
+      })
   }
 
   onEdit(id) {
-    this.router.navigate(['administration/audits',id,{componentMode: "editMode"}])
+    this.router.navigate(['administration/audits', id, { componentMode: "editMode" }])
   }
 
   onAdd() {

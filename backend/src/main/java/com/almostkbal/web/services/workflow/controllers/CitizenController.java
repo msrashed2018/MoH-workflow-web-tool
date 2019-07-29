@@ -1,6 +1,8 @@
 package com.almostkbal.web.services.workflow.controllers;
 
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -26,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.almostkbal.web.services.workflow.auth.UserPrincipal;
 import com.almostkbal.web.services.workflow.auth.UserService;
 import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.Citizen;
@@ -44,41 +45,74 @@ public class CitizenController {
 
 	@Autowired
 	private AuditRepository auditRepository;
-	
+
 	@Autowired
 	private UserService userService;
 
 	@GetMapping("/api/citizens")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public Page<Citizen> retrieveAllCitizens(@RequestParam("page") int page, @RequestParam("size") int size) {
-		
-		return citizenRepository.findByZoneId(userService.getUserZoneId(),PageRequest.of(page, size, Sort.by("createdDate").descending()));
+
+		return citizenRepository.findByZoneId(userService.getUserZoneId(),
+				PageRequest.of(page, size, Sort.by("createdDate").ascending().and(Sort.by("id").ascending())));
 	}
 
-	@GetMapping("/api/citizens/search/findByNationalId")
+	@GetMapping("/api/citizens/search/findCitizensBySearchKey")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-	public List<Citizen> findByNationalId(@RequestParam long id) {
-		return citizenRepository.findByNationalId(id);
+	public Page<Citizen> findCitizensBySearchKey(@RequestParam String searchKey, @RequestParam("page") int page,
+			@RequestParam("size") int size) {
+		// check if searchKey is number or string
+		try {
+			Long key = Long.parseLong(searchKey);
+
+			// No Thrown exception, so searchKey is number
+			// check if it is national id or mobile number
+			if (searchKey.startsWith("201")) {
+				// search key is mobile number because it starts with 201
+				return citizenRepository.findByZoneIdAndMobileNumber(userService.getUserZoneId(), searchKey, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
+			} else {
+				// assuming search key is national id
+				
+				return citizenRepository.findByZoneIdAndNationalId(userService.getUserZoneId(), key, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
+			}
+		} catch (NumberFormatException | NullPointerException nfe) {
+			if (searchKey.contains("-")) {
+				// search key is date
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					Date createdDate = (Date) formatter.parse(searchKey);
+					
+					return citizenRepository.findByZoneIdAndCreatedDateGreaterThan(userService.getUserZoneId(), createdDate, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			} else {
+				return citizenRepository.findByZoneIdAndNameContaining(userService.getUserZoneId(), searchKey, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
+			}
+
+		}
+
 	}
 
-	@GetMapping("/api/citizens/search/findAllByName")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-	public List<Citizen> findAllByName(@RequestParam String name) {
-		return citizenRepository.findByName(name);
-	}
-
-	@GetMapping("/api/citizens/search/findAllByNameContaining")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-	public List<Citizen> findAllByNameContaining(@RequestParam String name) {
-		return citizenRepository.findByNameContaining(name);
-	}
-
-	@GetMapping("/api/citizens/search/findAllByDate")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-	public List<Citizen> findAllByDate(@RequestParam String date) {
-
-		return citizenRepository.findAllByDate(date);
-	}
+//	@GetMapping("/api/citizens/search/findAllByName")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+//	public List<Citizen> findAllByName(@RequestParam String name) {
+//		return citizenRepository.findByName(name);
+//	}
+//
+//	@GetMapping("/api/citizens/search/findAllByNameContaining")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+//	public List<Citizen> findAllByNameContaining(@RequestParam String name) {
+//		return citizenRepository.findByNameContaining(name);
+//	}
+//
+//	@GetMapping("/api/citizens/search/findAllByDate")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+//	public List<Citizen> findAllByDate(@RequestParam String date) {
+//
+//		return citizenRepository.findAllByDate(date);
+//	}
 
 	@GetMapping("/api/citizens/{id}")
 	public Citizen retrieveCitizenById(@PathVariable long id) {
@@ -96,7 +130,7 @@ public class CitizenController {
 			Optional<Citizen> citizen = citizenRepository.findById(id);
 			if (!citizen.isPresent())
 				throw new ResourceNotFoundException("id-" + id);
-			
+
 			citizenRepository.deleteById(id);
 
 			// auditing
@@ -157,7 +191,7 @@ public class CitizenController {
 			Zone zone = new Zone();
 			zone.setId(userService.getUserZoneId());
 			citizen.setZone(zone);
-			
+
 			updatedCitzen = citizenRepository.save(citizen);
 
 			// auditing

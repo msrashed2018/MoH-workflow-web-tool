@@ -17,13 +17,9 @@ export const AUTHENTICATED_USER = 'authenticaterUser'
   deleteCitizen(id){
     return this.http.delete(`${API_URL}/citizens/${id}`);
   }
-  findCitizen(nationalId : string) {
-    let url = `${API_URL}`+'/citizens';
-    if(nationalId && nationalId!==null && nationalId!="")
-      url+= '/search/findByNationalId?id=';
-    
+  findCitizensBySearchKey(searchKey : string, page,size) {
     return this.http.get<Citizen[]>
-      (url+nationalId).pipe( map(
+      (`${API_URL}/citizens/search/findCitizensBySearchKey?searchKey=${searchKey}&page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));

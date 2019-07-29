@@ -95,7 +95,7 @@ this.pages = new Array(0);
     this.requestService.retrieveByRequestStates("REVIEWED","DONE","DONE",this.page,PAGINATION_PAGE_SIZE)
       .subscribe(
         result => {
-          if (typeof result !== 'undefined' && result !== null && result.length !=0) {
+          if (typeof result !== 'undefined' && result !== null && result['content'].length !=0) {
             this.noDataFound = false;
             this.requests= result['content'];
             this.pages = new Array(result['totalPages']);

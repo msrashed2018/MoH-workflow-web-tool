@@ -55,7 +55,7 @@ export class ListGovernatesComponent implements OnInit {
   }
 
   refreshData(){
-    this.governateService.retrieveAllGovernates(this.page,PAGINATION_PAGE_SIZE).subscribe(
+    this.governateService.retrieveZoneGovernates(this.page,PAGINATION_PAGE_SIZE).subscribe(
       response => {
         this.governates = response['content'];
         this.pages = new Array(response['totalPages']);

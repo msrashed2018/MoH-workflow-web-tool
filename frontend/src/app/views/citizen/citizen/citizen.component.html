@@ -22,7 +22,7 @@
                             <div class="col-md-6">
                                 <input maxlength="100" [(ngModel)]="citizen.name" #name="ngModel"
                                     [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required type="text"
-                                    name="name" class="form-control" placeholder="الاسم بالكامل">
+                                    name="name" class="form-control" placeholder="الاسم بالكامل" autofocus>
                                 <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
                                     <div *ngIf="name.errors.required"> برجاء ادخال اسم المواطن</div>
                                     <div *ngIf="name.errors.maxlength">اسم المواطن لايتعدي 100حرف</div>
@@ -37,13 +37,15 @@
                                 <input minlength="14" maxlength="14" (input)="onNationalIdChange($event.target.value)"
                                     [(ngModel)]="citizen.nationalId" #nationalId="ngModel"
                                     [ngClass]="{ 'is-invalid': f.submitted && nationalId.invalid }" required type="text"
-                                    name="nationalId" class="form-control" placeholder="الرقم القومي">
+                                    name="nationalId" class="form-control" placeholder="الرقم القومي"
+                                    pattern="(2|3)[0-9][0-9][0-1][1-9][0-3][0-9](1|2|29|19|18|21|12|13|16|14|17|24|28|25|22|26|27|15|33|88|3|4|11|23|31|32|34|35|37)\d\d\d\d\d">
                                 <div *ngIf="f.submitted && nationalId.invalid" class="invalid-feedback">
                                     <div *ngIf="nationalId.errors.required"> برجاء ادخال الرقم القومي</div>
                                     <div *ngIf="nationalId.errors.minlength">الرقم القومي يتكون من 14 رقم, ادخل الرقم
                                         صحيح</div>
                                     <div *ngIf="nationalId.errors.maxlength">الرقم القومي يتكون من 14 رقم, ادخل الرقم
                                         صحيح</div>
+                                    <div *ngIf="nationalId.errors.pattern">الرقم القومي غير صحيح</div>
                                 </div>
                             </div>
                         </div>
@@ -80,11 +82,13 @@
                             <label class="col-md-2 col-form-label font-weight-bold" for="mobileNumber">رقم
                                 الموبيل</label>
                             <div class="col-md-6">
-                                <input maxlength="11" [(ngModel)]="citizen.mobileNumber" #mobileNumber="ngModel"
+                                <input maxlength="12" [(ngModel)]="citizen.mobileNumber" #mobileNumber="ngModel"
                                     [ngClass]="{ 'is-invalid': f.submitted && mobileNumber.invalid }" type="text"
-                                    name="mobileNumber" class="form-control" placeholder="01xxxxxxxxx">
+                                    name="mobileNumber" class="form-control" placeholder="201xxxxxxxxx"
+                                    pattern="(201)[0-9]{9}">
                                 <div *ngIf="f.submitted && mobileNumber.invalid" class="invalid-feedback">
-                                    <div *ngIf="mobileNumber.errors.maxlength"> رقم الموبيل لا يجب ان يتعدي 11 رقم
+                                    <div *ngIf="mobileNumber.errors.pattern">رقم الموبيل غير صحيح</div>
+                                    <div *ngIf="mobileNumber.errors.maxlength"> رقم الموبيل لا يجب ان يتعدي 12 رقم
                                     </div>
                                 </div>
                             </div>
@@ -208,10 +212,18 @@
                                     <strong>{{message}}</strong>
                                 </alert>
                             </div>
-                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>أضف
+                            <div *ngIf="successMessage!= '' ">
+                                    <alert type="success"> {{successMessage}} </alert>
+                                </div>
+                            <button type="submit"  [disabled]="!enabled" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>أضف
                                 المواطن</button>
+                            <button type="button" [disabled]="enabled" (click)="printRequestDocument()" class="btn btn-sm btn-secondary"><i
+                                    class="fa fa-print"></i> نموذج طلب</button>
+                            <button type="button" [disabled]="enabled" (click)="printPaymentPermission()" class="btn btn-sm btn-secondary"><i
+                                    class="fa fa-print"></i> اذن دفع</button>
                             <button type="reset" class="btn btn-sm btn-danger" (click)="close()"><i
-                                    class="fa fa-ban"></i> إلغاء</button>
+                                    class="fa fa-ban"></i> الرجوع</button>
+
                         </div>
 
                     </form>

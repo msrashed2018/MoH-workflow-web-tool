@@ -1,5 +1,6 @@
 package com.almostkbal.web.services.workflow.repositories;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -17,8 +18,12 @@ import com.almostkbal.web.services.workflow.entities.Citizen;
 //@CrossOrigin(origins= "http://192.168.0.100:4200")
 public interface CitizenRepository extends JpaRepository<Citizen, Long> {
 	
-//	@RestResource(path = "nationalId/${id}", rel="nationalId/${id}")
-	List<Citizen> findByNationalId(@Param("id") long id);
+	Page<Citizen> findByZoneIdAndNationalId(long zoneId, long nationalId, Pageable pageable);
+	Page<Citizen> findByZoneIdAndMobileNumber(long zoneId, String mobileNumber, Pageable pageable);
+	Page<Citizen> findByZoneIdAndNameContaining(long zoneId, String mobileNumber, Pageable pageable);
+	Page<Citizen> findByZoneIdAndCreatedDateGreaterThan(long zoneId, Date createdDate, Pageable pageable);
+	
+	
 	
 	List<Citizen> findByName(String name);
 	
