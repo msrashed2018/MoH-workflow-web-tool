@@ -21,23 +21,12 @@ import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
 
 public interface RequestRepository extends JpaRepository<Request, Long> {
-
-//	@Query("select r.state from Request r where r.id = :requestId")
-//	RequestState findZoneIdAndRequestState(@Param("requestId") long requestId);
-
-//	@Query(value = "SELECT r FROM Request r WHERE TRUNC(r.requestDate) = TO_DATE(:date, 'yyyy-MM-dd')")
-//	List<Request> findAllByDate(@Param("date") String date);
-
-//	List<Request> findByZoneIdAndCitizenNationalId(long zoneId, Long nationalId);
-
-//	List<Request> findByZoneIdAndCitizenMobileNumber(long zoneId, String mobileNumber);
-
-//	List<Request> findByZoneIdAndCitizenName(long zoneId, String name);
+	boolean existsByZoneIdAndCitizenIdAndRequestDateGreaterThan(long zoneId, long citizenId, Date requestDate);
 
 	Optional<Request> findByZoneIdAndId(long zoneId, long id);
 
 	// retreive citizen requests
-	List<Request> findByZoneIdAndCitizenId(long zoneId, Long nationalId);
+	Page<Request> findByZoneIdAndCitizenId(long zoneId, Long nationalId, Pageable pageable);
 
 	// retreive all requests
 	Page<Request> findByZoneId(long zoneId, Pageable pageable);

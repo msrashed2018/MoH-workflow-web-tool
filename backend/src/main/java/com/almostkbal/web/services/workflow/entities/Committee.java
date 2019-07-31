@@ -42,7 +42,7 @@ public class Committee {
 	
 	@OneToOne
 	@JoinColumn(name = "zone_id", nullable = false)
-	@NotNull(message = "لابد من ادخال المقر التابع لها اللجنة")
+//	@NotNull(message = "لابد من ادخال المقر التابع لها اللجنة")
 	private Zone zone;
 	
 	@OneToOne

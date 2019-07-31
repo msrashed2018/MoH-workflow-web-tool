@@ -19,5 +19,14 @@ public interface CommitteeRepository extends JpaRepository<Committee, Long> {
 	@Modifying
 	void deleteByIdAndZoneId(long id, long zoneId);
 
-	List<Committee> findByZoneIdAndTypeAndDateGreaterThan(long zoneId, String type, Date date);
+	List<Committee> findByZoneIdAndTypeAndDateGreaterThanAndFunction(long zoneId, String type, Date date, String function);
+	
+	
+	boolean existsByZoneIdAndMemberOneIdAndDate(long zoneId, long memberOneId, Date date);
+	boolean existsByZoneIdAndMemberTwoIdAndDate(long zoneId, long memberTwoId, Date date);
+	boolean existsByZoneIdAndMemberThreeIdAndDate(long zoneId, long memberThreeId, Date date);
+	boolean existsByZoneIdAndMemberFourIdAndDate(long zoneId, long memberFourId, Date date);
+	boolean existsByZoneIdAndMemberFiveIdAndDate(long zoneId, long memberFiveId, Date date);
+	boolean existsByZoneIdAndMemberSixIdAndDate(long zoneId, long memberSixId, Date date);
+	
 }

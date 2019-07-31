@@ -95,24 +95,6 @@ public class CitizenController {
 
 	}
 
-//	@GetMapping("/api/citizens/search/findAllByName")
-//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-//	public List<Citizen> findAllByName(@RequestParam String name) {
-//		return citizenRepository.findByName(name);
-//	}
-//
-//	@GetMapping("/api/citizens/search/findAllByNameContaining")
-//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-//	public List<Citizen> findAllByNameContaining(@RequestParam String name) {
-//		return citizenRepository.findByNameContaining(name);
-//	}
-//
-//	@GetMapping("/api/citizens/search/findAllByDate")
-//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-//	public List<Citizen> findAllByDate(@RequestParam String date) {
-//
-//		return citizenRepository.findAllByDate(date);
-//	}
 
 	@GetMapping("/api/citizens/{id}")
 	public Citizen retrieveCitizenById(@PathVariable long id) {

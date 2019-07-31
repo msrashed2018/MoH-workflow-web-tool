@@ -16,9 +16,8 @@ export class CommitteeService {
     return this.http.get<Committee[]>(`${API_URL}/committees?page=${page}&size=${size}`);
 
   }
-  retrieveCommitteesByType(type : string) {
-    return this.http.get<Committee[]>(`${API_URL}/committees/findUpcommingCommitteesByType?type=`+type);
-
+  retrieveCommitteesByTypeAndFunction(committeeType , committeeFunction) {
+    return this.http.get<Committee[]>(`${API_URL}/committees/findUpcommingCommitteesByTypeAndFunction?type=${committeeType}&function=${committeeFunction}`);
   }
 
   deleteCommittee(id){

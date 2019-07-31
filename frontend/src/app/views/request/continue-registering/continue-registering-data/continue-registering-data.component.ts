@@ -21,6 +21,7 @@ import { DocumentType } from '../../../../model/document-type.model';
 import { DocumentCategory } from '../../../../model/document-category.enum';
 import { RequestDocument } from '../../../../model/request-document.model';
 import { AppPrint } from '../../../../app-print';
+import { RequestType } from '../../../../model/request-type.model';
 
 @Component({
   selector: 'app-continue-registering-data',
@@ -43,7 +44,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
   requestId: number = 0;
   request: Request = new Request();
   citizen = new Citizen();
-  requestType = {};
+  requestType = new RequestType;
   public documents = [{}];
   eyeCommittee = new Committee();
   bonesCommittee = new Committee();
@@ -143,22 +144,45 @@ export class ContinueRegisteringDataComponent implements OnInit {
   }
 
   fillCommittees() {
-    this.committeeService.retrieveCommitteesByType('رمد').subscribe(
-      result => {
-        console.log(result)
-        this.eyeCommittees = result;
-      },
-      error => {
-        console.log('oops', error);
-      });
-    this.committeeService.retrieveCommitteesByType('عظام').subscribe(
-      result => {
-        console.log(result)
-        this.bonesCommittees = result;
-      },
-      error => {
-        console.log('oops', error);
-      });
+
+    if (this.requestType.name.includes("تظلم")) {
+      console.log("نوع الطلب يحتوي علي تظلم")
+      this.committeeService.retrieveCommitteesByTypeAndFunction('رمد', 'تظلمات').subscribe(
+        result => {
+          console.log(result)
+          this.eyeCommittees = result;
+        },
+        error => {
+          console.log('oops', error);
+        });
+      this.committeeService.retrieveCommitteesByTypeAndFunction('عظام', 'تظلمات').subscribe(
+        result => {
+          console.log(result)
+          this.bonesCommittees = result;
+        },
+        error => {
+          console.log('oops', error);
+        });
+    } else {
+      console.log("نوع الطلب  لا يحتوي علي تظلم")
+      this.committeeService.retrieveCommitteesByTypeAndFunction('رمد', 'اخري').subscribe(
+        result => {
+          console.log(result)
+          this.eyeCommittees = result;
+        },
+        error => {
+          console.log('oops', error);
+        });
+      this.committeeService.retrieveCommitteesByTypeAndFunction('عظام', 'اخري').subscribe(
+        result => {
+          console.log(result)
+          this.bonesCommittees = result;
+        },
+        error => {
+          console.log('oops', error);
+        });
+    }
+
   }
   // file upload methods--------------------------------------------------------------------------------------
   showFiles(enable: boolean) {

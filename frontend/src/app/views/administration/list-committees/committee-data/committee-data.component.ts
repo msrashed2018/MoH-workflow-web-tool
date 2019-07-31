@@ -7,6 +7,7 @@ import { ZoneService } from '../../../../services/administration/zone.service';
 import { Committee } from '../../../../model/committee.model';
 import { CommitteeMemberService } from '../../../../services/administration/committee-member.service';
 import { CommitteeMember } from '../../../../model/committee-member.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-committee-data',
@@ -18,9 +19,9 @@ export class CommitteeDataComponent implements OnInit {
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
-  public zones : Zone[];
+  // public zones : Zone[];
   public members : CommitteeMember[]
-  public selectedZoneId : number
+  // public selectedZoneId : number
   public selectedMember1Id : number 
   public selectedMember2Id : number 
   public selectedMember3Id : number = 0;
@@ -28,12 +29,12 @@ export class CommitteeDataComponent implements OnInit {
   public selectedMember5Id : number = 0;
   public selectedMember6Id : number = 0;
   errorMessage ="";
-  constructor(private formBuilder: FormBuilder,private committeeMemberService: CommitteeMemberService ,private zoneService: ZoneService, private committeeService: CommitteeService, private router: Router ) { }
+  constructor(private datepipe: DatePipe, private formBuilder: FormBuilder,private committeeMemberService: CommitteeMemberService ,private zoneService: ZoneService, private committeeService: CommitteeService, private router: Router ) { }
 
   ngOnInit() {
-    this.zones = [];
+    // this.zones = [];
     this.members = [];
-    this.fillZones();
+    // this.fillZones();
     this.fillCommitteeMembers();
     this.selectedMember6Id = 0;
   }
@@ -48,9 +49,9 @@ export class CommitteeDataComponent implements OnInit {
   }
 
   onSave(){
-    let zone = new Zone;
-    zone.id = this.selectedZoneId;
-    this.requestModel.zone = zone;
+    // let zone = new Zone;
+    // zone.id = this.selectedZoneId;
+    // this.requestModel.zone = zone;
     
     this.requestModel.memberOne = this.members.find((c)=> c.id==this.selectedMember1Id);
     this.requestModel.memberTwo = this.members.find((c)=> c.id==this.selectedMember2Id);
@@ -68,7 +69,7 @@ export class CommitteeDataComponent implements OnInit {
     if(this.selectedMember6Id != 0){
       this.requestModel.memberSix = this.members.find((c)=> c.id==this.selectedMember6Id);
     }
-
+    this.requestModel.date = this.datepipe.transform(this.requestModel.date, 'yyyy-MM-dd');
     this.committeeService.createCommittee(this.requestModel).subscribe(
       result => {
         this.router.navigateByUrl("/administration/committees");
@@ -86,15 +87,15 @@ export class CommitteeDataComponent implements OnInit {
     this.router.navigateByUrl("/administration/committees");
   }
 
-  fillZones(){
-    this.zoneService.retrieveAllZones(0,100).subscribe(
-      result => {
-        this.zones = result['content'];
-      },
-      error => {
-        console.log('oops', error);
-    });
-  }
+  // fillZones(){
+  //   this.zoneService.retrieveAllZones(0,100).subscribe(
+  //     result => {
+  //       this.zones = result['content'];
+  //     },
+  //     error => {
+  //       console.log('oops', error);
+  //   });
+  // }
   fillCommitteeMembers(){
     this.committeeMemberService.retrieveAllCommitteeMembers(0,1000).subscribe(
       result => {

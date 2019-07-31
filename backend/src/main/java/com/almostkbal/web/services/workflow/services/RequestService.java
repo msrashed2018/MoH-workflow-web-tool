@@ -56,7 +56,7 @@ public interface RequestService {
 //	List<Request> findByNationalId(RequestState state, BonesRevealState bonesRevealState, EyeRevealState eyeRevealState,
 //			long nationalId);
 
-	List<Request> getCitizenRequests(long citizenId);
+	Page<Request> getCitizenRequests(long citizenId, Pageable pageable);
 
 	void deleteRequest(long citizenId, long requestId);
 

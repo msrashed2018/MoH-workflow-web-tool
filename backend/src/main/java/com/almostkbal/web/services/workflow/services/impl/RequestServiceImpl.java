@@ -3,6 +3,7 @@ package com.almostkbal.web.services.workflow.services.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import com.almostkbal.web.services.workflow.auth.UserService;
 import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.BonesRevealState;
 import com.almostkbal.web.services.workflow.entities.Citizen;
+import com.almostkbal.web.services.workflow.entities.Committee;
 import com.almostkbal.web.services.workflow.entities.EyeRevealState;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
@@ -27,6 +29,7 @@ import com.almostkbal.web.services.workflow.entities.RequestState;
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
 import com.almostkbal.web.services.workflow.entities.RequestType;
 import com.almostkbal.web.services.workflow.entities.Zone;
+import com.almostkbal.web.services.workflow.exceptions.ExceptionResponse;
 import com.almostkbal.web.services.workflow.repositories.AuditRepository;
 import com.almostkbal.web.services.workflow.repositories.CitizenRepository;
 import com.almostkbal.web.services.workflow.repositories.RequestPaymentRepository;
@@ -558,12 +561,12 @@ public class RequestServiceImpl implements RequestService {
 
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-	public List<Request> getCitizenRequests(long citizenId) {
+	public Page<Request> getCitizenRequests(long citizenId, Pageable pageable) {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
 		}
 
-		return requestRepository.findByZoneIdAndCitizenId(userService.getUserZoneId(), citizenId);
+		return requestRepository.findByZoneIdAndCitizenId(userService.getUserZoneId(), citizenId,pageable);
 	}
 
 	@Override
@@ -616,7 +619,19 @@ public class RequestServiceImpl implements RequestService {
 		if (!requestType.isPresent()) {
 			throw new ResourceNotFoundException("عفوا نوع الطلب غير موجود");
 		}
-
+		System.out.println("\n\n\n request is طلب مستعجل او عادي \n\n\n");
+		if(requestType.get().getName().equals("كشف عادي") || requestType.get().getName().equals("كشف مستعجل")) {
+			// check if citizen has request before 5 years ago
+			System.out.println("\n\n\n checking if customer has prevous reqest \n\n\n");
+			final Calendar dateBeforeFiveYears = Calendar.getInstance();
+			dateBeforeFiveYears.add(Calendar.YEAR, -5);
+			if(requestRepository.existsByZoneIdAndCitizenIdAndRequestDateGreaterThan(userService.getUserZoneId(),
+					citizenId, dateBeforeFiveYears.getTime())) {
+				System.out.println("\n\n\n trueeeeeeeeeeeeee \n\n\n");
+				return new ResponseEntity<>(new ExceptionResponse(new Date(), "عفوا لا يمكن اضافة هذا الطلب حيث انه لم يمر خمس سنين علي اخر طلب لهذا المواطن", "عفوا لا يمكن اضافة هذا الطلب حيث انه لم يمر خمس سنين علي اخر طلب لهذا المواطن"), HttpStatus.BAD_REQUEST);
+			}
+		}
+		
 		Zone zone = new Zone();
 		zone.setId(userService.getUserZoneId());
 		request.setZone(zone);

@@ -1,7 +1,6 @@
 package com.almostkbal.web.services.workflow.controllers;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -159,8 +158,8 @@ public class RequestController {
 	}
 
 	@GetMapping("/api/citizens/{citizenId}/requests")
-	public List<Request> retrieveCitizenRequests(@PathVariable long citizenId) {
-		return requestService.getCitizenRequests(citizenId);
+	public Page<Request> retrieveCitizenRequests(@PathVariable long citizenId,  @RequestParam("page") int page, @RequestParam("size") int size) {
+		return requestService.getCitizenRequests(citizenId,  PageRequest.of(page, size, Sort.by("requestDate").ascending().and(Sort.by("id").ascending())));
 	}
 
 	@DeleteMapping("/api/citizens/{citizenId}/requests/{requestId}")
@@ -175,7 +174,8 @@ public class RequestController {
 
 	@PostMapping("/api/citizens/{citizenId}/requests")
 	public Object createRequest(@PathVariable long citizenId, @Valid @RequestBody Request request) {
-
+		// check if citizen already take request before
+		
 		return requestService.createRequest(citizenId, request);
 	}
 

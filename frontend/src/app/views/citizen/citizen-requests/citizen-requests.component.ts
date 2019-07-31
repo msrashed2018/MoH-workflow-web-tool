@@ -83,10 +83,10 @@ export class CitizenRequestsComponent implements OnInit {
     this.iconCitizenRequestsCollapse = this.isCitizenRequestsCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
   fillCitizenRequests(){
-    this.requestService.retrieveCitizenRequests(this.citizenId).subscribe(
+    this.requestService.retrieveCitizenRequests(this.citizenId, 0,100).subscribe(
       result=>{
-         this.requests = result;
-         if(result.length !=0 ){
+         this.requests = result['content'];
+         if(result['content'].length !=0 ){
            this.hasRequests = true;
          }else{
            this.hasRequests = false;

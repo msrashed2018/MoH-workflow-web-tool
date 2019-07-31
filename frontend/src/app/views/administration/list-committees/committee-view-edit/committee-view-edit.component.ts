@@ -21,9 +21,9 @@ export class CommitteeViewEditComponent implements OnInit {
   componentMode;
   disabled : boolean = false;
   iconCollapse: string = 'icon-arrow-up';
-  public zones : Zone[];
+  // public zones : Zone[];
   public members : CommitteeMember[] = [];
-  public selectedZoneId : number
+  // public selectedZoneId : number
   public selectedMember1Id : number 
   public selectedMember2Id : number 
   public selectedMember3Id : number = 0;
@@ -37,7 +37,7 @@ export class CommitteeViewEditComponent implements OnInit {
     this.route.params.forEach((urlParams) => {
       this.committeeId= urlParams['id'];
       this.componentMode=urlParams['componentMode'];
-      this.displayCommitteeDetails();
+      
 
       if(this.componentMode == "editMode"){
           this.disabled = false;
@@ -47,15 +47,18 @@ export class CommitteeViewEditComponent implements OnInit {
     });
 
 
-    this.zones = [];
+    // this.zones = [];
     this.members = [];
-    this.fillZones();
+    // this.fillZones();
     this.fillCommitteeMembers();
     this.selectedMember6Id = 0;
+    this.displayCommitteeDetails();
+
   }
   displayCommitteeDetails(){
     this.committeeService.retrieveCommittee(this.committeeId).subscribe(
       response => {
+        console.log(response)
         this.requestModel = response as Committee;
         if(this.requestModel.memberOne !=null){
           this.selectedMember1Id = this.requestModel.memberOne.id
@@ -76,9 +79,9 @@ export class CommitteeViewEditComponent implements OnInit {
           this.selectedMember6Id = this.requestModel.memberSix.id
         }
 
-        if(this.requestModel.zone!=null){
-          this.selectedZoneId = this.requestModel.zone.id
-        }
+        // if(this.requestModel.zone!=null){
+        //   this.selectedZoneId = this.requestModel.zone.id
+        // }
       },error=>{
         if(error.error.message != null){
           this.errorMessage = error.error.message;
@@ -97,9 +100,9 @@ export class CommitteeViewEditComponent implements OnInit {
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
   onSave(){
-    let zone = new Zone;
-    zone.id = this.selectedZoneId;
-    this.requestModel.zone = zone;
+    // let zone = new Zone;
+    // zone.id = this.selectedZoneId;
+    // this.requestModel.zone = zone;
    
     this.requestModel.memberOne = this.members.find((c)=> c.id==this.selectedMember1Id);
     this.requestModel.memberTwo = this.members.find((c)=> c.id==this.selectedMember2Id);
@@ -135,15 +138,15 @@ export class CommitteeViewEditComponent implements OnInit {
     this.router.navigateByUrl("/administration/committees");
   }
 
-  fillZones(){
-    this.zoneService.retrieveAllZones(0,100).subscribe(
-      result => {
-        this.zones = result['content'];
-      },
-      error => {
-        console.log('oops', error);
-    });
-  }
+  // fillZones(){
+  //   this.zoneService.retrieveAllZones(0,100).subscribe(
+  //     result => {
+  //       this.zones = result['content'];
+  //     },
+  //     error => {
+  //       console.log('oops', error);
+  //   });
+  // }
   fillCommitteeMembers(){
     this.committeeMemberService.retrieveAllCommitteeMembers(0,1000).subscribe(
       result => {

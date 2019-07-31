@@ -46,7 +46,7 @@ public class CityController {
 	}
 
 	@GetMapping("/api/cities/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')  ")
 	public City retrieveCityById(@PathVariable int id) {
 		Optional<City> city = cityRepository.findByIdAndGovernateZoneId(id, userService.getUserZoneId());
 		if (!city.isPresent())

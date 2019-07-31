@@ -22,9 +22,9 @@ export class RequestService {
         return data;
       }));
   }
-  retrieveCitizenRequests(citizenId) {
+  retrieveCitizenRequests(citizenId, page,size) {
     return this.http.get<Request[]>
-      (`${API_URL}/citizens/${citizenId}/requests`).pipe( map(
+      (`${API_URL}/citizens/${citizenId}/requests?page=${page}&size=${size}`).pipe( map(
         data => {
         return data;
       }));
