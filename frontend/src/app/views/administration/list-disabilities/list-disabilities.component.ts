@@ -66,7 +66,6 @@ export class ListDisabilitiesComponent implements OnInit {
   onDelete(id) {
     this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف الاعاقة ')
     .then((confirmed) => {
-      console.log('User confirmed:', confirmed)
       if(confirmed){
         this.disabilityService.deleteDisability(id).subscribe (
           response => {

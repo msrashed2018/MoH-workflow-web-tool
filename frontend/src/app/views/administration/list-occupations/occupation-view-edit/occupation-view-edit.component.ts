@@ -46,7 +46,6 @@ export class OccupationViewEditComponent implements OnInit {
     this.occupationService.retrieveOccupation(this.occupationId).subscribe(
       response => {
         this.requestModel = response as Occupation;
-        console.log(this.requestModel);
       }, error=>{
         if(error.error.message.includes('unique constraint') || error.error.message.includes('Unique index or primary key violation')){
           this.errorMessage = "بالفعل تم تسجيل هذا المهنة من قبل";

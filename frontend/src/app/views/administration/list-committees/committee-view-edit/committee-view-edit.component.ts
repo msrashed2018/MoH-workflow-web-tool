@@ -58,7 +58,6 @@ export class CommitteeViewEditComponent implements OnInit {
   displayCommitteeDetails(){
     this.committeeService.retrieveCommittee(this.committeeId).subscribe(
       response => {
-        console.log(response)
         this.requestModel = response as Committee;
         if(this.requestModel.memberOne !=null){
           this.selectedMember1Id = this.requestModel.memberOne.id

@@ -318,8 +318,6 @@ upload() {
           this.progress.percentage = Math.round(100 * result.loaded / result.total);
 
         } else if (result instanceof HttpResponse) {
-          console.log('File is completely uploaded!');
-
           this.showFiles(true);
         }
 

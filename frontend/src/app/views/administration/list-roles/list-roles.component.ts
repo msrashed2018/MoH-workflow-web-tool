@@ -35,7 +35,7 @@ export class ListRolesComponent implements OnInit {
   onDelete(id) {
     this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف السيارة؟ ')
     .then((confirmed) => {
-      console.log('User confirmed:', confirmed)
+      
       if(confirmed){
         this.roleService.deleteRole(id).subscribe (
           response => {

@@ -84,7 +84,7 @@ public class CommitteeController {
 		CommitteeValidationUtils.validateCommitteeRepeatedMembers(committee);
 		boolean isMemberAssignedToAnotherCommittee = false;
 		String memberName = "";
-		System.out.println("\n\n\n \n\n committee date = "+committee.getDate()+" \n\n\n\n\n");
+
 		if (committee.getMemberOne() != null && committeeRepository.existsByZoneIdAndMemberOneIdAndDate(
 				userService.getUserZoneId(), committee.getMemberOne().getId(), committee.getDate())) {
 			isMemberAssignedToAnotherCommittee = true;
@@ -149,36 +149,36 @@ public class CommitteeController {
 		boolean isMemberAssignedToAnotherCommittee = false;
 		String memberName = "";
 
-		if (committee.getMemberOne() != null && committeeRepository.existsByZoneIdAndMemberOneIdAndDate(
-				userService.getUserZoneId(), committee.getMemberOne().getId(), committee.getDate())) {
-			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberOne().getName();
-		}
-		if (committee.getMemberTwo() != null && committeeRepository.existsByZoneIdAndMemberTwoIdAndDate(
-				userService.getUserZoneId(), committee.getMemberTwo().getId(), committee.getDate())) {
-			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberTwo().getName();
-		}
-		if (committee.getMemberThree() != null && committeeRepository.existsByZoneIdAndMemberThreeIdAndDate(
-				userService.getUserZoneId(), committee.getMemberThree().getId(), committee.getDate())) {
-			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberThree().getName();
-		}
-		if (committee.getMemberFour() != null && committeeRepository.existsByZoneIdAndMemberFourIdAndDate(
-				userService.getUserZoneId(), committee.getMemberFour().getId(), committee.getDate())) {
-			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberFour().getName();
-		}
-		if (committee.getMemberFive() != null && committeeRepository.existsByZoneIdAndMemberFiveIdAndDate(
-				userService.getUserZoneId(), committee.getMemberFive().getId(), committee.getDate())) {
-			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberFive().getName();
-		}
-		if (committee.getMemberSix() != null && committeeRepository.existsByZoneIdAndMemberSixIdAndDate(
-				userService.getUserZoneId(), committee.getMemberSix().getId(), committee.getDate())) {
-			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberSix().getName();
-		}
+//		if (committee.getMemberOne() != null && committeeRepository.existsByZoneIdAndMemberOneIdAndDate(
+//				userService.getUserZoneId(), committee.getMemberOne().getId(), committee.getDate())) {
+//			isMemberAssignedToAnotherCommittee = true;
+//			memberName = committee.getMemberOne().getName();
+//		}
+//		if (committee.getMemberTwo() != null && committeeRepository.existsByZoneIdAndMemberTwoIdAndDate(
+//				userService.getUserZoneId(), committee.getMemberTwo().getId(), committee.getDate())) {
+//			isMemberAssignedToAnotherCommittee = true;
+//			memberName = committee.getMemberTwo().getName();
+//		}
+//		if (committee.getMemberThree() != null && committeeRepository.existsByZoneIdAndMemberThreeIdAndDate(
+//				userService.getUserZoneId(), committee.getMemberThree().getId(), committee.getDate())) {
+//			isMemberAssignedToAnotherCommittee = true;
+//			memberName = committee.getMemberThree().getName();
+//		}
+//		if (committee.getMemberFour() != null && committeeRepository.existsByZoneIdAndMemberFourIdAndDate(
+//				userService.getUserZoneId(), committee.getMemberFour().getId(), committee.getDate())) {
+//			isMemberAssignedToAnotherCommittee = true;
+//			memberName = committee.getMemberFour().getName();
+//		}
+//		if (committee.getMemberFive() != null && committeeRepository.existsByZoneIdAndMemberFiveIdAndDate(
+//				userService.getUserZoneId(), committee.getMemberFive().getId(), committee.getDate())) {
+//			isMemberAssignedToAnotherCommittee = true;
+//			memberName = committee.getMemberFive().getName();
+//		}
+//		if (committee.getMemberSix() != null && committeeRepository.existsByZoneIdAndMemberSixIdAndDate(
+//				userService.getUserZoneId(), committee.getMemberSix().getId(), committee.getDate())) {
+//			isMemberAssignedToAnotherCommittee = true;
+//			memberName = committee.getMemberSix().getName();
+//		}
 
 		if (isMemberAssignedToAnotherCommittee) {
 

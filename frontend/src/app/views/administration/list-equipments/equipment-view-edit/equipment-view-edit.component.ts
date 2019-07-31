@@ -46,7 +46,6 @@ export class EquipmentViewEditComponent implements OnInit {
     this.equipmentService.retrieveEquipment(this.requestStatusId).subscribe(
       response => {
         this.requestModel = response as Equipment;
-        console.log(this.requestModel);
       }
     )
   }

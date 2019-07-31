@@ -51,7 +51,6 @@ export class CommitteeMemberViewEditComponent implements OnInit {
       response => {
         this.requestModel = response as CommitteeMember;
         this.selectedZoneId = this.requestModel.zone.id;
-        console.log("id ="+ this.selectedZoneId)
       }
     )
   }

@@ -146,7 +146,6 @@ export class ContinueRegisteringDataComponent implements OnInit {
   fillCommittees() {
 
     if (this.requestType.name.includes("تظلم")) {
-      console.log("نوع الطلب يحتوي علي تظلم")
       this.committeeService.retrieveCommitteesByTypeAndFunction('رمد', 'تظلمات').subscribe(
         result => {
           console.log(result)
@@ -157,14 +156,12 @@ export class ContinueRegisteringDataComponent implements OnInit {
         });
       this.committeeService.retrieveCommitteesByTypeAndFunction('عظام', 'تظلمات').subscribe(
         result => {
-          console.log(result)
           this.bonesCommittees = result;
         },
         error => {
           console.log('oops', error);
         });
     } else {
-      console.log("نوع الطلب  لا يحتوي علي تظلم")
       this.committeeService.retrieveCommitteesByTypeAndFunction('رمد', 'اخري').subscribe(
         result => {
           console.log(result)
@@ -246,8 +243,6 @@ export class ContinueRegisteringDataComponent implements OnInit {
             this.progress.percentage = Math.round(100 * result.loaded / result.total);
 
           } else if (result instanceof HttpResponse) {
-            console.log('File is completely uploaded!');
-
             this.showFiles(true);
           }
 

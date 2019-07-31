@@ -28,7 +28,6 @@ export class DocumentTypeDataComponent implements OnInit {
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
   onSave(){
-  console.log(this.requestModel)
     this.documentTypeService.createDocumentType(this.requestModel).subscribe(
       result => {
         this.router.navigateByUrl("/administration/document-types");

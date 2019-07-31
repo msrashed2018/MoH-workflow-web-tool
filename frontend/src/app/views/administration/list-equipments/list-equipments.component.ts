@@ -66,7 +66,7 @@ export class ListEquipmentsComponent implements OnInit {
   onDelete(id) {
     this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف السيارة؟ ')
     .then((confirmed) => {
-      console.log('User confirmed:', confirmed)
+      
       if(confirmed){
         this.equipmentService.deleteEquipment(id).subscribe (
           response => {

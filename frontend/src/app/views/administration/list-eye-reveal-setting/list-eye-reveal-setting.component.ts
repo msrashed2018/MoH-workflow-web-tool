@@ -66,7 +66,7 @@ export class ListEyeRevealSettingComponent implements OnInit {
   onDelete(id) {
     this.confirmationModalService.confirm('برجاء التاكيد', 'هل انت متاكد من حذف الضبط ')
     .then((confirmed) => {
-      console.log('User confirmed:', confirmed)
+      
       if(confirmed){
         this.eyeRevealSettingService.deleteEyeRevealSetting(id).subscribe (
           response => {
