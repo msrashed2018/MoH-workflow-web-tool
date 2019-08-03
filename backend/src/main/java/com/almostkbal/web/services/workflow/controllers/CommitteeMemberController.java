@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.almostkbal.web.services.workflow.auth.UserService;
 import com.almostkbal.web.services.workflow.entities.CommitteeMember;
+import com.almostkbal.web.services.workflow.entities.Zone;
 import com.almostkbal.web.services.workflow.repositories.CommitteeMemberRepository;
 
 
@@ -46,7 +47,7 @@ public class CommitteeMemberController {
 	}
 	
 	@GetMapping("/api/committee-members/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')  OR hasRole('ROLE_COMMITTEES_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')   OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public CommitteeMember retrieveCommitteeMemberById(@PathVariable long id) {
 		Optional<CommitteeMember> committeeMember = committeeMemberRepository.findById(id);
 		if(!committeeMember.isPresent())
@@ -55,7 +56,7 @@ public class CommitteeMemberController {
 	}
 
 	@DeleteMapping("/api/committee-members/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')  OR hasRole('ROLE_COMMITTEES_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')   OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public void deleteCommitteeMember(@PathVariable long id) {
 		try {
 			committeeMemberRepository.deleteByIdAndZoneId(id, userService.getUserZoneId());
@@ -65,8 +66,11 @@ public class CommitteeMemberController {
 	}
 
 	@PostMapping("/api/committee-members")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public ResponseEntity<Object> createCommitteeMember(@Valid @RequestBody CommitteeMember committeeMember) {
+		Zone zone = new Zone();
+		zone.setId(userService.getUserZoneId());
+		committeeMember.setZone(zone);
 		
 		CommitteeMember savedCommitteeMember = committeeMemberRepository.save(committeeMember);
 		URI location = ServletUriComponentsBuilder
@@ -77,13 +81,16 @@ public class CommitteeMemberController {
 		
 	}
 	@PutMapping("/api/committee-members/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public ResponseEntity<CommitteeMember> updateCommitteeMember(
 			@PathVariable long id, @Valid @RequestBody CommitteeMember committeeMember) {
-		Optional<CommitteeMember> existingCommitteeMember = committeeMemberRepository.findById(id);
 		
-		if(!existingCommitteeMember.isPresent())
+		if(!committeeMemberRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
+		
+		Zone zone = new Zone();
+		zone.setId(userService.getUserZoneId());
+		committeeMember.setZone(zone);
 		CommitteeMember updatedCitzen = committeeMemberRepository.save(committeeMember);
 		return new ResponseEntity<CommitteeMember>(updatedCitzen, HttpStatus.OK);
 	}

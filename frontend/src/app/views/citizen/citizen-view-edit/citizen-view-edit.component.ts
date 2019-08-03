@@ -107,7 +107,7 @@ export class CitizenViewEditComponent implements OnInit {
       //getting governate from national id
       let governateCode = value[7]+value[8];
       for (var x = 0; x<this.governates.length; x++) {
-        if(this.governates[x].code == governateCode){
+        if(this.governates[x].id == governateCode){
           this.selectedGovernateId = this.governates[x].id;
           this.fillCities(this.selectedGovernateId);
         }

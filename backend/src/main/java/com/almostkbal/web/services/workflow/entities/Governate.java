@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,8 +27,8 @@ public class Governate {
 	@Column(name = "governate_name", nullable = false, unique = true)
 	private String name;
 	
-	@Column(name = "governate_code", nullable = false, unique = true)
-	private int code;
+//	@Column(name = "governate_code", nullable = false, unique = true)
+//	private int code;
 	
 	@OneToMany(mappedBy = "governate",fetch=FetchType.LAZY)
 	@JsonIgnore
@@ -72,13 +71,13 @@ public class Governate {
 		this.cities = cities;
 	}
 
-	public int getCode() {
-		return code;
-	}
-
-	public void setCode(int code) {
-		this.code = code;
-	}
+//	public int getCode() {
+//		return code;
+//	}
+//
+//	public void setCode(int code) {
+//		this.code = code;
+//	}
 
 	public Zone getZone() {
 		return zone;

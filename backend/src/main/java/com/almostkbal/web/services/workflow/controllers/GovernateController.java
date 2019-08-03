@@ -52,11 +52,11 @@ public class GovernateController {
 		return governateRepository.findByZoneId(userService.getUserZoneId(), PageRequest.of(page, size));
 	}
 
-//	@GetMapping(value="/api/governates/findAll", params= {"page","size"})
-//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
-//	public Page<Governate> retrieveAllGovernates( @RequestParam("page") int page, @RequestParam("size") int size) {
-//		return governateRepository.findAll(PageRequest.of(page, size));
-//	}
+	@GetMapping(value="/api/governates/findAll", params= {"page","size"})
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
+	public Page<Governate> retrieveAllGovernates( @RequestParam("page") int page, @RequestParam("size") int size) {
+		return governateRepository.findAll(PageRequest.of(page, size));
+	}
 	
 	@GetMapping("/api/governates/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
@@ -97,9 +97,7 @@ public class GovernateController {
 	@PutMapping("/api/governates/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Governate> updateGovernate(@PathVariable int id, @Valid @RequestBody Governate governate) {
-		Optional<Governate> existingGovernate = governateRepository.findById(id);
-
-		if (!existingGovernate.isPresent())
+		if (!governateRepository.existsById(id))
 			throw new ResourceNotFoundException("id-" + id);
 //		governateRepository.deleteById(id);
 		
@@ -134,7 +132,7 @@ public class GovernateController {
 	}
 
 	@GetMapping("/api/governates/{id}/cities")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') ")
 	public List<City> retrieveGovernateCities(@PathVariable int id) {
 //		Optional<Governate> governateOptional = governateRepository.findById(id);
 //		if (!governateOptional.isPresent()) {

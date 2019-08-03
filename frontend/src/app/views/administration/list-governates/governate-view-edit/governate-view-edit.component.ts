@@ -19,13 +19,13 @@ export class GovernateViewEditComponent implements OnInit {
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
-  // public zones : Zone[];
-  // public selectedZoneId : number
+  public zones : Zone[];
+  public selectedZoneId : number
   errorMessage = "";
   constructor(private formBuilder: FormBuilder, private governateService: GovernateService, private zoneService: ZoneService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    // this.fillZones();
+    this.fillZones();
     this.route.params.forEach((urlParams) => {
       this.requestGovernateId = urlParams['id'];
       this.componentMode = urlParams['componentMode'];
@@ -52,16 +52,16 @@ export class GovernateViewEditComponent implements OnInit {
     this.governateService.retrieveGovernate(this.requestGovernateId).subscribe(
       response => {
         this.governate = response as Governate;
-        // if(this.governate.zone != null){
-        //   this.selectedZoneId = this.governate.zone.id;
-        // }
+        if(this.governate.zone != null){
+          this.selectedZoneId = this.governate.zone.id;
+        }
       }
     )
   }
   onSave() {
-    // let zone = new Zone;
-    // zone.id = this.selectedZoneId;
-    // this.governate.zone = zone;
+    let zone = new Zone;
+    zone.id = this.selectedZoneId;
+    this.governate.zone = zone;
 
     this.governateService.createGovernate(this.governate).subscribe(
       result => {
@@ -81,14 +81,14 @@ export class GovernateViewEditComponent implements OnInit {
   close() {
     this.router.navigateByUrl("/administration/governates");
   }
-  // fillZones() {
-  //   this.zoneService.retrieveAllZones(0, 100).subscribe(
-  //     result => {
-  //       this.zones = result['content'];
-  //     },
-  //     error => {
-  //       console.log('oops', error);
-  //     });
-  // }
+  fillZones() {
+    this.zoneService.retrieveAllZones(0, 1000).subscribe(
+      result => {
+        this.zones = result['content'];
+      },
+      error => {
+        console.log('oops', error);
+      });
+  }
 
 }

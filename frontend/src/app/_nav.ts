@@ -219,92 +219,13 @@ export const AUDITS_NAV_ITEM: NavData =
   icon: 'icon-star'
 }
 
-export const SYSTEM_TABLES_MAINTENANCE_NAV_ITEM: NavData =
-{
-  name: `${SYSTEM_TABLES_MAINTENANCE}`,
-  url: '/administration',
-  icon: 'cui-briefcase',
-  children: [
-    {
-      name: `${REQUEST_TYPES}`,
-      url: '/administration/types',
-      icon: 'icon-star'
-    },
-    {
-      name: `${REQUEST_STATUS}`,
-      url: '/administration/request-status',
-      icon: 'icon-star'
-    },
-    {
-      name: `${EYE_REVEAL_SETTINGS}`,
-      url: '/administration/eye-reveal-settings',
-      icon: 'icon-star'
-    },
-    {
-      name: `${EYE_MEASURES}`,
-      url: '/administration/eye-measures',
-      icon: 'icon-star'
-    },
-    {
-      name: `${GOVERNATES}`,
-      url: '/administration/governates',
-      icon: 'icon-star'
-    },
-    {
-      name: `${CITIES}`,
-      url: '/administration/cities',
-      icon: 'icon-star'
-    },
-    {
-      name: `${OCCUPATION_TYPES}`,
-      url: '/administration/occupations',
-      icon: 'icon-star'
-    },
-    {
-      name: `${ZONES}`,
-      url: '/administration/zones',
-      icon: 'icon-star'
-    },
-    {
-      name: `${CUSTOMS}`,
-      url: '/administration/customs',
-      icon: 'icon-star'
-    },
-    {
-      name: `${DISABILITIES_TYPES}`,
-      url: '/administration/disabilities',
-      icon: 'icon-star'
-    },
-    {
-      name: `${EQUIPMENTS_TYPES}`,
-      url: '/administration/equipments',
-      icon: 'icon-star'
-    },
-    {
-      name: `${DOCUMENT_TYPES}`,
-      url: '/administration/document-types',
-      icon: 'icon-star'
-    }
-  ]
-}
-
-export const SYSTEM_ADMINISTRATION_NAV_ITEM: NavData =
+export const SYSTEM_ADMINISTRATION_NAV_ITEMS: NavData =
 {
   name: `${SYSTEM_ADMINISTRATION}`,
   url: '/administration',
   icon: 'cui-briefcase',
   children: [
     {
-      name: `${COMMITTEE_MEMBERS}`,
-      url: '/administration/committee-members',
-      icon: 'icon-star'
-    },
-    {
-      name: `${COMMITTEES}`,
-      url: '/administration/committees',
-      icon: 'icon-star'
-    },
-    {
       name: `${REQUEST_TYPES}`,
       url: '/administration/types',
       icon: 'icon-star'
@@ -360,13 +281,13 @@ export const SYSTEM_ADMINISTRATION_NAV_ITEM: NavData =
       icon: 'icon-star'
     },
     {
-      name: `${USERS}`,
-      url: '/administration/users',
+      name: `${DOCUMENT_TYPES}`,
+      url: '/administration/document-types',
       icon: 'icon-star'
     },
     {
-      name: `${DOCUMENT_TYPES}`,
-      url: '/administration/document-types',
+      name: `${USERS}`,
+      url: '/administration/users',
       icon: 'icon-star'
     },
     {
@@ -376,150 +297,3 @@ export const SYSTEM_ADMINISTRATION_NAV_ITEM: NavData =
     }
   ]
 }
-export const adminNavItems: NavData[] = [
-  {
-    name: `${CITIZENS}`,
-    url: '/citizen/search',
-    icon: 'cui-people',
-  },
-
-  {
-    name: `${REQUESTS}`,
-    url: '/request/search',
-    icon: 'cui-envelope-letter'
-  },
-  {
-    name: `${PAYMENTS}`,
-    url: '/request/payments',
-    icon: 'cui-dollar',
-  },
-  {
-    name: `${CONTINUE_REGISTERING}`,
-    url: '/request/continue-registering',
-    icon: 'cui-dollar',
-  },
-  {
-    name: `${BONES_REVEAL}`,
-    url: '/request/bones-reveal',
-    icon: 'cui-dollar',
-  },
-  {
-    name: `${EYE_REVEAL}`,
-    url: '/request/eye-reveal',
-    icon: 'cui-dollar',
-  },
-  {
-    name: `${EYE_REVEAL_REGISTRATION}`,
-    url: '/request/eye-reveal-registering',
-    icon: 'cui-dollar',
-  },
-  {
-    name: `${BONES_REVEAL_REGISTRATION}`,
-    url: '/request/bones-reveal-registering',
-    icon: 'cui-dollar',
-  },
-
-  {
-    name: `${REVIEW_REQUESTS}`,
-    url: '/request/review-requests',
-    icon: 'icon-layers',
-  },
-
-  {
-    name: `${APPROVE_REQUESTS}`,
-    url: '/request/approve-requests',
-    icon: 'icon-layers',
-  },
-  {
-    name: 'النتائج',
-    url: '/theme/typography',
-    icon: 'icon-pie-chart'
-  },
-  {
-    name: `${SYSTEM_ADMINISTRATION}`,
-    url: '/administration',
-    icon: 'cui-briefcase',
-    children: [
-      {
-        name: `${COMMITTEE_MEMBERS}`,
-        url: '/administration/committee-members',
-        icon: 'icon-star'
-      },
-      {
-        name: `${COMMITTEES}`,
-        url: '/administration/committees',
-        icon: 'icon-star'
-      },
-      {
-        name: `${REQUEST_TYPES}`,
-        url: '/administration/types',
-        icon: 'icon-star'
-      },
-      {
-        name: `${REQUEST_STATUS}`,
-        url: '/administration/request-status',
-        icon: 'icon-star'
-      },
-      {
-        name: `${EYE_REVEAL_SETTINGS}`,
-        url: '/administration/eye-reveal-settings',
-        icon: 'icon-star'
-      },
-      {
-        name: `${EYE_MEASURES}`,
-        url: '/administration/eye-measures',
-        icon: 'icon-star'
-      },
-      {
-        name: `${GOVERNATES}`,
-        url: '/administration/governates',
-        icon: 'icon-star'
-      },
-      {
-        name: `${CITIES}`,
-        url: '/administration/cities',
-        icon: 'icon-star'
-      },
-      {
-        name: `${OCCUPATION_TYPES}`,
-        url: '/administration/occupations',
-        icon: 'icon-star'
-      },
-      {
-        name: `${ZONES}`,
-        url: '/administration/zones',
-        icon: 'icon-star'
-      },
-      {
-        name: `${CUSTOMS}`,
-        url: '/administration/customs',
-        icon: 'icon-star'
-      },
-      {
-        name: `${DISABILITIES_TYPES}`,
-        url: '/administration/disabilities',
-        icon: 'icon-star'
-      },
-      {
-        name: `${EQUIPMENTS_TYPES}`,
-        url: '/administration/equipments',
-        icon: 'icon-star'
-      },
-      {
-        name: `${USERS}`,
-        url: '/administration/users',
-        icon: 'icon-star'
-      },
-      {
-        name: `${DOCUMENT_TYPES}`,
-        url: '/administration/document-types',
-        icon: 'icon-star'
-      },
-      {
-        name: `${AUDITS}`,
-        url: '/administration/audits',
-        icon: 'icon-star'
-      }
-    ]
-  },
-];

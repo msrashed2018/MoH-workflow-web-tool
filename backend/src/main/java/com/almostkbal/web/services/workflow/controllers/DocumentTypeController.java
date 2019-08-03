@@ -81,9 +81,8 @@ public class DocumentTypeController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<DocumentType> updateDocumentType(
 			@PathVariable long id, @Valid @RequestBody DocumentType documentType) {
-		Optional<DocumentType> existingDocumentType = documentTypeRepository.findById(id);
 		
-		if(!existingDocumentType.isPresent())
+		if(!documentTypeRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
 		DocumentType updatedDocumentType = documentTypeRepository.save(documentType);
 		return new ResponseEntity<DocumentType>(updatedDocumentType, HttpStatus.OK);

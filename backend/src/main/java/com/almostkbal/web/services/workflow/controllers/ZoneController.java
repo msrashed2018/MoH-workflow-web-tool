@@ -83,9 +83,7 @@ public class ZoneController {
 	@PutMapping("/api/zones/{id}")
 	public ResponseEntity<Zone> updateZone(
 			@PathVariable long id, @Valid @RequestBody Zone zone) {
-		Optional<Zone> existingZone = zoneRepository.findById(id);
-
-		if(!existingZone.isPresent())
+		if(!zoneRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
 		zoneRepository.deleteById(id);
 		Zone updatedCitzen = zoneRepository.save(zone);

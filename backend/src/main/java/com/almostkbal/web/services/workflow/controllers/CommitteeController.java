@@ -1,10 +1,12 @@
 package com.almostkbal.web.services.workflow.controllers;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,9 +50,10 @@ public class CommitteeController {
 	private UserService userService;
 
 	@GetMapping("/api/committees")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public Page<Committee> retrieveAllCommittees(@RequestParam("page") int page, @RequestParam("size") int size) {
-		return committeeRepository.findByZoneId(userService.getUserZoneId(), PageRequest.of(page, size));
+		return committeeRepository.findByZoneId(userService.getUserZoneId(),
+				PageRequest.of(page, size, Sort.by("date").ascending().and(Sort.by("id").ascending())));
 	}
 
 	@GetMapping("/api/committees/findUpcommingCommitteesByTypeAndFunction")
@@ -60,7 +64,7 @@ public class CommitteeController {
 	}
 
 	@GetMapping("/api/committees/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public Committee retrieveCommitteeById(@PathVariable long id) {
 		Optional<Committee> committee = committeeRepository.findById(id);
 		if (!committee.isPresent())
@@ -69,7 +73,7 @@ public class CommitteeController {
 	}
 
 	@DeleteMapping("/api/committees/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public void deleteCommittee(@PathVariable long id) {
 		try {
 			committeeRepository.deleteByIdAndZoneId(id, userService.getUserZoneId());
@@ -79,51 +83,76 @@ public class CommitteeController {
 	}
 
 	@PostMapping("/api/committees")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public Object createCommittee(@Valid @RequestBody Committee committee) {
 		CommitteeValidationUtils.validateCommitteeRepeatedMembers(committee);
 		boolean isMemberAssignedToAnotherCommittee = false;
-		String memberName = "";
+		String memberName = "( ";
 
-		if (committee.getMemberOne() != null && committeeRepository.existsByZoneIdAndMemberOneIdAndDate(
-				userService.getUserZoneId(), committee.getMemberOne().getId(), committee.getDate())) {
+		Calendar start = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		start.setTime(committee.getDate());
+		start.set(Calendar.HOUR_OF_DAY, 0);
+		start.set(Calendar.MINUTE, 0);
+		start.set(Calendar.SECOND, 0);
+		start.set(Calendar.MILLISECOND, 0);
+
+		end.setTime(committee.getDate());
+		end.set(Calendar.HOUR_OF_DAY, 23);
+		end.set(Calendar.MINUTE, 59);
+		end.set(Calendar.SECOND, 59);
+		end.set(Calendar.MILLISECOND, 0);
+
+		Date startDate = start.getTime();
+		Date endDate = end.getTime();
+		if (committee.getMemberOne() != null
+				&& committeeRepository.existsForAnotherCommitteOnSameDate(userService.getUserZoneId(),
+						committee.getMemberOne().getId(), startDate, endDate) > 0) {
 			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberOne().getName();
+			memberName = memberName + " - " + committee.getMemberOne().getName();
 		}
-		if (committee.getMemberTwo() != null && committeeRepository.existsByZoneIdAndMemberTwoIdAndDate(
-				userService.getUserZoneId(), committee.getMemberTwo().getId(), committee.getDate())) {
+		if (committee.getMemberTwo() != null
+				&& committeeRepository.existsForAnotherCommitteOnSameDate(userService.getUserZoneId(),
+						committee.getMemberTwo().getId(), startDate, endDate) > 0) {
 			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberTwo().getName();
+			memberName = memberName + " - " + committee.getMemberTwo().getName();
 		}
-		if (committee.getMemberThree() != null && committeeRepository.existsByZoneIdAndMemberThreeIdAndDate(
-				userService.getUserZoneId(), committee.getMemberThree().getId(), committee.getDate())) {
+		if (committee.getMemberThree() != null
+				&& committeeRepository.existsForAnotherCommitteOnSameDate(userService.getUserZoneId(),
+						committee.getMemberThree().getId(), startDate, endDate) > 0) {
 			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberThree().getName();
+			memberName = memberName + " - " + committee.getMemberThree().getName();
 		}
-		if (committee.getMemberFour() != null && committeeRepository.existsByZoneIdAndMemberFourIdAndDate(
-				userService.getUserZoneId(), committee.getMemberFour().getId(), committee.getDate())) {
+		if (committee.getMemberFour() != null
+				&& committeeRepository.existsForAnotherCommitteOnSameDate(userService.getUserZoneId(),
+						committee.getMemberFour().getId(), startDate, endDate) > 0) {
 			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberFour().getName();
+			memberName = memberName + " - " + committee.getMemberFour().getName();
 		}
-		if (committee.getMemberFive() != null && committeeRepository.existsByZoneIdAndMemberFiveIdAndDate(
-				userService.getUserZoneId(), committee.getMemberFive().getId(), committee.getDate())) {
+		if (committee.getMemberFive() != null
+				&& committeeRepository.existsForAnotherCommitteOnSameDate(userService.getUserZoneId(),
+						committee.getMemberFive().getId(), startDate, endDate) > 0) {
 			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberFive().getName();
+			memberName = memberName + " - " + committee.getMemberFive().getName();
 		}
-		if (committee.getMemberSix() != null && committeeRepository.existsByZoneIdAndMemberSixIdAndDate(
-				userService.getUserZoneId(), committee.getMemberSix().getId(), committee.getDate())) {
+		if (committee.getMemberSix() != null
+				&& committeeRepository.existsForAnotherCommitteOnSameDate(userService.getUserZoneId(),
+						committee.getMemberSix().getId(), startDate, endDate) > 0) {
 			isMemberAssignedToAnotherCommittee = true;
-			memberName = committee.getMemberSix().getName();
+			memberName = memberName + " - " + committee.getMemberSix().getName();
 		}
 
 		if (isMemberAssignedToAnotherCommittee) {
 
 			StringBuilder errorMessage = new StringBuilder("");
-			errorMessage.append(" تم تسجيل العضو ");
-			errorMessage.append(memberName);
+			errorMessage.append(" تم تسجيل الاعضاء ");
+			errorMessage.append(memberName + " )	");
 			errorMessage.append(" في لجنة اخري في نفس التاريخ  ");
-			errorMessage.append(committee.getDate().toString());
-			return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(new Date(), errorMessage.toString(),errorMessage.toString()),
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+			errorMessage.append(sdf.format(committee.getDate()));
+			return new ResponseEntity<ExceptionResponse>(
+					new ExceptionResponse(new Date(), errorMessage.toString(), errorMessage.toString()),
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -138,7 +167,7 @@ public class CommitteeController {
 	}
 
 	@PutMapping("/api/committees/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_COMMITTEES_REGISTERING')")
 	public Object updateCommittee(@PathVariable long id, @Valid @RequestBody Committee committee) {
 
 		if (!committeeRepository.existsById(id))
@@ -147,49 +176,70 @@ public class CommitteeController {
 		CommitteeValidationUtils.validateCommitteeRepeatedMembers(committee);
 
 		boolean isMemberAssignedToAnotherCommittee = false;
-		String memberName = "";
+		String memberName = "( ";
 
-//		if (committee.getMemberOne() != null && committeeRepository.existsByZoneIdAndMemberOneIdAndDate(
-//				userService.getUserZoneId(), committee.getMemberOne().getId(), committee.getDate())) {
-//			isMemberAssignedToAnotherCommittee = true;
-//			memberName = committee.getMemberOne().getName();
-//		}
-//		if (committee.getMemberTwo() != null && committeeRepository.existsByZoneIdAndMemberTwoIdAndDate(
-//				userService.getUserZoneId(), committee.getMemberTwo().getId(), committee.getDate())) {
-//			isMemberAssignedToAnotherCommittee = true;
-//			memberName = committee.getMemberTwo().getName();
-//		}
-//		if (committee.getMemberThree() != null && committeeRepository.existsByZoneIdAndMemberThreeIdAndDate(
-//				userService.getUserZoneId(), committee.getMemberThree().getId(), committee.getDate())) {
-//			isMemberAssignedToAnotherCommittee = true;
-//			memberName = committee.getMemberThree().getName();
-//		}
-//		if (committee.getMemberFour() != null && committeeRepository.existsByZoneIdAndMemberFourIdAndDate(
-//				userService.getUserZoneId(), committee.getMemberFour().getId(), committee.getDate())) {
-//			isMemberAssignedToAnotherCommittee = true;
-//			memberName = committee.getMemberFour().getName();
-//		}
-//		if (committee.getMemberFive() != null && committeeRepository.existsByZoneIdAndMemberFiveIdAndDate(
-//				userService.getUserZoneId(), committee.getMemberFive().getId(), committee.getDate())) {
-//			isMemberAssignedToAnotherCommittee = true;
-//			memberName = committee.getMemberFive().getName();
-//		}
-//		if (committee.getMemberSix() != null && committeeRepository.existsByZoneIdAndMemberSixIdAndDate(
-//				userService.getUserZoneId(), committee.getMemberSix().getId(), committee.getDate())) {
-//			isMemberAssignedToAnotherCommittee = true;
-//			memberName = committee.getMemberSix().getName();
-//		}
+		Calendar start = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		start.setTime(committee.getDate());
+		start.set(Calendar.HOUR_OF_DAY, 0);
+		start.set(Calendar.MINUTE, 0);
+		start.set(Calendar.SECOND, 0);
+		start.set(Calendar.MILLISECOND, 0);
+
+		end.setTime(committee.getDate());
+		end.set(Calendar.HOUR_OF_DAY, 23);
+		end.set(Calendar.MINUTE, 59);
+		end.set(Calendar.SECOND, 59);
+		end.set(Calendar.MILLISECOND, 0);
+
+		Date startDate = start.getTime();
+		Date endDate = end.getTime();
+
+		if (committee.getMemberOne() != null && committeeRepository.existsForAnotherCommitteOnSameDateExcept(id,
+				userService.getUserZoneId(), committee.getMemberOne().getId(), startDate, endDate) > 0) {
+			isMemberAssignedToAnotherCommittee = true;
+			memberName = memberName + " - " + committee.getMemberOne().getName();
+		}
+		if (committee.getMemberTwo() != null && committeeRepository.existsForAnotherCommitteOnSameDateExcept(id,
+				userService.getUserZoneId(), committee.getMemberTwo().getId(), startDate, endDate) > 0) {
+			isMemberAssignedToAnotherCommittee = true;
+			memberName = memberName + " - " + committee.getMemberTwo().getName();
+		}
+		if (committee.getMemberThree() != null && committeeRepository.existsForAnotherCommitteOnSameDateExcept(id,
+				userService.getUserZoneId(), committee.getMemberThree().getId(), startDate, endDate) > 0) {
+			isMemberAssignedToAnotherCommittee = true;
+			memberName = memberName + " - " + committee.getMemberThree().getName();
+		}
+		if (committee.getMemberFour() != null && committeeRepository.existsForAnotherCommitteOnSameDateExcept(id,
+				userService.getUserZoneId(), committee.getMemberFour().getId(), startDate, endDate) > 0) {
+			isMemberAssignedToAnotherCommittee = true;
+			memberName = memberName + " - " + committee.getMemberFour().getName();
+		}
+		if (committee.getMemberFive() != null && committeeRepository.existsForAnotherCommitteOnSameDateExcept(id,
+				userService.getUserZoneId(), committee.getMemberFive().getId(), startDate, endDate) > 0) {
+			isMemberAssignedToAnotherCommittee = true;
+			memberName = memberName + " - " + committee.getMemberFive().getName();
+		}
+		if (committee.getMemberSix() != null && committeeRepository.existsForAnotherCommitteOnSameDateExcept(id,
+				userService.getUserZoneId(), committee.getMemberSix().getId(), startDate, endDate) > 0) {
+			isMemberAssignedToAnotherCommittee = true;
+			memberName = memberName + " - " + committee.getMemberSix().getName();
+		}
 
 		if (isMemberAssignedToAnotherCommittee) {
 
 			StringBuilder errorMessage = new StringBuilder("");
-			errorMessage.append(" تم تسجيل العضو ");
-			errorMessage.append(memberName);
+			errorMessage.append(" تم تسجيل الاعضاء ");
+			errorMessage.append(memberName + " )	");
 			errorMessage.append(" في لجنة اخري في نفس التاريخ  ");
-			errorMessage.append(committee.getDate().toString());
-			return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(new Date(), errorMessage.toString(), errorMessage.toString()),
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+			errorMessage.append(sdf.format(committee.getDate()));
+			return new ResponseEntity<ExceptionResponse>(
+					new ExceptionResponse(new Date(), errorMessage.toString(), errorMessage.toString()),
 					HttpStatus.BAD_REQUEST);
 		}
+
 		Zone zone = new Zone();
 		zone.setId(userService.getUserZoneId());
 		committee.setZone(zone);
@@ -204,8 +254,6 @@ public class CommitteeController {
 	}
 
 	static class CommitteeValidationUtils {
-		@Autowired
-		private CommitteeRepository committeeRepository;
 
 		public static void validateCommitteeRepeatedMembers(Committee committee) {
 			Set<Long> committeeMemberIds = new HashSet<Long>();
@@ -213,7 +261,6 @@ public class CommitteeController {
 
 			boolean repeated = false;
 
-			boolean isMemberAssignedToAnotherCommittee = false; // to check if the member is assigned
 			if (committee.getMemberOne() != null) {
 				if (!committeeMemberIds.add(committee.getMemberOne().getId())) {
 					repeated = true;

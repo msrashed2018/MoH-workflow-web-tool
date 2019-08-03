@@ -1,8 +1,9 @@
 import { Component, OnDestroy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { adminNavItems, NavData, CITIZENS_NAV_ITEM, PAYMENTS_NAV_ITEM, CONTINUE_REGISTERING_NAV_ITEM, EYE_REVEAL_NAV_ITEM, BONES_REVEAL_NAV_ITEM, EYE_REVEAL_REGISTRATION_NAV_ITEM, BONES_REVEAL_REGISTRATION_NAV_ITEM, REVIEW_REQUESTS_NAV_ITEM, APPROVE_REQUESTS_NAV_ITEM, RESULTS_NAV_ITEM, COMMITTEES_NAV_ITEM, COMMITTEE_MEMBERS_NAV_ITEM, SYSTEM_TABLES_MAINTENANCE_NAV_ITEM } from '../../_nav';
+import { NavData, CITIZENS_NAV_ITEM, PAYMENTS_NAV_ITEM, CONTINUE_REGISTERING_NAV_ITEM, EYE_REVEAL_NAV_ITEM, BONES_REVEAL_NAV_ITEM, EYE_REVEAL_REGISTRATION_NAV_ITEM, BONES_REVEAL_REGISTRATION_NAV_ITEM, REVIEW_REQUESTS_NAV_ITEM, APPROVE_REQUESTS_NAV_ITEM, RESULTS_NAV_ITEM, COMMITTEES_NAV_ITEM, COMMITTEE_MEMBERS_NAV_ITEM, USERS_NAV_ITEM, SYSTEM_ADMINISTRATION_NAV_ITEMS, REQUESTS_NAV_ITEM } from '../../_nav';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../../services/authentication/jwt/token-storage.service';
+import { SYSTEM_TABLES_MAINTENANCE } from '../../app-words';
 
 
 @Component({
@@ -14,10 +15,9 @@ export class DefaultLayoutComponent implements OnDestroy {
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement;
+
+  public zoneName: string = "";
   constructor(private token: TokenStorageService, private router: Router, @Inject(DOCUMENT) _document?: any) {
-
-
-
 
     // if (token.getAuthorities().includes("ROLE_ADMIN")) {
     //   this.navItems = adminNavItems;
@@ -28,9 +28,24 @@ export class DefaultLayoutComponent implements OnDestroy {
 
       token.getAuthorities().forEach(authority => {
         if (authority == "ROLE_ADMIN") {
-          //if the user has role admin so no need to check if has other roles because admin role is the super user which have all views
-          this.navItems = adminNavItems; throw BreakException;
-        } else if (authority == "ROLE_CITIZEN_REQUEST_REGISTERING") {
+          //if the user has role admin so no need to check if has other roles because admin role is the user which have all views
+          this.navItems = [
+            CITIZENS_NAV_ITEM, PAYMENTS_NAV_ITEM, CONTINUE_REGISTERING_NAV_ITEM, BONES_REVEAL_NAV_ITEM,
+            EYE_REVEAL_NAV_ITEM, EYE_REVEAL_REGISTRATION_NAV_ITEM, BONES_REVEAL_REGISTRATION_NAV_ITEM,
+            REVIEW_REQUESTS_NAV_ITEM, APPROVE_REQUESTS_NAV_ITEM, RESULTS_NAV_ITEM, COMMITTEE_MEMBERS_NAV_ITEM, 
+            COMMITTEES_NAV_ITEM, REQUESTS_NAV_ITEM,SYSTEM_ADMINISTRATION_NAV_ITEMS
+          ]
+          throw BreakException;
+        } else if (authority == "ROLE_SUPER_USER") {
+          //if the user has role super user so no need to check if has other roles because super role is the user which have all views except administration views
+          this.navItems = [
+            CITIZENS_NAV_ITEM, PAYMENTS_NAV_ITEM, CONTINUE_REGISTERING_NAV_ITEM, BONES_REVEAL_NAV_ITEM,
+            EYE_REVEAL_NAV_ITEM, EYE_REVEAL_REGISTRATION_NAV_ITEM, BONES_REVEAL_REGISTRATION_NAV_ITEM,
+            REVIEW_REQUESTS_NAV_ITEM, APPROVE_REQUESTS_NAV_ITEM, RESULTS_NAV_ITEM, COMMITTEE_MEMBERS_NAV_ITEM, 
+            COMMITTEES_NAV_ITEM, REQUESTS_NAV_ITEM
+          ];
+          throw BreakException;
+        }else if (authority == "ROLE_CITIZEN_REQUEST_REGISTERING") {
           this.navItems.push(CITIZENS_NAV_ITEM);
         } else if (authority == "ROLE_PAYMENTS_REGISTRATION") {
           this.navItems.push(PAYMENTS_NAV_ITEM);
@@ -51,20 +66,20 @@ export class DefaultLayoutComponent implements OnDestroy {
         } else if (authority == "ROLE_RESULTS_PRINTING") {
           this.navItems.push(RESULTS_NAV_ITEM);
         } else if (authority == "ROLE_RESULTS_VIEWING") {
-            if(!token.getAuthorities().includes("ROLE_RESULTS_PRINTING")) this.navItems.push(RESULTS_NAV_ITEM);
+          if (!token.getAuthorities().includes("ROLE_RESULTS_PRINTING")) this.navItems.push(RESULTS_NAV_ITEM);
         } else if (authority == "ROLE_CITIZENS_REQUESTS_VIEWING") {
 
         } else if (authority == "ROLE_COMMITTEES_REGISTERING") {
           this.navItems.push(COMMITTEES_NAV_ITEM);
           this.navItems.push(COMMITTEE_MEMBERS_NAV_ITEM);
         } else if (authority == "ROLE_SYSTEM_TABLES_MAINTENANCE") {
-          this.navItems.push(SYSTEM_TABLES_MAINTENANCE_NAV_ITEM);
+          this.navItems.push(SYSTEM_ADMINISTRATION_NAV_ITEMS);
         } else if (authority == "ROLE_DAILY_REPORTS_VIEWING") {
 
         } else if (authority == "ROLE_STATISTIC_REPORTS_VIEWING") {
 
         } else if (authority == "ROLE_CITIZENS_DATA_EDITING") {
-          if(!token.getAuthorities().includes("ROLE_CITIZEN_REQUEST_REGISTERING")) this.navItems.push(CITIZENS_NAV_ITEM);
+          if (!token.getAuthorities().includes("ROLE_CITIZEN_REQUEST_REGISTERING")) this.navItems.push(CITIZENS_NAV_ITEM);
         }
       })
 

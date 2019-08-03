@@ -26,7 +26,7 @@ import com.almostkbal.web.services.workflow.repositories.AuditRepository;
 //@CrossOrigin(origins="http://192.168.0.100:4200")
 @CrossOrigin(origins = "*")
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
 public class AuditController {
 	@Autowired
 	private AuditRepository auditRepository;
@@ -86,34 +86,4 @@ public class AuditController {
 		}
 	}
 
-//	@GetMapping("/api/audits/{id}")
-//	public Audit retrieveAuditById(@PathVariable int id) {
-//		Optional<Audit> Audit = AuditRepository.findById(id);
-//		if(!Audit.isPresent())
-//			throw new ResourceNotFoundException("id-"+ id);
-////		Resource<Audit> resource = new Resource<Audit>(Audit.get());
-//		return Audit.get();
-//	}
-
-//	@PostMapping("/api/audits")
-//	public ResponseEntity<Object> createAudit(@Valid @RequestBody Audit Audit) {
-//		Audit savedAudit = AuditRepository.save(Audit);
-//		URI location = ServletUriComponentsBuilder
-//			.fromCurrentRequest()
-//			.path("/{id}")
-//			.buildAndExpand(savedAudit.getId()).toUri();
-//		return ResponseEntity.created(location).build();
-//		
-//	}
-//	@PutMapping("/api/audits/{id}")
-//	public ResponseEntity<Audit> updateAudit(
-//			@PathVariable int id, @Valid @RequestBody Audit Audit) {
-//		Optional<Audit> existingAudit = AuditRepository.findById(id);
-//		
-//		if(!existingAudit.isPresent())
-//			throw new ResourceNotFoundException("id-"+ id);
-////		AuditRepository.deleteById(id);
-//		Audit updatedCitzen = AuditRepository.save(Audit);
-//		return new ResponseEntity<Audit>(updatedCitzen, HttpStatus.OK);
-//	}
 }

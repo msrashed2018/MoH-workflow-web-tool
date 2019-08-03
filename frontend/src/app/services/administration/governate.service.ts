@@ -15,9 +15,9 @@ export class GovernateService {
   retrieveZoneGovernates(page,size) {
     return this.http.get<Governate[]>(`${API_URL}/governates?page=${page}&size=${size}`);
   }
-  // retrieveAllGovernates(page,size) {
-  //   return this.http.get<Governate[]>(`${API_URL}/governates/findAll?page=${page}&size=${size}`);
-  // }
+  retrieveAllGovernates(page,size) {
+    return this.http.get<Governate[]>(`${API_URL}/governates/findAll?page=${page}&size=${size}`);
+  }
   retrieveGovernateCities(governateId) {
     return this.http.get<City[]>(`${API_URL}/governates/${governateId}/cities`);
   }

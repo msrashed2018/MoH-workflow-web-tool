@@ -76,9 +76,7 @@ public class EquipmentController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Equipment> updateEquipment(
 			@PathVariable int id, @Valid @RequestBody Equipment equipment) {
-		Optional<Equipment> existingEquipment = equipmentRepository.findById(id);
-
-		if(!existingEquipment.isPresent())
+		if(!equipmentRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
 //		equipmentRepository.deleteById(id);
 		Equipment updatedCitzen = equipmentRepository.save(equipment);

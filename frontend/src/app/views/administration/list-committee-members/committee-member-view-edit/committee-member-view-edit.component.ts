@@ -11,28 +11,28 @@ import { CommitteeMember } from '../../../../model/committee-member.model';
   styleUrls: ['./committee-member-view-edit.component.scss']
 })
 export class CommitteeMemberViewEditComponent implements OnInit {
-  requestModel : CommitteeMember= new CommitteeMember;;
+  requestModel: CommitteeMember = new CommitteeMember;;
   requestStatusId;
   componentMode;
-  public zones : Zone[];
-  public selectedZoneId : number
-  disabled : boolean = false;
+  // public zones : Zone[];
+  // public selectedZoneId : number
+  disabled: boolean = false;
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
-  constructor(private formBuilder: FormBuilder, private zoneService: ZoneService ,private committeeMemberService: CommitteeMemberService, private router: Router,private route:ActivatedRoute ) { }
+  constructor(private formBuilder: FormBuilder, private zoneService: ZoneService, private committeeMemberService: CommitteeMemberService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.zones = [];
-    this.fillZones();
+    // this.zones = [];
+    // this.fillZones();
     this.route.params.forEach((urlParams) => {
-      this.requestStatusId= urlParams['id'];
-      this.componentMode=urlParams['componentMode'];
+      this.requestStatusId = urlParams['id'];
+      this.componentMode = urlParams['componentMode'];
       this.displayCommitteeMemberDetails();
 
-      if(this.componentMode == "editMode"){
-          this.disabled = false;
-      }else{
+      if (this.componentMode == "editMode") {
+        this.disabled = false;
+      } else {
         this.disabled = true;
       }
     });
@@ -46,18 +46,18 @@ export class CommitteeMemberViewEditComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
-  displayCommitteeMemberDetails(){
+  displayCommitteeMemberDetails() {
     this.committeeMemberService.retrieveCommitteeMember(this.requestStatusId).subscribe(
       response => {
         this.requestModel = response as CommitteeMember;
-        this.selectedZoneId = this.requestModel.zone.id;
+        // this.selectedZoneId = this.requestModel.zone.id;
       }
     )
   }
-  onSave(){
-    let zone = new Zone;
-    zone.id = this.selectedZoneId;
-    this.requestModel.zone = zone;
+  onSave() {
+    // let zone = new Zone;
+    // zone.id = this.selectedZoneId;
+    // this.requestModel.zone = zone;
     this.committeeMemberService.createCommitteeMember(this.requestModel).subscribe(
       result => {
         this.router.navigateByUrl("/administration/committee-members");
@@ -68,18 +68,18 @@ export class CommitteeMemberViewEditComponent implements OnInit {
       }
     );
   }
-  close(){
+  close() {
     this.router.navigateByUrl("/administration/committee-members");
   }
 
-  fillZones(){
-    this.zoneService.retrieveAllZones(0,100).subscribe(
-      result => {
-        this.zones = result['content'];
-      },
-      error => {
-        console.log('oops', error);
-    });
-  }
+  // fillZones(){
+  //   this.zoneService.retrieveAllZones(0,100).subscribe(
+  //     result => {
+  //       this.zones = result['content'];
+  //     },
+  //     error => {
+  //       console.log('oops', error);
+  //   });
+  // }
 }
 

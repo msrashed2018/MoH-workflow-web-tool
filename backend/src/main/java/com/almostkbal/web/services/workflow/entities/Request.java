@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -36,7 +35,7 @@ public class Request {
 	private Citizen citizen;
 
 	@Column(name = "request_date")
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+2")
 	private Date requestDate;
 
 	@OneToOne
@@ -119,7 +118,7 @@ public class Request {
 	public Date getRequestDate() {
 		return requestDate;
 	}
-
+//	@JsonDeserialize(using = CustomDateDeserializer.class)
 	public void setRequestDate(Date requestDate) {
 		this.requestDate = requestDate;
 	}

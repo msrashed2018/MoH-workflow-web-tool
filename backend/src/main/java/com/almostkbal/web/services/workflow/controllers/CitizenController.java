@@ -1,8 +1,10 @@
 package com.almostkbal.web.services.workflow.controllers;
 
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -50,7 +52,7 @@ public class CitizenController {
 	private UserService userService;
 
 	@GetMapping("/api/citizens")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public Page<Citizen> retrieveAllCitizens(@RequestParam("page") int page, @RequestParam("size") int size) {
 
 		return citizenRepository.findByZoneId(userService.getUserZoneId(),
@@ -58,7 +60,7 @@ public class CitizenController {
 	}
 
 	@GetMapping("/api/citizens/search/findCitizensBySearchKey")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public Page<Citizen> findCitizensBySearchKey(@RequestParam String searchKey, @RequestParam("page") int page,
 			@RequestParam("size") int size) {
 		// check if searchKey is number or string
@@ -67,8 +69,8 @@ public class CitizenController {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return citizenRepository.findByZoneIdAndMobileNumber(userService.getUserZoneId(), searchKey, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
 			} else {
 				// assuming search key is national id
@@ -76,17 +78,37 @@ public class CitizenController {
 				return citizenRepository.findByZoneIdAndNationalId(userService.getUserZoneId(), key, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date createdDate = (Date) formatter.parse(searchKey);
-					
-					return citizenRepository.findByZoneIdAndCreatedDateGreaterThan(userService.getUserZoneId(), createdDate, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
+					formatDates(start, end, startDate, endDate);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
+				Date createdDateStart = start.getTime();
+				Date createdDateEnd = end.getTime();
+				return citizenRepository.findByZoneIdAndCreatedDateBetween(userService.getUserZoneId(), createdDateStart, createdDateEnd, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
+				
+			}if (searchKey.contains("-")) {
+				// search key is date
+
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date createdDateStart = start.getTime();
+					Date createdDateEnd = end.getTime();
+					return citizenRepository.findByZoneIdAndCreatedDateBetween(userService.getUserZoneId(), createdDateStart, createdDateEnd, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				
 			} else {
 				return citizenRepository.findByZoneIdAndNameContaining(userService.getUserZoneId(), searchKey, PageRequest.of(page, size, Sort.by("createdDate").descending().and(Sort.by("id"))));
 			}
@@ -94,7 +116,6 @@ public class CitizenController {
 		}
 
 	}
-
 
 	@GetMapping("/api/citizens/{id}")
 	public Citizen retrieveCitizenById(@PathVariable long id) {
@@ -106,7 +127,7 @@ public class CitizenController {
 	}
 
 	@DeleteMapping("/api/citizens/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public void deleteCitizen(@PathVariable long id) {
 		try {
 			Optional<Citizen> citizen = citizenRepository.findById(id);
@@ -131,7 +152,7 @@ public class CitizenController {
 	}
 
 	@PostMapping("/api/citizens")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING')")
 	public Object createCitizen(@Valid @RequestBody Citizen citizen, Authentication authentication) {
 		Citizen savedCitizen = null;
 		try {
@@ -159,7 +180,7 @@ public class CitizenController {
 	}
 
 	@PutMapping("/api/citizens/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public ResponseEntity<Citizen> updateCitizen(@PathVariable long id, @Valid @RequestBody Citizen citizen,
 			Authentication authentication) {
 
@@ -192,6 +213,25 @@ public class CitizenController {
 			throw new CitizenValidationException("هذا الرقم القومي يوجد بالفعل");
 
 		}
+
+	}
+	
+	public void formatDates(Calendar start, Calendar end, String startDate, String endDate) throws ParseException {
+
+		// creating a date object with specifed time.
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		start.setTime(sdf.parse(startDate));
+		start.set(Calendar.HOUR_OF_DAY, 0);
+		start.set(Calendar.MINUTE, 0);
+		start.set(Calendar.SECOND, 0);
+		start.set(Calendar.MILLISECOND, 0);
+
+		end.setTime(sdf.parse(endDate));
+		end.set(Calendar.HOUR_OF_DAY, 23);
+		end.set(Calendar.MINUTE, 59);
+		end.set(Calendar.SECOND, 59);
+		end.set(Calendar.MILLISECOND, 0);
 
 	}
 }

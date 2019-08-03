@@ -77,9 +77,7 @@ public class OccupationController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Occupation> updateOccupation(
 			@PathVariable int id, @Valid @RequestBody Occupation occupation) {
-		Optional<Occupation> existingOccupation = occupationRepository.findById(id);
-
-		if(!existingOccupation.isPresent())
+		if(!occupationRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
 //		occupationRepository.deleteById(id);
 		Occupation updatedCitzen = occupationRepository.save(occupation);

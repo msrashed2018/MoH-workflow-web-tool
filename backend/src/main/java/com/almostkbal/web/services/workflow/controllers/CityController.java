@@ -78,9 +78,7 @@ public class CityController {
 	@PutMapping("/api/cities/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<City> updateCity(@PathVariable int id, @Valid @RequestBody City city) {
-		Optional<City> existingCity = cityRepository.findById(id);
-
-		if (!existingCity.isPresent())
+		if (!cityRepository.existsById(id))
 			throw new ResourceNotFoundException("id-" + id);
 //		cityRepository.deleteById(id);
 		City updatedCitzen = cityRepository.save(city);

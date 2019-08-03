@@ -43,8 +43,12 @@
               <label class="col-md-2 col-form-label font-weight-bold" for="date-input"> تاريخ الانعقاد</label>
               <div class="col-md-6">
                 <input [(ngModel)]="requestModel.date" #date="ngModel" type="date" name="date-input"
-                  class="form-control">
+                [ngClass]="{ 'is-invalid': f.submitted && date.invalid }" class="form-control" required>
+                <div *ngIf="f.submitted && date.invalid" class="invalid-feedback">
+                  <div *ngIf="date.errors.required"> برجاء اختيار تاريخ اللجنة</div>
+                </div>
               </div>
+              
             </div>
 
             <div class="form-group row">

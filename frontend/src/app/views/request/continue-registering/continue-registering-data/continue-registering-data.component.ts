@@ -310,6 +310,35 @@ export class ContinueRegisteringDataComponent implements OnInit {
     }
   }
 
+  printReceivedDoocumentReceipts(): void {
+    let receivedDocumentReceiptPageContent, eyePageContents, popupWin, name = "", custom = "", bonesCommitteeDate = " لم يتم تحديد اللجنة", eyeCommitteeDate = " لم يتم تحديد اللجنة";
+
+    if (this.citizen.name != null) {
+      name = this.citizen.name;
+    }
+
+    if (this.request.custom != null) {
+      custom = this.request.custom.name;
+    }
+
+    if (this.request.bonesCommittee != null) {
+      bonesCommitteeDate = this.request.bonesCommittee.date;
+    }
+
+    if (this.request.eyeCommittee != null) {
+      eyeCommitteeDate = this.request.eyeCommittee.date;
+    }
+
+    receivedDocumentReceiptPageContent = AppPrint.getReceivedDocumentReceiptPageContent(name, custom, eyeCommitteeDate, bonesCommitteeDate);
+
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+    // // window.print()
+    popupWin.document.open();
+    popupWin.document.write(receivedDocumentReceiptPageContent);
+    popupWin.document.close();
+    popupWin.print();
+
+  }
 
   print(): void {
     let bonesPageContents, eyePageContents, popupWin, name = "", address = ""

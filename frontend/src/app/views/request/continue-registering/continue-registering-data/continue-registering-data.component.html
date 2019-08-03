@@ -137,8 +137,8 @@
                     <div class="form-group row">
 
                         <label class="col-md-2 col-form-label" for="file-input">
-                            <input type="file" accept="application/pdf" id="file-input"
-                                name="file-input" (change)="selectFile($event)" >
+                            <input type="file" accept="application/pdf" id="file-input" name="file-input"
+                                (change)="selectFile($event)">
                         </label>
                     </div>
                     <div *ngIf="fileUploadErrorMessage">
@@ -343,6 +343,8 @@
                                 class="fa fa-dot-circle-o"></i> حفظ</button>
                         <button [disabled]="!printEnabled" (click)="print()" class="btn btn-sm btn-success"><i
                                 class="fa fa-print"></i> طباعة الكشف</button>
+                        <button [disabled]="!printEnabled" (click)="printReceivedDoocumentReceipts()" class="btn btn-sm btn-success"><i
+                                class="fa fa-print"></i>طباعة نموذج استلام</button>
                     </div>
                     <!-- </form> -->
                 </div>

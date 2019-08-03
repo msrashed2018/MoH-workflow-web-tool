@@ -5,12 +5,10 @@ import { ListCustomsComponent } from './list-customs/list-customs.component';
 import { ListDisabilitiesComponent } from './list-disabilities/list-disabilities.component';
 import { ListEquipmentsComponent } from './list-equipments/list-equipments.component';
 import { ListEyeMeasureComponent } from './list-eye-measures/list-eye-measures.component';
-import { ListGendersComponent } from './list-genders/list-genders.component';
 import { ListOccupationsComponent } from './list-occupations/list-occupations.component';
 import { ListRequestStatusComponent } from './list-request-status/list-request-status.component';
 import { ListGovernatesComponent } from './list-governates/list-governates.component';
 import { ListUsersComponent } from './list-users/list-users.component';
-import { ListRequiredDocumentsComponent } from './list-required-documents/list-required-documents.component';
 import { ListZonesComponent } from './list-zones/list-zones.component';
 import { AdministrationRoutingModule } from './administration-routing.module';
 import { CommonModule } from '@angular/common';
@@ -35,8 +33,6 @@ import { GovernateViewEditComponent } from './list-governates/governate-view-edi
 import { GovernateDataComponent } from './list-governates/governate-data/governate-data.component';
 import { OccupationDataComponent } from './list-occupations/occupation-data/occupation-data.component';
 import { OccupationViewEditComponent } from './list-occupations/occupation-view-edit/occupation-view-edit.component';
-import { DocumentViewEditComponent } from './list-required-documents/document-view-edit/document-view-edit.component';
-import { DocumentDataComponent } from './list-required-documents/document-data/document-data.component';
 import { ZoneDataComponent } from './list-zones/zone-data/zone-data.component';
 import { ZoneViewEditComponent } from './list-zones/zone-view-edit/zone-view-edit.component';
 import { UserDataComponent } from './list-users/user-data/user-data.component';
@@ -66,12 +62,10 @@ import { DocumentTypeViewEditComponent } from './list-document-types/document-ty
     ListDisabilitiesComponent,
     ListEquipmentsComponent,
     ListEyeMeasureComponent,
-    ListGendersComponent,
     ListOccupationsComponent,
     ListRequestStatusComponent,
     ListGovernatesComponent,
     ListUsersComponent,
-    ListRequiredDocumentsComponent,
     ListZonesComponent,
     RequestTypesListComponent,
     RequestTypeDataComponent,
@@ -90,8 +84,6 @@ import { DocumentTypeViewEditComponent } from './list-document-types/document-ty
     GovernateDataComponent,
     OccupationDataComponent,
     OccupationViewEditComponent,
-    DocumentViewEditComponent,
-    DocumentDataComponent,
     ZoneDataComponent,
     ZoneViewEditComponent,
     UserDataComponent,

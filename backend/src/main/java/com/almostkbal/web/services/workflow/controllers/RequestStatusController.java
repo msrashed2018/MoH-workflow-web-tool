@@ -77,9 +77,7 @@ public class RequestStatusController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<RequestStatus> updateRequestStatus(
 			@PathVariable int id, @Valid @RequestBody RequestStatus requestStatus) {
-		Optional<RequestStatus> existingRequestStatusOptional = requestStatusRepository.findById(id);
-		
-		if(!existingRequestStatusOptional.isPresent())
+		if(!requestStatusRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
 //		requestStatusRepository.deleteById(id);
 		RequestStatus updatedCitzen = requestStatusRepository.save(requestStatus);

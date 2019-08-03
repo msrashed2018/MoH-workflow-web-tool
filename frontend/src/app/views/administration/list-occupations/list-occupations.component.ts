@@ -4,7 +4,7 @@ import { OccupationService } from '../../../services/administration/occupation.s
 import { Occupation } from '../../../model/occupation.model';
 import { FormBuilder } from '@angular/forms';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
+import { GENERAL_PAGE_SIZE } from '../../../app.constants';
 
 
 @Component({
@@ -29,14 +29,14 @@ export class ListOccupationsComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i ;
-    this.items = i*PAGINATION_PAGE_SIZE;
+    this.items = i*GENERAL_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
     if((this.page+1) < this.pages.length){
       this.page = this.page+1
-      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.items = (this.page)*GENERAL_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -45,7 +45,7 @@ export class ListOccupationsComponent implements OnInit {
 
     if((this.page-1) >= 0){
       this.page =this.page -1;
-      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.items = (this.page)*GENERAL_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -53,13 +53,14 @@ export class ListOccupationsComponent implements OnInit {
     this.refreshData();
   }
   refreshData(){
-    this.occupationService.retrieveAllOccupations(this.page,PAGINATION_PAGE_SIZE).subscribe(
+    this.occupationService.retrieveAllOccupations(this.page,GENERAL_PAGE_SIZE).subscribe(
       response => {
         this.occupations = response['content'];
         this.pages = new Array(response['totalPages']);
       },
-      error =>{
-        console.log('oops',error)
+error =>{
+        console.log('oops',error);
+        this.message = error.error.message;
       }
     )
   }
@@ -71,6 +72,10 @@ export class ListOccupationsComponent implements OnInit {
         this.occupationService.deleteOccupation(id).subscribe (
           response => {
             this.refreshData();
+          },
+          error =>{
+            console.log('oops',error)
+            this.message = error.error.message  
           }
         )
       }

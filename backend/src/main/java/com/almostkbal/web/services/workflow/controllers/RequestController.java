@@ -36,14 +36,12 @@ public class RequestController {
 	private RequestService requestService;
 
 	@GetMapping("/api/requests")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_REQUEST_REVIEWING')")
 	public Page<Request> retrieveAllRequests(@RequestParam("page") int page, @RequestParam("size") int size) {
 
 		return requestService.getAllRequests(PageRequest.of(page, size, Sort.by("requestDate").ascending().and(Sort.by("id").ascending())));
 	}
 
 	@GetMapping("/api/requests/retreiveByRequestStates")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING') OR hasRole('ROLE_REQUEST_REVIEWING')")
 	public Page<Request> retrieveAllRequestsByStates(@RequestParam RequestState state,
 			@RequestParam BonesRevealState bonesRevealState, @RequestParam EyeRevealState eyeRevealState,
 			@RequestParam("page") int page, @RequestParam("size") int size) {

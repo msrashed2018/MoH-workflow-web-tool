@@ -21,7 +21,7 @@ public interface CitizenRepository extends JpaRepository<Citizen, Long> {
 	Page<Citizen> findByZoneIdAndNationalId(long zoneId, long nationalId, Pageable pageable);
 	Page<Citizen> findByZoneIdAndMobileNumber(long zoneId, String mobileNumber, Pageable pageable);
 	Page<Citizen> findByZoneIdAndNameContaining(long zoneId, String mobileNumber, Pageable pageable);
-	Page<Citizen> findByZoneIdAndCreatedDateGreaterThan(long zoneId, Date createdDate, Pageable pageable);
+	Page<Citizen> findByZoneIdAndCreatedDateBetween(long zoneId, Date createdDateStart,Date createdDateEnd, Pageable pageable);
 	
 	
 	

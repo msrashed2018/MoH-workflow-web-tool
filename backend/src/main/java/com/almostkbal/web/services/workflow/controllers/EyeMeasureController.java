@@ -76,9 +76,8 @@ public class EyeMeasureController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<EyeMeasure> updateEyeMeasure(
 			@PathVariable int id, @Valid @RequestBody EyeMeasure EyeMeasure) {
-		Optional<EyeMeasure> existingEyeMeasure = EyeMeasureRepository.findById(id);
 
-		if(!existingEyeMeasure.isPresent())
+		if(!EyeMeasureRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
 //		EyeMeasureRepository.deleteById(id);
 		EyeMeasure updatedCitzen = EyeMeasureRepository.save(EyeMeasure);

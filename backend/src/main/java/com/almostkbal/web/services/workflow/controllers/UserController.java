@@ -41,15 +41,16 @@ public class UserController {
 	private UserRepository userRepository;
 	@Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-	@Autowired
-	private RoleRepository roleRepository;
+
 	
 	@GetMapping("/api/users")
+	@PreAuthorize("hasRole('ROLE_ADMIN')  OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
 	public Page<User> retrieveAllUsers(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return userRepository.findAll(PageRequest.of(page, size));
 	}
 	
 	@GetMapping("/api/users/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')  OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
 	public User retrieveUserById(@PathVariable long id) {
 		Optional<User> user = userRepository.findById(id);
 		if(!user.isPresent())
@@ -59,6 +60,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/api/users/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')  OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
 	public void deleteUser(@PathVariable long id) {
 		try {
 			userRepository.deleteById(id);
@@ -68,6 +70,7 @@ public class UserController {
 	}
 
 	@PostMapping("/api/users")
+	@PreAuthorize("hasRole('ROLE_ADMIN')  OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
 	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
 
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -80,6 +83,7 @@ public class UserController {
 		
 	}
 	@PutMapping("/api/users/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')  OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
 	public ResponseEntity<User> updateUser(
 			@PathVariable long id, @Valid @RequestBody User user) {
 		Optional<User> existingUser = userRepository.findById(id);
@@ -92,6 +96,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/api/users/{id}/roles")
+	@PreAuthorize("hasRole('ROLE_ADMIN')  OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
 	public ResponseEntity<Object> addRole(@PathVariable long id, @RequestBody Role role) {
 
 		Optional<User> userOptional = userRepository.findById(id);
@@ -114,6 +119,7 @@ public class UserController {
 	
 	
 	@GetMapping("/api/users/{id}/roles")
+	@PreAuthorize("hasRole('ROLE_ADMIN')  OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
 	public List<Role> retrieveUserRoles(@PathVariable long id) {
 		Optional<User> userOptional = userRepository.findById(id);
 		if (!userOptional.isPresent()) {

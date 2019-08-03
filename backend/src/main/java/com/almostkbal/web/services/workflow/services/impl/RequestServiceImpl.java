@@ -1,11 +1,12 @@
 package com.almostkbal.web.services.workflow.services.impl;
 
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import com.almostkbal.web.services.workflow.auth.UserService;
 import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.BonesRevealState;
 import com.almostkbal.web.services.workflow.entities.Citizen;
-import com.almostkbal.web.services.workflow.entities.Committee;
 import com.almostkbal.web.services.workflow.entities.EyeRevealState;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestPayment;
@@ -59,14 +59,14 @@ public class RequestServiceImpl implements RequestService {
 	private RequestTypeRepository requestTypeRepository;
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_PAYMENTS_REGISTRATION')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_PAYMENTS_REGISTRATION')")
 	public Page<Request> getRequestsForPayment(Pageable pageable) {
 		return requestRepository.findByZoneIdAndState(userService.getUserZoneId(), RequestState.PENDING_PAYMENT,
 				pageable);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_PAYMENTS_REGISTRATION')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_PAYMENTS_REGISTRATION')")
 	public Page<Request> getRequestsBySearchKeyForPayment(String searchKey, Pageable pageable) {
 		// check if searchKey is number or string
 		try {
@@ -74,8 +74,8 @@ public class RequestServiceImpl implements RequestService {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return requestRepository.findByZoneIdAndStateAndCitizenMobileNumber(userService.getUserZoneId(),
 						RequestState.PENDING_PAYMENT, searchKey, pageable);
 			} else {
@@ -84,13 +84,33 @@ public class RequestServiceImpl implements RequestService {
 						RequestState.PENDING_PAYMENT, key, pageable);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndStateAndRequestDate(userService.getUserZoneId(),
-							RequestState.PENDING_PAYMENT, requestDate, pageable);
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndStateAndRequestDateBetween(userService.getUserZoneId(),
+						RequestState.PENDING_PAYMENT, requestDateStart, requestDateEnd, pageable);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+					return requestRepository.findByZoneIdAndStateAndRequestDateBetween(userService.getUserZoneId(),
+							RequestState.PENDING_PAYMENT, requestDateStart, requestDateEnd, pageable);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
@@ -104,14 +124,14 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING')")
 	public Page<Request> getRequestsForContinueRegistering(Pageable pageable) {
 		return requestRepository.findByZoneIdAndState(userService.getUserZoneId(),
 				RequestState.PENDING_CONTINUE_REGISTERING, pageable);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING')")
 	public Page<Request> getRequestsBySearchKeyForContinueRegistering(String searchKey, Pageable pageable) {
 		// check if searchKey is number or string
 		try {
@@ -119,8 +139,8 @@ public class RequestServiceImpl implements RequestService {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return requestRepository.findByZoneIdAndStateAndCitizenMobileNumber(userService.getUserZoneId(),
 						RequestState.PENDING_CONTINUE_REGISTERING, searchKey, pageable);
 			} else {
@@ -129,13 +149,33 @@ public class RequestServiceImpl implements RequestService {
 						RequestState.PENDING_CONTINUE_REGISTERING, key, pageable);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndStateAndRequestDate(userService.getUserZoneId(),
-							RequestState.PENDING_CONTINUE_REGISTERING, requestDate, pageable);
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndStateAndRequestDateBetween(userService.getUserZoneId(),
+						RequestState.PENDING_CONTINUE_REGISTERING, requestDateStart, requestDateEnd, pageable);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+					return requestRepository.findByZoneIdAndStateAndRequestDateBetween(userService.getUserZoneId(),
+							RequestState.PENDING_CONTINUE_REGISTERING, requestDateStart, requestDateEnd, pageable);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
@@ -149,14 +189,14 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_EYE_REVEAL')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_EYE_REVEAL') ")
 	public Page<Request> getRequestsForEyeRevealAttending(Pageable page) {
 		return requestRepository.findByZoneIdAndStateAndEyeRevealState(userService.getUserZoneId(),
 				RequestState.CONTINUE_REGISTERING_DONE, EyeRevealState.PENDING_REVEAL, page);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_EYE_REVEAL')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_EYE_REVEAL')")
 	public Page<Request> getRequestsBySearchKeyForEyeRevealAttending(String searchKey, Pageable page) {
 
 		// check if searchKey is number or string
@@ -165,8 +205,8 @@ public class RequestServiceImpl implements RequestService {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndCitizenMobileNumber(
 						userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
 						EyeRevealState.PENDING_REVEAL, searchKey, page);
@@ -178,14 +218,35 @@ public class RequestServiceImpl implements RequestService {
 						EyeRevealState.PENDING_REVEAL, key, page);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndRequestDate(
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndRequestDateBetween(
+						userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
+						EyeRevealState.PENDING_REVEAL, requestDateStart, requestDateEnd, page);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+					return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndRequestDateBetween(
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
-							EyeRevealState.PENDING_REVEAL, requestDate, page);
+							EyeRevealState.PENDING_REVEAL, requestDateStart, requestDateEnd, page);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
@@ -200,14 +261,14 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_BONES_REVEAL')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_BONES_REVEAL')")
 	public Page<Request> getRequestsForBonesRevealAttending(Pageable pageable) {
 		return requestRepository.findByZoneIdAndStateAndBonesRevealState(userService.getUserZoneId(),
 				RequestState.CONTINUE_REGISTERING_DONE, BonesRevealState.PENDING_REVEAL, pageable);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_BONES_REVEAL')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_BONES_REVEAL')")
 	public Page<Request> getRequestsBySearchKeyForBonesRevealAttending(String searchKey, Pageable page) {
 		// check if searchKey is number or string
 		try {
@@ -215,8 +276,8 @@ public class RequestServiceImpl implements RequestService {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndCitizenMobileNumber(
 						userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
 						BonesRevealState.PENDING_REVEAL, searchKey, page);
@@ -228,14 +289,35 @@ public class RequestServiceImpl implements RequestService {
 						BonesRevealState.PENDING_REVEAL, key, page);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndRequestDate(
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndRequestDateBetween(
+						userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
+						BonesRevealState.PENDING_REVEAL, requestDateStart, requestDateEnd, page);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+					return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndRequestDateBetween(
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
-							BonesRevealState.PENDING_REVEAL, requestDate, page);
+							BonesRevealState.PENDING_REVEAL, requestDateStart, requestDateEnd, page);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
@@ -250,14 +332,14 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING')")
 	public Page<Request> getRequestsForEyeRevealResultRegistering(Pageable page) {
 		return requestRepository.findByZoneIdAndStateAndEyeRevealState(userService.getUserZoneId(),
 				RequestState.CONTINUE_REGISTERING_DONE, EyeRevealState.PENDING_REGISTERING, page);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING')")
 	public Page<Request> getRequestsBySearchKeyForEyeRevealResultRegistering(String searchKey, Pageable page) {
 		// check if searchKey is number or string
 		try {
@@ -265,8 +347,8 @@ public class RequestServiceImpl implements RequestService {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndCitizenMobileNumber(
 						userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
 						EyeRevealState.PENDING_REGISTERING, searchKey, page);
@@ -278,14 +360,35 @@ public class RequestServiceImpl implements RequestService {
 						EyeRevealState.PENDING_REGISTERING, key, page);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndRequestDate(
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndRequestDateBetween(
+						userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
+						EyeRevealState.PENDING_REGISTERING, requestDateStart, requestDateEnd, page);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+					return requestRepository.findByZoneIdAndStateAndEyeRevealStateAndRequestDateBetween(
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
-							EyeRevealState.PENDING_REGISTERING, requestDate, page);
+							EyeRevealState.PENDING_REGISTERING, requestDateStart, requestDateEnd, page);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
@@ -300,14 +403,14 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING')")
 	public Page<Request> getRequestsForBonesRevealResultRegistering(Pageable pageable) {
 		return requestRepository.findByZoneIdAndStateAndBonesRevealState(userService.getUserZoneId(),
 				RequestState.CONTINUE_REGISTERING_DONE, BonesRevealState.PENDING_REGISTERING, pageable);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING')")
 	public Page<Request> getRequestsBySearchKeyForBonesRevealResultRegistering(String searchKey, Pageable page) {
 		// check if searchKey is number or string
 		try {
@@ -315,8 +418,8 @@ public class RequestServiceImpl implements RequestService {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndCitizenMobileNumber(
 						userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
 						BonesRevealState.PENDING_REGISTERING, searchKey, page);
@@ -328,14 +431,35 @@ public class RequestServiceImpl implements RequestService {
 						BonesRevealState.PENDING_REGISTERING, key, page);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndRequestDate(
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndRequestDateBetween(
+						userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
+						BonesRevealState.PENDING_REGISTERING, requestDateStart, requestDateEnd, page);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+					return requestRepository.findByZoneIdAndStateAndBonesRevealStateAndRequestDateBetween(
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE,
-							BonesRevealState.PENDING_REGISTERING, requestDate, page);
+							BonesRevealState.PENDING_REGISTERING, requestDateStart, requestDateEnd, page);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
@@ -350,7 +474,7 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_REVIEWING')")
 	public Page<Request> getRequestsForReviewing(Pageable pageable) {
 		// for reviewing
 		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
@@ -366,7 +490,7 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_REVIEWING')")
 	public Page<Request> getRequestsBySearchKeyForReviewing(String searchKey, Pageable page) {
 		// for reviewing
 		List<BonesRevealState> bonesRevealStates = new ArrayList<BonesRevealState>();
@@ -383,8 +507,8 @@ public class RequestServiceImpl implements RequestService {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 
 				return requestRepository
 						.findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndCitizenMobileNumber(
@@ -399,15 +523,36 @@ public class RequestServiceImpl implements RequestService {
 								eyeRevealStates, key, page);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndRequestDateBetween(
+						userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates,
+						eyeRevealStates, requestDateStart, requestDateEnd, page);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
 
-					return requestRepository.findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndRequestDate(
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+
+					return requestRepository.findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndRequestDateBetween(
 							userService.getUserZoneId(), RequestState.CONTINUE_REGISTERING_DONE, bonesRevealStates,
-							eyeRevealStates, requestDate, page);
+							eyeRevealStates, requestDateStart, requestDateEnd, page);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -425,13 +570,13 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_APPROVING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_APPROVING')")
 	public Page<Request> getRequestsForApproving(Pageable pageable) {
 		return requestRepository.findByZoneIdAndState(userService.getUserZoneId(), RequestState.REVIEWED, pageable);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_APPROVING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_APPROVING')")
 	public Page<Request> getRequestsBySearchKeyForApproving(String searchKey, Pageable pageable) {
 		// check if searchKey is number or string
 		try {
@@ -439,8 +584,8 @@ public class RequestServiceImpl implements RequestService {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return requestRepository.findByZoneIdAndStateAndCitizenMobileNumber(userService.getUserZoneId(),
 						RequestState.REVIEWED, searchKey, pageable);
 			} else {
@@ -449,13 +594,33 @@ public class RequestServiceImpl implements RequestService {
 						RequestState.REVIEWED, key, pageable);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndStateAndRequestDate(userService.getUserZoneId(),
-							RequestState.REVIEWED, requestDate, pageable);
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndStateAndRequestDateBetween(userService.getUserZoneId(),
+						RequestState.REVIEWED, requestDateStart, requestDateEnd, pageable);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+					return requestRepository.findByZoneIdAndStateAndRequestDateBetween(userService.getUserZoneId(),
+							RequestState.REVIEWED, requestDateStart, requestDateEnd, pageable);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
@@ -469,13 +634,13 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING')")
 	public Page<Request> getApprovedRequests(Pageable pageable) {
 		return requestRepository.findByZoneIdAndState(userService.getUserZoneId(), RequestState.APPROVED, pageable);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING')")
 	public Page<Request> getApprovedRequestsBySearchKey(String searchKey, Pageable pageable) {
 		// check if searchKey is number or string
 		try {
@@ -483,8 +648,8 @@ public class RequestServiceImpl implements RequestService {
 
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return requestRepository.findByZoneIdAndStateAndCitizenMobileNumber(userService.getUserZoneId(),
 						RequestState.APPROVED, searchKey, pageable);
 			} else {
@@ -493,13 +658,33 @@ public class RequestServiceImpl implements RequestService {
 						RequestState.APPROVED, key, pageable);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndStateAndRequestDate(userService.getUserZoneId(),
-							RequestState.APPROVED, requestDate, pageable);
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndStateAndRequestDateBetween(userService.getUserZoneId(),
+						RequestState.APPROVED, requestDateStart, requestDateEnd, pageable);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+					return requestRepository.findByZoneIdAndStateAndRequestDateBetween(userService.getUserZoneId(),
+							RequestState.APPROVED, requestDateStart, requestDateEnd, pageable);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
@@ -513,13 +698,13 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING')")
 	public Page<Request> getAllRequests(Pageable page) {
 		return requestRepository.findByZoneId(userService.getUserZoneId(), page);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZENS_REQUESTS_VIEWING')")
 	public Page<Request> getAllRequestsBySearchKey(String searchKey, Pageable pageable) {
 
 		// check if searchKey is number or string
@@ -527,8 +712,8 @@ public class RequestServiceImpl implements RequestService {
 			Long key = Long.parseLong(searchKey);
 			// No Thrown exception, so searchKey is number
 			// check if it is national id or mobile number
-			if (searchKey.startsWith("201")) {
-				// search key is mobile number because it starts with 201
+			if (searchKey.startsWith("01")) {
+				// search key is mobile number because it starts with 01
 				return requestRepository.findByZoneIdAndCitizenMobileNumber(userService.getUserZoneId(), searchKey,
 						pageable);
 
@@ -537,14 +722,34 @@ public class RequestServiceImpl implements RequestService {
 				return requestRepository.findByZoneIdAndCitizenNationalId(userService.getUserZoneId(), key, pageable);
 			}
 		} catch (NumberFormatException | NullPointerException nfe) {
-			
-			if (searchKey.contains("-")) {
-				// search key is date
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			if(searchKey.contains(":")) {
+				String startDate = searchKey.split(":")[0];
+				String endDate = searchKey.split(":")[1];
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
 				try {
-					Date requestDate = (Date) formatter.parse(searchKey);
-					return requestRepository.findByZoneIdAndRequestDateGreaterThan(userService.getUserZoneId(), requestDate,
-							pageable);
+					formatDates(start, end, startDate, endDate);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				Date requestDateStart = start.getTime();
+				Date requestDateEnd = end.getTime();
+				return requestRepository.findByZoneIdAndRequestDateBetween(userService.getUserZoneId(),
+						requestDateStart, requestDateEnd, pageable);
+				
+			}else if (searchKey.contains("-")) {
+				// search key is date
+
+				try {
+					Calendar start = Calendar.getInstance();
+					Calendar end = Calendar.getInstance();
+
+					formatDates(start, end, searchKey, searchKey);
+					Date requestDateStart = start.getTime();
+					Date requestDateEnd = end.getTime();
+					return requestRepository.findByZoneIdAndRequestDateBetween(userService.getUserZoneId(),
+							requestDateStart, requestDateEnd, pageable);
 				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
@@ -560,17 +765,17 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public Page<Request> getCitizenRequests(long citizenId, Pageable pageable) {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
 		}
 
-		return requestRepository.findByZoneIdAndCitizenId(userService.getUserZoneId(), citizenId,pageable);
+		return requestRepository.findByZoneIdAndCitizenId(userService.getUserZoneId(), citizenId, pageable);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public void deleteRequest(long citizenId, long requestId) {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
@@ -608,7 +813,7 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING')")
 	public Object createRequest(long citizenId, Request request) {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
@@ -619,19 +824,20 @@ public class RequestServiceImpl implements RequestService {
 		if (!requestType.isPresent()) {
 			throw new ResourceNotFoundException("عفوا نوع الطلب غير موجود");
 		}
-		System.out.println("\n\n\n request is طلب مستعجل او عادي \n\n\n");
-		if(requestType.get().getName().equals("كشف عادي") || requestType.get().getName().equals("كشف مستعجل")) {
+		if (requestType.get().getName().equals("كشف عادي") || requestType.get().getName().equals("كشف مستعجل")) {
 			// check if citizen has request before 5 years ago
-			System.out.println("\n\n\n checking if customer has prevous reqest \n\n\n");
 			final Calendar dateBeforeFiveYears = Calendar.getInstance();
 			dateBeforeFiveYears.add(Calendar.YEAR, -5);
-			if(requestRepository.existsByZoneIdAndCitizenIdAndRequestDateGreaterThan(userService.getUserZoneId(),
+			if (requestRepository.existsByZoneIdAndCitizenIdAndRequestDateGreaterThan(userService.getUserZoneId(),
 					citizenId, dateBeforeFiveYears.getTime())) {
-				System.out.println("\n\n\n trueeeeeeeeeeeeee \n\n\n");
-				return new ResponseEntity<>(new ExceptionResponse(new Date(), "عفوا لا يمكن اضافة هذا الطلب حيث انه لم يمر خمس سنين علي اخر طلب لهذا المواطن", "عفوا لا يمكن اضافة هذا الطلب حيث انه لم يمر خمس سنين علي اخر طلب لهذا المواطن"), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(
+						new ExceptionResponse(new Date(),
+								"عفوا لا يمكن اضافة هذا الطلب حيث انه لم يمر خمس سنين علي اخر طلب لهذا المواطن",
+								"عفوا لا يمكن اضافة هذا الطلب حيث انه لم يمر خمس سنين علي اخر طلب لهذا المواطن"),
+						HttpStatus.BAD_REQUEST);
 			}
 		}
-		
+
 		Zone zone = new Zone();
 		zone.setId(userService.getUserZoneId());
 		request.setZone(zone);
@@ -639,6 +845,8 @@ public class RequestServiceImpl implements RequestService {
 		Citizen citizen = new Citizen();
 		citizen.setId(citizenId);
 		request.setCitizen(citizen);
+
+		request.setRequestDate(new Date());
 
 		Request savedRequest = null;
 		if (requestType.get().getPrice() > 0) {
@@ -668,7 +876,7 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public ResponseEntity<Request> updateRequest(long citizenId, long requestId, Request request) {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
@@ -722,7 +930,7 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
 	public void updateRequestStatus(long citizenId, long requestId, RequestStatus requestStatus) {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
@@ -745,7 +953,7 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING')")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_REVIEWING')")
 	public void reviewRequest(long requestId, Request request) {
 		if (!requestRepository.existsById(requestId)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
@@ -764,7 +972,7 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_APPROVING') ")
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_APPROVING') ")
 	public void approveRequest(long requestId, Request request) {
 		if (!requestRepository.existsById(requestId)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
@@ -778,6 +986,25 @@ public class RequestServiceImpl implements RequestService {
 		String performedBy = userService.getUsername();
 		Audit audit = new Audit(action, details.toString(), requestId, performedBy, userService.getUserZoneId());
 		auditRepository.save(audit);
+
+	}
+	
+	public void formatDates(Calendar start, Calendar end, String startDate, String endDate) throws ParseException {
+
+		// creating a date object with specifed time.
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		start.setTime(sdf.parse(startDate));
+		start.set(Calendar.HOUR_OF_DAY, 0);
+		start.set(Calendar.MINUTE, 0);
+		start.set(Calendar.SECOND, 0);
+		start.set(Calendar.MILLISECOND, 0);
+
+		end.setTime(sdf.parse(endDate));
+		end.set(Calendar.HOUR_OF_DAY, 23);
+		end.set(Calendar.MINUTE, 59);
+		end.set(Calendar.SECOND, 59);
+		end.set(Calendar.MILLISECOND, 0);
 
 	}
 

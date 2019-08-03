@@ -91,9 +91,9 @@
                                 <input [attr.disabled]="disabled ? '' : null" maxlength="12"
                                     [(ngModel)]="citizen.mobileNumber" #mobileNumber="ngModel"
                                     [ngClass]="{ 'is-invalid': f.submitted && mobileNumber.invalid }" type="text"
-                                    name="mobileNumber" class="form-control" pattern="(201)[0-9]{9}" placeholder="201xxxxxxxxx">
+                                    name="mobileNumber" class="form-control" pattern="(01)[0-9]{9}" placeholder="01xxxxxxxxx">
                                 <div *ngIf="f.submitted && mobileNumber.invalid" class="invalid-feedback">
-                                    <div *ngIf="mobileNumber.errors.maxlength"> رقم الموبيل لا يجب ان يتعدي 12 رقم
+                                    <div *ngIf="mobileNumber.errors.maxlength"> رقم الموبيل لا يجب ان يتعدي 11 رقم
                                     </div>
                                     <div *ngIf="mobileNumber.errors.pattern">رقم الموبيل غير صحيح</div>
                                 </div>

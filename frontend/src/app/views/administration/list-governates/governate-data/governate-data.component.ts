@@ -16,13 +16,13 @@ export class GovernateDataComponent implements OnInit {
   successMessage: boolean = false;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
-  // public zones : Zone[];
-  // public selectedZoneId : number
+  public zones : Zone[];
+  public selectedZoneId : number
   errorMessage = "";
   constructor(private formBuilder: FormBuilder, private governateService: GovernateService, private zoneService: ZoneService, private router: Router) { }
 
   ngOnInit() {
-    // this.fillZones();
+    this.fillZones();
   }
   collapsed(event: any): void {
   }
@@ -34,9 +34,9 @@ export class GovernateDataComponent implements OnInit {
     this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
   }
   onSave() {
-    // let zone = new Zone;
-    // zone.id = this.selectedZoneId;
-    // this.governate.zone = zone;
+    let zone = new Zone;
+    zone.id = this.selectedZoneId;
+    this.governate.zone = zone;
 
     this.governateService.createGovernate(this.governate).subscribe(
       result => {
@@ -56,14 +56,14 @@ export class GovernateDataComponent implements OnInit {
   close() {
     this.router.navigateByUrl("/administration/governates");
   }
-  // fillZones(){
-  //   this.zoneService.retrieveAllZones(0,100).subscribe(
-  //     result => {
-  //       this.zones = result['content'];
-  //     },
-  //     error => {
-  //       console.log('oops', error);
-  //   });
-  // }
+  fillZones(){
+    this.zoneService.retrieveAllZones(0,100).subscribe(
+      result => {
+        this.zones = result['content'];
+      },
+      error => {
+        console.log('oops', error);
+    });
+  }
 
 }

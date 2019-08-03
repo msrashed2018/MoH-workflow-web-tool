@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DocumentType } from '../../../model/document-type.model';
 import { DocumentTypeService } from '../../../services/administration/document-type.service';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
+import { GENERAL_PAGE_SIZE } from '../../../app.constants';
 import { DocumentCategory } from '../../../model/document-category.enum';
 @Component({
   selector: 'app-list-document-types',
@@ -27,14 +27,14 @@ export class ListDocumentTypesComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i ;
-    this.items = i*PAGINATION_PAGE_SIZE;
+    this.items = i*GENERAL_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
     if((this.page+1) < this.pages.length){
       this.page = this.page+1
-      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.items = (this.page)*GENERAL_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -43,7 +43,7 @@ export class ListDocumentTypesComponent implements OnInit {
 
     if((this.page-1) >= 0){
       this.page =this.page -1;
-      this.items = (this.page)*PAGINATION_PAGE_SIZE;
+      this.items = (this.page)*GENERAL_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -51,13 +51,14 @@ export class ListDocumentTypesComponent implements OnInit {
     this.refreshData();
   }
   refreshData(){
-    this.documentTypeService.retrieveAllDocumentTypes(this.page,PAGINATION_PAGE_SIZE).subscribe(
+    this.documentTypeService.retrieveAllDocumentTypes(this.page,GENERAL_PAGE_SIZE).subscribe(
       response => {
         this.documentTypes = response['content'] as DocumentType[];
         this.pages = new Array(response['totalPages']);
       },
-      error =>{
-        console.log('oops',error)
+error =>{
+        console.log('oops',error);
+        this.message = error.error.message;
       }
     )
   }
@@ -69,6 +70,10 @@ export class ListDocumentTypesComponent implements OnInit {
         this.documentTypeService.deleteDocumentType(id).subscribe (
           response => {
             this.refreshData();
+          },
+          error =>{
+            console.log('oops',error)
+            this.message = error.error.message  
           }
         )
       }

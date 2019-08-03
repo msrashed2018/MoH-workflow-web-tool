@@ -6,7 +6,7 @@ import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { PAGINATION_PAGE_SIZE } from '../../../app.constants';
+import { GENERAL_PAGE_SIZE } from '../../../app.constants';
 import { TokenStorageService } from '../../../services/authentication/jwt/token-storage.service';
 
 
@@ -30,16 +30,16 @@ export class ListCitizensComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i;
-    this.items = i * PAGINATION_PAGE_SIZE;
-    if (this.isForSearch) { this.searchByKey(null); } else { this.retriveAllCitizens(); }
+    this.items = i * GENERAL_PAGE_SIZE;
+    if (this.isForSearch) { this.retreiveCitizensBySearchKey(); } else { this.retriveAllCitizens(); }
   }
   nextPage(event: any): void {
     event.preventDefault();
     if ((this.page + 1) < this.pages.length) {
       this.page = this.page + 1
-      this.items = (this.page) * PAGINATION_PAGE_SIZE;
+      this.items = (this.page) * GENERAL_PAGE_SIZE;
       if (this.isForSearch) {
-        this.searchByKey(null);
+        this.retreiveCitizensBySearchKey();
       } else {
         this.retriveAllCitizens();
       }
@@ -50,9 +50,9 @@ export class ListCitizensComponent implements OnInit {
 
     if ((this.page - 1) >= 0) {
       this.page = this.page - 1;
-      this.items = (this.page) * PAGINATION_PAGE_SIZE;
+      this.items = (this.page) * GENERAL_PAGE_SIZE;
       if (this.isForSearch) {
-        this.searchByKey(null);
+        this.retreiveCitizensBySearchKey();
       } else {
         this.retriveAllCitizens();
       }
@@ -63,22 +63,17 @@ export class ListCitizensComponent implements OnInit {
     this.citizens = [];
     this.retriveAllCitizens();
   }
-  searchByKey(event: Event) {
-    this.citizens = [];
-    this.page = 0;
-    this.errorMessage = false;
-    this.noDataFound = false;
 
-    this.citizenService.findCitizensBySearchKey(this.searchKey, this.page, PAGINATION_PAGE_SIZE)
+  retreiveCitizensBySearchKey() {
+    this.citizenService.findCitizensBySearchKey(this.searchKey, this.page, GENERAL_PAGE_SIZE)
       .subscribe(
         result => {
-          if (typeof result !== 'undefined' && result !== null) {
+          if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
             this.noDataFound = false;
             this.citizens = result['content'];
             this.isForSearch = true;
             this.pages = new Array(result['totalPages']);
           } else {
-            this.pages = new Array(0);
             this.noDataFound = true;
           }
         },
@@ -88,6 +83,15 @@ export class ListCitizensComponent implements OnInit {
 
         }
       );
+  }
+
+  searchByKey(event: Event) {
+    this.citizens = [];
+    this.errorMessage = false;
+    this.noDataFound = false;
+    this.pages = new Array(0);
+    this.page=0;
+    this.retreiveCitizensBySearchKey();
   }
   calculateAge(dateString) {
     let birthDate: Date = new Date(dateString);
@@ -99,10 +103,10 @@ export class ListCitizensComponent implements OnInit {
     this.noDataFound = false;
     let date = new Date();
     // let latest_date =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.citizenService.retrieveAllCitizens(this.page, PAGINATION_PAGE_SIZE)
+    this.citizenService.retrieveAllCitizens(this.page, GENERAL_PAGE_SIZE)
       .subscribe(
         result => {
-          if (typeof result !== 'undefined' && result !== null) {
+          if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
             this.noDataFound = false;
             this.citizens = result['content'];
             this.isForSearch = false;
@@ -126,12 +130,17 @@ export class ListCitizensComponent implements OnInit {
           this.citizenService.deleteCitizen(id).subscribe(
             response => {
               this.retriveAllCitizens();
+              this.errorMessage = false;
+            },
+            error =>{
+              console.log('oops',error)
+              this.errorMessage = true; 
             }
           )
         }
       })
   }
-  onNewRequest(id) {
+  displayCitizenRequests(id) {
     let citizenName = "";
     this.citizens.forEach(
       citizen => {

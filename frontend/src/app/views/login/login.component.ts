@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit{
     this.loginInfo = new LoginInfo( this.username, this.password);
     this.jwtAuthService.attemptAuth(this.loginInfo).subscribe(
       data => {
-        console.log(data)
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.authorities);

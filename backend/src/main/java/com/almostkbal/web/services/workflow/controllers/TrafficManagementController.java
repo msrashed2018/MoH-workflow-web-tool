@@ -75,9 +75,7 @@ public class TrafficManagementController {
 	@PutMapping("/api/traffic-management/{id}")
 	public ResponseEntity<TrafficManagement> updateTrafficManagement(
 			@PathVariable int id, @Valid @RequestBody TrafficManagement trafficManagement) {
-		Optional<TrafficManagement> existingTrafficManagement = trafficManagementRepository.findById(id);
-
-		if(!existingTrafficManagement.isPresent())
+		if(!trafficManagementRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
 //		trafficManagementRepository.deleteById(id);
 		TrafficManagement updatedCitzen = trafficManagementRepository.save(trafficManagement);

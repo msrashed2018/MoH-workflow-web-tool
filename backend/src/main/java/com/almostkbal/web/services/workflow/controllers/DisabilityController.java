@@ -76,9 +76,8 @@ public class DisabilityController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Disability> updateDisability(
 			@PathVariable int id, @Valid @RequestBody Disability disability) {
-		Optional<Disability> existingDisability = disabilityRepository.findById(id);
 
-		if(!existingDisability.isPresent())
+		if(!disabilityRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
 //		disabilityRepository.deleteById(id);
 		Disability updatedCitzen = disabilityRepository.save(disability);

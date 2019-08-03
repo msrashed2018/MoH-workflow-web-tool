@@ -77,9 +77,7 @@ public class RequestTypeController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<RequestType> updateRequestType(
 			@PathVariable int id, @Valid @RequestBody RequestType requestType) {
-		Optional<RequestType> existingRequestType = requestTypeRepository.findById(id);
-
-		if(!existingRequestType.isPresent())
+		if(!requestTypeRepository.existsById(id))
 			throw new ResourceNotFoundException("id-"+ id);
 //		requestTypeRepository.deleteById(id);
 		RequestType updatedCitzen = requestTypeRepository.save(requestType);

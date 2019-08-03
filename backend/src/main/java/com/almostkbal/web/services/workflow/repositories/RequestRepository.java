@@ -2,7 +2,6 @@ package com.almostkbal.web.services.workflow.repositories;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -110,22 +109,23 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 	// ============== for search by request date
 	// ===========================================
 
-	Page<Request> findByZoneIdAndRequestDateGreaterThan(long zoneId, Date requestDate, Pageable pageable);
+	Page<Request> findByZoneIdAndRequestDateBetween(long zoneId, Date requestDateStart, Date requestDateEnd,
+			Pageable pageable);
 
-	Page<Request> findByZoneIdAndStateAndRequestDate(long zoneId, RequestState state, Date requestDate,
+	Page<Request> findByZoneIdAndStateAndRequestDateBetween(long zoneId, RequestState state, Date requestDateStart, Date requestDateEnd,
 			Pageable pageable);
 
 	// for search in eye reveal queue
-	Page<Request> findByZoneIdAndStateAndEyeRevealStateAndRequestDate(long zoneId, RequestState state,
-			EyeRevealState eyeRevealState, Date requestDate, Pageable pageable);
+	Page<Request> findByZoneIdAndStateAndEyeRevealStateAndRequestDateBetween(long zoneId, RequestState state,
+			EyeRevealState eyeRevealState, Date requestDateStart, Date requestDateEnd, Pageable pageable);
 
 	// for search in bones reveal queue
-	Page<Request> findByZoneIdAndStateAndBonesRevealStateAndRequestDate(long zoneId, RequestState state,
-			BonesRevealState bonesRevealState, Date requestDate, Pageable pageable);
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateAndRequestDateBetween(long zoneId, RequestState state,
+			BonesRevealState bonesRevealState, Date requestDateStart, Date requestDateEnd, Pageable pageable);
 
-	Page<Request> findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndRequestDate(long zoneId,
+	Page<Request> findByZoneIdAndStateAndBonesRevealStateInAndEyeRevealStateInAndRequestDateBetween(long zoneId,
 			RequestState state, Collection<BonesRevealState> bonesRevealStates,
-			Collection<EyeRevealState> eyeRevealStates, Date requestDate, Pageable pageable);
+			Collection<EyeRevealState> eyeRevealStates, Date requestDateStart, Date requestDateEnd, Pageable pageable);
 
 	// for payment'
 //	@Query("select r from Request r , BonesReveal e where e.request = r")

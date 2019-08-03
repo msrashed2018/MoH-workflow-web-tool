@@ -104,8 +104,13 @@ public class ServiceExceptionController extends ResponseEntityExceptionHandler {
 	@ResponseBody
 	public ResponseEntity<Object> conflict(HttpServletRequest req, DataIntegrityViolationException e,
 			WebRequest request) {
-
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), e.getMostSpecificCause().getMessage(),
+		String message = "";
+		if(e.getMostSpecificCause().getMessage().contains("child record found")){
+			message = " عفوا لا يمكن الحذف ";
+		}else {
+			message = e.getMostSpecificCause().getMessage();
+		}
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), message,
 				e.getCause().getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.CONFLICT);// 409
 	}
