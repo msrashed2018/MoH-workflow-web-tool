@@ -124,7 +124,7 @@ export class ListRequestsComponent implements OnInit {
   }
 
   onEdit(id) {
-    this.router.navigate(['request', id, { componentMode: "editMode" }])
+    this.router.navigate(['request/request-edit', id])
   }
   onAdd() {
     // this.router.navigate(['request/new-request'])

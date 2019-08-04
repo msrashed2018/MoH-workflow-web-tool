@@ -876,8 +876,33 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
+	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
+	public ResponseEntity<Request> editRequest(long requestId, Request request) {
+		if (!requestRepository.existsById(requestId)) {
+			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+		}
+		
+		Request updatedRequest = requestRepository.save(request);
+
+		// auditing
+		String action = "تعديل بيانات طلب";
+		StringBuilder details = new StringBuilder("");
+
+		details.append(" نوع الطلب ");
+		details.append((" : " + updatedRequest.getRequestType().getName()));
+		
+		String performedBy = userService.getUsername();
+		Audit audit = new Audit(action, details.toString(), requestId, performedBy, userService.getUserZoneId());
+		auditRepository.save(audit);
+
+		return new ResponseEntity<Request>(updatedRequest, HttpStatus.OK);
+		
+	}
+	
+	
+	@Override
 	@PreAuthorize(" hasRole('ROLE_ADMIN') OR hasRole('ROLE_SUPER_USER')  OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-	public ResponseEntity<Request> updateRequest(long citizenId, long requestId, Request request) {
+	public ResponseEntity<Request> continueRegisteringRequest(long citizenId, long requestId, Request request) {
 		if (!citizenRepository.existsById(citizenId)) {
 			throw new ResourceNotFoundException("هذا المواطن غير موجود");
 		}

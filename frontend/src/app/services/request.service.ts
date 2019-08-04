@@ -71,7 +71,13 @@ searchByStatesAndSearchKey(state,bonesRevealState, eyeRevealState,searchKey,page
           `${API_URL}/requests/${requestId}/review`
                 , request);
   }
-  updateRequest(citizenId, requestId, request){
+
+  editRequest(requestId, request){
+    return this.http.put(
+          `${API_URL}/requests/${requestId}`
+                , request);
+  }
+  continueRegisteringRequest(citizenId, requestId, request){
     return this.http.put(
           `${API_URL}/citizens/${citizenId}/requests/${requestId}`
                 , request);

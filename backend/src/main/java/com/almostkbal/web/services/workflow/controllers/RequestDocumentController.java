@@ -2,12 +2,9 @@ package com.almostkbal.web.services.workflow.controllers;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import javax.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,29 +118,27 @@ public class RequestDocumentController {
 	}
 
 	@GetMapping("/api/requests/{id}/documents/findByCategory")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_REQUEST_REVIEWING') ")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_REQUEST_REVIEWING') ")
 	public ResponseEntity<List<RequestDocument>> getRequestDocuments(@PathVariable long id,
 			@RequestParam DocumentCategory category, Model model) {
-		List<String> files = new ArrayList<String>();
-
-		log.info("reteive document of request(id=" + id + ")");
 
 		if (!requestRepository.existsById(id)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		}
+		if(category.equals(DocumentCategory.ALL)) {
+			List<RequestDocument> documents = documentRepository.findByRequestId(id);
+			return ResponseEntity.ok().body(documents);
+		}else {
+			List<RequestDocument> documents = documentRepository.findByRequestIdAndDocumentTypeCategory(id, category);
+			return ResponseEntity.ok().body(documents);
+		}
 
-		List<RequestDocument> documents = documentRepository.findByRequestIdAndDocumentTypeCategory(id, category);
-//		for(RequestDocument document : documents) {
-//			log.info("document[ name = "+document.getName()+ ", path = "+document.getPath()); 
-//			files.add(document.getName());
-//		}
-
-		return ResponseEntity.ok().body(documents);
+		
 	}
 
 	@GetMapping("/api/requests/{id}/documents/{filename:.+}")
 	@ResponseBody
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_REQUEST_REVIEWING') ")
+//	@PreAuthorize("hasRole('ROLsE_ADMIN') OR hasRole('ROLE_REQUEST_CONTINUE_REGISTERING') OR hasRole('ROLE_EYE_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_REQUEST_REVIEWING') ")
 	public ResponseEntity<Resource> retreiveRequestDocument(@PathVariable long id, @PathVariable String filename) {
 
 		RequestDocument document = documentRepository.findByRequestIdAndName(id, filename);

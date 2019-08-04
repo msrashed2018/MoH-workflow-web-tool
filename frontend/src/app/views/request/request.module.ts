@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListRequestsComponent } from './list-requests/list-requests.component';
-import { RequestComponent } from './request/request.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { RequestViewEditComponent } from './request-view-edit/request-view-edit.component';
+import { RequestViewComponent } from './request-view/request-view.component';
 import { RequestRoutingModule } from './request-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
@@ -21,9 +20,11 @@ import { BonesRevealRegisteringListComponent } from './bones-reveal-registering/
 import { BonesRevealRegisteringDataComponent } from './bones-reveal-registering/bones-reveal-registering-data/bones-reveal-registering-data.component';
 import { EyeRevealRegisteringListComponent } from './eye-reveal-registering/eye-reveal-registering-list/eye-reveal-registering-list.component';
 import { EyeRevealRegisteringDataComponent } from './eye-reveal-registering/eye-reveal-registering-data/eye-reveal-registering-data.component';
+import { RequestEditComponent } from './request-edit/request-edit.component';
+
 
 @NgModule({
-  declarations: [ListRequestsComponent, RequestComponent, RequestViewEditComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, ReviewRequestsComponent, ApproveRequestsComponent, BonesRevealRegisteringListComponent, BonesRevealRegisteringDataComponent, EyeRevealRegisteringListComponent, EyeRevealRegisteringDataComponent],
+  declarations: [ListRequestsComponent, RequestViewComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, ReviewRequestsComponent, ApproveRequestsComponent, BonesRevealRegisteringListComponent, BonesRevealRegisteringDataComponent, EyeRevealRegisteringListComponent, EyeRevealRegisteringDataComponent, RequestEditComponent],
   imports: [
     CommonModule,
     AlertModule,

@@ -13,8 +13,10 @@ export class CityService {
   ) { }
 
   retrieveAllCities(page,size) {
+    return this.http.get<City[]>(`${API_URL}/cities/findAll?page=${page}&size=${size}`);
+  }
+  retrieveZoneCities(page,size) {
     return this.http.get<City[]>(`${API_URL}/cities?page=${page}&size=${size}`);
-
   }
 
   deleteCity(id){

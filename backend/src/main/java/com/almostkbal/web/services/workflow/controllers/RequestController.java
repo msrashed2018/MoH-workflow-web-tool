@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -178,11 +177,17 @@ public class RequestController {
 	}
 
 	@PutMapping("/api/citizens/{citizenId}/requests/{requestId}")
-	public ResponseEntity<Request> updateRequest(@PathVariable long citizenId, @PathVariable long requestId,
+	public ResponseEntity<Request> continueRegisteringRequest(@PathVariable long citizenId, @PathVariable long requestId,
 			@Valid @RequestBody Request request) {
-		return requestService.updateRequest(citizenId, requestId, request);
+		return requestService.continueRegisteringRequest(citizenId, requestId, request);
 	}
 
+	@PutMapping("/api/requests/{requestId}")
+	public ResponseEntity<Request> editRequest(@PathVariable long requestId,
+			@Valid @RequestBody Request request) {
+		return requestService.editRequest(requestId, request);
+	}
+	
 	@PutMapping("/api/citizens/{citizenId}/requests/{requestId}/updateStatus")
 	public void updateRequestStatus(@PathVariable long citizenId, @PathVariable long requestId,
 			@Valid @RequestBody RequestStatus requestStatus) {

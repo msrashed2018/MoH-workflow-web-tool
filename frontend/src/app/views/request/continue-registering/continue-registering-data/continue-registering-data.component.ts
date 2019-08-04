@@ -128,7 +128,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
       committee.id = this.selectedBonesCommitteeId;
       this.request.bonesCommittee = committee;
     }
-    this.requestService.updateRequest(this.citizen.id, this.request.id, this.request).subscribe(
+    this.requestService.continueRegisteringRequest(this.citizen.id, this.request.id, this.request).subscribe(
       result => {
         this.medicalRevealErrorMessage = "";
         this.medicalRevealSuccessMessage = "تم حفظ بيانات الكشف الطبي بنجاح"

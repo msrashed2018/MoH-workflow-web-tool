@@ -68,7 +68,7 @@ export class CommitteeMemberViewEditComponent implements OnInit {
       }
     );
   }
-  close() {
+close() {
     this.router.navigateByUrl("/administration/committee-members");
   }
 

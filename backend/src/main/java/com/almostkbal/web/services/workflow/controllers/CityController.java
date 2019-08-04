@@ -41,9 +41,16 @@ public class CityController {
 	
 	@GetMapping("/api/cities")
 //	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')")
-	public Page<City> retrieveAllCities(@RequestParam("page") int page, @RequestParam("size") int size) {
+	public Page<City> retrieveZoneCities(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return cityRepository.findByGovernateZoneId(userService.getUserZoneId(), PageRequest.of(page, size));
 	}
+	
+	@GetMapping("/api/cities/findAll")
+	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') ")
+	public Page<City> retrieveAllCities(@RequestParam("page") int page, @RequestParam("size") int size) {
+		return cityRepository.findAll(PageRequest.of(page, size));
+	}
+
 
 	@GetMapping("/api/cities/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE') OR hasRole('ROLE_CITIZEN_REQUEST_REGISTERING') OR hasRole('ROLE_CITIZENS_DATA_EDITING')  ")

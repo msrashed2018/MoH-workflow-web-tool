@@ -31,13 +31,12 @@ import { DocumentCategory } from '../../../model/document-category.enum';
 import { RequestDocument } from '../../../model/request-document.model';
 import { DocumentTypeService } from '../../../services/administration/document-type.service';
 import { DocumentType } from '../../../model/document-type.model';
-
 @Component({
-  selector: 'app-request',
-  templateUrl: './request.component.html',
-  styleUrls: ['./request.component.scss']
+  selector: 'app-request-edit',
+  templateUrl: './request-edit.component.html',
+  styleUrls: ['./request-edit.component.scss']
 })
-export class RequestComponent implements OnInit {
+export class RequestEditComponent implements OnInit {
 
   constructor(private documentTypeService: DocumentTypeService, private route: ActivatedRoute, private formBuilder: FormBuilder, private committeeService: CommitteeService, private disabilityService: DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
 
@@ -126,7 +125,7 @@ export class RequestComponent implements OnInit {
   ngOnInit() {
     this.route.params.forEach((urlParams) => {
       this.requestId = urlParams['id'];
-      this.componentMode = urlParams['componentMode'];
+      // this.componentMode = urlParams['componentMode'];
       this.citizenId = urlParams['citizenId'];
       // this.requestId= 1;
       this.displayRequestDataDetails();
@@ -284,7 +283,7 @@ export class RequestComponent implements OnInit {
     }
 
     // console.log(JSON.stringify(this.request))
-    this.requestService.updateRequest(this.citizenId, this.request.id, this.request).subscribe(
+    this.requestService.editRequest(this.request.id, this.request).subscribe(
       result => {
         this.requestDataErrorMessage = "";
         this.requestDataSuccessMessage = "تم حفظ الطلب بنجاح"
@@ -465,7 +464,7 @@ export class RequestComponent implements OnInit {
   fillRequestTypes() {
     this.requestTypeService.retrieveAllRequestTypes(0, 100).subscribe(
       result => {
-        this.requestTypes = result;
+        this.requestTypes = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -474,7 +473,7 @@ export class RequestComponent implements OnInit {
   fillCustoms() {
     this.customService.retrieveAllCustoms(0, 100).subscribe(
       result => {
-        this.customs = result;
+        this.customs = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -483,7 +482,7 @@ export class RequestComponent implements OnInit {
   fillTrafficManagements() {
     this.trafficManagementService.retrieveAllTrafficManagement(0, 100).subscribe(
       result => {
-        this.trafficManagements = result;
+        this.trafficManagements = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -493,7 +492,7 @@ export class RequestComponent implements OnInit {
   fillRequestStatuses() {
     this.requestStatusService.retrieveAllRequestStatus(0, 100).subscribe(
       result => {
-        this.requestStatuses = result;
+        this.requestStatuses = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -502,7 +501,7 @@ export class RequestComponent implements OnInit {
   fillMeasures() {
     this.eyeMeasureService.retrieveAllEyeMeasure(0, 100).subscribe(
       result => {
-        this.measures = result;
+        this.measures = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -511,7 +510,7 @@ export class RequestComponent implements OnInit {
   fillEquipments() {
     this.equipmentService.retrieveAllEquipments(0, 100).subscribe(
       result => {
-        this.equipments = result;
+        this.equipments = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -520,7 +519,7 @@ export class RequestComponent implements OnInit {
   fillDisabilities() {
     this.disabilityService.retrieveAllDisabilities(0, 100).subscribe(
       result => {
-        this.disabilities = result;
+        this.disabilities = result['content'];
       },
       error => {
         console.log('oops', error);
@@ -529,7 +528,7 @@ export class RequestComponent implements OnInit {
   fillCommittees() {
     this.committeeService.retrieveAllCommittees(0, 100).subscribe(
       result => {
-        this.committees = result;
+        this.committees = result['content'];
       },
       error => {
         console.log('oops', error);

@@ -107,8 +107,10 @@ export class ReviewRequestsComponent implements OnInit {
         }
       );
   }
-
-  onApproved(id) {
+  onEdit(id) {
+    this.router.navigate(['request/request-edit', id])
+  }
+  onReviewed(id) {
     this.confirmationModalService.confirm(' اضغط علي ok', 'هل انت متاكد من  مراجعة الطلب ')
       .then((confirmed) => {
         if (confirmed) {

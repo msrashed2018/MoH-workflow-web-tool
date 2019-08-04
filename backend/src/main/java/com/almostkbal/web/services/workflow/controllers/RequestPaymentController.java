@@ -41,7 +41,7 @@ public class RequestPaymentController {
 	private UserService userService;
 	
 	@GetMapping("/api/requests/{id}/payment")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_PAYMENTS_REGISTRATION')")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_PAYMENTS_REGISTRATION')")
 	public RequestPayment retrieveRequestRequestPayment(@PathVariable long id) {
 		if (!requestRepository.existsById(id)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");

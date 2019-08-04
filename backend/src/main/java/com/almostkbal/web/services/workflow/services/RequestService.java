@@ -1,7 +1,5 @@
 package com.almostkbal.web.services.workflow.services;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -64,8 +62,10 @@ public interface RequestService {
 
 	Object createRequest(long citizenId, Request request);
 
-	ResponseEntity<Request> updateRequest(long citizenId, long requestId, Request request);
+	ResponseEntity<Request> continueRegisteringRequest(long citizenId, long requestId, Request request);
 
+	ResponseEntity<Request> editRequest(long requestId, Request request);
+	
 	void updateRequestStatus(long citizenId, long requestId, RequestStatus requestStatus);
 
 	void reviewRequest(long requestId, Request request);

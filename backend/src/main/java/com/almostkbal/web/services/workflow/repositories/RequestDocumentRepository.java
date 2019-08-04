@@ -14,6 +14,8 @@ import com.almostkbal.web.services.workflow.entities.RequestDocument;
 
 public interface RequestDocumentRepository extends JpaRepository<RequestDocument, Long> {
 	
+	List<RequestDocument> findByRequestId(long id);
+	
 	List<RequestDocument> findByRequestIdAndDocumentTypeCategory(long id, DocumentCategory category);
 	
 	List<RequestDocument> findByRequestIdAndDocumentTypeId(long requestId, long documentTypeId);
