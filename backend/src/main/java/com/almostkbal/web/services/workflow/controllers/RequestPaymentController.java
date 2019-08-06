@@ -81,5 +81,38 @@ public class RequestPaymentController {
 		return new ResponseEntity<RequestPayment>(savedRequestPayment, HttpStatus.OK);
 
 	}
+	
+//	@PutMapping("/api/requests/{id}/payment")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_REQUEST_REVIEWING') OR hasRole('ROLE_PAYMENTS_REGISTRATION')")
+//	public ResponseEntity<RequestPayment> editRequestPayment(@PathVariable long id,
+//			@Valid @RequestBody RequestPayment requestPayment, Authentication authentication) {
+//
+//		
+//		if (!requestRepository.existsById(id)) {
+//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+//		}
+//		Request request = new Request();
+//		request.setId(id);
+//		if (requestPayment.getPaymentDone() == 1) {
+//			requestRepository.setRequestState(id, RequestState.PENDING_CONTINUE_REGISTERING);
+//		}
+//		requestPayment.setRequest(request);
+//		RequestPayment savedRequestPayment = requestPaymentRepository.save(requestPayment);
+//		
+//		
+//		// auditing
+//		String action = "تسجيل مدفوعات طلب";
+//		StringBuilder details = new StringBuilder("");
+//		details.append(" المبلغ ");
+//		details.append(" : "+ savedRequestPayment.getPrice());
+//		details.append(" رقم الايصال ");
+//		details.append(" : "+ savedRequestPayment.getReceiptSerialNumber());
+//		String performedBy = authentication.getName();
+//		Audit audit = new Audit(action, details.toString(), id, performedBy, userService.getUserZoneId());
+//		auditRepository.save(audit);
+//
+//		return new ResponseEntity<RequestPayment>(savedRequestPayment, HttpStatus.OK);
+//
+//	}
 
 }

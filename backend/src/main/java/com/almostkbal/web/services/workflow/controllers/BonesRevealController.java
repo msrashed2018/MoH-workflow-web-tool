@@ -37,8 +37,7 @@ public class BonesRevealController {
 
 	@Autowired
 	private AuditRepository auditRepository;
-	
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -79,11 +78,13 @@ public class BonesRevealController {
 		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
 
 	}
+
 //	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MEDICAL_REGISTERING')")
 	@PutMapping("/api/requests/{requestId}/bones-reveal/{bonesRevealId}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_BONES_REVEAL_RESULT_REGISTERING') OR hasRole('ROLE_REQUEST_REVIEWING')")
-	public ResponseEntity<BonesReveal> updateRequestBonesReveal(@PathVariable long requestId,
-			@PathVariable long bonesRevealId, @Valid @RequestBody BonesReveal bonesReveal, Authentication authentication) {
+	public ResponseEntity<BonesReveal> registerBonesRevealData(@PathVariable long requestId,
+			@PathVariable long bonesRevealId, @Valid @RequestBody BonesReveal bonesReveal,
+			Authentication authentication) {
 
 		if (!requestRepository.existsById(requestId))
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
@@ -102,20 +103,60 @@ public class BonesRevealController {
 		// auditing
 		String action = "تسجيل بيانات كشف عظام";
 		StringBuilder details = new StringBuilder("");
-		if(savedBonesReveal.getDisability() != null) {
+		if (savedBonesReveal.getDisability() != null) {
 			details.append(" نوع الاعاقة ");
-			details.append(" : "+ savedBonesReveal.getDisability().getName());
-			
+			details.append(" : " + savedBonesReveal.getDisability().getName());
+
 			details.append(" نوع التجهيزة ");
-			details.append(" : "+ savedBonesReveal.getDisability().getEquipment().getName());
+			details.append(" : " + savedBonesReveal.getDisability().getEquipment().getName());
 		}
 		details.append(" نتيجة الكشف ");
-		details.append(" : "+ savedBonesReveal.getResult());
+		details.append(" : " + savedBonesReveal.getResult());
 		String performedBy = authentication.getName();
 		Audit audit = new Audit(action, details.toString(), requestId, performedBy, userService.getUserZoneId());
 		auditRepository.save(audit);
 
 		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
 	}
+	
+	
+//	@PutMapping("/api/requests/{requestId}/bones-reveal/{bonesRevealId}")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR  hasRole('ROLE_REQUEST_REVIEWING')")
+//	public ResponseEntity<BonesReveal> editBonesRevealData(@PathVariable long requestId,
+//			@PathVariable long bonesRevealId, @Valid @RequestBody BonesReveal bonesReveal,
+//			Authentication authentication) {
+//
+//		if (!requestRepository.existsById(requestId))
+//			throw new ResourceNotFoundException("هذا الطلب غير موجود");
+//
+//		if (!bonesRevealRepository.existsById(bonesRevealId)) {
+//			throw new ResourceNotFoundException("عفوا لم يتم كشف عظام لهذا المواطن");
+//		}
+//		Request request = new Request();
+//		request.setId(requestId);
+//		bonesReveal.setRequest(request);
+//		BonesReveal savedBonesReveal = bonesRevealRepository.save(bonesReveal);
+//
+//		if (bonesReveal.getRevealDone() == 1) {
+//			requestRepository.setBonesRevealState(requestId, BonesRevealState.DONE);
+//		}
+//		// auditing
+//		String action = "تسجيل بيانات كشف عظام";
+//		StringBuilder details = new StringBuilder("");
+//		if (savedBonesReveal.getDisability() != null) {
+//			details.append(" نوع الاعاقة ");
+//			details.append(" : " + savedBonesReveal.getDisability().getName());
+//
+//			details.append(" نوع التجهيزة ");
+//			details.append(" : " + savedBonesReveal.getDisability().getEquipment().getName());
+//		}
+//		details.append(" نتيجة الكشف ");
+//		details.append(" : " + savedBonesReveal.getResult());
+//		String performedBy = authentication.getName();
+//		Audit audit = new Audit(action, details.toString(), requestId, performedBy, userService.getUserZoneId());
+//		auditRepository.save(audit);
+//
+//		return new ResponseEntity<BonesReveal>(savedBonesReveal, HttpStatus.OK);
+//	}
 
 }

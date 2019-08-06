@@ -1,7 +1,11 @@
 package com.almostkbal.web.services.workflow.controllers;
 
 import java.net.URI;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -37,14 +41,34 @@ public class DocumentTypeController {
 	@Autowired
 	private DocumentTypeRepository documentTypeRepository;
 	
+	
+	public static void main(String[] args) {
+		Locale locale = new Locale("en_S");
+		DecimalFormat nFormatter = (DecimalFormat)NumberFormat.getInstance(locale);
+//		DecimalFormat nFormatter = null;
+		
+//		608
+//		HRK
+//		760
+//		752
+		nFormatter.setCurrency(null);
+		System.out.println("hereeeeeeeeeeeee");
+	}
+
+	
+	
 	@GetMapping("/api/document-types")
 	public Page<DocumentType> retrieveAllDocumentTypes(@RequestParam("page") int page, @RequestParam("size") int size) {
 		return documentTypeRepository.findAll(PageRequest.of(page, size));
 	}
 	@GetMapping("/api/document-types/findByCategory")
-	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
+//	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public List<DocumentType> retreiveDocumentTypesByCategory(@RequestParam("category") DocumentCategory category) {
+		if(category.equals(DocumentCategory.ALL)) {
+			return documentTypeRepository.findAll();
+		}else {
 		return documentTypeRepository.findByCategory(category);
+		}
 	}
 	@GetMapping("/api/document-types/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")

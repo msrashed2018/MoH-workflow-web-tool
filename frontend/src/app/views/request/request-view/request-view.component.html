@@ -110,6 +110,13 @@
                             <input [attr.disabled]="true" [(ngModel)]="request.bonesRevealState" #bonesRevealState="ngModel" type="text" name="bonesRevealState" class="form-control">
                         </div>
                     </div> -->
+                    <!-- <div class="form-group row">
+                        <label class="col-md-2 col-form-label font-weight-bold" for="zone">المقر</label>
+                        <div class="col-md-5">
+                            <input   [attr.disabled]="true" [(ngModel)]="request.zone.name" #zone="ngModel" type="text"
+                                name="zone" class="form-control">
+                        </div>
+                    </div> -->
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label font-weight-bold" for="description">ملاحظات</label>
                         <div class="col-md-5">
@@ -208,11 +215,11 @@
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label font-weight-bold" for="eyeCommitteeDate">تاريخ
                             اللجنة</label>
-                        <div *ngIf="eyeCommittee != null " class="col-md-5">
-                            <input [attr.disabled]="true" [(ngModel)]="eyeCommittee.date" type="text"
+                        <div *ngIf="request.eyeCommittee != null " class="col-md-5">
+                            <input [attr.disabled]="true" [(ngModel)]="request.eyeCommittee.date" type="text"
                                 name="eyeCommitteeDate" class="form-control">
                         </div>
-                        <div *ngIf="eyeCommittee == null " class="col-md-5">
+                        <div *ngIf="request.eyeCommittee == null " class="col-md-5">
                             <input [attr.disabled]="true" value="" type="text" name="eyeCommitteeDate"
                                 class="form-control">
                         </div>
@@ -302,11 +309,11 @@
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label font-weight-bold" for="bonesCommitteeDate"> تاريخ
                             اللجنة</label>
-                        <div *ngIf="bonesCommittee != null" class="col-md-5">
-                            <input [attr.disabled]="true" [(ngModel)]="bonesCommittee.date" type="text"
+                        <div *ngIf="request.bonesCommittee != null" class="col-md-5">
+                            <input [attr.disabled]="true" [(ngModel)]="request.bonesCommittee.date" type="text"
                                 name="bonesCommitteeDate" class="form-control">
                         </div>
-                        <div *ngIf="bonesCommittee == null" class="col-md-5">
+                        <div *ngIf="request.bonesCommittee == null" class="col-md-5">
                             <input [attr.disabled]="true" value="" type="text" name="bonesCommitteeDate"
                                 class="form-control">
                         </div>
@@ -417,7 +424,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <br />
         </div>

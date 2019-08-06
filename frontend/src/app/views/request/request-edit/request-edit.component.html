@@ -26,9 +26,10 @@
 
                 <div (collapsed)="requestDataCollapsed($event)" (expanded)="requestDataExpanded($event)"
                     [collapse]="isRequestDataCollapsed" class="card-body ">
-                    <!-- <form class="form-horizontal" #f="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate> -->
+
                     <div class="form-group row">
-                        <label class=" col-md-2 col-form-label font-weight-bold" for="citizenName">اسم المواطن</label>
+                        <label class=" col-md-2 col-form-label font-weight-bold" for="citizenName">اسم
+                            المواطن</label>
                         <div class="col-md-5">
                             <input [attr.disabled]="true" [(ngModel)]="citizen.name" #citizenName="ngModel" type="text"
                                 name="citizenName" class="form-control">
@@ -36,7 +37,8 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label font-weight-bold" for="nationalId">الرقم القومي</label>
+                        <label class="col-md-2 col-form-label font-weight-bold" for="nationalId">الرقم
+                            القومي</label>
                         <div class="col-md-5">
                             <input [attr.disabled]="true" [(ngModel)]="citizen.nationalId" #nationalId="ngModel"
                                 type="number" name="nationalId" class="form-control">
@@ -53,14 +55,15 @@
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label font-weight-bold" for="createdBy">تسجيل بواسطة</label>
                         <div class="col-md-5">
-                            <input  [attr.disabled]="true"  [(ngModel)]="request.createdBy" #createdBy="ngModel"
+                            <input [attr.disabled]="true" [(ngModel)]="request.createdBy" #createdBy="ngModel"
                                 type="text" name="createdBy" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label font-weight-bold" for="requestDate"> تاريخ التسجيل</label>
+                        <label class="col-md-2 col-form-label font-weight-bold" for="requestDate"> تاريخ
+                            التسجيل</label>
                         <div class="col-md-5">
-                            <input  [attr.disabled]="true"  [(ngModel)]="request.requestDate" #createdDate="ngModel"
+                            <input [attr.disabled]="true" [(ngModel)]="request.requestDate" #createdDate="ngModel"
                                 type="text" name="requestDate" class="form-control">
                         </div>
                     </div>
@@ -119,7 +122,8 @@
                         </div>
                     </div> -->
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label font-weight-bold" for="requestStatus">نتيجة الطلب</label>
+                        <label class="col-md-2 col-form-label font-weight-bold" for="requestStatus">نتيجة
+                            الطلب</label>
                         <div class="col-md-5">
                             <select name="requestStatus" class="form-control" [(ngModel)]="selectedRequestStatusId"
                                 #requestStatus="ngModel">
@@ -145,24 +149,30 @@
                         <button (click)="onSaveRequestData()" class="btn btn-sm btn-primary"><i
                                 class="fa fa-dot-circle-o"></i> حفظ</button>
                     </div>
-                    <!-- </form> -->
                 </div>
+
+                <!-- </form> -->
             </div>
         </div>
-        <div style="width:100% !important;">
-            <div class="card">
-                <div class="card-header">
-                    <strong style="color: rgba(27, 17, 168, 0.582)">المدفوعات </strong>
-                    <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-minimize"
-                            (click)="togglePaymentDataCollapse()"><i class={{iconPaymentDataCollapse}}></i></button>
-                    </div>
+    </div>
+
+
+
+    <div style="width:100% !important;">
+        <div class="card">
+            <div class="card-header">
+                <strong style="color: rgba(27, 17, 168, 0.582)">المدفوعات</strong>
+                <div class="card-header-actions">
+                    <button type="button" class="card-header-action btn btn-link btn-minimize"
+                        (click)="togglePaymentDataCollapse()"><i class={{iconPaymentDataCollapse}}></i></button>
                 </div>
-                <div (collapsed)="paymentDataCollapsed($event)" (expanded)="paymentDataExpanded($event)"
-                    [collapse]="isPaymentDataCollapsed" class="card-body ">
-                    <!-- <form class="form-horizontal" #paymentForm="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate> -->
+            </div>
+            <div (collapsed)="paymentDataCollapsed($event)" (expanded)="paymentDataExpanded($event)"
+                [collapse]="isPaymentDataCollapsed" class="card-body ">
+                <div *ngIf="payment != null">
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label font-weight-bold" for="price">سعر الطلب</label>
+
                         <div class="col-md-5">
                             <input [(ngModel)]="payment.price" #price="ngModel" type="number" name="price"
                                 class="form-control">
@@ -200,30 +210,38 @@
                         <button (click)="onSavePayment()" class="btn btn-sm btn-primary"><i
                                 class="fa fa-dot-circle-o"></i> حفظ</button>
                     </div>
-                    <!-- </form> -->
                 </div>
+                <div *ngIf="payment == null">
+                    <p style="color: crimson"> لم يتم تسجيل مدفوعات لهذا الطلب</p>
+                </div>
+                <!-- </form> -->
             </div>
         </div>
+    </div>
 
-        <div style="width:100% !important;">
-            <div class="card">
-                <div class="card-header">
-                    <strong style="color: rgba(27, 17, 168, 0.582)">كشف الرمد</strong>
-                    <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-minimize"
-                            (click)="toggleEyeRevealDataCollapse()"><i class={{iconEyeRevealDataCollapse}}></i></button>
-                    </div>
+    <div style="width:100% !important;">
+        <div class="card">
+            <div class="card-header">
+                <strong style="color: rgba(27, 17, 168, 0.582)">كشف الرمد</strong>
+                <div class="card-header-actions">
+                    <button type="button" class="card-header-action btn btn-link btn-minimize"
+                        (click)="toggleEyeRevealDataCollapse()"><i class={{iconEyeRevealDataCollapse}}></i></button>
                 </div>
-                <div (collapsed)="eyeRevealDataCollapsed($event)" (expanded)="eyeRevealDataExpanded($event)"
-                    [collapse]="isEyeRevealDataCollapsed" class="card-body ">
-                    <!-- <form class="form-horizontal" #eyeForm="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate> -->
+            </div>
+            <div (collapsed)="eyeRevealDataCollapsed($event)" (expanded)="eyeRevealDataExpanded($event)"
+                [collapse]="isEyeRevealDataCollapsed" class="card-body ">
+                <!-- <form class="form-horizontal" #eyeForm="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate> -->
+                <div *ngIf="eyeReveal != null">
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label font-weight-bold" for="committee">اللجنة</label>
-                        <div class="col-md-5">
-                            <select name="committee" class="form-control" [(ngModel)]="selectedEyeCommitteeId">
-                                <option *ngFor="let c of committees" [ngValue]="c.id">{{c.type}} | {{c.function}} |
-                                    {{c.date}}</option>
-                            </select>
+                        <label class="col-md-2 col-form-label font-weight-bold" for="eyeCommitteeDate">تاريخ
+                            اللجنة</label>
+                        <div *ngIf="request.eyeCommittee != null " class="col-md-5">
+                            <input [attr.disabled]="true" [(ngModel)]="request.eyeCommittee.date" type="text"
+                                name="eyeCommitteeDate" class="form-control">
+                        </div>
+                        <div *ngIf="request.eyeCommittee == null " class="col-md-5">
+                            <input [attr.disabled]="true" value="" type="text" name="eyeCommitteeDate"
+                                class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -296,35 +314,44 @@
                         <button (click)="onSaveEyeReveal()" class="btn btn-sm btn-primary"><i
                                 class="fa fa-dot-circle-o"></i> حفظ</button>
                     </div>
-                    <!-- </form> -->
                 </div>
+                <div *ngIf="eyeReveal == null">
+                    <p style="color: crimson"> لم يتم تسجيل كشف رمد لهذا الطلب</p>
+                </div>
+                <!-- </form> -->
             </div>
         </div>
+    </div>
 
-        <div style="width:100% !important;">
-            <div class="card">
-                <div class="card-header">
-                    <strong style="color: rgba(27, 17, 168, 0.582)">كشف العظام</strong>
-                    <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-minimize"
-                            (click)="toggleBonesRevealDataCollapse()"><i
-                                class={{iconBonesRevealDataCollapse}}></i></button>
-                    </div>
+    <div  style="width:100% !important;">
+        <div class="card">
+            <div class="card-header">
+                <strong style="color: rgba(27, 17, 168, 0.582)">كشف العظام</strong>
+                <div class="card-header-actions">
+                    <button type="button" class="card-header-action btn btn-link btn-minimize"
+                        (click)="toggleBonesRevealDataCollapse()"><i class={{iconBonesRevealDataCollapse}}></i></button>
                 </div>
-                <div (collapsed)="bonesRevealDataCollapsed($event)" (expanded)="bonesRevealDataExpanded($event)"
-                    [collapse]="isBonesRevealDataCollapsed" class="card-body ">
-                    <!-- <form class="form-horizontal" #bonesForm="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate> -->
+            </div>
+            
+            <div (collapsed)="bonesRevealDataCollapsed($event)" (expanded)="bonesRevealDataExpanded($event)"
+                [collapse]="isBonesRevealDataCollapsed" class="card-body ">
+                <!-- <form class="form-horizontal" #bonesForm="ngForm" (ngSubmit)="f.form.valid && onSave()" novalidate> -->
+                <div *ngIf="bonesReveal != null">
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label font-weight-bold" for="committee">اللجنة</label>
-                        <div class="col-md-5">
-                            <select name="committee" class="form-control" [(ngModel)]="selectedBonesCommitteeId">
-                                <option *ngFor="let committee of committees" [value]="committee.id">{{committee.type}} |
-                                    {{committee.function}} | {{committee.date}}</option>
-                            </select>
+                        <label class="col-md-2 col-form-label font-weight-bold" for="bonesCommitteeDate"> تاريخ
+                            اللجنة</label>
+                        <div *ngIf="request.bonesCommittee != null" class="col-md-5">
+                            <input [attr.disabled]="true" [(ngModel)]="request.bonesCommittee.date" type="text"
+                                name="bonesCommitteeDate" class="form-control">
+                        </div>
+                        <div *ngIf="request.bonesCommittee == null" class="col-md-5">
+                            <input [attr.disabled]="true" value="" type="text" name="bonesCommitteeDate"
+                                class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label font-weight-bold" for="disabilityType">نوع الاعاقة</label>
+                        <label class="col-md-2 col-form-label font-weight-bold" for="disabilityType">نوع
+                            الاعاقة</label>
                         <div class="col-md-5">
                             <select name="committee" class="form-control" [(ngModel)]="selectedDisabilityTypeId">
                                 <option *ngFor="let disability of disabilities" [value]="disability.id">
@@ -333,10 +360,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label font-weight-bold" for="equipmentType">نوع المعده</label>
+                        <label class="col-md-2 col-form-label font-weight-bold" for="equipmentType">نوع
+                            المعده</label>
                         <div class="col-md-5">
                             <select name="committee" class="form-control" [(ngModel)]="selectedEquipmentTypeId">
-                                <option *ngFor="let equipment of equipments" [value]="equipment.id">{{equipment.name}}
+                                <option *ngFor="let equipment of equipments" [value]="equipment.id">
+                                    {{equipment.name}}
                                 </option>
                             </select>
                         </div>
@@ -368,85 +397,98 @@
                         <button (click)="onSaveBonesReveal()" class="btn btn-sm btn-primary"><i
                                 class="fa fa-dot-circle-o"></i> حفظ</button>
                     </div>
-                    <!-- </form> -->
                 </div>
-            </div>
-        </div>
-
-        <div style="width:100% !important;">
-            <div class="card">
-                <div class="card-header">
-                    <strong style="color: rgba(27, 17, 168, 0.582)">الاوراق</strong>
-                    <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-minimize"
-                            (click)="toggleFileUploadDataCollapse()"><i
-                                class={{iconFileUploadDataCollapse}}></i></button>
-                    </div>
+                <div *ngIf="bonesReveal == null">
+                    <p style="color: crimson"> لم يتم تسجيل كشف عظام لهذا الطلب</p>
                 </div>
-                <div (collapsed)="fileUploadDataCollapsed($event)" (expanded)="fileUploadDataExpanded($event)"
-                    [collapse]="isFileUploadDataCollapsed" class="card-body ">
-                    <div>
-                        <table class="table table-responsive-sm table-hover table-outline mb-0">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th class="text-center">الملفات</th>
-                                    <th class="text-center">مسح</th>
-                                    <th class="text-center">تحميل</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let file of fileUploads | keyvalue; let i=index">
-                                    <td class="text-center"><i class="fa fa-file-pdf-o"
-                                            style="font-size:18px;color:red"></i>{{file.key}}</td>
-                                    <td class="text-center">
-                                        <button type="button" class="delete-btn btn btn-success"
-                                            (click)="getFile(file.key)">تحميل
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                    <td class="text-center">
-                                        <button type="button" class="delete-btn btn btn-danger"
-                                            (click)="onDelete(file)">حذف
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div *ngIf="uploading" class="progress">
-                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
-                            attr.aria-valuenow="{{progress.percentage}}" aria-valuemin="0" aria-valuemax="100"
-                            [ngStyle]="{width:progress.percentage+'%'}">
-                            {{progress.percentage}}%</div>
-                    </div>
-                    <div class="form-group row">
-
-                        <label class="col-md-2 col-form-label" for="file-multiple-input">
-                            <input type="file" accept="application/pdf" id="file-multiple-input"
-                                name="file-multiple-input" (change)="selectFile($event)" multiple>
-                        </label>
-
-                    </div>
-                    <div *ngIf="fileUploadErrorMessage">
-                        <alert type="danger">
-                            <strong>{{fileUploadErrorMessage}}</strong>
-                        </alert>
-                    </div>
-                    <div class="card-footer">
-                        <button class="col-md-2 col-form-label" class="btn btn-success" [disabled]="!selectedFiles"
-                            (click)="upload()">حفظ</button>
-                    </div>
-
-                </div>
+                <!-- </form> -->
             </div>
-            <div>
-                <button type="button" class="delete-btn btn btn-danger" (click)="onDelete()">مسح<i
-                        class="fa fa-trash"></i></button>
-                <button type="button" class="edit-btn btn btn-info" (click)="onClose()">رجوع<i
-                        class="fa fa-ban"></i></button>
-            </div>
-            <br />
         </div>
     </div>
+
+    <div style="width:100% !important;">
+        <div class="card">
+            <div class="card-header">
+                <strong style="color: rgba(27, 17, 168, 0.582)">الاوراق</strong>
+                <div class="card-header-actions">
+                    <button type="button" class="card-header-action btn btn-link btn-minimize"
+                        (click)="toggleFileUploadDataCollapse()"><i class={{iconFileUploadDataCollapse}}></i></button>
+                </div>
+            </div>
+            <div (collapsed)="fileUploadDataCollapsed($event)" (expanded)="fileUploadDataExpanded($event)"
+                [collapse]="isFileUploadDataCollapsed" class="card-body ">
+                <div>
+                    <table class="table table-responsive-sm table-hover table-outline mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center">الملفات</th>
+                                <th class="text-center">تصنيف</th>
+                                <th class="text-center">تحميل</th>
+                                <th class="text-center">حذف</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let requestDocument of requestDocuments ; let i=index">
+                                <td class="text-center">
+                                    <i class="fa fa-file-pdf-o" style="font-size:18px;color:red"></i>
+                                    <b>{{requestDocument.name}}</b>
+                                </td>
+                                <td class="text-center">
+                                    <i class="fa fa-file-pdf-o" style="font-size:18px;color:red"></i>
+                                    <b>{{requestDocument.documentType.category}}</b>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="delete-btn btn btn-success"
+                                        (click)="getFile(requestDocument.name)">تحميل
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="delete-btn btn btn-danger"
+                                        (click)="deleteFile(requestDocument.name)">حذف
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="uploading" class="progress">
+                    <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                        attr.aria-valuenow="{{progress.percentage}}" aria-valuemin="0" aria-valuemax="100"
+                        [ngStyle]="{width:progress.percentage+'%'}">
+                        {{progress.percentage}}%</div>
+                </div>
+                <br><br><br>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label font-weight-bold" for="documentType">نوع الملف</label>
+                    <div class="col-md-3">
+                        <select [(ngModel)]="selectedDocumentTypeId" name="documentType" class="form-control">
+                            <option *ngFor="let documentType of documentTypes" [value]="documentType.id">
+                                {{documentType.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+
+                    <label class="col-md-2 col-form-label" for="file-input">
+                        <input type="file" accept="application/pdf" id="file-input" name="file-input"
+                            (change)="selectFile($event)">
+                    </label>
+                </div>
+                <div *ngIf="fileUploadErrorMessage">
+                    <alert type="danger">
+                        <strong>{{fileUploadErrorMessage}}</strong>
+                    </alert>
+                </div>
+                <div class="card-footer">
+                    <button class="col-md-2 col-form-label" class="btn btn-success" [disabled]="!selectedFiles"
+                        (click)="upload()">رفع</button>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+</div>

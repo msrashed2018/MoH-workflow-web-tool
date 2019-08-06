@@ -219,19 +219,19 @@ export class ContinueRegisteringDataComponent implements OnInit {
   getFile(requestDocumentName) {
     this.requestService.getRequestDocument(this.request.id, requestDocumentName);
   }
-  deleteFile(requestDocumentName) {
-    this.requestService.deleteRequestDocument(this.request.id, requestDocumentName).subscribe(
-      result => {
-        this.fileUploadErrorMessage = "";
-        this.showFiles(true);
-      },
-      error => {
-        this.fileUploadErrorMessage = error.error.message;
-      }
+  // deleteFile(requestDocumentName) {
+  //   this.requestService.deleteRequestDocument(this.request.id, requestDocumentName).subscribe(
+  //     result => {
+  //       this.fileUploadErrorMessage = "";
+  //       this.showFiles(true);
+  //     },
+  //     error => {
+  //       this.fileUploadErrorMessage = error.error.message;
+  //     }
 
 
-    );
-  }
+  //   );
+  // }
   upload() {
 
     if (this.selectedDocumentTypeId != 0) {

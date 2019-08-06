@@ -31,6 +31,7 @@ import { DocumentCategory } from '../../../model/document-category.enum';
 import { RequestDocument } from '../../../model/request-document.model';
 import { DocumentTypeService } from '../../../services/administration/document-type.service';
 import { DocumentType } from '../../../model/document-type.model';
+import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 @Component({
   selector: 'app-request-edit',
   templateUrl: './request-edit.component.html',
@@ -38,7 +39,7 @@ import { DocumentType } from '../../../model/document-type.model';
 })
 export class RequestEditComponent implements OnInit {
 
-  constructor(private documentTypeService: DocumentTypeService, private route: ActivatedRoute, private formBuilder: FormBuilder, private committeeService: CommitteeService, private disabilityService: DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
+  constructor(private confirmationModalService: ConfirmModalService, private documentTypeService: DocumentTypeService, private route: ActivatedRoute, private formBuilder: FormBuilder, private committeeService: CommitteeService, private disabilityService: DisabilityService, private equipmentService: EquipmentService, private eyeMeasureService: EyeMeasureService, private eyeRevealSettingService: EyeRevealSettingService, private customService: CustomService, private requestService: RequestService, private requestTypeService: RequestTypeService, private requestStatusService: RequestStatusService, private trafficManagementService: TrafficManagementService) { }
 
   //cards collapse fields------------------------------------------------------------------------------------
   isRequestDataCollapsed: boolean = false;
@@ -64,7 +65,7 @@ export class RequestEditComponent implements OnInit {
   selectedRequestStatusId: number = 0;
   citizen = {};
   requestTypes = [{}];
-  payment: RequestPayment = new RequestPayment();
+  payment: RequestPayment;
 
 
   requestStatuses = [{}];
@@ -77,7 +78,7 @@ export class RequestEditComponent implements OnInit {
 
   committees: Committee[];
   measures = [{}];
-  eyeReveal = new EyeReveal();
+  eyeReveal: EyeReveal;
   distinguishCheck: boolean = false;
   glassesCheck: boolean = false;
   squintCheck: boolean = false;
@@ -85,7 +86,7 @@ export class RequestEditComponent implements OnInit {
   selectedLeftEyeMeasureId: number = 0;
   selectedRightEyeMeasureId: number = 0;
 
-  bonesReveal = new BonesReveal();
+  bonesReveal: BonesReveal;
   selectedBonesCommitteeId: number = 0;
   selectedDisabilityTypeId: number = 0;
   selectedEquipmentTypeId: number = 0;
@@ -135,6 +136,7 @@ export class RequestEditComponent implements OnInit {
   displayRequestDataDetails() {
     this.requestService.retrieveRequest(this.requestId).subscribe(
       result => {
+        console.log(result)
         this.request = result as Request;
         this.citizen = this.request.citizen;
         if (this.request.trafficManagement != null) {
@@ -296,12 +298,6 @@ export class RequestEditComponent implements OnInit {
     )
   }
 
-
-  onClose() {
-  }
-
-  onDelete() {
-  }
   onDistinguishChecked(event) {
     this.distinguishCheck = event.target.checked;
   }
@@ -356,34 +352,35 @@ export class RequestEditComponent implements OnInit {
   eyeRevealDataExpanded(event: any): void {
     this.requestService.retreiveRequestEyeReveal(this.requestId).subscribe(
       result => {
-        this.eyeReveal = result as EyeReveal;
-        console.log(JSON.stringify(this.eyeReveal))
 
-        if (this.eyeReveal.distinguishColor == '1') {
-          this.distinguishCheck = true;
-        } else {
-          this.distinguishCheck = false;
-        }
-        if (this.eyeReveal.useGlasses == '1') {
-          this.glassesCheck = true;
-        } else {
-          this.glassesCheck = false;
-        }
-        if (this.eyeReveal.squint == "1") {
-          this.squintCheck = true;
-        } else {
-          this.squintCheck = false;
-        }
+        if (result != null) {
+          this.eyeReveal = result as EyeReveal;
+          if (this.eyeReveal.distinguishColor == '1') {
+            this.distinguishCheck = true;
+          } else {
+            this.distinguishCheck = false;
+          }
+          if (this.eyeReveal.useGlasses == '1') {
+            this.glassesCheck = true;
+          } else {
+            this.glassesCheck = false;
+          }
+          if (this.eyeReveal.squint == "1") {
+            this.squintCheck = true;
+          } else {
+            this.squintCheck = false;
+          }
 
-        // if(this.eyeReveal.committee != null){
-        //   this.selectedEyeCommitteeId = this.eyeReveal.committee.id
-        // }
+          // if(this.eyeReveal.committee != null){
+          //   this.selectedEyeCommitteeId = this.eyeReveal.committee.id
+          // }
 
-        if (this.eyeReveal.leftEye != null) {
-          this.selectedLeftEyeMeasureId = this.eyeReveal.leftEye.id
-        }
-        if (this.eyeReveal.rightEye != null) {
-          this.selectedRightEyeMeasureId = this.eyeReveal.rightEye.id
+          if (this.eyeReveal.leftEye != null) {
+            this.selectedLeftEyeMeasureId = this.eyeReveal.leftEye.id
+          }
+          if (this.eyeReveal.rightEye != null) {
+            this.selectedRightEyeMeasureId = this.eyeReveal.rightEye.id
+          }
         }
       },
       error => {
@@ -393,7 +390,7 @@ export class RequestEditComponent implements OnInit {
     )
 
     this.fillMeasures();
-    this.fillCommittees();
+    // this.fillCommittees();
 
   }
   toggleEyeRevealDataCollapse(): void {
@@ -404,7 +401,7 @@ export class RequestEditComponent implements OnInit {
   bonesRevealDataCollapsed(event: any): void {
   }
   bonesRevealDataExpanded(event: any): void {
-    this.fillCommittees();
+    // this.fillCommittees();
     this.fillEquipments();
     this.fillDisabilities();
 
@@ -441,7 +438,8 @@ export class RequestEditComponent implements OnInit {
   fileUploadDataCollapsed(event: any): void {
   }
   fileUploadDataExpanded(event: any): void {
-        this.showFiles(true);
+    this.showFiles(true);
+    this.fillDocumentTypes();
   }
   toggleFileUploadDataCollapse(): void {
     this.isFileUploadDataCollapsed = !this.isFileUploadDataCollapsed;
@@ -525,15 +523,15 @@ export class RequestEditComponent implements OnInit {
         console.log('oops', error);
       });
   }
-  fillCommittees() {
-    this.committeeService.retrieveAllCommittees(0, 100).subscribe(
-      result => {
-        this.committees = result['content'];
-      },
-      error => {
-        console.log('oops', error);
-      });
-  }
+  // fillCommittees() {
+  //   this.committeeService.retrieveAllCommittees(0, 100).subscribe(
+  //     result => {
+  //       this.committees = result['content'];
+  //     },
+  //     error => {
+  //       console.log('oops', error);
+  //     });
+  // }
 
 
   // file upload methods--------------------------------------------------------------------------------------
@@ -575,6 +573,16 @@ export class RequestEditComponent implements OnInit {
     this.requestService.getRequestDocument(this.request.id, requestDocumentName);
   }
   deleteFile(requestDocumentName) {
+    let message  = ` هل انت متاكد من حذف هذا الملف   "${requestDocumentName} "` 
+    this.confirmationModalService.confirm('من فضلك اضغط علي ok',  message)
+      .then((confirmed) => {
+        if (confirmed) {
+          this.deleteRequestDocument(requestDocumentName);
+        }
+      })
+  }
+
+  deleteRequestDocument(requestDocumentName){
     this.requestService.deleteRequestDocument(this.request.id, requestDocumentName).subscribe(
       result => {
         this.fileUploadErrorMessage = "";
@@ -583,10 +591,9 @@ export class RequestEditComponent implements OnInit {
       error => {
         this.fileUploadErrorMessage = error.error.message;
       }
-
-
     );
   }
+  
   upload() {
 
     if (this.selectedDocumentTypeId != 0) {
