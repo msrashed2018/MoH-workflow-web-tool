@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 import { RequestService } from '../../../services/request.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { APPROVE_REQUESTS_PAGE_SIZE } from '../../../app.constants';
 @Component({
   selector: 'app-approve-requests',
   templateUrl: './approve-requests.component.html',
@@ -26,14 +26,14 @@ export class ApproveRequestsComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i;
-    this.items = i * GENERAL_PAGE_SIZE;
+    this.items = i * APPROVE_REQUESTS_PAGE_SIZE;
     if (this.isForSearch) { this.searchByStatesAndSearchKey(); } else { this.retriveAllRequests(); }
   }
   nextPage(event: any): void {
     event.preventDefault();
     if ((this.page + 1) < this.pages.length) {
       this.page = this.page + 1
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * APPROVE_REQUESTS_PAGE_SIZE;
       if (this.isForSearch) {
         this.searchByStatesAndSearchKey();
       } else {
@@ -47,7 +47,7 @@ export class ApproveRequestsComponent implements OnInit {
 
     if ((this.page - 1) >= 0) {
       this.page = this.page - 1;
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * APPROVE_REQUESTS_PAGE_SIZE;
       if (this.isForSearch) {
         this.searchByStatesAndSearchKey();
       } else {
@@ -60,7 +60,7 @@ export class ApproveRequestsComponent implements OnInit {
     this.retriveAllRequests();
   }
   searchByStatesAndSearchKey() {
-    this.requestService.searchByStatesAndSearchKey("REVIEWED", "DONE", "DONE", this.searchKey, this.page, GENERAL_PAGE_SIZE)
+    this.requestService.searchByStatesAndSearchKey("REVIEWED", "DONE", "DONE", this.searchKey, this.page, APPROVE_REQUESTS_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
@@ -95,7 +95,7 @@ export class ApproveRequestsComponent implements OnInit {
     this.noDataFound = false;
     let date = new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retrieveByRequestStates("REVIEWED", "DONE", "DONE", this.page, GENERAL_PAGE_SIZE)
+    this.requestService.retrieveByRequestStates("REVIEWED", "DONE", "DONE", this.page, APPROVE_REQUESTS_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {

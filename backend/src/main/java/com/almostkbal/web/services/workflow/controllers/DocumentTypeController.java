@@ -41,19 +41,15 @@ public class DocumentTypeController {
 	@Autowired
 	private DocumentTypeRepository documentTypeRepository;
 	
-	
-	public static void main(String[] args) {
-		Locale locale = new Locale("en_S");
-		DecimalFormat nFormatter = (DecimalFormat)NumberFormat.getInstance(locale);
-//		DecimalFormat nFormatter = null;
-		
-//		608
-//		HRK
-//		760
-//		752
-		nFormatter.setCurrency(null);
-		System.out.println("hereeeeeeeeeeeee");
+	public static Currency getByCode(int code) {
+	    for(Currency c : Currency.getAvailableCurrencies()) {
+	        if(c.getNumericCode() == code) {
+	            return c;
+	        }
+	    }
+	    throw new IllegalArgumentException("Unkown currency code: " + code);
 	}
+	
 
 	
 	

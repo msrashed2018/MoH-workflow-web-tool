@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CityService } from '../../../services/administration/city.service';
 import { City } from '../../../model/city.model';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { CITIES_PAGE_SIZE } from '../../../app.constants';
 
 
 @Component({
@@ -29,14 +29,14 @@ export class ListCitiesComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i;
-    this.items = i * GENERAL_PAGE_SIZE;
+    this.items = i * CITIES_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
     if ((this.page + 1) < this.pages.length) {
       this.page = this.page + 1
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * CITIES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -45,7 +45,7 @@ export class ListCitiesComponent implements OnInit {
 
     if ((this.page - 1) >= 0) {
       this.page = this.page - 1;
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * CITIES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -54,7 +54,7 @@ export class ListCitiesComponent implements OnInit {
     this.refreshData();
   }
   refreshData() {
-    this.cityService.retrieveAllCities(this.page, GENERAL_PAGE_SIZE).subscribe(
+    this.cityService.retrieveAllCities(this.page, CITIES_PAGE_SIZE).subscribe(
       response => {
         this.cities = response['content'];
         this.pages = new Array(response['totalPages']);

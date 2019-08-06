@@ -4,7 +4,7 @@ import { DisabilityService } from '../../../services/administration/disability.s
 import { Disability } from '../../../model/disability.model';
 import { FormBuilder } from '@angular/forms';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { DISABILITIES_TYPES_PAGE_SIZE } from '../../../app.constants';
 
 @Component({
   selector: 'app-list-disabilities',
@@ -28,14 +28,14 @@ export class ListDisabilitiesComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i ;
-    this.items = i*GENERAL_PAGE_SIZE;
+    this.items = i*DISABILITIES_TYPES_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
     if((this.page+1) < this.pages.length){
       this.page = this.page+1
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*DISABILITIES_TYPES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -44,7 +44,7 @@ export class ListDisabilitiesComponent implements OnInit {
 
     if((this.page-1) >= 0){
       this.page =this.page -1;
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*DISABILITIES_TYPES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -52,7 +52,7 @@ export class ListDisabilitiesComponent implements OnInit {
     this.refreshData();
   }
   refreshData(){
-    this.disabilityService.retrieveAllDisabilities(this.page,GENERAL_PAGE_SIZE).subscribe(
+    this.disabilityService.retrieveAllDisabilities(this.page,DISABILITIES_TYPES_PAGE_SIZE).subscribe(
       response => {
         this.disabilities = response['content'];
         this.pages = new Array(response['totalPages']);

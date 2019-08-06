@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 
 
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { ZONES_PAGE_SIZE } from '../../../app.constants';
 
 
 @Component({
@@ -32,14 +32,14 @@ export class ListZonesComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i ;
-    this.items = i*GENERAL_PAGE_SIZE;
+    this.items = i*ZONES_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
     if((this.page+1) < this.pages.length){
       this.page = this.page+1
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*ZONES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -48,7 +48,7 @@ export class ListZonesComponent implements OnInit {
 
     if((this.page-1) >= 0){
       this.page =this.page -1;
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*ZONES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -56,7 +56,7 @@ export class ListZonesComponent implements OnInit {
     this.refreshData();
   }
   refreshData(){
-    this.zoneService.retrieveAllZones(this.page,GENERAL_PAGE_SIZE).subscribe(
+    this.zoneService.retrieveAllZones(this.page,ZONES_PAGE_SIZE).subscribe(
       response => {
         this.zones = response['content'];
         this.pages = new Array(response['totalPages']);

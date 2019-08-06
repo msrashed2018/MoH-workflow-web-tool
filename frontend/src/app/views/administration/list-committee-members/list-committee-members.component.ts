@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CommitteeMember } from '../../../model/committee-member.model';
 import { CommitteeMemberService } from '../../../services/administration/committee-member.service';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { COMMITTEE_MEMBERS_PAGE_SIZE } from '../../../app.constants';
 
 
 
@@ -28,14 +28,14 @@ export class ListCommitteeMembersComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i ;
-    this.items = i*GENERAL_PAGE_SIZE;
+    this.items = i*COMMITTEE_MEMBERS_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
     if((this.page+1) < this.pages.length){
       this.page = this.page+1
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*COMMITTEE_MEMBERS_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -44,7 +44,7 @@ export class ListCommitteeMembersComponent implements OnInit {
 
     if((this.page-1) >= 0){
       this.page =this.page -1;
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*COMMITTEE_MEMBERS_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -52,7 +52,7 @@ export class ListCommitteeMembersComponent implements OnInit {
     this.refreshData();
   }
   refreshData(){
-    this.committeeMemberService.retrieveAllCommitteeMembers(this.page,GENERAL_PAGE_SIZE).subscribe(
+    this.committeeMemberService.retrieveAllCommitteeMembers(this.page,COMMITTEE_MEMBERS_PAGE_SIZE).subscribe(
       response => {
         this.committeeMembers = response['content'];
         this.pages = new Array(response['totalPages']);

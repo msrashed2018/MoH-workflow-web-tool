@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { GovernateService } from '../../../services/administration/governate.service';
 import { Governate } from '../../../model/governate.model';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { GOVERNATES_PAGE_SIZE } from '../../../app.constants';
 // import { BrowserModule } from '@angular/platform-browser';
 
 
@@ -30,14 +30,14 @@ export class ListGovernatesComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i;
-    this.items = i * GENERAL_PAGE_SIZE;
+    this.items = i * GOVERNATES_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
     if ((this.page + 1) < this.pages.length) {
       this.page = this.page + 1
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * GOVERNATES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -46,7 +46,7 @@ export class ListGovernatesComponent implements OnInit {
 
     if ((this.page - 1) >= 0) {
       this.page = this.page - 1;
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * GOVERNATES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -55,7 +55,7 @@ export class ListGovernatesComponent implements OnInit {
   }
 
   refreshData() {
-    this.governateService.retrieveAllGovernates(this.page, GENERAL_PAGE_SIZE).subscribe(
+    this.governateService.retrieveAllGovernates(this.page, GOVERNATES_PAGE_SIZE).subscribe(
       response => {
         this.governates = response['content'];
         this.pages = new Array(response['totalPages']);

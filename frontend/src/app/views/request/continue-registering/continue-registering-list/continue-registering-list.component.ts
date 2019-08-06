@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { ConfirmModalService } from '../../../confirm-modal/confirm-modal.service';
 import { RequestService } from '../../../../services/request.service';
-import { GENERAL_PAGE_SIZE } from '../../../../app.constants';
+import { CONTINUE_REGISTERING_PAGE_SIZE } from '../../../../app.constants';
 
 @Component({
   selector: 'app-continue-registering-list',
@@ -27,14 +27,14 @@ export class ContinueRegisteringListComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i;
-    this.items = i * GENERAL_PAGE_SIZE;
+    this.items = i * CONTINUE_REGISTERING_PAGE_SIZE;
     if (this.isForSearch) { this.searchByStatesAndSearchKey(); } else { this.retriveAllRequests(); }
   }
   nextPage(event: any): void {
     event.preventDefault();
     if ((this.page + 1) < this.pages.length) {
       this.page = this.page + 1
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * CONTINUE_REGISTERING_PAGE_SIZE;
       if (this.isForSearch) {
         this.searchByStatesAndSearchKey();
       } else {
@@ -47,7 +47,7 @@ export class ContinueRegisteringListComponent implements OnInit {
 
     if ((this.page - 1) >= 0) {
       this.page = this.page - 1;
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * CONTINUE_REGISTERING_PAGE_SIZE;
       if (this.isForSearch) {
         this.searchByStatesAndSearchKey();
       } else {
@@ -60,7 +60,7 @@ export class ContinueRegisteringListComponent implements OnInit {
     this.retriveAllRequests();
   }
   searchByStatesAndSearchKey(){
-    this.requestService.searchByStatesAndSearchKey("PENDING_CONTINUE_REGISTERING", "NA", "NA", this.searchKey, this.page, GENERAL_PAGE_SIZE)
+    this.requestService.searchByStatesAndSearchKey("PENDING_CONTINUE_REGISTERING", "NA", "NA", this.searchKey, this.page, CONTINUE_REGISTERING_PAGE_SIZE)
     .subscribe(
       result => {
         if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
@@ -96,7 +96,7 @@ export class ContinueRegisteringListComponent implements OnInit {
     this.noDataFound = false;
     let date = new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retrieveByRequestStates("PENDING_CONTINUE_REGISTERING", "NA", "NA", this.page, GENERAL_PAGE_SIZE)
+    this.requestService.retrieveByRequestStates("PENDING_CONTINUE_REGISTERING", "NA", "NA", this.page, CONTINUE_REGISTERING_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {

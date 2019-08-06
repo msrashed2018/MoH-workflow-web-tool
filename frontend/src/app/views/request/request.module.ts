@@ -21,10 +21,11 @@ import { BonesRevealRegisteringDataComponent } from './bones-reveal-registering/
 import { EyeRevealRegisteringListComponent } from './eye-reveal-registering/eye-reveal-registering-list/eye-reveal-registering-list.component';
 import { EyeRevealRegisteringDataComponent } from './eye-reveal-registering/eye-reveal-registering-data/eye-reveal-registering-data.component';
 import { RequestEditComponent } from './request-edit/request-edit.component';
+import { RequestResultsComponent } from './request-results/request-results.component';
 
 
 @NgModule({
-  declarations: [ListRequestsComponent, RequestViewComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, ReviewRequestsComponent, ApproveRequestsComponent, BonesRevealRegisteringListComponent, BonesRevealRegisteringDataComponent, EyeRevealRegisteringListComponent, EyeRevealRegisteringDataComponent, RequestEditComponent],
+  declarations: [ListRequestsComponent, RequestViewComponent,  PaymentListComponent, PaymentDataComponent, ContinueRegisteringDataComponent, ContinueRegisteringListComponent, BonesRevealComponent, EyeRevealComponent, ReviewRequestsComponent, ApproveRequestsComponent, BonesRevealRegisteringListComponent, BonesRevealRegisteringDataComponent, EyeRevealRegisteringListComponent, EyeRevealRegisteringDataComponent, RequestEditComponent, RequestResultsComponent],
   imports: [
     CommonModule,
     AlertModule,

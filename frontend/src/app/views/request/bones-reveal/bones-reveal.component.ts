@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 import { RequestService } from '../../../services/request.service';
 import { BonesReveal } from '../../../model/bones-reveal.model';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { BONES_REVEAL_PAGE_SIZE } from '../../../app.constants';
 @Component({
   selector: 'app-bones-reveal',
   templateUrl: './bones-reveal.component.html',
@@ -27,14 +27,14 @@ export class BonesRevealComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i;
-    this.items = i * GENERAL_PAGE_SIZE;
+    this.items = i * BONES_REVEAL_PAGE_SIZE;
     if (this.isForSearch) { this.searchByStatesAndSearchKey(); } else { this.retriveAllRequests(); }
   }
   nextPage(event: any): void {
     event.preventDefault();
     if ((this.page + 1) < this.pages.length) {
       this.page = this.page + 1
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * BONES_REVEAL_PAGE_SIZE;
       if (this.isForSearch) { this.searchByStatesAndSearchKey(); } else { this.retriveAllRequests(); }
     }
   }
@@ -43,7 +43,7 @@ export class BonesRevealComponent implements OnInit {
 
     if ((this.page - 1) >= 0) {
       this.page = this.page - 1;
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * BONES_REVEAL_PAGE_SIZE;
       if (this.isForSearch) { this.searchByStatesAndSearchKey(); } else { this.retriveAllRequests(); }
     }
   }
@@ -53,7 +53,7 @@ export class BonesRevealComponent implements OnInit {
   }
 
   searchByStatesAndSearchKey() {
-    this.requestService.searchByStatesAndSearchKey("CONTINUE_REGISTERING_DONE", "PENDING_REVEAL", "NA", this.searchKey, this.page, GENERAL_PAGE_SIZE)
+    this.requestService.searchByStatesAndSearchKey("CONTINUE_REGISTERING_DONE", "PENDING_REVEAL", "NA", this.searchKey, this.page, BONES_REVEAL_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
@@ -87,7 +87,7 @@ export class BonesRevealComponent implements OnInit {
     this.noDataFound = false;
     let date = new Date();
     // let today =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.requestService.retrieveByRequestStates("CONTINUE_REGISTERING_DONE", "PENDING_REVEAL", "NA", this.page, GENERAL_PAGE_SIZE)
+    this.requestService.retrieveByRequestStates("CONTINUE_REGISTERING_DONE", "PENDING_REVEAL", "NA", this.page, BONES_REVEAL_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {

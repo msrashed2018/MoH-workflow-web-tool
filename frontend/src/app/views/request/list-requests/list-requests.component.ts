@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
 import { RequestService } from '../../../services/request.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { REQUESTS_PAGE_SIZE } from '../../../app.constants';
 @Component({
   selector: 'app-list-requests',
   templateUrl: './list-requests.component.html',
@@ -26,14 +26,14 @@ export class ListRequestsComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i;
-    this.items = i * GENERAL_PAGE_SIZE;
+    this.items = i * REQUESTS_PAGE_SIZE;
     if (this.isForSearch) { this.retrieveRequestsBySearchKey(); } else { this.retriveAllRequests(); }
   }
   nextPage(event: any): void {
     event.preventDefault();
     if ((this.page + 1) < this.pages.length) {
       this.page = this.page + 1
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * REQUESTS_PAGE_SIZE;
       if (this.isForSearch) { this.retrieveRequestsBySearchKey(); } else { this.retriveAllRequests(); }
     }
   }
@@ -42,7 +42,7 @@ export class ListRequestsComponent implements OnInit {
 
     if ((this.page - 1) >= 0) {
       this.page = this.page - 1;
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * REQUESTS_PAGE_SIZE;
       if (this.isForSearch) { this.retrieveRequestsBySearchKey(); } else { this.retriveAllRequests(); }
     }
   }
@@ -52,7 +52,7 @@ export class ListRequestsComponent implements OnInit {
   }
 
   retrieveRequestsBySearchKey(){
-    this.requestService.retrieveRequestsBySearchKey(this.searchKey, this.page, GENERAL_PAGE_SIZE)
+    this.requestService.retrieveRequestsBySearchKey(this.searchKey, this.page, REQUESTS_PAGE_SIZE)
     .subscribe(
       result => {
         if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
@@ -85,7 +85,7 @@ export class ListRequestsComponent implements OnInit {
     this.requests = [];
     this.errorMessage = false;
     this.noDataFound = false;
-    this.requestService.retrieveAllRequests(this.page, GENERAL_PAGE_SIZE)
+    this.requestService.retrieveAllRequests(this.page, REQUESTS_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {

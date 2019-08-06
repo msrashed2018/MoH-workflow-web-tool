@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Custom } from '../../../model/custom.model';
 import { CustomService } from '../../../services/administration/custom.service';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { CUSTOMS_PAGE_SIZE } from '../../../app.constants';
 
 
 
@@ -29,14 +29,14 @@ export class ListCustomsComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i ;
-    this.items = i*GENERAL_PAGE_SIZE;
+    this.items = i*CUSTOMS_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
     if((this.page+1) < this.pages.length){
       this.page = this.page+1
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*CUSTOMS_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -45,7 +45,7 @@ export class ListCustomsComponent implements OnInit {
 
     if((this.page-1) >= 0){
       this.page =this.page -1;
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*CUSTOMS_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -53,7 +53,7 @@ export class ListCustomsComponent implements OnInit {
     this.refreshData();
   }
   refreshData(){
-    this.customService.retrieveAllCustoms(this.page,GENERAL_PAGE_SIZE).subscribe(
+    this.customService.retrieveAllCustoms(this.page,CUSTOMS_PAGE_SIZE).subscribe(
       response => {
         this.customs = response['content'];
         this.pages = new Array(response['totalPages']);

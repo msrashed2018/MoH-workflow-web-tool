@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuditService } from '../../../services/administration/audit.service';
 import { Audit } from '../../../model/audit.model';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { AUDITS_PAGE_SIZE } from '../../../app.constants';
 
 @Component({
   selector: 'app-audit-list',
@@ -31,14 +31,14 @@ export class AuditListComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i;
-    this.items = i * GENERAL_PAGE_SIZE;
+    this.items = i * AUDITS_PAGE_SIZE;
     if (this.isForSearch) { this.retrieveAuditsBySearchKey(); } else { this.refreshData(); }
   }2
   nextPage(event: any): void {
     event.preventDefault();
     if ((this.page + 1) < this.pages.length) {
       this.page = this.page + 1
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * AUDITS_PAGE_SIZE;
       if(this.isForSearch){
         this.retrieveAuditsBySearchKey();
       }else{
@@ -51,7 +51,7 @@ export class AuditListComponent implements OnInit {
 
     if ((this.page - 1) >= 0) {
       this.page = this.page - 1;
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * AUDITS_PAGE_SIZE;
       if(this.isForSearch){
         this.retrieveAuditsBySearchKey();
       }else{
@@ -65,7 +65,7 @@ export class AuditListComponent implements OnInit {
   }
 
   retrieveAuditsBySearchKey(){
-    this.auditService.retrieveAuditsBySearchKey(this.searchKey, this.page, GENERAL_PAGE_SIZE)
+    this.auditService.retrieveAuditsBySearchKey(this.searchKey, this.page, AUDITS_PAGE_SIZE)
     .subscribe(
       result => {
         if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
@@ -96,7 +96,7 @@ export class AuditListComponent implements OnInit {
   }
 
   refreshData() {
-    this.auditService.retrieveAllAudits(this.page, GENERAL_PAGE_SIZE).subscribe(
+    this.auditService.retrieveAllAudits(this.page, AUDITS_PAGE_SIZE).subscribe(
       response => {
         this.noDataFound = false;
         this.audits = response['content'];

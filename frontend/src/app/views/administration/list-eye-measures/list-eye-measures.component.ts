@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { EyeMeasureService } from '../../../services/administration/eye-measure.service';
 import { EyeMeasure } from '../../../model/eye-measure.model';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { EYE_MEASURES_PAGE_SIZE } from '../../../app.constants';
 
 
 @Component({
@@ -28,14 +28,14 @@ export class ListEyeMeasureComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i ;
-    this.items = i*GENERAL_PAGE_SIZE;
+    this.items = i*EYE_MEASURES_PAGE_SIZE;
     this.refreshData();
   }
   nextPage(event: any): void {
     event.preventDefault();
     if((this.page+1) < this.pages.length){
       this.page = this.page+1
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*EYE_MEASURES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -44,7 +44,7 @@ export class ListEyeMeasureComponent implements OnInit {
 
     if((this.page-1) >= 0){
       this.page =this.page -1;
-      this.items = (this.page)*GENERAL_PAGE_SIZE;
+      this.items = (this.page)*EYE_MEASURES_PAGE_SIZE;
       this.refreshData();
     }
   }
@@ -52,7 +52,7 @@ export class ListEyeMeasureComponent implements OnInit {
     this.refreshData();
   }
   refreshData(){
-    this.eyeMeasureService.retrieveAllEyeMeasure(this.page,GENERAL_PAGE_SIZE).subscribe(
+    this.eyeMeasureService.retrieveAllEyeMeasure(this.page,EYE_MEASURES_PAGE_SIZE).subscribe(
       response => {
         this.measures = response['content'];
         this.pages = new Array(response['totalPages']);

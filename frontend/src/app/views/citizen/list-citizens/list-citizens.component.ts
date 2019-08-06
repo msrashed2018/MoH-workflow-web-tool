@@ -6,7 +6,7 @@ import { AlertModule, AlertConfig } from 'ngx-bootstrap/alert';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { ConfirmModalService } from '../../confirm-modal/confirm-modal.service';
-import { GENERAL_PAGE_SIZE } from '../../../app.constants';
+import { CITIZENS_PAGE_SIZE } from '../../../app.constants';
 import { TokenStorageService } from '../../../services/authentication/jwt/token-storage.service';
 
 
@@ -30,14 +30,14 @@ export class ListCitizensComponent implements OnInit {
     // this.currentPage = event.page;
     event.preventDefault();
     this.page = i;
-    this.items = i * GENERAL_PAGE_SIZE;
+    this.items = i * CITIZENS_PAGE_SIZE;
     if (this.isForSearch) { this.retreiveCitizensBySearchKey(); } else { this.retriveAllCitizens(); }
   }
   nextPage(event: any): void {
     event.preventDefault();
     if ((this.page + 1) < this.pages.length) {
       this.page = this.page + 1
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * CITIZENS_PAGE_SIZE;
       if (this.isForSearch) {
         this.retreiveCitizensBySearchKey();
       } else {
@@ -50,7 +50,7 @@ export class ListCitizensComponent implements OnInit {
 
     if ((this.page - 1) >= 0) {
       this.page = this.page - 1;
-      this.items = (this.page) * GENERAL_PAGE_SIZE;
+      this.items = (this.page) * CITIZENS_PAGE_SIZE;
       if (this.isForSearch) {
         this.retreiveCitizensBySearchKey();
       } else {
@@ -65,7 +65,7 @@ export class ListCitizensComponent implements OnInit {
   }
 
   retreiveCitizensBySearchKey() {
-    this.citizenService.findCitizensBySearchKey(this.searchKey, this.page, GENERAL_PAGE_SIZE)
+    this.citizenService.findCitizensBySearchKey(this.searchKey, this.page, CITIZENS_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
@@ -103,7 +103,7 @@ export class ListCitizensComponent implements OnInit {
     this.noDataFound = false;
     let date = new Date();
     // let latest_date =this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.citizenService.retrieveAllCitizens(this.page, GENERAL_PAGE_SIZE)
+    this.citizenService.retrieveAllCitizens(this.page, CITIZENS_PAGE_SIZE)
       .subscribe(
         result => {
           if (typeof result !== 'undefined' && result !== null && result['content'].length != 0) {
