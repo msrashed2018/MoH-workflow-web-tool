@@ -6,10 +6,14 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.almostkbal.web.services.workflow.repositories.RequestRepository;
 import com.almostkbal.web.services.workflow.services.impl.StorageServiceImpl;
 
 @SpringBootApplication
 public class MoHRestfulApplication implements ApplicationRunner{
+	@Autowired
+	RequestRepository  requestRepository;
+	
 	
 	@Autowired
 	private StorageServiceImpl storageService;
@@ -20,6 +24,7 @@ public class MoHRestfulApplication implements ApplicationRunner{
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 //		storageService.deleteAll();
+		
 		storageService.init();
 		
 	}

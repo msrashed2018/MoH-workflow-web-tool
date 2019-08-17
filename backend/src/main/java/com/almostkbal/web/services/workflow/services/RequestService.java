@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import com.almostkbal.web.services.workflow.dto.RequestResultDto;
 import com.almostkbal.web.services.workflow.entities.Request;
 import com.almostkbal.web.services.workflow.entities.RequestStatus;
 
@@ -45,12 +46,12 @@ public interface RequestService {
 	
 	Page<Request> getApprovedRequestsBySearchKey(String searchKey, Pageable pageable);
 	
-	
-
 	Page<Request> getAllRequests(Pageable pageable);
 
 	Page<Request> getAllRequestsBySearchKey(String searchKey, Pageable pageable);
 
+	Page<RequestResultDto> getRequestReults(int requestTypeId,String startDate, String endDate, Pageable pageable);
+	
 //	List<Request> findByNationalId(RequestState state, BonesRevealState bonesRevealState, EyeRevealState eyeRevealState,
 //			long nationalId);
 

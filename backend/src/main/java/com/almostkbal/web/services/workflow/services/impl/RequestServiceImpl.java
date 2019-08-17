@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.almostkbal.web.services.workflow.auth.UserService;
+import com.almostkbal.web.services.workflow.dto.RequestResultDto;
 import com.almostkbal.web.services.workflow.entities.Audit;
 import com.almostkbal.web.services.workflow.entities.BonesRevealState;
 import com.almostkbal.web.services.workflow.entities.Citizen;
@@ -1031,6 +1032,24 @@ public class RequestServiceImpl implements RequestService {
 		end.set(Calendar.SECOND, 59);
 		end.set(Calendar.MILLISECOND, 0);
 
+	}
+
+	@Override
+	public Page<RequestResultDto> getRequestReults(int requestStatusId, String startDate, String endDate, Pageable pageable) {
+		try {
+			Calendar start = Calendar.getInstance();
+			Calendar end = Calendar.getInstance();
+
+			formatDates(start, end, startDate, endDate);
+			Date requestDateStart = start.getTime();
+			Date requestDateEnd = end.getTime();
+			return requestRepository.findRequestResults(userService.getUserZoneId(),requestStatusId, requestDateStart, requestDateEnd, pageable);
+			//			return requestRepository.findByZoneIdAndRequestStatusIdAndRequestDateBetween(userService.getUserZoneId(),requestStatusId,
+//					requestDateStart, requestDateEnd, pageable);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

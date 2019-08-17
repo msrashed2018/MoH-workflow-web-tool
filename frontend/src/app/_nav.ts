@@ -103,7 +103,7 @@ export const APPROVE_REQUESTS_NAV_ITEM: NavData =
 export const RESULTS_NAV_ITEM: NavData =
 {
   name: `${RESULTS}`,
-  url: '/theme/typography',
+  url: '/request/results',
   icon: 'icon-pie-chart'
 }
 

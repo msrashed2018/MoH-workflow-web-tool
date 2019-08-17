@@ -1,5 +1,86 @@
+import { RequestResult } from './model/request-result.model';
+
 export class AppPrint {
+    static getRequestResultsPageContent(requestResults: RequestResult[], result): string {
+    // static getRequestResultsPageContent(requestResults: RequestResult[], zone, result, startDate, endDate ): string {
+        let header, footer, resultsTableHeader, resultstableContent, resultsTableFooter, popupWin;
+        header = `<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ar" dir="rtl" lang="ar">
+        <head>
+          <title>نتيجة</title>
+          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        </head>
+        <body >
+        <div class="container">`;
+        resultsTableHeader = `
+        <table id="resultsTable" class="table table-responsive-sm table-hover table-outline mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th class="text-center">رقم الطلب</th>
+            <th class="text-center">الرقم القومي</th>
+            <th class="text-center">الاسم</th>
+            <th class="text-center">العنوان</th>
+            <th class="text-center">النتيجة</th>
+            <th class="text-center">الاعاقة</th>
+          </tr>
+        </thead>
+        <tbody>
+        `
+        // resultstableContent = document.getElementById('resultsTable').innerHTML;
+        resultstableContent = ` `;
     
+        for (var x = 0; x<requestResults.length ; x++){
+          resultstableContent = resultstableContent + `<tr>
+    
+          <td class="text-center"> <b>${x+1}</b></td>
+          <td class="text-center"> ${requestResults[x].requestId}</td>
+          <td class="text-center"> ${requestResults[x].nationalId}</td>
+          <td class="text-center"> ${requestResults[x].citizenName}</td>
+          `
+    
+          if(requestResults[x].address != null ){
+            resultstableContent = resultstableContent + `
+            <td class="text-center"> ${requestResults[x].address}</td>
+            ` 
+          }else{
+            resultstableContent = resultstableContent + `
+            <td class="text-center"> لا يوجد</td>
+            `
+          }
+          if(requestResults[x].result != null){
+            resultstableContent = resultstableContent + `
+            <td class="text-center"> ${requestResults[x].citizenName}</td>
+            ` 
+          }else{
+            
+            resultstableContent = resultstableContent + `
+            <td class="text-center"> لم تحدد</td>
+            `
+          }
+    
+    
+    
+          if(requestResults[x].disability != null){
+            resultstableContent = resultstableContent + `
+            <td class="text-center"> ${requestResults[x].disability}</td>
+            ` 
+          }else{
+            resultstableContent = resultstableContent + `
+            <td class="text-center"> لم تحدد</td>
+            `
+          }
+          resultstableContent = resultstableContent + `</tr>` 
+        }
+    
+    
+        resultsTableFooter = ` </tbody> </table> `
+        footer = `</div> </body> </html> `;
+
+        return header+ resultsTableHeader + resultstableContent +resultsTableFooter+footer;
+    } 
     static getReceivedDocumentReceiptPageContent(name, custom, eyeCommitteeDate, bonesCommitteeDate): string {
         return `
         <!DOCTYPE html>

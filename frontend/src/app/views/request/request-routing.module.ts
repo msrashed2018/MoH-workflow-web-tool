@@ -16,6 +16,7 @@ import { EyeRevealRegisteringDataComponent } from './eye-reveal-registering/eye-
 import { BonesRevealRegisteringListComponent } from './bones-reveal-registering/bones-reveal-registering-list/bones-reveal-registering-list.component';
 import { BonesRevealRegisteringDataComponent } from './bones-reveal-registering/bones-reveal-registering-data/bones-reveal-registering-data.component';
 import { RequestEditComponent } from './request-edit/request-edit.component';
+import { RequestResultsComponent } from './request-results/request-results.component';
 const routes: Routes = [
   {
     path: 'search',
@@ -107,6 +108,13 @@ const routes: Routes = [
     component: ApproveRequestsComponent,
     data: {
       title: 'approve-requests'
+    }
+  },
+  {
+    path: 'results',
+    component: RequestResultsComponent,
+    data: {
+      title: 'results'
     }
   },
   {

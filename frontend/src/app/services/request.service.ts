@@ -29,7 +29,13 @@ export class RequestService {
         return data;
       }));
   }
-
+  retrieveRequestResults(requestStatusId,startDate,endDate, page,size) {
+    return this.http.get<Request[]>
+      (`${API_URL}/requests/retrieveRequestResults?requestStatusId=${requestStatusId}&startDate=${startDate}&endDate=${endDate}&page=${page}&size=${size}`).pipe( map(
+        data => {
+        return data;
+      }));
+  }
   retrieveRequestsBySearchKey(searchKey, page,size) {
     return this.http.get<Request[]>
       (`${API_URL}/requests/search/findAllRequestsBySearchKey?searchKey=${searchKey}&page=${page}&size=${size}`).pipe( map(
