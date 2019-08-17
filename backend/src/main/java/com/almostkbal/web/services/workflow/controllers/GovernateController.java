@@ -83,9 +83,9 @@ public class GovernateController {
 	@PostMapping("/api/governates")
 	@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_SYSTEM_TABLES_MAINTENANCE')")
 	public ResponseEntity<Object> createGovernate(@Valid @RequestBody Governate governate) {
-		Zone userZone = new Zone();
-		userZone.setId(userService.getUserZoneId());
-		governate.setZone(userZone);
+//		Zone userZone = new Zone();
+//		userZone.setId(userService.getUserZoneId());
+//		governate.setZone(userZone);
 		
 		Governate savedGovernate = governateRepository.save(governate);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -101,9 +101,9 @@ public class GovernateController {
 			throw new ResourceNotFoundException("id-" + id);
 //		governateRepository.deleteById(id);
 		
-		Zone userZone = new Zone();
-		userZone.setId(userService.getUserZoneId());
-		governate.setZone(userZone);
+//		Zone userZone = new Zone();
+//		userZone.setId(userService.getUserZoneId());
+//		governate.setZone(userZone);
 		Governate updatedCitzen = governateRepository.save(governate);
 		return new ResponseEntity<Governate>(updatedCitzen, HttpStatus.OK);
 	}
