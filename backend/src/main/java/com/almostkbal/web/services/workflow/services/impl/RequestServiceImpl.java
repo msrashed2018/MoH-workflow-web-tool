@@ -847,6 +847,7 @@ public class RequestServiceImpl implements RequestService {
 		citizen.setId(citizenId);
 		request.setCitizen(citizen);
 
+		request.setCreatedBy(userService.getUsername());
 		request.setRequestDate(new Date());
 
 		Request savedRequest = null;
@@ -882,7 +883,8 @@ public class RequestServiceImpl implements RequestService {
 		if (!requestRepository.existsById(requestId)) {
 			throw new ResourceNotFoundException("هذا الطلب غير موجود");
 		}
-		
+		request.setModifiedBy(userService.getUsername());
+		request.setModifiedDate(new Date());
 		Request updatedRequest = requestRepository.save(request);
 
 		// auditing

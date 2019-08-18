@@ -159,6 +159,9 @@ public class CitizenController {
 			Zone zone = new Zone();
 			zone.setId(userService.getUserZoneId());
 			citizen.setZone(zone);
+			
+			citizen.setCreatedBy(userService.getUsername());
+			citizen.setCreatedDate(new Date());
 			savedCitizen = citizenRepository.save(citizen);
 
 			// auditing
@@ -195,6 +198,9 @@ public class CitizenController {
 			zone.setId(userService.getUserZoneId());
 			citizen.setZone(zone);
 
+			citizen.setModifiedDate(new Date());
+			citizen.setModifiedBy(userService.getUsername());
+			
 			updatedCitzen = citizenRepository.save(citizen);
 
 			// auditing

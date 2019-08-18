@@ -123,8 +123,8 @@ export class CitizenComponent implements OnInit {
   }
   onSave() {
 
-    this.citizen.createdBy = this.authenticationService.getUsername();
-    this.citizen.createdDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+    // this.citizen.createdBy = this.authenticationService.getUsername();
+    // this.citizen.createdDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
 
     let governate = new Governate
     governate.id = this.selectedGovernateId;
@@ -161,7 +161,7 @@ export class CitizenComponent implements OnInit {
   }
   createRequest() {
     let request = new Request();
-    request.requestDate = this.citizen.createdDate;
+    // request.requestDate = this.citizen.createdDate;
     request.createdBy = this.citizen.createdBy;
 
     let requestType = new RequestType;

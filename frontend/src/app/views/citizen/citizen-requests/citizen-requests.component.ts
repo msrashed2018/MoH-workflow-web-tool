@@ -128,8 +128,8 @@ export class CitizenRequestsComponent implements OnInit {
   }
   createNewRequest(){
     let request = new Request();
-    request.requestDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
-    request.createdBy = this.authenticationService.getUsername();
+    // request.requestDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+    // request.createdBy = this.authenticationService.getUsername();
 
     let requestType = new RequestType;
     requestType.id = this.selectedRequestTypeId;

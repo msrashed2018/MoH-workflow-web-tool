@@ -9,13 +9,8 @@ import { GovernateService } from '../../../services/administration/governate.ser
 import { Occupation } from '../../../model/occupation.model';
 import { Governate } from '../../../model/governate.model';
 import { City } from '../../../model/city.model';
-import { Gender } from '../../../model/gender.model';
 import { GenderService } from '../../../services/administration/gender.service';
 import { DatePipe } from '@angular/common';
-import { RequestService } from '../../../services/request.service';
-import { RequestTypeService } from '../../../services/administration/request-type.service';
-import { CustomService } from '../../../services/administration/custom.service';
-import { TrafficManagementService } from '../../../services/administration/traffic-management.service';
 import { TokenStorageService } from '../../../services/authentication/jwt/token-storage.service';
 
 @Component({
@@ -133,8 +128,8 @@ export class CitizenViewEditComponent implements OnInit {
   }
   onSave(){
   
-    this.citizen.modifiedBy = this.authenticationService.getUsername();
-    this.citizen.modifiedDate =this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+    // this.citizen.modifiedBy = this.authenticationService.getUsername();
+    // this.citizen.modifiedDate =this.datepipe.transform(new Date(), 'yyyy-MM-dd');
 
     let governate = new Governate
     governate.id = this.selectedGovernateId;
