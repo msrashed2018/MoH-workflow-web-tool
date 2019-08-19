@@ -649,10 +649,13 @@ export class AppPrint {
         <table>
             <tr>
                 <td style="text-align: center" >
-                    <img  width="80" height="80" src="../../../../../assets/img/brand/logo_2.png" alt="background image"/>
+                    <img  width="80" height="80" src="assets/img/brand/logo_2.png" alt="background image"/>
                 </td>
                 <td></td>
-                <td rowspan="2"><img style="border: 1px solid #ddd;" width="120" height="140" src="../../../../../../../assets/img/brand/logo_2.png" alt="صورة شخصية"/></td>
+                <td rowspan="2">
+                <img style="border: 1px solid #ddd;" width="120" height="140" src="/assets/img/brand/pp.png" alt="صورة شخصية"/>
+                
+                </td>
             </tr>
             <tr>
                 <td>

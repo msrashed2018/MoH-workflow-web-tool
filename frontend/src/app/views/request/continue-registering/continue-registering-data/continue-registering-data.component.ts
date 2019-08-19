@@ -49,7 +49,7 @@ export class ContinueRegisteringDataComponent implements OnInit {
   eyeCommittee = new Committee();
   bonesCommittee = new Committee();
   committees: Committee[];
-  printEnabled: boolean = false;
+  printEnabled: boolean = true;
 
   eyeCommittees: Committee[];
   bonesCommittees: Committee[];
@@ -148,7 +148,6 @@ export class ContinueRegisteringDataComponent implements OnInit {
     if (this.requestType.name.includes("تظلم")) {
       this.committeeService.retrieveCommitteesByTypeAndFunction('رمد', 'تظلمات').subscribe(
         result => {
-          console.log(result)
           this.eyeCommittees = result;
         },
         error => {
@@ -164,7 +163,6 @@ export class ContinueRegisteringDataComponent implements OnInit {
     } else {
       this.committeeService.retrieveCommitteesByTypeAndFunction('رمد', 'اخري').subscribe(
         result => {
-          console.log(result)
           this.eyeCommittees = result;
         },
         error => {
@@ -172,7 +170,6 @@ export class ContinueRegisteringDataComponent implements OnInit {
         });
       this.committeeService.retrieveCommitteesByTypeAndFunction('عظام', 'اخري').subscribe(
         result => {
-          console.log(result)
           this.bonesCommittees = result;
         },
         error => {
@@ -249,7 +246,6 @@ export class ContinueRegisteringDataComponent implements OnInit {
         },
         error => {
           this.fileUploadErrorMessage = error.error;
-          console.log('oops', error.error.message)
           console.log('oops', error.error)
         }
 
